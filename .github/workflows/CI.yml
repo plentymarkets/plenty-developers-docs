@@ -26,7 +26,7 @@ jobs:
           antora antora-playbook-de.yml --fetch --stacktrace
           antora antora-playbook-en.yml --fetch --stacktrace
           
-     - name: Copy index to build
+      - name: Copy index to build
         run: |
           cp index.html ./build/index.html
           
