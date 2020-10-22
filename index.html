@@ -1,0 +1,31 @@
+i<!DOCTYPE html>
+<meta charset="utf-8">
+
+<script>
+    function getLangLocale()
+    {
+        if (navigator.languages !== undefined)
+            return navigator.languages[0];
+        else
+            return navigator.language;
+    }
+    function getLocation()
+    {
+        const originalLocation="index.html";
+        const langLocale = getLangLocale();
+
+        const regex = '/en-/';
+        const matchesEnglish = langLocale.match(regex);
+
+        let langLocation = "de-de/";
+        if (matchesEnglish) {
+            langLocation = "en-gb/";
+        }
+
+        return langLocation + originalLocation;
+    }
+
+    location=getLocation();
+    window.location.href = getLocation();
+</script>
+<meta name="robots" content="noindex">
