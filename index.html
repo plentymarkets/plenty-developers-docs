@@ -1,28 +1,56 @@
-i<!DOCTYPE html>
+<!DOCTYPE html>
 <meta charset="utf-8">
 
 <script>
+    const acceptedLocalesByPriority = ['en-gb', 'ro-RO', 'de-de'];
+    const originalLocation = "index.html";
+
     function getLangLocale()
     {
-        if (navigator.languages !== undefined)
-            return navigator.languages[0];
+        let language = getDefaultLanguage();
+
+        if (navigator.languages !== undefined) {
+            languageLoop:
+            for (let languageEntry of navigator.languages) {
+                for (let locale of acceptedLocalesByPriority) {
+                    let regexLang = new RegExp('^' + localeToLanguage(locale));
+                    if (languageEntry.match(regexLang)) {
+                        language = languageEntry;
+                        break languageLoop;
+                    }
+                }
+            }
+        }
         else
-            return navigator.language;
+            language = navigator.language;
+
+        return language;
     }
+
     function getLocation()
     {
-        const originalLocation="index.html";
         const langLocale = getLangLocale();
+        let langLocation = acceptedLocalesByPriority[0] + '/';
 
-        const regex = '/en-/';
-        const matchesEnglish = langLocale.match(regex);
-
-        let langLocation = "de-de/";
-        if (matchesEnglish) {
-            langLocation = "en-gb/";
+        for (let locale of acceptedLocalesByPriority) {
+            let regexLang = new RegExp('^' + localeToLanguage(langLocale));
+            if (locale.match(regexLang)) {
+                langLocation = locale + '/';
+                break;
+            }
         }
 
         return langLocation + originalLocation;
+    }
+
+    function getDefaultLanguage()
+    {
+        return localeToLanguage(acceptedLocalesByPriority[0]);
+    }
+
+    function localeToLanguage(locale)
+    {
+        return locale.substring(0,2);
     }
 
     location=getLocation();
