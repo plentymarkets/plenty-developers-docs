@@ -38,3 +38,12 @@ jobs:
           aws_bucket: ${{ secrets.AWS_S3_BUCKET }}
           source_dir: './build'
           destination_dir: ''
+      
+      - name: Invalidate CloudFront cache
+        uses: awact/cloudfront-action@master
+        env:
+          SOURCE_PATH: '/*'
+          AWS_REGION: 'eu-central-1'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
