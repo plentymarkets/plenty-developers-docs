@@ -26,6 +26,10 @@ jobs:
           antora antora-playbook-de.yml --fetch --stacktrace
           antora antora-playbook-en.yml --fetch --stacktrace
           
+     - name: Copy index to build
+        run: |
+          cp index.html ./build/index.html
+          
       - name: Upload site to S3
         uses: shallwefootball/s3-upload-action@master
         with:
