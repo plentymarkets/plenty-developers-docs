@@ -3,6 +3,8 @@ name: CI
 on:
   push:
     branches: [ main ]
+  repository_dispatch:
+    types: [ UIBundleUpdate ]
 
 jobs:
   build:
