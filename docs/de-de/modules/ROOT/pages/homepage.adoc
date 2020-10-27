@@ -2,23 +2,23 @@
 :page-layout: homepage
 
 // This paragraph has the preamble class by default.
-Welcome to plentymarkets developers. +
-Get started with one of the links below, or press (kbd:[CMD+K]) to open the site search.
+Willkommen zur Entwicklerdokumentation von plentymarkets. +
+Zum Einstieg kannst du einem der Links folgen oder (kbd:[CMD+K]) drücken, um die Suche zu öffnen.
 
 [.tile]
 xref:setting-up-dev-environment.adoc[Entwicklungsumgebung einrichten]
 
 [.tile]
-xref:plugin-basics.adoc[Plugin basics]
+xref:plugin-basics.adoc[Grundlagen der Plugin-Entwicklung]
 
 [.tile]
 xref:plentyshop.adoc[plentyShop]
 
 [.tile]
-xref:plugin-interface.adoc[Plugin interface]
+xref:plugin-interface.adoc[Plugin-Schnittstelle]
 
 [.tile]
-xref:rest-api.adoc[REST API]
+xref:rest-api.adoc[REST-API]
 
 [.tile]
 xref:plentybase.adoc[plentyBase]
