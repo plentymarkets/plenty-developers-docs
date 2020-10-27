@@ -1,13 +1,36 @@
-* xref:prerequisites.adoc[UI Development Prerequisites]
-* xref:set-up-project.adoc[Set up a UI Project]
-* xref:build-preview-ui.adoc[Build and Preview the UI]
-* xref:development-workflow.adoc[UI Development Workflow]
-* xref:templates.adoc[Work with the Handlebars Templates]
-* xref:stylesheets.adoc[Work with the CSS Stylesheets]
- ** xref:add-fonts.adoc[Add Fonts]
-* xref:style-guide.adoc[UI Element Styles]
-** xref:inline-text-styles.adoc[Inline Text]
-** xref:admonition-styles.adoc[Admonitions]
-** xref:list-styles.adoc[Lists]
-** xref:sidebar-styles.adoc[Sidebars]
-** xref:ui-macro-styles.adoc[UI Macros]
+.Getting started
+* xref:setting-up-dev-environment.adoc[Setting up the environment]
+* Creating the plugin structure
+* Using the plugin interface
+* Writing to the data log
+.Plugin basics
+* Plugin interface
+** How to use the interface
+** How to execute code without authentication
+** How to extend the interface
+** How to paginate interface results
+** Plugin interface reference
+* Configuring plugins
+** Overview
+** How to create a plugin configuration
+** Configuration options reference
+** How to create an assistant
+** Assistant reference
+** Assistant style guide
+* How to use external SDKs
+* How to use crons
+* Data storage
+** Overview
+** How to store data in a database
+** How to store data in memory
+* Data log
+** Overview
+** How to log errors
+** How to report events
+* How to write automated tests
+.plentyShop plugins
+.Payment plugins
+.Shipping plugins
+.Catalogue plugins
+.REST API
+.Tools
