@@ -13,6 +13,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      
+      - name: Auto approve GitHub Action commits
+        uses: hmarr/auto-approve-action@v2.0.0
+        if: github.actor == 'GitHub Action'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.2
