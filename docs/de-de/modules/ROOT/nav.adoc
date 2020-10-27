@@ -1,13 +1,55 @@
-* xref:prerequisites.adoc[UI Development Prerequisites]
-* xref:set-up-project.adoc[Set up a UI Project]
-* xref:build-preview-ui.adoc[Build and Preview the UI]
-* xref:development-workflow.adoc[UI Development Workflow]
-* xref:templates.adoc[Work with the Handlebars Templates]
-* xref:stylesheets.adoc[Work with the CSS Stylesheets]
- ** xref:add-fonts.adoc[Add Fonts]
-* xref:style-guide.adoc[UI Element Styles]
-** xref:inline-text-styles.adoc[Inline Text]
-** xref:admonition-styles.adoc[Admonitions]
-** xref:list-styles.adoc[Lists]
-** xref:sidebar-styles.adoc[Sidebars]
-** xref:ui-macro-styles.adoc[UI Macros]
+.Getting started
+* xref:setting-up-dev-environment.adoc[Entwicklungsumgebung einrichten]
+* Plugin-Struktur erstellen
+* Plugin-Schnittstelle nutzen 
+* Logeinträge schreiben
+
+.Grundlagen der Plugin-Entwicklung
+* Architektur
+* Plugin-Definition
+* Plugin-Schnittstelle
+** Wie benutze ich die Schnittstelle
+** Wie führe ich Code ohne Authentifizierung aus
+** Wie erweitere ich die Schnittstelle
+** Wie paginiere ich Ergebnisse
+** Schnittstellen-Referenz
+* Plugins konfigurieren
+** Übersicht
+** Wie erstelle ich eine Konfiguration
+** Konfigurationsoptionen-Referenz
+** Wie erstelle ich einen Assistenten
+** Assistenten-Referenz
+** Assistenten-Styleguide
+* Wie verwende ich externe SDKs
+* Wie verwende ich Crons
+* Datenspeicherung
+** Übersicht
+** Wie speichere ich Daten in einer Datenbank
+** Wie speichere ich Daten im Arbeitsspeicher
+* Datenlog
+** Übersicht
+** Wie protokolliere ich Fehler
+** Wie berichte ich über Ereignisse
+* Wie schreibe ich automatisierte Tests
+
+.plentyShop-Plugins
+* Templates
+* ShopBuilder
+
+.Zahlungs-Plugins
+* Übersicht
+
+.Versand-Plugins
+* Übersicht
+
+.Katalog-Plugins
+* Übersicht
+
+.REST-API
+* Übersicht
+* Wie verwende ich die REST-API
+* REST-API-Referenz
+
+.Werkzeuge
+* plentyDevTool
+* Git
