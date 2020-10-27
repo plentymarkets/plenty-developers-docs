@@ -3,7 +3,10 @@
 * Plugin-Struktur erstellen
 * Plugin-Schnittstelle nutzen 
 * Logeinträge schreiben
+
 .Grundlagen der Plugin-Entwicklung
+* Architektur
+* Plugin-Definition
 * Plugin-Schnittstelle
 ** Wie benutze ich die Schnittstelle
 ** Wie führe ich Code ohne Authentifizierung aus
@@ -28,9 +31,25 @@
 ** Wie protokolliere ich Fehler
 ** Wie berichte ich über Ereignisse
 * Wie schreibe ich automatisierte Tests
+
 .plentyShop-Plugins
+* Templates
+* ShopBuilder
+
 .Zahlungs-Plugins
+* Übersicht
+
 .Versand-Plugins
+* Übersicht
+
 .Katalog-Plugins
+* Übersicht
+
 .REST-API
+* Übersicht
+* Wie verwende ich die REST-API
+* REST-API-Referenz
+
 .Werkzeuge
+* plentyDevTool
+* Git

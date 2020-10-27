@@ -3,7 +3,10 @@
 * Creating the plugin structure
 * Using the plugin interface
 * Writing to the data log
+
 .Plugin basics
+* Architecture
+* Plugin definition
 * Plugin interface
 ** How to use the interface
 ** How to execute code without authentication
@@ -28,9 +31,25 @@
 ** How to log errors
 ** How to report events
 * How to write automated tests
+
 .plentyShop plugins
+* Templates
+* ShopBuilder
+
 .Payment plugins
+* Overview
+
 .Shipping plugins
+* Overview
+
 .Catalogue plugins
+* Overview
+
 .REST API
+* Overview
+* How to use the REST API
+* REST API reference
+
 .Tools
+* plentyDevTool
+* Git
