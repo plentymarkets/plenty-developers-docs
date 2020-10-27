@@ -3,7 +3,7 @@ site:
   start_page: developers::homepage.adoc
 content:
   sources:
-  - url: ./docs
+  - url: https://github.com/plentymarkets/plenty-developers-docs
     branches: main
     start_path: docs/en-gb
 output:
