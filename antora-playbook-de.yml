@@ -6,6 +6,11 @@ content:
   - url: https://github.com/plentymarkets/plenty-developers-docs
     branches: main
     start_path: docs/de-de
+  - url: https://github.com/plentymarkets/module-version-doc.git
+    branches:
+    - beta7
+    - early
+    - stable7
 output:
     dir: ./build/de-de
 ui:
