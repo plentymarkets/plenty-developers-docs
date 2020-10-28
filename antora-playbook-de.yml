@@ -11,6 +11,7 @@ content:
     - beta7
     - early
     - stable7
+    start_page: versions.adoc
 output:
     dir: ./build/de-de
 ui:
