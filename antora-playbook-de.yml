@@ -11,6 +11,9 @@ content:
     - beta7
     - early
     - stable7
+  - url: https://github.com/plentymarkets/docs-raw
+    branches:
+      - asciidoc
 output:
     dir: ./build/de-de
 ui:
