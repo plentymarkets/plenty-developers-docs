@@ -17,6 +17,7 @@ content:
   - url: https://github.com/plentymarkets/api-doc
     branches:
       - master
+    start_path: plentymarkets/docs
 output:
     dir: ./build/en-gb
 ui:
