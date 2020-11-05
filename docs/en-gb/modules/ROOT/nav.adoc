@@ -48,7 +48,7 @@
 .REST API
 * Overview
 * How to use the REST API
-* REST API reference
+* xref:master@rest-api:ROOT:index.adoc[REST API reference]
 
 .Tools
 * plentyDevTool
