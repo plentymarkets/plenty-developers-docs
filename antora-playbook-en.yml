@@ -13,7 +13,9 @@ content:
       - stable7
   - url: https://github.com/plentymarkets/docs-raw
     branches:
-      - asciidoc
+      - beta7
+      - early
+      - stable7
   - url: https://github.com/plentymarkets/api-doc
     branches:
       - master
