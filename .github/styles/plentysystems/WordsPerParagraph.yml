@@ -1,0 +1,6 @@
+message: "Paragraphs should be less than 120 words."
+extends: occurrence
+scope: paragraph
+level: warning
+max: 120
+token: \b(\w+)\b

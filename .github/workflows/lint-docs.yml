@@ -1,0 +1,21 @@
+name: Lint docs
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths: 'docs/**'
+
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Vale
+        uses: errata-ai/vale-action@v1.3.0
+        with:
+          files: __onlyModified
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

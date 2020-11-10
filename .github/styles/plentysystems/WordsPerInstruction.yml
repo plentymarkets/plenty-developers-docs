@@ -1,0 +1,6 @@
+message: "Instructions should be less than 20 words."
+extends: occurrence
+scope: list
+level: warning
+max: 20
+token: \b(\w+)\b

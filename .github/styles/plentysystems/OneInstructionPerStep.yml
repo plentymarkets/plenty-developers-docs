@@ -1,0 +1,7 @@
+extends: occurrence
+message: "This step has more than 1 instruction."
+level: error
+scope: list
+ignorecase: false
+max: 0
+token: 'and'
