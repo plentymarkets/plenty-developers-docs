@@ -13,9 +13,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Vale
-        uses: errata-ai/vale-action@v1.3.0
+      - uses: errata-ai/vale-action@bba898aad70788bace1547a258c8fb968218e787
         with:
           files: __onlyModified
+          onlyAnnotateModifiedLines: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
