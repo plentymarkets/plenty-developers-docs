@@ -17,7 +17,7 @@ content:
       - early
       - stable7
   - url: https://github.com/plentymarkets/IO_docs-raw
-    branches
+    branches:
       - master
 output:
     dir: ./build/de-de
