@@ -1,0 +1,476 @@
+= Tutorials
+
+[#helloworld]
+== Hello World Tutorial
+
+=== A Simple Route
+
+This tutorial is aimed at plentymarkets users who are getting started with plugin development. You will only need basic knowledge of creating and editing files in an integrated development environment (IDE) as well as using plentymarkets.
+
+[IMPORTANT]
+====
+You need to prepare your computer to program a plugin. If you don't know how, please take a look link:index.html[here]!
+Furthermore you should be able to use git and Github to publish your plugin. link:index.html[Here] you can find tutorials.
+====
+
+
+
+[quote, ' Cory House']
+____
+Code is like humor. When you have to explain it, it’s bad.
+____
+
+
+In a few simple steps, we will walk you through creating your first plugin that displays Hello World! in your browser when adding `/hello` to your domain.
+
+.What an incredible technology!
+image::img/helloworld.png[Hello World example,500]
+
+
+There are often people who like to rush things, and if you are one of them. We totally understand. You can just download
+the link:https://github.com/plentymarkets/plugin-hello-world2[github repository] and try to figure yourself out what the code means. Otherwise, stay tuned and keep following the next 3 steps!
+
+
+=== First File
+
+The first thing that we are going to do is create a plugin.json, which contains all information about our plugin, that we need.
+[source,json]
+----
+{
+      "name":"HelloWorld", <1>
+      "description":"My first plugin", <2>
+      "namespace":"HelloWorld", <3>
+      "author":"plentysystems AG", <4>
+      "type":"template", <5>
+      "serviceProvider":"HelloWorld\\Providers\\HelloWorldServiceProvider" <6>
+}
+----
+<1> This is the name of our plugin. This is also how it will be displayed in the repository.
+<2> A description for our plugin
+<3> We recommend that you use the name of the plugin folder as the namespace root. This service provider is the central location to register services in the plugin.
+<4> The Author of the plugin, your company name or your personal name.
+<5> The type of the plugin, for now accept, that this is a template, there are also other type, which we will explain later.
+<6> The namespace of our ServiceProvider (We haven't created it yet)
+
+
+
+=== Folder Structure
+
+Furthermore we will now present you the structure including all the files, that we will need for our Hello World Plugin.
+
+....
+HelloWorld/ <1>
+  resources/
+    views/
+      content/
+        hello.twig <2>
+  src/
+    Providers/
+      HelloWorldRouteServiceProvider.php
+      HelloWorldServiceProvider.php
+    Controllers/
+      ContentController.php
+  plugin.json
+....
+<1> We recommend calling your Folder the same way that you called your Plugin in the plugin.json
+<2> You can organize your twig templates in subfolders
+
+==== Explanation of all Components
+
+We need a few files to establish the possibility for communication between your plugin and plentymarkets.
+
+- `HelloWorldServiceProvider.php` is our ServiceProvider. It is needed to register the plugin within the plentymarkets backend.
+
+- `HelloWorldRouteServiceProvider.php` is our RouteServiceProvider. It creates and registers the output route.
+
+- `ContentController.php` renders and displays the content in your template. For us this will be the `hello.twig`
+
+
+==== Our Output
+
+Let's define what we want to present the user, that comes to our specified route: In out case it's a simple Hello World.
+
+.hello.twig
+[source,html]
+----
+<h1>Hello World!</h1>
+----
+
+
+==== Real Coding
+
+So let's take a look at the Files, that actually do something. We will paste the Source Code and write Explanations to
+specific code Fragments.
+
+.ContentController.php
+[source%linenums,php,linenums]
+----
+<?php
+namespace HelloWorld\Controllers;
+
+use Plenty\Plugin\Controller;
+use Plenty\Plugin\Templates\Twig;
+
+/**
+ * Class ContentController
+ * @package HelloWorld\Controllers
+ */
+class ContentController extends Controller
+{
+	/**
+	 * @param Twig $twig
+	 * @return string
+	 */
+	public function sayHello(Twig $twig):string <1>
+	{
+		return $twig->render('HelloWorld::content.hello');
+	}
+}
+----
+
+<1> In this code example, we define the `sayHello` function that renders a twig template. The render method specifies the template location: `'PLUGINNAME::TEMPLATE'`. Since templates are always saved in the resources/views folder in your plugin, we only have to specify part of the template path. Note that `PLUGINNAME` is the name of the plugin folder. The name of the plugin folder and the plugin namespace may differ.
+
+.HelloWorldRouteServiceProvider.php
+[source%linenums,php,linenums]
+----
+<?php
+namespace HelloWorld\Providers;
+
+use Plenty\Plugin\RouteServiceProvider;
+use Plenty\Plugin\Routing\Router;
+
+/**
+ * Class HelloWorldRouteServiceProvider
+ * @package HelloWorld\Providers
+ */
+class HelloWorldRouteServiceProvider extends RouteServiceProvider
+{
+	/**
+	 * @param Router $router
+	 */
+	public function map(Router $router)
+	{
+		$router->get('hello', 'HelloWorld\Controllers\ContentController@sayHello'); <1>
+	}
+
+}
+----
+
+<1> We use the get method to pass two parameters. The first parameter 'hello' defines the route. The second parameter consists of the Fully-Qualified Class Name and the @ controller method that is called when the route is called.
+
+
+
+.HelloWorldServiceProvider.php
+[source%linenums,php,linenums]
+----
+<?php
+namespace HelloWorld\Providers;
+
+use Plenty\Plugin\ServiceProvider;
+
+/**
+ * Class HelloWorldServiceProvider
+ * @package HelloWorld\Providers
+ */
+class HelloWorldServiceProvider extends ServiceProvider
+{
+
+	/**
+	 * Register the service provider.
+	 */
+	public function register()
+	{
+		$this->getApplication()->register(HelloWorldRouteServiceProvider::class); <1>
+	}
+}
+----
+
+<1> This line registers the `HelloWorldRouteServiceProvider` with our application. This means the RouteServiceProvider will map our route to your plentyshop. Therefore the circle is complete. Coding is done 😎. Commit your repository to your github repo.
+
+[#integrateplugin]
+=== Integrate your Plugin into your Shop
+
+After pushing the code to your github repository, you need the full Github URL and your login Credentials.
+
+. Open the plentymarkets back end. Click on Plugins->Plugin set overview and on your shop name.
+
++
+image::img/pluginsteps1.png[Plugin Tutorial 1,500]
+
+. Now click on `+ Add plugin`
+
++
+image::img/pluginsteps2.png[Plugin Tutorial 2,500]
+
+. Now click on `Add Git repository`
+
++
+image::img/pluginsteps3.png[Plugin Tutorial 3,500]
+
+. Click on the `+` Button.
+
++
+image::img/pluginsteps4.png[Plugin Tutorial 5,500]
+
+. In this following field you can enter your Repository URL, your Username and your link:https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[Github Token]. When you are done, press the save icon.
+
++
+image::img/pluginsteps5.png[Plugin Tutorial 5,500]
+
+. You are almost done. In the Pluginset overview activate the toggle next to the HelloWorld Plugin (if it does not appear reload the current browser window). Click on the save icon, to deploy the current pluginset. When this is done click on the eye-icon to preview your current pluginset in the shop.
+
++
+image::img/pluginsteps6.png[Plugin Tutorial 6,500]
+
+. In the opened Shop, add the `/hello` route to the URL and...
+
++
+.What a result
+image::helloworld.png[Hello World example,500]
+
+
+Congratulations. Your first plugin has been deployed. If you have any questions, don't hesitate to contact us through our
+link:https://forum.plentymarkets.com/[forum]
+
+
+[#helloworldsdk]
+== Hello World Tutorial With External SDKs
+
+=== Introduction
+
+This tutorial is aimed at plentymarkets users who completed the first Hello World Tutorial, and want to integrate an external SDK into their plugin. By integrating an external SDK and adding a dependency between your plugin and a repository on Packagist, you can access the functionality of the external SDK.
+
+[NOTE]
+====
+ External SDKs will not be executed in plentymarkets directly. We separated the code of an external SDK from the
+ plentymarkets plugin code for security reasons. The code of the external SDK is executed on another server that
+ is not connected to the plentymarkets servers.
+====
+
+
+
+=== First File
+
+The first thing that we are going to do is create a plugin.json, which contains all information about our plugin, that we need. This is the same as in base Hello World tutorial. We extend it with a dependency.
+[source,json]
+----
+{
+      "name":"HelloWorld", <1>
+      "description":"My first plugin", <2>
+      "namespace":"HelloWorld", <3>
+      "author":"plentysystems AG", <4>
+      "type":"template", <5>
+      "serviceProvider":"HelloWorld\\Providers\\HelloWorldServiceProvider", <6>
+      "dependencies" : {
+            "guzzlehttp/guzzle": "6.3.*" <7>
+      }
+}
+----
+<1> This is the name of our plugin. This is also how it will be displayed in the repository.
+<2> A description for our plugin
+<3> We recommend that you use the name of the plugin folder as the namespace root. This service provider is the central location to register services in the plugin.
+<4> The Author of the plugin, your company name or your personal name.
+<5> The type of the plugin, for now accept, that this is a template, there are also other type, which we will explain later.
+<6> The namespace of our ServiceProvider (We haven't created it yet)
+<7> We add the new attribute dependencies. The value for this attribute consists of the repository name on Packagist, here link:https://packagist.org/packages/guzzlehttp/guzzle[guzzlehttp/guzzle] and the required version, e.g. version 6.3.*. The asterisk means that any version starting with 6.3, e.g. 6.3.0, 6.3.1 or 6.3.2, is fine.
+
+
+
+
+
+
+=== Folder Structure
+
+Furthermore we will now present you the structure including all the files, that we will need for our Hello World Plugin.
+In order to integrate the external SDK, we have to make changes to the following existing files. We also have to add a new folder with a new file:
+
+. Update the plugin.json
+. Create the resources/lib folder and add the guzzle_connector.php file
+. Extend the ContentController.php
+. Extend the hello.twig
+
+....
+HelloWorld/
+  resources/
+    libs/
+      guzzle_connector.php <1>
+    views/
+      content/
+        hello.twig
+  src/
+    Providers/
+      HelloWorldRouteServiceProvider.php
+      HelloWorldServiceProvider.php
+    Controllers/
+      ContentController.php
+  plugin.json
+....
+<1> This is the file that we have added. Th guzzle_connector will execute
+
+
+
+
+=== Creating the guzzle_connector.php
+
+External PHP code can only be executed in PHP files that are saved in the lib folder. So, we create a new PHP file that will be the link between the plentymarkets plugin API and an external API.
+
+We take the code example from link:https://docs.guzzlephp.org/en/latest/[Guzzle] and make some adaptions so that the code fits our needs. Remember that we want to send an HTTP request to the link:https://docs.guzzlephp.org/en/latest/[Packagist API]. Let's search link:https://docs.guzzlephp.org/en/latest/[packages by name].
+
+.guzzle_connector.php
+[source%linenums,php,linenums]
+----
+<?php
+
+$client = new \GuzzleHttp\Client();
+$res = $client->request(
+    'GET', <1>
+    'https://packagist.org/search.json', <2>
+    [
+        'query' => ['q' => SdkRestApi::getParam('packagist_query')] <3>
+    ]
+);
+
+/** @return array */
+return json_decode($res->getBody(), true); <4>
+----
+
+<1> In the request function, we state the HTTP method and <2> the URL
+<3> we use the request option query to add a query string to the request.
+<4> We return the requested JSON data in decoded form. Note that if a string is returned, it must be UTF-8 encoded.
+
+[NOTE]
+====
+ SdkRestApi is a helper class that enables the communication between plentymarkets plugins and external
+ SDKs. This class provides information about the requests sent by the plugin.
+
+ In the getParam function of our query, we use packagist_query.
+ This variable will be described in the code explanation of our ContentController.
+====
+
+
+[#helloworldbackend]
+== Hello World Backend Tutorial
+
+
+In this tutorial, we will develop a basic plugin to display a view in our plentymarkets backend. Only basic knowledge of creating and editing files in your IDE as well as using plentymarkets is necessary to develop this plugin.
+
+Follow the steps and learn how to create your first view that displays Hello World! in the plentymarkets back end.
+
+
+Click the link for the link:https://github.com/plentymarkets/plugin-hello-world2[github repository]. (Check out the branch hello-world-backend)
+
+=== First File: plugin.json
+
+The first thing that we are going to do is create a plugin.json, which contains all information about our plugin, that we need.
+
+.plugin.json
+[source,json]
+----
+
+{
+    "name": "HelloWorld", <1>
+    "description": "My first back end view", <2>
+    "namespace": "HelloWorld", <3>
+    "author": "Your name", <4>
+    "type": "backend", <5>
+    "serviceProvider": "HelloWorld\\Providers\\HelloWorldServiceProvider" <6>
+}
+----
+<1> This is the name of our plugin. This is also how it will be displayed in the repository.
+<2> A description for our plugin
+<3> We recommend that you use the name of the plugin folder as the namespace root. This service provider is the central location to register services in the plugin.
+<4> The Author of the plugin, your company name or your personal name.
+<5> The type of the plugin, for now accept, that this is a template, there are also other type, which we will explain later.
+<6> The namespace of our ServiceProvider (We haven't created it yet)
+
+
+=== Second File: ui.json
+
+Now we need a ui.json. This file defines the entries of our backend menu.
+
+.ui.json
+[source,json]
+----
+{
+    "defaultEntryPoint": "index.html", <1>
+    "namespace": "HelloWorld", <2>
+    "menuEntries": [
+        {
+        "label": "Hello World", <3>
+        "menu": "start", <4>
+        "urlKey": "hello-world", <5>
+        "entryPoint": "index.html" <6>
+        }
+    ]
+}
+----
+<1> This is the name of our plugin. This is also how it will be displayed in the repository.
+<2> The namespace of our ServiceProvider (We haven't created it yet)
+<3> The label defines how it will be displayed in the menu.
+<4> The menu, in which the menu entry is added.
+<5> The url key, under which we open the menu point. (in our case this will be /start/hello-world
+<6> The entryPoint basically tells us which file to open.
+
+
+=== Folder Structure
+
+Furthermore we will now present you the structure including all the files, that we will need for our Hello World Plugin.
+So we only have to create the index.html, which will be a simple file and our ServiceProvider.
+
+....
+HelloWorld/ <1>
+  src/
+    Providers/
+      HelloWorldServiceProvider.php
+  ui/
+    index.html <2>
+  ui.json
+  plugin.json
+....
+<1> We recommend calling your Folder the same way that you called your Plugin in the plugin.json
+<2> We use a simple html file, called index.html to display our Hello World!
+
+
+=== The Output
+
+Let's define what we want to present the user, that comes to our specified route: In out case it's a simple Hello World.
+
+.index.html
+[source,html]
+----
+<h1>Hello World!</h1>
+----
+
+
+=== Our ServiceProvider
+
+This is a very basic Service Provider.
+
+
+.HelloWorldServiceProvider.php
+[source%linenums,php,linenums]
+----
+<?php
+
+namespace HelloWorld\Providers;
+
+use Plenty\Plugin\ServiceProvider;
+
+class HelloWorldServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+
+    }
+}
+----
+
+
+=== Integrate the plugin and see the result
+
+To integrate the plugin into the system you can folllow this link:#integrateplugin[guide].
+
+Now you just need to go to this route in your backend
+/start/hello-world
+
+and you have the result.
