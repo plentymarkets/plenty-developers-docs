@@ -4,8 +4,10 @@
 * Plugin-Schnittstelle nutzen 
 * Logeinträge schreiben
 
-. Tutorials
-* xref:tutorials.adoc[Hello World Tutorials]
+.Hello World Tutorials
+* xref:hello-world-simple.adoc[Einfaches Hello World]
+* xref:hello-world-sdk.adoc[Hello World SDK]
+* xref:hello-world-backend.adoc[Hello World Backend]
 
 .Grundlagen der Plugin-Entwicklung
 * Architektur

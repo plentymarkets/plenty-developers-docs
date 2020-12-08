@@ -4,8 +4,10 @@
 * Using the plugin interface
 * Writing to the data log
 
-. Tutorials
-* xref:tutorials.adoc[Hello World Tutorials]
+.Hello World Tutorials
+* xref:hello-world-simple.adoc[Hello World Simple]
+* xref:hello-world-sdk.adoc[Hello World SDK]
+* xref:hello-world-backend.adoc[Hello World Backend]
 
 .Plugin basics
 * Architecture
