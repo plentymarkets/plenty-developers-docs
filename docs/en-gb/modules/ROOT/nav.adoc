@@ -4,6 +4,9 @@
 * Using the plugin interface
 * Writing to the data log
 
+. Tutorials
+* xref:tutorials.adoc[Hello World Tutorials]
+
 .Plugin basics
 * Architecture
 * Plugin definition

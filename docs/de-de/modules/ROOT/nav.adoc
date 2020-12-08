@@ -4,6 +4,9 @@
 * Plugin-Schnittstelle nutzen 
 * Logeinträge schreiben
 
+. Tutorials
+* xref:tutorials.adoc[Hello World Tutorials]
+
 .Grundlagen der Plugin-Entwicklung
 * Architektur
 * Plugin-Definition

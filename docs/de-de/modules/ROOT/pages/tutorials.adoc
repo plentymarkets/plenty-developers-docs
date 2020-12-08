@@ -24,7 +24,7 @@ ____
 In a few simple steps, we will walk you through creating your first plugin that displays Hello World! in your browser when adding `/hello` to your domain.
 
 .What an incredible technology!
-image::img/helloworld.png[Hello World example,500]
+image::helloworld.png[Hello World example,500]
 
 
 There are often people who like to rush things, and if you are one of them. We totally understand. You can just download
@@ -195,32 +195,32 @@ After pushing the code to your github repository, you need the full Github URL a
 . Open the plentymarkets back end. Click on Plugins->Plugin set overview and on your shop name.
 
 +
-image::img/pluginsteps1.png[Plugin Tutorial 1,500]
+image::pluginsteps1.png[Plugin Tutorial 1,500]
 
 . Now click on `+ Add plugin`
 
 +
-image::img/pluginsteps2.png[Plugin Tutorial 2,500]
+image::pluginsteps2.png[Plugin Tutorial 2,500]
 
 . Now click on `Add Git repository`
 
 +
-image::img/pluginsteps3.png[Plugin Tutorial 3,500]
+image::pluginsteps3.png[Plugin Tutorial 3,500]
 
 . Click on the `+` Button.
 
 +
-image::img/pluginsteps4.png[Plugin Tutorial 5,500]
+image::pluginsteps4.png[Plugin Tutorial 5,500]
 
 . In this following field you can enter your Repository URL, your Username and your link:https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[Github Token]. When you are done, press the save icon.
 
 +
-image::img/pluginsteps5.png[Plugin Tutorial 5,500]
+image::pluginsteps5.png[Plugin Tutorial 5,500]
 
 . You are almost done. In the Pluginset overview activate the toggle next to the HelloWorld Plugin (if it does not appear reload the current browser window). Click on the save icon, to deploy the current pluginset. When this is done click on the eye-icon to preview your current pluginset in the shop.
 
 +
-image::img/pluginsteps6.png[Plugin Tutorial 6,500]
+image::pluginsteps6.png[Plugin Tutorial 6,500]
 
 . In the opened Shop, add the `/hello` route to the URL and...
 
