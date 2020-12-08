@@ -20,6 +20,9 @@ content:
     branches:
       - master
     start_path: plentymarkets/docs
+  - url: https://github.com/plentymarkets/IO_docs-raw
+    branches:
+      - master
 output:
     dir: ./build/en-gb
 ui:
