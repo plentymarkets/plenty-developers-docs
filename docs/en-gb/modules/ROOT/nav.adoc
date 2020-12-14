@@ -10,32 +10,31 @@
 * xref:hello-world-backend.adoc[Hello World Backend]
 
 .Plugin basics
-* Architecture
-* Plugin definition
+* xref:architecture.adoc[Architecture]
+* xref:plugin-def.adoc[Plugin definition]
 * Plugin interface
-** How to use the interface
-** How to execute code without authentication
-** How to extend the interface
-** How to paginate interface results
-** Plugin interface reference
+** xref:plugin-interface.adoc[How to use the interface]
+** xref:plugin-interface-execute.adoc[How to execute code without authentication]
+** xref:plugin-interface-extend.adoc[How to extend the interface]
+** xref:plugin-interface-paginate.adoc[How to paginate interface results]
+** xref:plugin-interface-reference.adoc[Plugin interface reference]
 * Configuring plugins
-** Overview
-** How to create a plugin configuration
-** Configuration options reference
-** How to create an assistant
-** Assistant reference
-** Assistant style guide
-* How to use external SDKs
-* How to use crons
+** xref:plugins-config-overview.adoc[Overview]
+** xref:plugins-config-create.adoc[How to create a plugin configuration]
+** xref:plugins-config-options.adoc[Configuration options reference]
+** xref:plugins-config-assistant.adoc[How to create an assistant]
+** xref:plugins-config-assistant-ref.adoc[Assistant reference]
+** xref:plugins-config-assistant-style.adoc[Assistant style guide]
+* xref:crons.adoc[How to use crons]
 * Data storage
-** Overview
-** How to store data in a database
-** How to store data in memory
+** xref:data-store-overview.adoc[Overview]
+** xref:data-store-db.adoc[How to store data in a database]
+** xref:data-store-mem.adoc[How to store data in memory]
 * Data log
-** Overview
-** How to log errors
-** How to report events
-* How to write automated tests
+** xref:data-log-overview.adoc[Overview]
+** xref:data-log-error.adoc[How to log errors]
+** xref:data-log-events.adoc[How to report events]
+* xref:automated-tests.adoc[How to write automated tests]
 
 .plentyShop plugins
 * Templates
