@@ -22,7 +22,8 @@ content:
     start_path: plentymarkets/docs
   - url: https://github.com/plentymarkets/IO_docs-raw
     branches:
-      - master
+      - 4.*
+      - 5.*
 output:
     dir: ./build/en-gb
 ui:
