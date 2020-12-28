@@ -1,0 +1,13 @@
+= Getting started
+
+This tutorial will introduce you to plugin development in plentymarkets.
+The tutorial covers the following topics:
+
+* Setting up your local development environment
+* Creating a plugin
+* Using the plugin interface
+* Deploying the plugin in a plentymarkets system
+
+The tutorial assumes you have a plentymarkets system.
+If you don't have a system yet, link:https://www.plentymarkets.co.uk/#request-a-demo[order a test system^] before you begin.
+Also, you need to have basic knowledge of Git and the command line.

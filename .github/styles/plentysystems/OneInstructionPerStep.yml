@@ -4,4 +4,4 @@ level: error
 scope: list
 ignorecase: false
 max: 0
-token: 'and'
+token: '\b(?:and)\b'

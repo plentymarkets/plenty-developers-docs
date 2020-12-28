@@ -24,6 +24,13 @@ content:
     branches:
       - 4.*
       - 5.*
+asciidoc:
+  attributes:
+    kroki-fetch-diagram: true
+    tabs: tabs
+  extensions:
+  - asciidoctor-kroki
+  - ./lib/tabs-block.js
 output:
     dir: ./build/en-gb
 ui:

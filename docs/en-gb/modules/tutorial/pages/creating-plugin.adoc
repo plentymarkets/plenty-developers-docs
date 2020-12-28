@@ -1,0 +1,91 @@
+= Creating a plugin
+
+Throughout the tutorial, you will create a plugin that displays items to promote in your store.
+Start by creating a basic plugin and deploying it in plentymarkets.
+
+This page covers the following steps:
+
+* Installing Node.js
+* Installing a plugin generator
+* Creating a new plugin
+* Deploying your plugin in plentymarkets
+
+== Installing the plugin generator
+
+You can create new plugins by running a plugin generator.
+To install the generator, you need an active version of Node.js.
+You can check if you have Node.js installed, open a terminal and run the following command:
+
+[source]
+----
+$ node --version
+----
+
+If you have Node.js installed, it'll show the currently active version:
+
+[source]
+----
+$ node --version
+14.15.3
+----
+
+If you don't have Node.js installed, you can download it from link:https://nodejs.org/en/download/[nodejs.org^].
+
+After installing Node.js, you're ready to install the plugin generator.
+To install the generator, run the following command:
+
+[source]
+----
+$ npm i -g yo @plentymarkets/generator-plugin
+----
+
+Now you can create your plugin.
+
+== Creating the plugin
+
+To create your first plugin, carry out the following steps:
+
+. Open the command line.
+. Navigate to the plugin set folder in your workspace.
+. Run the following commands:
++
+[source]
+----
+$ mkdir TopItems
+$ cd TopItems
+$ yo @plentymarkets/plugin
+----
++
+. Follow the prompts of the generator.
+* For this tutorial, select the type `template`. For all other options, use the default values.
+
+The generator creates all the files required for a basic plugin. Deploy the plugin in your system to see the result.
+
+== Deploying the plugin
+
+In order to deploy your plugin, you first have to install it in your system.
+You can install a plugin from your local machine by using plentyDevTool.
+
+. Open plentyDevTool.
+. Click on *Detect new local plugins*. +
+icon:arrow-right[] The dashboard displays TopItems.
+. Click on *Install*. +
+icon:arrow-right[] plentyDevTool uploads the TopItems plugin to your system.
+
+Next, you can deploy your plugin.
+
+. Open your plentymarkets back end.
+. Go to *Plugins » Plugin overview*.
+. Open the plugin set where you uploaded TopItems.
+. Toggle TopItems active.
+. *Save* the plugin set. +
+icon:arrow-right[] The plugin set is deployed.
+
+Once the deployment process has finished, you can check the results.
+For this, open your shop in the browser.
+Then, append `/hello-world` to the URL.
+Your browser now displays the message "Hello World!".
+
+image::hello-world.png[]
+
+xref:using-plugin-interface.adoc[In the next step], you will modify your plugin to display data from your system.

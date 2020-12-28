@@ -1,8 +1,5 @@
 .Getting started
-* xref:setting-up-dev-environment.adoc[Setting up the environment]
-* Creating the plugin structure
-* Using the plugin interface
-* Writing to the data log
+include::tutorial:partial$nav.adoc[]
 
 .Hello World Tutorials
 * xref:hello-world-simple.adoc[Hello World Simple]

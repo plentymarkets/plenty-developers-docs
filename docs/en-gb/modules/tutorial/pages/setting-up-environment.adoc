@@ -1,0 +1,68 @@
+= Setting up your local development environment
+
+The first part of the tutorial helps you set up your local development environment. For this, you will download and configure plentyDevTool, a file transfer tool.
+
+plentyDevTool is a tool for transferring plugin files between your local machine and a plentymarkets system.
+It can also deploy certain types of changes automatically.
+
+Start by installing plentyDevTool:
+
+. link:https://marketplace.plentymarkets.com/en/plentydevtool_6652[Download plentyDevTool^] from the marketplace.
+. Install the application.
+
+Once you've installed plentyDevTool, you can configure it.
+To configure the tool, carry out the following steps:
+
+. Open plentyDevTool.
+. Enter the login credentials of your back end user account.
+. Click on *Login*. +
+icon:arrow-right[] The settings menu opens automatically.
+. Select a local folder as your workspace.
+
+The workspace will contain all of your plugin files. After you've selected the folder, plentyDevTool automatically creates the following structure:
+
+[plantuml, format=png, opts="inline"]
+----
+skinparam Legend {
+	BackgroundColor transparent
+	BorderColor transparent
+	FontName "Noto Serif", "DejaVu Serif", serif
+	FontSize 17
+}
+legend
+workspace/
+|_ plenty_ID/
+|_ plenty.ignore
+end legend
+----
+
+The plentyDevTool dashboard displays the plugin sets of your plentymarkets system.
+A plugin set is a collection of plugins.
+If you haven't installed any plugins in your system yet, none are displayed on the dashboard.
+
+image::plentydevtool-dashboard.png[]
+
+The icon next to the set name indicates that the plugin set is linked to a client.
+This means, for example, that the plugin set extends the functionality of a live shop.
+
+To complete the setup, you need to extend the folder structure with the plugin set.
+The name of the folder has to match the ID of the set.
+Once you've created the folder, the structure should be as follows:
+
+[plantuml, format=png, opts="inline"]
+----
+skinparam Legend {
+	BackgroundColor transparent
+	BorderColor transparent
+	FontName "Noto Serif", "DejaVu Serif", serif
+	FontSize 17
+}
+legend
+workspace/
+|_ PLENTY_ID/
+  |_ PLUGIN_SET_ID/
+|_ plenty.ignore
+end legend
+----
+
+plentyDevTool is now ready for use. xref:creating-plugin.adoc[Continue by creating your first plugin.]
