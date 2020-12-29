@@ -145,6 +145,8 @@ Finally, to make the top items view accessible in your shop, you have to add a n
     }
 ----
 
+== Deploying the plugin
+
 It's time to upload your changes.
 You can upload the changes with plentyDevTool.
 
