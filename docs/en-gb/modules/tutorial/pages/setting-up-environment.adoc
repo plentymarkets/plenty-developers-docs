@@ -21,20 +21,17 @@ icon:arrow-right[] The settings menu opens automatically.
 
 The workspace will contain all of your plugin files. After you've selected the folder, plentyDevTool automatically creates the following structure:
 
-[plantuml, format=png, opts="inline"]
+.plentyDevTool folder structure
+[source]
 ----
-skinparam Legend {
-	BackgroundColor transparent
-	BorderColor transparent
-	FontName "Noto Serif", "DejaVu Serif", serif
-	FontSize 17
-}
-legend
 workspace/
-|_ plenty_ID/
-|_ plenty.ignore
-end legend
+│
+├── 12345/ <1>
+│
+└── plenty.ignore <2>
 ----
+<1> The ID of your plentymarkets system. Each system has a separate folder.
+<2> Specifies the files you want plentyDevTool to ignore on upload, for example `node_modules`.
 
 The plentyDevTool dashboard displays the plugin sets of your plentymarkets system.
 A plugin set is a collection of plugins.
@@ -49,20 +46,18 @@ To complete the setup, you need to extend the folder structure with the plugin s
 The name of the folder has to match the ID of the set.
 Once you've created the folder, the structure should be as follows:
 
-[plantuml, format=png, opts="inline"]
+.plentyDevTool folder structure
+[source]
 ----
-skinparam Legend {
-	BackgroundColor transparent
-	BorderColor transparent
-	FontName "Noto Serif", "DejaVu Serif", serif
-	FontSize 17
-}
-legend
 workspace/
-|_ PLENTY_ID/
-  |_ PLUGIN_SET_ID/
-|_ plenty.ignore
-end legend
+│
+├── 12345/
+│	│ 
+│	└── 1 <1>
+│
+└── plenty.ignore
 ----
+
+<1> The ID of a plugin set from the system. Each plugin set has a separate folder.
 
 plentyDevTool is now ready for use. xref:creating-plugin.adoc[Continue by creating your first plugin.]
