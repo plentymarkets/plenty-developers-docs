@@ -57,7 +57,9 @@ $ yo @plentymarkets/plugin
 ----
 +
 . Follow the prompts of the generator.
-* For this tutorial, select the type `template`. For all other options, use the default values.
+* For each promt, the generator supplies a default value.
+* Except for the plugin type, confirm the default value by pressing enter.
+* For the plugin type select the `template` option.
 
 The generator creates all the files required for a basic plugin.
 
