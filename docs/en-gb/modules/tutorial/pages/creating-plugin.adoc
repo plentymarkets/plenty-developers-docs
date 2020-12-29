@@ -59,7 +59,41 @@ $ yo @plentymarkets/plugin
 . Follow the prompts of the generator.
 * For this tutorial, select the type `template`. For all other options, use the default values.
 
-The generator creates all the files required for a basic plugin. Deploy the plugin in your system to see the result.
+The generator creates all the files required for a basic plugin.
+
+.Plugin files
+[source]
+----
+workspace/
+│
+├── 12345/
+│	│ 
+│	└── 1/
+│       │
+│       └── TopItems/
+│           │
+│           ├── meta/ <1>
+│           │
+│           ├── resources/ <2>
+│           │
+│           ├── src/ <3>
+│           │
+│           ├── .yo-rc.json
+│           │
+│           ├── config.json <4>
+│           │
+│           └── plugin.json <5>
+│
+└── plenty.ignore
+----
+
+<1> Stores information about the plugin, for example guides and app images.
+<2> Provides templates, scripts and other files that are accessed while the plugin is running.
+<3> Contains the source code of the plugin.
+<4> Contains options that the user can configure.
+<5> Contains the details required to run the plugin.
+
+Deploy the plugin in your system to see the result.
 
 == Deploying the plugin
 

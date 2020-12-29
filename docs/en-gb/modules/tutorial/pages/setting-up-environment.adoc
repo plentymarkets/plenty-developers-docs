@@ -44,6 +44,7 @@ This means, for example, that the plugin set extends the functionality of a live
 
 To complete the setup, you need to extend the folder structure with the plugin set.
 The name of the folder has to match the ID of the set.
+You can determine the ID of the set by the number next to the plugin name.
 Once you've created the folder, the structure should be as follows:
 
 .plentyDevTool folder structure
