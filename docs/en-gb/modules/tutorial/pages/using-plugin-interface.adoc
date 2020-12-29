@@ -76,6 +76,7 @@ First, you need to filter your items for top sellers.
 . Open `src/Controllers/TopItemController`.
 . Replicate the following code snippet.
 
+.TopItemsController.php
 [source,php]
 ----
 include::example$TopItemsController.php[]
@@ -107,6 +108,7 @@ Start by creating the necessary files:
 
 Open `PageDesign.twig` and replicate the following code snippet:
 
+.PageDesign.twig
 [source,twig]
 ----
 include::example$PageDesign.twig[]
@@ -117,6 +119,7 @@ include::example$PageDesign.twig[]
 
 Next, open `TopItems.twig` and replicate the following code snippet:
 
+.TopItems.twig
 [source,twig]
 ----
 include::example$TopItems.twig[]
@@ -132,6 +135,7 @@ Finally, to make the top items view accessible in your shop, you have to add a n
 . Open `TopItemsRouteServiceProvider.php`.
 . Add a new router to the `map` function.
 
+.TopItemsRouteServiceProvider.php
 [source,php]
 ----
     public function map(Router $router)
