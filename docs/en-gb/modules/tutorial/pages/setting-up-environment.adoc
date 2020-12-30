@@ -17,7 +17,7 @@ To configure the tool, carry out the following steps:
 . Enter the login credentials of your back end user account.
 . Click on *Login*. +
 icon:arrow-right[] The settings menu opens automatically.
-. Select a local folder as your workspace.
+. Click on the input field to select a local folder as your workspace.
 
 The workspace will contain all of your plugin files. After you've selected the folder, plentyDevTool automatically creates the following structure:
 

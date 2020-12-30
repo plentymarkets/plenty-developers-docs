@@ -14,7 +14,7 @@ This page covers the following steps:
 
 You can create new plugins by running a plugin generator.
 To install the generator, you need an active version of Node.js.
-You can check if you have Node.js installed, open a terminal and run the following command:
+To check if you have Node.js installed, open a terminal and run the following command:
 
 [source]
 ----
@@ -103,6 +103,7 @@ In order to deploy your plugin, you first have to install it in your system.
 You can install a plugin from your local machine by using plentyDevTool.
 
 . Open plentyDevTool.
+. Open the *Dashboard*.
 . Click on *Detect new local plugins*. +
 icon:arrow-right[] The dashboard displays TopItems.
 . Click on *Install*. +
