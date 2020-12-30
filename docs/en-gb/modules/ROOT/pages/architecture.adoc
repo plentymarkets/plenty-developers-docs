@@ -1,1 +1,124 @@
 = Architecture
+
+
+
+== Plugin structure
+
+For plugins to run smoothly, they have to be structured in a certain way.
+This page details the required structure.
+It's important that you stick to this structure to avoid unexpected behaviour.
+
+.Plugin file structure
+[source]
+----
+PluginDirectory/
+    │
+    ├── meta/ <1>
+    │
+    ├── resources/ <2>
+    │
+    ├── src/ <3>
+    │
+    ├── tests/ <4>
+    │
+    ├── ui/ <5>
+    │
+    ├── config.json <6>
+    │
+    ├── marketplace.json <7>
+    │
+    ├── plugin.json <8>
+    │
+    ├── ui.json <9>
+    │
+    └── README.md <10>
+----
+
+<1> Contains information for the end user.
+<2> Contains supplementary, non-executable files.
+<3> Contains the source code of the plugin.
+plentymarkets plugins use PHP 7.0.
+<4> Contains the test suite of the plugin.
+<5> Contains back end views.
+<6> Provides options to the end user for configuring the plugin.
+<7> Provides information for offering the plugin on plentyMarketplace.
+<8> Provides the definition of the plugin.
+<9> Provides entry points for back end views.
+plentymarkets back end UIs use AngularJS.
+<10> Provides information for the developer.
+
+The `plugin.json` is always required.
+Depending on the type of plugin you want to develop, other parts of the structure may or may not be required.
+For example, you cannot provide a UI in the plentymarkets back end without the relevant views and entry points.
+End user information is more important if you want to offer your plugin on plentyMarketplace instead of using it yourself.
+For detailed information on when different parts of the structure are required, refer to the relevant sections of the documentation.
+
+=== Meta files
+
+Meta files contain information that's primarily relevant for the end user.
+You may find this information less relevant when developing a plugin for yourself.
+But, it's of vital importance if you plan on distributing your plugin to others.
+
+.Meta files
+[source]
+----
+PluginDirectory/
+    └── meta/
+        │
+        ├── images/ <1>
+        │
+        └── documents/ <2>
+----
+
+<1> Plugin icons, author icons and preview images.
+plentymarkets uses these images when displaying the plugin in the back end.
+<2> Documents relevant for using the plugin.
+This includes a user guide, change log and support contact information.
+You have to supply all documents in German and English.
+Other languages are optional. 
+
+=== Resources files
+
+Resources are supplemental files, such as templates, scripts and images.
+These resources are available on the app path of the plugin.
+When deploying the plugin, the resources are published independently and don't undergo a code check.
+This means that during development, it's possible to publish modified resources at a faster rate than source code.
+
+.Resources files
+[source]
+----
+PluginDirectory/
+    │
+    └── resources/
+        │
+        ├── css/ <1>
+        │
+        ├── documents/ <2>
+        │
+        ├── images/ <3>
+        │
+        ├── js/ <4>
+        │
+        ├── lang/ <5>
+        │
+        ├── scss/ <6>
+        │
+        └── views/ <7>
+----
+
+<1> Contains CSS files.
+<2> Contains fonts, PDF files or other static content.
+<3> Contains images to render in views.
+<4> Contains JavaScript files.
+May contain subfolders to organise different types of scripts.
+<5> Contains translation files.
+When using texts, German and English translations are required.
+Other languages are optional.
+<6> Contains SCSS files.
+If you use SCSS for styling, you need a script for generating the corresponding CSS files.
+<7> Contains templates for shop pages.
+At base, plentymarkets uses TWIG and Vue.js.
+You can organise your views in subfolders for better readability.
+
+== Integration into plentymarkets
+
