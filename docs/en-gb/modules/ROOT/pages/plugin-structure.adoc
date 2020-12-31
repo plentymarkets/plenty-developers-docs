@@ -1,8 +1,4 @@
-= Architecture
-
-
-
-== Plugin structure
+= Plugin structure
 
 For plugins to run smoothly, they have to be structured in a certain way.
 This page details the required structure.
@@ -25,35 +21,41 @@ PluginDirectory/
     │
     ├── config.json <6>
     │
-    ├── marketplace.json <7>
+    ├── contentWidgets.json <7>
     │
-    ├── plugin.json <8>
+    ├── marketplace.json <8>
     │
-    ├── ui.json <9>
+    ├── plugin.json <9>
     │
-    └── README.md <10>
+    ├── ui.json <10>
+    │
+    └── README.md <11>
 ----
 
 <1> Contains information for the end user.
+<<#_meta_files, For more information, see below.>>
 <2> Contains supplementary, non-executable files.
+<<#_resources_files, For more information, see below.>>
 <3> Contains the source code of the plugin.
 plentymarkets plugins use PHP 7.0.
 <4> Contains the test suite of the plugin.
+// For more information, see the How to write automated tests page.
 <5> Contains back end views.
 <6> Provides options to the end user for configuring the plugin.
-<7> Provides information for offering the plugin on plentyMarketplace.
-<8> Provides the definition of the plugin.
-<9> Provides entry points for back end views.
+<7> Provides information for making the plugin available in ShopBuilder.
+<8> Provides information for offering the plugin on plentyMarketplace.
+<9> Provides the definition of the plugin.
+For more information, see the xref:plugin-definition.adoc[Plugin definition] page.
+<10> Provides entry points for back end views.
 plentymarkets back end UIs use AngularJS.
-<10> Provides information for the developer.
+<11> Provides information for the developer.
 
 The `plugin.json` is always required.
 Depending on the type of plugin you want to develop, other parts of the structure may or may not be required.
 For example, you cannot provide a UI in the plentymarkets back end without the relevant views and entry points.
-End user information is more important if you want to offer your plugin on plentyMarketplace instead of using it yourself.
 For detailed information on when different parts of the structure are required, refer to the relevant sections of the documentation.
 
-=== Meta files
+== Meta files
 
 Meta files contain information that's primarily relevant for the end user.
 You may find this information less relevant when developing a plugin for yourself.
@@ -77,7 +79,7 @@ This includes a user guide, change log and support contact information.
 You have to supply all documents in German and English.
 Other languages are optional. 
 
-=== Resources files
+== Resources files
 
 Resources are supplemental files, such as templates, scripts and images.
 These resources are available on the app path of the plugin.
@@ -117,8 +119,5 @@ Other languages are optional.
 <6> Contains SCSS files.
 If you use SCSS for styling, you need a script for generating the corresponding CSS files.
 <7> Contains templates for shop pages.
-At base, plentymarkets uses TWIG and Vue.js.
+The default plentyShop uses TWIG and Vue.js.
 You can organise your views in subfolders for better readability.
-
-== Integration into plentymarkets
-
