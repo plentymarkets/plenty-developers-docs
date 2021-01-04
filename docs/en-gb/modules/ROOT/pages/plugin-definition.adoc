@@ -20,14 +20,33 @@ This page details the contents of the `plugin.json`.
     "isClosedSource"    : false,
     "description"       : "The description for your plugin",
     "author"            : "John Doe",
+    "email"             : "doe@account.com",
+    "phone"             : "123-456-7890",
     "authorIcon"        : "icon_author_xs.png",
     "pluginIcon"        : "icon_plugin_xs.png",
     "serviceProvider"   : "PluginDirectory\\Providers\\TemplateServiceProvider",
-    "containers"        : [],
-    "dataProviders"     : [],
-    "javaScriptFiles"   : [],
-    "dependencies"      : [],
-    "runOnBuild"        : []
+    "containers"        : [
+        {
+            "key"           : "Template.Style",
+            "name"          : "Template: Style",
+            "description"   : "Add style with a theme plugin."
+        }
+    ],
+    "dataProviders"     : [
+        {
+            "key": "PluginDirectory\\Containers\\ItemListContainer",
+            "name": "Item list",
+            "description": "Display a configurable list of items in your online store"
+        }
+    ],
+    "dependencies"      : [
+        "guzzlehttp/guzzle": "6.3.*"
+    ],
+    "runOnBuild"        : [
+        "PluginDirectory\\Migrations\\CreateTable",
+        "PluginDirectory\\Migrations\\UpdateTable",
+        "PluginDirectory\\Migrations\\DeleteTable"
+    ]
 }
 ----
 
@@ -198,6 +217,20 @@ _Possible values:_ any string
 The author of the plugin.
 The author name is displayed in the plentymarkets back end and on plentyMarketplace.
 
+== email
+
+_Possible values:_ any string
+
+The email address of the author.
+If you provide an email address, it's displayed as contact information in the plentymarkets back end.
+
+== phone
+
+_Possible values:_ any string
+
+The phone number of the author.
+If you provide a phone number, it's displayed as contact information in the plentymarkets back end.
+
 == authorIcon
 
 icon:warning[role=red] [red]#Required#
@@ -220,7 +253,8 @@ The file has to be stored in the `meta/images` folder.
 
 _Possible values:_ any string
 
-
+Specifies the path to the service provider of the plugin.
+plentymarkets calls this service provider to register and run the plugin.
 
 == containers
 
@@ -237,8 +271,21 @@ _Possible values:_ array
 
 Specifies an array of data provider objects the plugin provides.
 The data provided by the plugin can be linked to a container.
-This either replaces or supplements existing content.
+New content either replaces or supplements existing content.
 
 == dependencies
 
+_Possible values:_ array
+
+Specifies an array of dependencies to external software development kits (SDKs).
+An SDK is a package of software components.
+You can use these packages to access functionality without implementing it in your own plugin.
+plentymarkets only accepts packages published on link:https://packagist.org/[Packagist^].
+
 == runOnBuild
+
+_Possible values:_ array
+
+Specifies an array of classes for plentymarkets to execute when deploying the plugin.
+Use these classes to run migrations.
+You have to use migrations when creating, updating or deleting database tables.
