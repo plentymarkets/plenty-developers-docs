@@ -1,7 +1,13 @@
-= Plugin structure
+= Plugin architecture
+
+Plugins extend the core plentymarkets software to provide additional functionality and customisation.
+This page gives you an overview of how you have to structure your plugins for them to be compatible with plentymarkets.
+It also discusses how plentymarkets accesses plugin functionality.
+
+== Plugin structure
 
 For plugins to run smoothly, they have to be structured in a certain way.
-This page details the required structure.
+This section details the required structure.
 It's important that you stick to this structure to avoid unexpected behaviour.
 
 .Plugin file structure
@@ -33,9 +39,9 @@ PluginDirectory/
 ----
 
 <1> Contains information for the end user.
-<<#_meta_files, For more information, see below.>>
+<<#_meta_files, For further information, see below.>>
 <2> Contains supplementary, non-executable files.
-<<#_resources_files, For more information, see below.>>
+<<#_resources_files, For further information, see below.>>
 <3> Contains the source code of the plugin.
 plentymarkets plugins use PHP 7.0.
 <4> Contains the test suite of the plugin.
@@ -59,7 +65,7 @@ For detailed information on when different parts of the structure are required, 
 
 Meta files contain information that's primarily relevant for the end user.
 You may find this information less relevant when developing a plugin for yourself.
-But, it's of vital importance if you plan on distributing your plugin to others.
+Nevertheless, it's of vital importance if you plan on distributing your plugin to others.
 
 .Meta files
 [source]
@@ -84,7 +90,7 @@ Other languages are optional.
 Resources are supplemental files, such as templates, scripts and images.
 These resources are available on the app path of the plugin.
 When deploying the plugin, the resources are published independently and don't undergo a code check.
-This means that during development, it's possible to publish modified resources at a faster rate than source code.
+This means that during development with plentyDevTool, it's possible to publish modified resources at a faster rate than source code.
 
 .Resources files
 [source]
@@ -121,3 +127,24 @@ If you use SCSS for styling, you need a script for generating the corresponding 
 <7> Contains templates for shop pages.
 The default plentyShop uses TWIG and Vue.js.
 You can organise your views in subfolders for better readability.
+
+== Integration of plugins in plentymarkets
+
+When you add a plugin to plentymarkets, plentymarkets can access the plugin in one of the following ways:
+
+* *Routes*:
+You can add new routes, either to your shop or the plentymarkets back end.
+The plugin executes functionality when the route is called. +
+For example, the link:https://github.com/plentymarkets/plugin-io/blob/stable/src/Providers/IORouteServiceProvider.php[IO plugin^] registers all the routes for the basic plentyShop.
+// @TODO: Add link to Ceres and Terra pages.
+* *Events*:
+Plugins can listen to pre-defined events.
+When the plentymarkets system dispatches an event, the plugin executes its functionality. +
+For example, the plugin build dispatches an `AfterBuildPlugins` event.
+A plugin can listen to this event and react to it to, say, re-generate ShopBuilder contents.
+For more information on the available events, refer to the xref:stable7@plugin-interface:ROOT:Account.adoc[plugin interface documentation].
+* *Cron jobs*:
+Cron jobs execute plugin functionality in certain time intervals.
+This is useful for recurring actions that aren't tied to a specific event. +
+For example, plugins that connect plentymarkets to marketplaces use crons to regularly import orders from the marketplace.
+// @TODO Add link to cron page.
