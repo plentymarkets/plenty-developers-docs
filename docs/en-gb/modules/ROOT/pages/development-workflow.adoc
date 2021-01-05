@@ -135,8 +135,7 @@ There are three components that cache information.
 Caching can be disabled.
 |===
 
-// @TODO Double-check the time intervals.
-Caches are emptied every 5 minutes.
+The Opcache is emptied every 7 minutes.
 The routes cache is reset every time you deploy a plugin set using the full build.
 
 == Usage limitations
