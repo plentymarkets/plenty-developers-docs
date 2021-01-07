@@ -141,7 +141,7 @@ The routes cache is reset every time you deploy a plugin set using the full buil
 == Usage limitations
 
 Depending on xref:plugin-architecture.adoc#_integration_of_plugins_in_plentymarkets[how plentymarkets accesses the plugin], you may need to take additional steps for your plugin to run properly.
-The following table list the relevant limitations.
+The following table lists the relevant limitations.
 
 [cols="1,3"]
 |===
