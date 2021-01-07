@@ -1,8 +1,6 @@
 = Plugin architecture
 
-Plugins extend the core plentymarkets software to provide additional functionality and customisation.
-This page gives you an overview of how you have to structure your plugins for them to be compatible with plentymarkets.
-It also discusses how plentymarkets accesses plugin functionality.
+To avoid unexpected behaviour and ensure that your plugins run smoothly, your plugins have to adhere to the structure detailed below.
 
 == Plugin structure
 
@@ -61,6 +59,8 @@ Depending on the type of plugin you want to develop, other parts of the structur
 For example, you cannot provide a UI in the plentymarkets back end without the relevant views and entry points.
 For detailed information on when different parts of the structure are required, refer to the relevant sections of the documentation.
 
+// @TODO Add links to the overview pages of the different plugin types.
+
 == Meta files
 
 Meta files contain information that's primarily relevant for the end user.
@@ -78,10 +78,10 @@ PluginDirectory/
         └── documents/ <2>
 ----
 
-<1> Plugin icons, author icons and preview images.
-plentymarkets uses these images when displaying the plugin in the back end.
+<1> Plugin icons, author icons, and preview images.
+plentymarkets uses these images when displaying the plugin in the back end and on plentyMarketplace.
 <2> Documents relevant for using the plugin.
-This includes a user guide, change log and support contact information.
+This includes a user guide, changelog and support contact information.
 You have to supply all documents in German and English.
 Other languages are optional. 
 
@@ -115,7 +115,7 @@ PluginDirectory/
 ----
 
 <1> Contains CSS files.
-<2> Contains fonts, PDF files or other static content.
+<2> Contains fonts, PDF files, or other static content.
 <3> Contains images to render in views.
 <4> Contains JavaScript files.
 May contain subfolders to organise different types of scripts.

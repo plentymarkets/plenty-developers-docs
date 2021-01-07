@@ -22,7 +22,7 @@ Open source plugins from plentysystems are available as link:https://github.com/
 // @TODO Add link to plentyDevTool tools page.
 If you've purchased an open source plugin from link:https://marketplace.plentymarkets.com/en[plentyMarketplace^], you can also download it to your local environment with plentyDevTool.
 
-== Adding your own plugins to plentymarkets
+== Adding your own plugin to plentymarkets
 
 To test and use your plugin, you have to add it to your plentymarkets system.
 You can add your plugin in one of two ways:
@@ -43,7 +43,7 @@ An exception is if you want to deploy the plugin in multiple systems.
 In this case, we recommend adding the plugin via Git.
 With Git, you can always keep your local source code in one place.
 plentyDevTool, on the other hand, requires you to maintain the plugin for each of your systems separately.
-By duplicating the code, potentially many times, there's a greater risk of accidental mistakes.
+By maintaining multiple instances of the same code, there's a greater risk of accidental mistakes.
 
 == Deployment process
 
@@ -124,10 +124,10 @@ There are three components that cache information.
 | Component | Caching
 
 | Live shop
-| Always cached.
+| Always cached
 
 | Plugin set preview
-| Always cached.
+| Always cached
 
 | plentymarkets back end
 | Always cached +
