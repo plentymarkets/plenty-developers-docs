@@ -63,7 +63,7 @@ For detailed information on when different parts of the structure are required, 
 
 == Meta files
 
-Meta files contain information that's primarily relevant for the end user.
+Meta files contain information that is primarily relevant for the end user.
 You may find this information less relevant when developing a plugin for yourself.
 Nevertheless, it's of vital importance if you plan on distributing your plugin to others.
 
