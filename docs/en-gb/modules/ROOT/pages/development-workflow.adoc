@@ -156,7 +156,7 @@ Alternatively, you can use the link:https://knowledge.plentymarkets.com/en/onlin
 
 | Crons
 | plentymarkets only runs cron jobs of plugins if they're installed in the plugin set linked to the standard client.
-The standard client is labeled in the *Settings » Clients* menu.
+The standard client is labeled in the *Setup » Client* menu.
 |===
 
 No limitations apply to event listeners.
