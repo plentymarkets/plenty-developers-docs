@@ -72,7 +72,7 @@ The following types are available:
 | Adds an additional export format.
 
 | `general`
-| A fallback in case the plugin doesn't fit any of the other types.
+| Serves as a fallback you can use in case the plugin doesn't fit any of the other types.
 
 | `integration`
 | Extends the functionality of plentymarkets.
