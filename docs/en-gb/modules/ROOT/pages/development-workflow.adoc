@@ -36,7 +36,7 @@ In most cases, using plentyDevTool for adding your plugin to the system and uplo
 In large parts, this is because pushing your local changes to the system is a one-click operation.
 Using Git, you always need both a push and a link:https://knowledge.plentymarkets.com/en/plugins/updating-installed-plugins#git-plugins[pull operation^].
 // @TODO Add link to plentyDevTool and version control page.
-We recommend that during development, you use plentyDevTool to push your code to plentymarkets, but run a version control system alongside it.
+We recommend that, during development, you use plentyDevTool to push your code to plentymarkets, but run a version control system alongside it.
 This way, you can still revert quickly to earlier stages of development.
 
 An exception is if you want to deploy the plugin in multiple systems.
