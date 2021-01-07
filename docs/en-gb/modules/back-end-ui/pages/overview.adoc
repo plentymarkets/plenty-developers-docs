@@ -10,30 +10,7 @@ This page provides information about a back end UI and its components. All our U
 
 All information about the back end menu entries is saved in a ui.json file. This file defines the entry points for the plugin. Views are then available at the respective menus.
 
-<div class="route-container">
-    <code>PluginXY/ui.json</code>
-</div>
-
-<div class="code-container grey-back">
-    <pre class="prettyprint lang-js grey-back linenums code-example">
-{
-    "defaultEntryPoint" : "index.html",
-    "namespace"         : "MyFirstView",
-    "icon": "icon-plugin",
-    "menuEntries"       : [
-                            {
-                              "label": "Hello World",
-                              "menu": "start",
-                              "urlKey": "hello-world",
-                              "entryPoint": "index.html",
-                              "icon": "icon-add"
-                            }
-                          ]
-}
-</pre>
-    <button type="button" class="btn btn-primary pull-right toggle-code-example">Expand</button>
-</div>
-
+include:: back-end-ui/examples/ui.json
 
 == Menu entries of your plugin
 
