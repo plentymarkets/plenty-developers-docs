@@ -55,7 +55,7 @@ For instructions on how to deploy the plugin set, refer to the manual page link:
 
 In addition to the regular deployment process, there's also an abbreviated one.
 The abbreviated process is only available when using plentyDevTool.
-Furthermore, there are the following requirements:
+Furthermore, there are the following requirements for the abbreviated process:
 
 * The plugin set isn't linked to any client.
 * The plugin was deployed before, using the regular deployment process.
