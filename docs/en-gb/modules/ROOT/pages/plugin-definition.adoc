@@ -1,0 +1,257 @@
+= Plugin definition
+
+To register and run a plugin in plentymarkets, you have to define some basic information.
+This information is stored in a `plugin.json` file.
+The `plugin.json` is required for all plugins.
+It's located in the root directory of the plugin.
+
+This page details the contents of the `plugin.json`.
+
+.PluginDirectory/plugin.json
+[source,json]
+----
+include::example$plugin.json[]
+----
+
+== name
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ any string
+
+The name of the plugin.
+The name has to meet the following requirements:
+
+* Matches the name of the plugin's root directory
+* Matches the namespace of the plugin
+* Written in UpperCamelCase
+* Starts with a Latin character
+* Doesn't contain empty spaces
+* Doesn't contain special characters
+
+If you plan on offering your plugin on plentyMarketplace, the name has to be different from all other plugins available.
+
+== namespace
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ any string
+
+The namespace of the plugin.
+The namespace has to meet the following requirements:
+
+* Matches the name of the plugin's root directory
+* Matches the name of the plugin
+* Written in UpperCamelCase
+* Starts with a Latin character
+* Doesn't contain empty spaces
+* Doesn't contain special characters
+
+If you plan on offering your plugin on plentyMarketplace, the namespace has to be different from all other plugins available.
+
+== type
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ string
+
+The type of the plugin.
+The type should reflect the plugin's purpose.
+It's displayed in the back end, but has no other purpose.
+
+The following types are available:
+
+.Plugin types
+[cols="1,3"]
+|===
+| Type | Explanation
+
+| `backend`
+| Provides a UI in the plentymarkets back end for displaying information.
+
+| `export`
+| Adds an additional export format.
+
+| `general`
+| Serves as a fallback you can use in case the plugin doesn't fit any of the other types.
+
+| `integration`
+| Extends the functionality of plentymarkets.
+
+| `payment`
+| Adds an additional payment method.
+
+| `shipping`
+| Adds an additional shipping provider.
+
+| `template`
+| Provides views in the shop front end.
+These views can either supplement or replace the default plentyShop.
+
+| `theme`
+| Provides styling for template plugins, including the default plentyShop.
+
+| `widget`
+| Extends the functionality of plentyShop.
+Widgets may or may not be compatible with ShopBuilder.
+|===
+
+== version
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ string
+
+The current version of the plugin.
+plentymarkets plugins use semantic versioning.
+This means the version format is MAJOR.MINOR.PATCH.
+
+As you're making changes to your plugin, you should increase the version to reflect the nature of the changes.
+Increasing the version is required when updating the plugin on plentyMarketplace.
+For a guideline on when to increment which version, refer to the table below.
+
+.Version increments
+[cols="1,3"]
+|===
+| Version | Explanation
+
+| MAJOR
+| The update isn't backwards compatible.
+
+| MINOR
+| The update is backwards compatible. +
+The update adds new functionality.
+
+| PATCH
+| The update is backwards compatible. +
+The update fixes a bug.
+|===
+
+For further information and more specific use cases, refer to the link:https://semver.org/[complete semantic versioning guide^].
+
+== require
+
+_Possible values:_ array or object
+
+Specifies other plugins that have to be present in the plugin set for the plugin to run properly.
+This value isn't required, but provides useful information to the user.
+
+plentymarkets plugins use semantic versioning.
+This means you should specify requirements in a MAJOR.MINOR.PATCH format.
+It's possible to use operators for specifying multiple versions efficiently.
+The following operators are available:
+
+* `>`
+* `>=`
+* `<`
+* `<=`
+* `!=`
+* `~`
+
+The tilde operator (`~`) describes a range in-between two versions.
+It's essentially a short-hand form for combining the operators `>=` and `<`.
+For example, requiring the version `~1.2.3` is the same as requiring any version between 1.2.3 and 1.3.0.
+In this example, the required version has a non-zero digit in the "fix" position.
+This means that the upper boundary is determined by the next highest minor version.
+If the requirement is `~1.2.0`, the upper boundary is determined by the next highest major version.
+
+== isClosedSource
+
+_Default:_ `false`
+
+_Possible values:_ `true`, `false`
+
+Determines if the plugin source code is visible in the plentymarkets back end when installing the plugin from plentyMarketplace.
+The source code is always visible when installing the plugin via Git.
+It's also possible to download open source marketplace plugins with plentyDevTool and view the source code this way.
+
+== description
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ any string
+
+The description of the plugin.
+This description is displayed in the plentymarkets back end.
+
+== author
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ any string
+
+The author of the plugin.
+The author name is displayed in the plentymarkets back end and on plentyMarketplace.
+
+== email
+
+_Possible values:_ any string
+
+The email address of the author.
+If you provide an email address, it's displayed as contact information in the plentymarkets back end.
+
+== phone
+
+_Possible values:_ any string
+
+The phone number of the author.
+If you provide a phone number, it's displayed as contact information in the plentymarkets back end.
+
+== authorIcon
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ any string
+
+The file name of the author icon.
+The file has to be stored in the `meta/images` folder.
+
+== pluginIcon
+
+icon:warning[role=red] [red]#Required#
+
+_Possible values:_ any string
+
+The file name of the plugin icon.
+The file has to be stored in the `meta/images` folder.
+
+== serviceProvider
+
+_Possible values:_ any string
+
+Specifies the path to the service provider of the plugin.
+plentymarkets calls this service provider to register and run the plugin.
+
+== containers
+
+_Possible values:_ array
+
+Specifies an array of container objects the plugin provides.
+Template plugins can use containers to provide additional space on shop pages.
+Other plugins can provide data to inject content into the containers.
+New content either replaces or supplements existing content.
+
+== dataProviders
+
+_Possible values:_ array
+
+Specifies an array of data provider objects the plugin provides.
+The data provided by the plugin can be linked to a container.
+New content either replaces or supplements existing content.
+
+== dependencies
+
+_Possible values:_ array
+
+Specifies an array of dependencies to external software development kits (SDKs).
+An SDK is a package of software components.
+You can use these packages to access functionality without implementing it in your own plugin.
+plentymarkets only accepts packages published on link:https://packagist.org/[Packagist^].
+
+== runOnBuild
+
+_Possible values:_ array
+
+Specifies an array of classes for plentymarkets to execute when deploying the plugin.
+Use these classes to run migrations.
+You have to use migrations when creating, updating or deleting database tables.
