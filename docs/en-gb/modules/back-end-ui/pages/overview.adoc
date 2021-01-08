@@ -1,20 +1,22 @@
-Inhalt dieser Seite: Was ist eine Backend-UI und wie setzt sie sich zusammen?
-DO NOT USE ANY INSTRUCTIONS
-In separatem How to: Wie erstelle ich eine Backend-UI?
-
 = Angular back end UI
 
-This page provides information about a back end UI and its components. All our UIs are Angular UIs. Angular is a Javascript framework for creating web, desktop and mobile applications. Developing Angular applications involves the usage of Typescript along with HTML, CSS etc. Such applications are built by components, which define different areas in the UI that let you use specific UI functionalities. If you are not familiar with Angular yet and want to find out more, see the Angular documentation: https://angular.io.
+This page provides information about a back end UI and its components. All plentymarkets UIs are Angular UIs. Angular is a Javascript framework for creating web, desktop and mobile applications. Developing Angular applications involves the usage of Typescript along with HTML, CSS etc. Such applications are built by components, which define different areas in the UI that let you use specific UI functionalities. If you are not familiar with Angular yet and want to find out more, see the Angular documentation: https://angular.io.
 
 == Back end menu information
 
 All information about the back end menu entries is saved in a ui.json file. This file defines the entry points for the plugin. Views are then available at the respective menus.
 
-include:: back-end-ui/examples/ui.json
+This could look like the following:
 
-== Menu entries of your plugin
+.ui.json
+[source,json]
+----
+include::example$ui.json[]
+----
 
-The following list provides more detailed information on the specific properties of you plugin's menu entries.
+== Plugin menu entries
+
+The following entries and their explanations provide more detailed information on the specific properties of your plugin's menu entries.
 
 === defaultEntryPoint
 
@@ -61,7 +63,8 @@ In case of several entries whose last part of the route is identical, they are a
 
 ==== Overview of the routes available in the system tree
 
-The following routes can be accessed by plugins.
+A list of all routes that can be accessed by plugins can be found here: LINK. +
+
 icon:warning[role="red"] [red]#Required#
 Note that all routes need an introducing <code>system/</code>. Older routes beginning with <code>settings/</code> will be mapped to match the new format.
 Since the new menu item for the system tree was renamed to 'Setup', the new full system tree path also starts with 'Setup'.

@@ -1,0 +1,24 @@
+= Menu entry points
+
+This reference page lists all menus that can be accessed by a plugin via entry points.
+
+* start
+* start/account
+* item
+* item/lionbridge
+* listing
+* listing/main-batch-processing
+* stock
+* stock/purchase
+* stock/returns
+* stock/amazonFBA
+* crm
+* order
+* order/pos
+* order/scheduler
+* data-exchange
+* data-exchange/export
+* data-exchange/import
+* data-exchange/report
+* cms
+* cms/new-online-store
