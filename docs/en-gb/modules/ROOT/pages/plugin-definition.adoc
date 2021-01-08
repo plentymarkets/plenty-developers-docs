@@ -2,7 +2,8 @@
 
 To register and run a plugin in plentymarkets, you have to define some basic information.
 This information is stored in a `plugin.json` file.
-The `plugin.json` is located in the root directory of the plugin.
+The `plugin.json` is required for all plugins.
+It's located in the root directory of the plugin.
 
 This page details the contents of the `plugin.json`.
 
