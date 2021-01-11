@@ -10,8 +10,9 @@
 * xref:hello-world-backend.adoc[Hello World Backend]
 
 .Plugin basics
-* xref:architecture.adoc[Architecture]
-* xref:plugin-def.adoc[Plugin definition]
+* xref:plugin-architecture.adoc[Architecture]
+* xref:plugin-definition.adoc[Plugin definition]
+* xref:development-workflow.adoc[Development workflow]
 * Plugin interface
 ** xref:plugin-interface.adoc[How to use the interface]
 ** xref:plugin-interface-execute.adoc[How to execute code without authentication]
