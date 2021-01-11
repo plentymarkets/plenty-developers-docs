@@ -1,0 +1,221 @@
+= Routes in the system tree
+
+This page lists all available routes that can be accessed by plugins. (Info about routes on other levels)
+
+icon:warning[role="red"] [red]#Required# +
+Note that all routes need an introducing `system`. Older routes beginning with `settings` will be mapped to match the new format.
+Since the new menu item for the system tree was renamed to 'Setup', the new full system tree path also starts with 'Setup'.
+
+[[routes-system-tree]]
+.Routes in the system tree
+[cols="1,2"]
+|===
+|Full system tree path name |Route
+
+|*Setup » Settings*
+|'settings'
+
+|*Setup » Settings » User*
+|'settings/user'
+
+|*Setup » Settings » Master data*
+|'settings/master-data'
+
+|*Setup » Settings » Bank*
+|'settings/bank'
+
+|*Setup » Settings » Hosting*
+|'settings/data'
+
+|*Setup » Settings » Numbers*
+|'settings/numbers'
+
+|*Setup » Settings » Editors*
+|'settings/editors'
+
+|*Setup » Settings » Tags*
+|'settings/tags'
+
+|*Setup » Settings » API*
+|'settings/api'
+
+|*Setup » Settings » Language*
+|'settings/language'
+
+|*Setup » Settings » Properties*
+|'settings/properties'
+
+|*Setup » Settings » Developer*
+|'settings/developer'
+
+|*Setup » Client*
+|'shop'
+
+|*Setup » Client » Settings*
+|'shop/settings'
+
+|*Setup » Client » Standard Shop (Standard)*
+|'shop/0'
+
+|*Setup » Item*
+|'item'
+
+|*Setup » Item » Settings*
+|'item/settings'
+
+|*Setup » Item » Free text fields*
+|'item/free-text-fields'
+
+|*Setup » Item » GTIN*
+|'item/ean'
+
+|*Setup » Item » Units*
+|'item/units'
+
+|*Setup » Item » Digital media*
+|'item/digital-media'
+
+|*Setup » Item » Labels*
+|'item/labels'
+
+|*Setup » Item » Manufacturers*
+|'item/producer'
+
+|*Setup » Item » Attributes*
+|'item/attributes'
+
+|*Setup » Item » Characteristics*
+|'item/character'
+
+|*Setup » Item » Procedures*
+|'item/actions-manager'
+
+|*Setup » Item » Availability*
+|'item/availability'
+
+|*Setup » Item » Flags*
+|'item/flags'
+
+|*Setup » Item » Sales prices*
+|'item/sales-price'
+
+|*Setup » Item » Barcode*
+|'item/barcode'
+
+|*Setup » Item » Calculation*
+|'item/calculation'
+
+|*Setup » Item » Images*
+|'item/images'
+
+|*Setup » Item » Search*
+|'item/search'
+
+|*Setup » Listings*
+|'listings'
+
+|*Setup Listings Settings*
+|'listings/settings'
+
+|*Setup » Listings » Stock*
+|'listings/stock'
+
+|*Setup » Listings » Checkout*
+|'listings/checkout'
+
+|*Setup » Listings » Scheduler*
+|'listings/scheduler'
+
+|*Setup » Listings » Layouts*
+|'listings/layouts'
+
+|*Setup » Listings » Directories*
+|'listings/directories'
+
+|*Setup » Markets*
+|'markets'
+
+|*Setup » Markets » Amazon*
+|'markets/amazon'
+
+|*Setup » Markets » bol.com*
+|'markets/bol'
+
+|*Setup » Markets » Cdiscount.com*
+|'markets/cdiscount'
+
+|*Setup » Markets » Check24*
+|'markets/check24'
+
+|*Setup » Markets » eBay*
+|'markets/ebay'
+
+|*Setup » Markets » Flubit*
+|'markets/flubit'
+
+|*Setup » Markets » Fruugo*
+|'markets/fruugo'
+
+|*Setup » Markets » Google*
+|'markets/google'
+
+|*Setup » Markets » grosshandel.eu*
+|'markets/grosshandel'
+
+|*Setup » Markets » Hood*
+|'markets/hood'
+
+|*Setup » Markets » idealo Checkout*
+|'markets/idealo'
+
+|*Setup » Markets » Kauflux*
+|'markets/kauflux'
+
+|*Setup » Markets » La Redoute*
+|'markets/laredoute'
+
+|*Setup » Markets » Mercateo*
+|'markets/mercateo'
+
+|*Setup » Markets » Neckermann Austria Enterprise*
+|'markets/neckermann-ep-austria'
+
+|*Setup » Markets » Otto*
+|'markets/otto'
+
+|*Setup » Markets » PIXmania*
+|'markets/pixmania'
+
+|*Setup » Markets » Netto eStores*
+|'markets/plus'
+
+|*Setup » Markets » Rakuten.de*
+|'markets/rakuten'
+
+|*Setup » Markets » real.de*
+|'markets/real'
+
+|*Setup » Markets » Restposten*
+|'markets/restposten'
+
+|*Setup » Markets » ricardo*
+|'markets/ricardo'
+
+|*Setup » Markets » Shopgate*
+|'markets/shopgate'
+
+|*Setup » Markets » Yatego*
+|'markets/yatego'
+
+|*Setup » Markets » Zalando*
+|'markets/zalando'
+
+|*Setup » Markets » REWE*
+|'markets/REWE'
+
+|
+|
+
+|
+|
+|===

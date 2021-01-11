@@ -1,6 +1,6 @@
 = Menu entry points
 
-This reference page lists all menus that can be accessed by a plugin via entry points.
+This page lists all menus that can be accessed by a plugin via entry points.
 
 * start
 * start/account

@@ -16,7 +16,7 @@ include::example$ui.json[]
 
 == Plugin menu entries
 
-The following entries and their explanations provide more detailed information on the specific properties of your plugin's menu entries.
+The following section lists the specific properties of your plugin's menu entries.
 
 === defaultEntryPoint
 
@@ -31,19 +31,15 @@ The namespace of your plugin
 The menu entries of your plugin. +
 The following information is saved for a menu entry:
 
-* *label*: The label to be displayed in the back end +
-* *menu*: The menu that can be accessed by a plugin via entry points.
+* `label`: The label to be displayed in the back end +
+* `menu`: The menu that can be accessed by a plugin via entry points.
 <a href="/terra-doc/routes" target="_blank">Click here</a> for a list of possible menu entry points. +
-* *urlKey*: The route for the view in our plentymarkets back end, e.g.                         http://your-plentystore.co.uk/plenty/ui-backend/start/hello-world +
+* `urlKey`: The route for the view in our plentymarkets back end, e.g.                         http://your-plentystore.co.uk/plenty/ui-backend/start/hello-world +
 *_Note:_* For the URL key of the plugin, only use hyphens. +
-* *entryPoint*: The entry point of your plugin +
-* *icon*: The icon for the menu entry in the system tree. If no icon is specified, the standard plugin icon is displayed. To not display any icon, use "icon": "none". Find a list of all icons <a href="/terra-doc/icons">here.</a>
+* `entryPoint`: The entry point of your plugin +
+* `icon`: The icon for the menu entry in the system tree. If no icon is specified, the standard plugin icon is displayed. To not display any icon, use "icon": "none". Find a list of all icons <a href="/terra-doc/icons">here.</a>
 
-== Menu entry points and routes
-
-Introduction: what is explained in the following chapters?
-
-=== Integrating plugins into the back end
+== Integrating plugins into the back end
 
 It is possible to seamlessly integrate your plugin into the plentymarkets back end. You can use entry points to add your plugin to the top navigation bar or routes to add it to the navigation tree of the *Setup* menu.
 
@@ -55,16 +51,14 @@ Back end views can be integrated in the plentymarkets main menu. A list of all m
 
 The Terra system tree offers plugin developers the opportunity to register their plugin behind a route. In doing so, the plugin becomes accessible in the system tree like a regular part of Terra. You can read about the different points of entry in the table below. Find an instruction how to register your plugin <a href="/tutorials/backendview#code-uijson">here.</a>
 
-==== Plugin positioning
+A list of all available routes that can be accessed by plugins can be found here: LINK. +
+
+icon:warning[role="red"] [red]#Required# +
+Note that all routes need an introducing `system`. Older routes beginning with `settings` will be mapped to match the new format.
+Since the new menu item for the system tree was renamed to 'Setup', the new full system tree path also starts with 'Setup'.
+
+=== Plugin positioning
 
 In addition to inserting plugins as desired in menus under *Setup*, it is now also possible to determine their position depending on their route.
-If using a route not mentioned in the list below, a parent node is created with the specified name. It appears underneath the actual entry.
+If using a route not mentioned in this list (insert LINK), a parent node is created with the specified name. It appears underneath the actual entry.
 In case of several entries whose last part of the route is identical, they are all inserted underneath this part of the route. Thus, only the position of the first entry is considered.
-
-==== Overview of the routes available in the system tree
-
-A list of all routes that can be accessed by plugins can be found here: LINK. +
-
-icon:warning[role="red"] [red]#Required#
-Note that all routes need an introducing <code>system/</code>. Older routes beginning with <code>settings/</code> will be mapped to match the new format.
-Since the new menu item for the system tree was renamed to 'Setup', the new full system tree path also starts with 'Setup'.
