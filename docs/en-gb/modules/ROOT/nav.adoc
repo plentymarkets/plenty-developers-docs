@@ -10,7 +10,7 @@
 * xref:hello-world-backend.adoc[Hello World Backend]
 
 .Plugin basics
-* xref:architecture.adoc[Architecture]
+* xref:plugin-architecture.adoc[Architecture]
 * xref:plugin-definition.adoc[Plugin definition]
 * xref:development-workflow.adoc[Development workflow]
 * Plugin interface
