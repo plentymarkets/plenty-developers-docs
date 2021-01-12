@@ -1,9 +1,3 @@
-<div class="route-container">
-    <code>PluginXY/ui.json</code>
-</div>
-
-<div class="code-container grey-back">
-    <pre class="prettyprint lang-js grey-back linenums code-example">
 {
     "defaultEntryPoint" : "index.html",
     "namespace"         : "MyFirstView",

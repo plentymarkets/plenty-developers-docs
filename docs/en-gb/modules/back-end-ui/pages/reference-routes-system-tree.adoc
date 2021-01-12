@@ -1,10 +1,14 @@
 = Routes in the system tree
 
-This page lists the available routes that can be accessed by plugins. In case you are searching for a route that is not listed below, take a look at the respective URL. The route will be shown at the very end of it.
+This page lists the available routes a plugin can access. In case you are searching for a route that is not listed below, take a look at the respective URL. The route will be shown at the very end of it. +
+Example: https://plentymarkets-cloud-de.com/plenty/terra/system/*stock/new-incoming-items*
 
-icon:warning[role="red"] [red]#Required# +
+[IMPORTANT]
+.Format for system tree path
+====
 Note that all routes need an introducing 'system'. Older routes beginning with 'settings' will be mapped to match the new format.
 Since the new menu item for the system tree was renamed to 'Setup', the new full system tree path also starts with 'Setup'.
+====
 
 [[routes-system-tree]]
 .Routes in the system tree
