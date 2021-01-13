@@ -27,8 +27,8 @@ include::example$ui.json[]
 
 == Plugin menu entries
 
-The following table lists the specific properties of your plugin's menu entries.
-QUESTION: Are all of the fields listed below mandatory?/Which ones are mandatory?
+The following table lists the specific properties of your plugin's menu entries. +
+icon:warning[role=red] [red]#Required# All entries listed below are mandatory.
 
 [[table-plugin-menu-entries]]
 .Menu entry properties
