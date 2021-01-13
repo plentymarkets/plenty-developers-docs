@@ -24,6 +24,10 @@ content:
     branches:
       - 4.*
       - 5.*
+  - url: https://github.com/plentymarkets/Ceres_docs-raw
+    branches:
+      - 4.*
+      - 5.*
 output:
     dir: ./build/en-gb
 ui:
