@@ -1,0 +1,30 @@
+= Adding content categories in the Ceres navigation
+
+By default, content categories are not displayed in the navigation bar of Ceres. If you want to display a category of the *Content* type in the navigation bar of the online store, you have to change a parameter in one of the Twig templates. You can do this in your own theme or fork of Ceres, or in the plentymarkets back end when using Ceres  from plentyMarketplace.
+
+. Go to *Plugins » Plugin overview*.
+. Click on *Ceres*. +
+→ The plugin will open.
+. Go to *resources/views/PageDesign/PageDesign.twig*.
+. Search for the line of code
+`{% set categories = services.category.getNavigationTree("item", lang, 6) %}`.
+. Replace the line of code with
+`{% set categories = services.category.getNavigationTree("all", lang, 6) %}`.
+. *Save* the settings. +
+→ All category types can now be used in the navigation bar of the online store.
+
+[IMPORTANT]
+.To-do on update
+====
+Note that these changes will be overwritten when updating the plugin to a higher version. Repeat the steps above in order to make all category types available again.
+====
+
+After enabling the other category types in the Ceres online store, link:https://knowledge.plentymarkets.com/en/item/managing-categories#_creating_a_category[create a category] of the *Content* type. The following steps must be taken into account:
+
+* Activate this category for your client.
+* Select *Display* in the *In link list* drop-down to display the category in the navigation.
+* Open the *Template* tab and enter the content that you want to display in the online store. +
+→ You can enter HTML and TWIG code in this tab.
+* Save everything. +
+→ When content is entered in the *Template* tab of a category, the *CategoryTemplates* plugin is created automatically. This plugin contains the HTML/TWIG code of your category.
+* Simply activate this plugin and deploy the plugin set by clicking *Save & publish plugins*. After a short period of time, the category will be visible in the navigation.

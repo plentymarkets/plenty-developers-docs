@@ -1,0 +1,1216 @@
+= Overview of Elasticsearch result fields in Ceres
+
+This page serves to document the available Elasticsearch result fields you can use to access additional item information in Ceres.
+
+*Note:* This page is a work in progress and will be updated continually. At this point in time the list is not fully comprehensive.
+
+== Attributes
+
+The following table lists the result fields pertaining to attributes.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|attributes[0].attributeId
+|Contains the id of the attribute.
+
+|attributes[0].isLinkableToImage
+|Contains a Boolean that describes, whether the attribute can be linked to an image.
+
+|attributes[0].valueId
+|Contains the id of the selected attribute value.
+
+|attributes[0].attribute.typeOfSelectionInOnlineStore
+|Contains the type of selection of the attribute values in the online store, i.e. via drop-down list, image or box.
+
+|attributes[0].attribute.isGroupable
+|Contains a Boolean that describes whether the attribute is groupable in item lists.
+
+|attributes[0].attribute.names.attributeId
+|Contains the id of the attribute. Returns the same value as attributes[0].attributeId.
+
+|attributes[0].attribute.names.name
+|Contains the name of the attribute that is displayed in the frontend.
+
+|attributes[0].attribute.names.lang
+|Contains the language of the name of the attribute that is displayed in the frontend.
+
+|attributes[0].attribute.backendName
+|Contains the name of the attribute that is displayed in the backend.
+
+|attributes[0].attribute.id
+|Contains the id of the attribute. Returns the same value as attributes[0].attributeId.
+
+|attributes[0].attribute.position
+|Contains the position of the attribute.
+
+|attributes[0].attribute.updatedAt
+|Contains the timestamp of when the attribute was last updated.
+
+|attributes[0].attributeValueSetId
+|Contains the id of the value set.
+
+|attributes[0].value.image
+|Contains the image linked to the selected attribute.
+
+|attributes[0].value.percentageDistribution
+|Contains the percentages for the automatic distribution of attribute values for reordering items.
+
+|attributes[0].value.attributeId
+|Contains the id of the attribute. Returns the same value as attributes[0].attributeId.
+
+|attributes[0].value.names.valueId
+|Contains the id of the selected value of the attribute.
+
+|attributes[0].value.names.name
+|Contains the frontend name of the selected value of the attribute.
+
+|attributes[0].value.names.lang
+|Contains the language of the frontend name of the selected value of the attribute.
+
+|attributes[0].value.backendName
+|Contains the backend name of the selected value of the attribute.
+
+|attributes[0].value.comment
+|Contains the comment about the selected value of the attribute.
+
+|attributes[0].value.id
+|Contains the id of the selected value of the attribute. Returns the same value as attributes[0].value.names.valueId.
+
+|attributes[0].value.position
+|Contains the position of the selected value of the attribute.
+
+|attributes[0].value.updatedAt
+|Contains the timestamp of when the selected value was last updated.
+|===
+
+== Calculated prices
+
+The following table lists the result fields pertaining to calculated prices.
+
+[cols="1,3"]
+|===
+|Result field |Description
+|calculatedPrices.default.salesPriceId
+|Contains the id of the default sales price.
+
+|calculatedPrices.default.price
+|Contains the gross value of the default sales price.
+
+|calculatedPrices.default.priceNet
+|Contains the net value of the default sales price.
+
+|calculatedPrices.default.basePrice
+|Contains the gross value of the default base price.
+
+|calculatedPrices.default.basePriceNet
+|Contains the net value of the default base price.
+
+|calculatedPrices.default.unitPrice
+|Contains the gross value of the default unit price.
+
+|calculatedPrices.default.unitPriceNet
+|Contains the net value of the default unit price.
+
+|calculatedPrices.default.customerClassDiscountPercent
+|Contains the percentage of the default customer class discount.
+
+|calculatedPrices.default.customerClassDiscount
+|Contains the value of the default customer class discount.
+
+|calculatedPrices.default.customerClassDiscountNet
+|Contains the net value of the default customer class discount.
+
+|calculatedPrices.default.categoryDiscountPercent
+|Contains the percentage of the default category discount.
+
+|calculatedPrices.default.categoryDiscount
+|Contains the gross value of the default category discount.
+
+|calculatedPrices.default.categoryDiscountNet
+|Contains the net value of the default category discount.
+
+|calculatedPrices.default.vatId
+|Contains the id of the value-added tax (VAT) profile.
+
+|calculatedPrices.default.vatValue
+|Contains the value-added tax (VAT) percentage .
+
+|calculatedPrices.default.currency
+|Contains the ISO code of the currency of the default sales price.
+
+|calculatedPrices.default.conversionFactor
+|Contains the conversion factor of the default sales price.
+
+|calculatedPrices.default.minimumOrderQuantity
+|Contains the minimum order quanitity necessary for the price to be applicable.
+
+|calculatedPrices.default.updatedAt
+|Contains the timestamp of when the default sales price was last updated.
+
+|calculatedPrices.formatted.basePrice
+|Contains the gross formatted base price, including the decimal separator, the ISO-code of the currency and the name of the unit.
+
+|calculatedPrices.formatted.defaultPrice
+|Contains the gross formatted default price, including the decimal separator and the ISO-code of the currency.
+
+|calculatedPrices.formatted.defaultUnitPrice
+|Contains the gross formatted default price per unit, including the decimal separator and the ISO-code of the currency.
+
+|calculatedPrices.formatted.rrpPrice
+|Contains the gross formatted recommended retail price, including the decimal separator and the ISO-code of the currency.
+
+|calculatedPrices.formatted.rrpUnitPrice
+|Contains the gross formatted recommended retail price per unit, including the decimal separator and the ISO-code of the currency.
+
+|calculatedPrices.graduatedPrices[0].minimumOrderQuantity
+|Contains the minimum order quantity necessary for the graduated price to become available.
+
+|calculatedPrices.graduatedPrices[0].price
+|Contains the graduated price.
+
+|calculatedPrices.graduatedPrices[0].formatted
+|Contains the formatted graduated price, including the decimal separator and the ISO-code of the currency.
+
+|calculatedPrices.rrp.salesPriceId
+|Contains the sales price id of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.price
+|Contains the gross value of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.priceNet
+|Contains the net value of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.basePrice
+|Contains the gross base price of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.basePriceNet
+|Contains the net base price of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.unitPrice
+|Contains the gross unit price of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.unitPriceNet
+|Contains the net unit price of the recommended retail price (RRP).
+
+|calculatedPrices.rrp.customerClassDiscountPercent
+|Contains the percentage of the default customer class discount.
+
+|calculatedPrices.rrp.customerClassDiscount
+|Contains the value of the default customer class discount.
+
+|calculatedPrices.rrp.customerClassDiscountNet
+|Contains the net value of the default customer class discount.
+
+|calculatedPrices.rrp.categoryDiscountPercent
+|Contains the percentage of the default category discount.
+
+|calculatedPrices.rrp.categoryDiscount
+|Contains the gross value of the default category discount.
+
+|calculatedPrices.rrp.categoryDiscountNet
+|Contains the net value of the default category discount.
+
+|calculatedPrices.rrp.vatId
+|Contains the id of the value-added tax (VAT) profile.
+
+|calculatedPrices.rrp.vatValue
+|Contains the value-added tax (VAT) percentage.
+
+|calculatedPrices.rrp.currency
+|Contains the ISO code of the currency of the default sales price.
+
+|calculatedPrices.rrp.conversionFactor
+|Contains the conversion factor of the default sales price.
+
+|calculatedPrices.rrp.minimumOrderQuantity
+|Contains the minimum order quanitity necessary for the price to be applicable.
+
+|calculatedPrices.rrp.updatedAt
+|Contains the timestamp of when the default sales price was last updated.
+|===
+
+== Facets
+
+The following table lists the result fields pertaining to facets.
+
+[cols="1,3"]
+|===
+|Result field |Description
+|facets[0].value.names.name
+|Contains the name of the selected value of the facet.
+
+|facets[0].value.names.lang
+|Contains the language of the name of the selected value of the facet.
+
+|facets[0].value.names.lang
+|Contains the language of the name of the selected value of the facet.
+
+|facets[0].value.id
+|Contains the id of the selected value of the facet.
+
+|facets[0].facet.names.name
+|Contains the name of the facet.
+
+|facets[0].facet.names.lang
+|Contains the language of the name of the facet.
+
+|facets[0].facet.id
+|Contains the id of the facet.
+|===
+
+== Filters
+
+The following table lists the result fields pertaining to filters for the item search.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|filter.hasFacet
+|Contains a Boolean that returns true if the item has facets.
+
+|filter.hasClient
+|Contains a Boolean that returns true if the item is linked to a client.
+
+|filter.hasChildren
+|Contains a Boolean that returns true if the item has child variations.
+
+|filter.hasBarcode
+|Contains a Boolean that returns true if the item has barcodes.
+
+|filter.hasImage
+|Contains a Boolean that returns true if the item is linked to an image.
+
+|filter.hasMarket
+|Contains a Boolean that returns true if the item is linked to a marketplace.
+
+|filter.isSalableAndActive
+|Contains a Boolean that returns true if the item is active and salable.
+
+|filter.hasName3InLanguage
+|Contains an array with the languages in which name 3 has been stored for the item.
+
+|filter.hasDescriptionInLanguage
+|Contains an array with the languages in which the item description has been stored for the item.
+
+|filter.search.german.name3
+|Contains the German name 3 of the item.
+
+|filter.search.german.names
+|Contains the German names of the item in an array. This can include name 1, name2 and name 3.
+
+|filter.search.german.keywords
+|Contains the German meta keywords of the item.
+
+|filter.search.german.technicalData
+|Contains the German technical data of the item, which is displayed in the technical data tab of the single item view.
+
+|filter.search.german.attributeValues
+|Contains an array of the selected attribute values in German.
+
+|filter.search.german.description
+|Contains the description of the item in German.
+
+|filter.search.german.categories
+|Contains an array of the German names of the categories the item is linked to.
+
+|filter.search.german.shortDescription
+|Contains the German preview text of the item.
+
+|filter.search.german.name2
+|Contains the German name 2 of the item.
+
+|filter.search.german.name1
+|Contains the German name 1 of the item.
+
+|filter.search.german.properties
+|Contains an array with the German names of the attributes the item is linked to.
+
+|filter.hasName2InLanguage
+|Contains an array with the languages in which name 2 has been stored for the item.
+
+|filter.hasVariationImage
+|Contains a Boolean that returns true if an image has been stored for the variation.
+
+|filter.hasActiveChildren
+|Contains a Boolean that returns true if the item has child variations that are active.
+
+|filter.hasItemImage
+|Contains a Boolean that returns true if the item is linked to an image.
+
+|filter.hasSalesPrice
+|Contains a Boolean that returns true if the item is linked to a sales price, as defined in the *System » Item » Sales prices* menu.
+
+|filter.hasSKU
+|Contains a Boolean that returns true if the item has an SKU (Stock Keeping Unit).
+
+|filter.hasAttribute
+|Contains a Boolean that returns true if the item is linked to at least one attribute.
+
+|filter.hasProperty
+|Contains a Boolean that returns true if the item has at least one property.
+
+|filter.isSalable
+|Contains a Boolean that returns true if the item can be sold.
+
+|filter.hasCategory
+|Contains a Boolean that returns true if the item is linked to at least one category.
+
+|filter.hasVariationProperties
+|Contains a Boolean that returns true if the item has properties that are linked to variations.
+
+|filter.names.german.hasName1
+|Contains a Boolean that returns true if Name 1 has been stored in German for the item.
+
+|filter.names.german.hasName2
+| Contains a Boolean that returns true if Name 2 has been stored in German for the item.
+
+|filter.names.german.hasName3
+|Contains a Boolean that returns true if Name 3 has been stored in German for the item.
+
+|filter.names.german.hasAny
+|Contains a Boolean that returns true if either Name 1, Name 2, or Name 3 has been stored in German for the item.
+
+|filter.hasSupplier
+|Contains a Boolean that returns true if a supplier has been stored for the item.
+
+|filter.hasManufacturer
+|Contains a Boolean that returns true if a manufacturer has been stored for the item.
+
+|filter.hasAnyName
+|Contains a Boolean that returns true if either Name 1, Name 2, or Name 3 has been stored in German for the item.
+
+|filter.hasName1InLanguage
+|Contains an array that lists all languages for which Name 1 has been saved for the item.
+|===
+
+== IDs
+
+The following table lists the result fields pertaining to various IDs.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|ids.clients
+|Contains an array of the plentymarkets IDs (PID) of the clients to which the item is linked.
+
+|ids.suppliers
+|Contains an array of the item's suppliers.
+
+|ids.facetValues
+|Contains an array that lists the IDs of the item's facet values.
+
+|ids.attributeValues
+|Contains an array that lists the IDs of the item's attribute values.
+
+|ids.barcodes
+|Contains an array that lists the IDs of the item's barcodes.
+
+|ids.facets
+|Contains an array that lists the IDs of the item's facets.
+
+|ids.tags
+|Contains an array that lists the IDs of the tags linked with the item.
+
+|ids.itemId
+|Contains the ID of the item.
+
+|ids.variationProperties
+|Contains an array that lists the IDs of the variation properties linked with the variation as integers.
+
+|ids.attributes
+|Contains an array that lists the IDs of the item's attributes as integers.
+
+|ids.categories.all
+|Contains an array that lists the IDs of all categories the item is linked to as strings.
+
+|ids.salesPrices
+|Contains an array that lists the IDs of all sales prices that are linked with the item as strings.
+|===
+
+== Images
+
+The following table lists the result fields pertaining to item images.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|images.all[0].urlMiddle
+|Contains the URL of the item image in medium resolution.
+
+|images.all[0].url
+|Contains the URL of the item image in the highest resolution.
+
+|images.all[0].urlSecondPreview
+|Contains the URL of the second item preview image.
+
+|images.all[0].createdAt
+|Contains the timestamp of the image's time of creation.
+
+|images.all[0].itemId
+|Contains the ID of the item the image is linked with.
+
+|images.all[0].names.imageId
+|Contains the ID of the image.
+
+|images.all[0].names.name
+|Contains the name of the image, as specified in the backend.
+
+|images.all[0].names.alternate
+|Contains the SEO-relevant alternative text for the image, as specified in the backend.
+
+|images.all[0].names.lang
+|Contains the language of the image name.
+
+|images.all[0].width
+|Contains the width of the image in pixels.
+
+|images.all[0].height
+|Contains the height of the image in pixels.
+
+|images.all[0].id
+|Contains the ID of the image. This holds the same information as images.all[0].names.imageId.
+
+|images.all[0].position
+|Contains the position of the image.
+
+|images.all[0].fileType
+|Contains the file type of the image.
+
+|images.all[0].updatedAt
+|Contains the timestamp of when the image was last updated.
+
+|images.all[0].item.urlMiddle
+|Contains the URL of the item image in medium resolution.
+
+|images.item[0].url
+|Contains the URL of the item image in the highest resolution.
+
+|images.item[0].urlSecondPreview
+|Contains the URL of the second item preview image.
+
+|images.item[0].createdAt
+|Contains the timestamp of the image's time of creation.
+
+|images.item[0].itemId
+|Contains the ID of the item the image is linked with.
+
+|images.item[0].names.imageId
+|Contains the ID of the image.
+
+|images.item[0].names.name
+|Contains the name of the image, as specified in the backend.
+
+|images.item[0].names.alternate
+|Contains the SEO-relevant alternative text for the image, as specified in the backend.
+
+|images.item[0].names.lang
+|Contains the language of the image name.
+
+|images.item[0].width
+|Contains the width of the image in pixels.
+
+|images.item[0].height
+|Contains the height of the image in pixels.
+
+|images.item[0].id
+|Contains the ID of the image.
+
+|images.item[0].position
+|Contains the position of the image.
+
+|images.item[0].fileType
+|Contains the file type of the image.
+
+|images.item[0].updatedAt
+|Contains the timestamp of when the image was last updated.
+
+|images.variation[0].url
+|Contains the URL of the item image in the highest resolution.
+
+|images.variation[0].urlSecondPreview
+|Contains the URL of the second item preview image.
+
+|images.variation[0].createdAt
+|Contains the timestamp of the image's time of creation.
+
+|images.variation[0].itemId
+|Contains the ID of the item the image is linked with.
+
+|images.variation[0].names.imageId
+|Contains the ID of the image.
+
+|images.variation[0].names.name
+|Contains the name of the image, as specified in the backend.
+
+|images.variation[0].names.alternate
+|Contains the SEO-relevant alternative text for the image, as specified in the backend.
+
+|images.variation[0].names.lang
+|Contains the language of the image name.
+
+|images.variation[0].width
+|Contains the width of the image in pixels.
+
+|images.variation[0].height
+|Contains the height of the image in pixels.
+
+|images.variation[0].id
+|Contains the ID of the image.
+
+|images.variation[0].position
+|Contains the position of the image.
+
+|images.variation[0].fileType
+|Contains the file type of the image.
+
+|images.variation[0].updatedAt
+|Contains the timestamp of when the image was last updated.
+|===
+
+== Item information
+
+The following table lists the result fields pertaining to item information configured in the backend.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|item.storeSpecial.names.name
+|Contains the name of the store special that the item is part of.
+
+|item.storeSpecial.names.lang
+|Contains the language of the store special name.
+
+|item.storeSpecial.id
+|Contains the ID of the store special the item is part of.
+
+|item.customsTariffNumber
+|Contains the customs tariff number of the item.
+
+|item.producingCountry.names.name
+|Contains the name of the producing country of the item.
+
+|item.producingCountry.names.lang
+|Contains the language the name of the producing country of the item is stored in.
+
+|item.producingCountry.isoCode2
+|Contains the ISO-Code 2 of the producing country of the item.
+
+|item.producingCountry.isoCode3
+|Contains the ISO-Code 3 of the producing country of the item.
+
+|item.producingCountry.name
+|Contains the name of the producing country of the item. This holds the same information as item.producingCountry.names.name
+
+|item.producingCountry.id
+|Contains the ID of the producing country of the item.
+
+|item.flags.flag1.name
+|Contains the name of the first flag of the item.
+
+|item.flags.flag1.icon
+|Contains the icon of the first flag of the item.
+
+|item.flags.flag1.id
+|Contains the id of the first flag of the item.
+
+|item.flags.flag1.text
+|Contains the text of the first flag of the item.
+
+|item.flags.flag2.name
+|Contains the name of the second flag of the item.
+
+|item.flags.flag2.icon
+|Contains the icon of the second flag of the item.
+
+|item.flags.flag2.id
+|Contains the id of the second flag of the item.
+
+|item.flags.flag2.text
+|Contains the text of the second flag of the item.
+
+|item.manufacturer.externalName
+|Contains the external name of the manufacturer of the item, as entered in the *System » Item » Manufacturer* menu in the backend.
+
+|item.manufacturer.name
+|Contains the name of the manufacturer of the item, as entered in the *System » Item » Manufacturer* menu in the backend.
+
+|item.manufacturer.logo
+|Contains the URL to the logo of the manufacturer of the item, as entered in the *System » Item » Manufacturer* menu in the backend.
+
+|item.manufacturer.id
+|Contains the ID of the manufacturer of the item, as entered in the *System » Item » Manufacturer* menu in the backend.
+
+|item.manufacturer.position
+|Contains the position of the manufacturer of the item, as entered in the *System » Item » Manufacturer* menu in the backend.
+
+|item.feedback
+|Contains an array with the rating of the item and the number of ratings given.
+
+|item.createdAt
+|Contains the timestamp of the time at which the item was created.
+
+|item.updatedAt
+|Contains the timestamp of the time at which the item was last updated.
+
+|item.maximumOrderQuantity
+|Contains the item's maximum order quantity.
+
+|item.id
+|Contains the ID of the item as an integer.
+
+|item.condition.names.name
+|Contains the name of the item's condition.
+
+|item.condition.names.lang
+|Contains the language of the name of the item's condition.
+
+|item.condition.id
+|Contains the id of the item's condition.
+
+|item.feedbackCount
+|Contains the number of ratings.
+
+|item.isShippableByAmazon
+|Contains a Boolean which states whether the item can be shipped via Amazon.
+
+|item.isSubscribable
+|Contains a Boolean that returns true if the item can be purchased in the form of a subscription.
+
+|item.ageRestriction
+|Contains the item's rage restriction.
+
+|item.mainVariationId
+|Contains the id of the item's main variation.
+
+|item.isShippingPackage
+|Contains a Boolean that returns true if the item is shipped as a shipping package with fixed dimensions.
+
+|item.revenueAccount
+|Contains the id of the item's revenue account.
+|===
+
+== Item texts
+
+The following table lists the result fields pertaining to item texts.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|texts.name1
+|Contains the text stored for Name 1 of the item.
+
+|texts.name2
+|Contains the text stored for Name 2 of the item.
+
+|texts.name3
+|Contains the text stored for Name 3 of the item.
+
+|texts.keywords
+|Contains the text stored for the meta keywords of the item.
+
+|texts.technicalData
+|Contains the text stored for the technical data of the item.
+
+|texts.description
+|Contains the item description.
+
+|texts.shortDescription
+|Contains the preview text for the item.
+
+|texts.lang
+|Contains the language of the item texts.
+
+|texts.metaDescription
+|Contains the meta description of the item.
+
+|texts.urlPath
+|Contains the URL specified for the item.
+|===
+
+== Prices
+
+The following table lists the result fields pertaining to prices.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|prices.default.price.value
+|Contains the value of the item's price as a float.
+
+|prices.default.price.formatted
+|Contains the the item's price as a string, including the decimal separator and the ISO-code of the currency.
+
+|prices.default.unitPrice.value
+|Contains the value of the item's unit price as a float.
+
+|prices.default.unitPrice.formatted
+|Contains the the item's unit price as a string, including the decimal separator and the ISO-code of the currency.
+
+|prices.default.basePrice
+|Contains the item's base price as a string, including the decimal separator, the ISO-code of the currency and the name of the unit.
+
+|prices.default.minimumOrderQuantity
+|Contains the minimum order quantity necessary for the price to become applicable.
+
+|prices.default.categoryDiscount.percent
+|Contains the percentage of the category discount for the item.
+
+|prices.default.categoryDiscount.amount
+|Contains the value of the category discount for the item.
+
+|prices.default.currency
+|Contains the ISO-code of the currency of the item's price.
+
+|prices.default.vat.id
+|Contains the ID of the value-added tax (VAT) that applies to the item.
+
+|prices.default.vat.value
+|Contains the percentage of the value-added tax (VAT) that applies to the item.
+
+|prices.default.isNet
+|Contains a Boolean that returns true if the default price is the net price.
+
+|prices.default.data.salesPriceId
+|Contains the ID of the default sales price.
+
+|prices.default.data.price
+|Contains the item's gross price as a float.
+
+|prices.default.data.priceNet
+|Contains the item's net price as a float.
+
+|prices.default.data.basePrice
+|Contains the item's gross base price as a float.
+
+|prices.default.data.basePriceNet
+|Contains the item's net base price as a float.
+
+|prices.default.data.unitPrice
+|Contains the item's gross unit price as a float.
+
+|prices.default.data.unitPriceNet
+|Contains the item's net unit price as a float.
+
+|prices.default.data.customerClassDiscountPercent
+|Contains the percentage of the customer class discount.
+
+|prices.default.data.customerClassDiscount
+|Contains the gross value of the customer class discount.
+
+|prices.default.data.customerClassDiscountNet
+|Contains the net value of the customer class discount.
+
+|prices.default.data.categoryDiscountPercent
+|Contains the percentage of the category discount.
+
+|prices.default.data.categoryDiscount 
+|Contains the gross value of the category discount.
+
+|prices.default.data.categoryDiscountNet
+|Contains the net value of the category discount.
+
+|prices.default.data.vatId
+|Contains the ID of the value-added tax (VAT) that applies to the default item price.
+
+|prices.default.data.vatValue
+|Contains the percentage of the value-added tax (VAT) that applies to the default item price.
+
+|prices.default.data.currency
+|Contains the ISO-code of the currency of the default item price.
+
+|prices.rrp.price.value
+|Contains the value of the recommended retail price (RRP) as a float.
+
+|prices.rrp.price.formatted
+|Contains the formatted recommended retail price as a string, including the decimal separator and the ISO-code of the currency.
+
+|prices.rrp.unitPrice.value
+|Contains the value of the recommended retail unit price (RRP) as a float.
+
+|prices.rrp.unitPrice.formatted
+|Contains the formatted recommended retail unit price as a string, including the decimal separator and the ISO-code of the currency.
+
+|prices.rrp.basePrice
+|Contains the formatted recommended retail base price (RRP) as a string, inluding the decimal separator, the ISO-code of the currency and the name of the unit.
+
+|prices.rrp.minimumOrderQuantity
+|Contains the minimal order quantity necessary for the recommended retail price to be applicable as a string.
+
+|prices.rrp.categoryDiscount.percent
+|Contains the percentage of the category discount.
+
+|prices.rrp.categoryDiscount.amount
+|Contains the value of the category discount.
+|===
+
+== Properties
+
+The following table lists the result fields pertaining to properties.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|properties[0].texts
+|Contains the text entered for the property. Returns Null if not applicable.
+
+|properties[0].property.surcharge
+|Contains the surcharge for the property.
+
+|properties.0].property.isShownOnItemList
+|Contains a Boolean that returns true if the property is visible in the item list.
+
+|properties[0].property.isShownInPdf
+|Contains a Boolean that returns true if the property is visible in PDF documents.
+
+|properties[0].property.unit
+|Contains the unit of the property. Returns Null if not applicable.
+
+|properties[0].property.names.name
+|Contains the name of the property.
+
+|properties[0].property.names.description
+|Contains the description of the property.
+
+|properties[0].property.names.lang
+|Contains the language of the name and the description of the property.
+
+|properties[0].property.names.propertyId
+|Contains the id of the property.
+
+|properties[0].property.isShownAtCheckout
+|Contains a Boolean that returns true if the property is displayed in the checkout.
+
+|properties[0].property.valueType
+|Contains the type of the property, e.g. text.
+
+|properties[0].property.isOderProperty
+|Contains a Boolean that returns true if the property is configured as an order property.
+
+|properties[0].property.isShownAsAdditionalCosts
+|Contains a Boolean that returns true if the property surcharge is displayed as VAT-free additional costs.
+
+|properties[0].property.propertyGroupId
+|Contains the id of the property group the property belongs to. Returns Null if the property is not linked to a property group.
+
+|properties[0].property.backendName
+|Contains the backend name of the property.
+
+|properties[0].property.isShownOnItemPage
+|Contains a Boolean that returns true if the property is displayed on the single item view.
+
+|properties[0].property.comment
+|Contains the comment text of the property.
+
+|properties[0].property.id
+|Contains the id of the property.
+
+|properties[0].property.position
+|Contains the position of the property.
+
+|properties[0].property.updatedAt
+|Contains the timestamp of when the property was last updated.
+|===
+
+== Sales prices
+
+The following table lists the result fields pertaining to sales prices.
+
+[cols="1,3"]
+|===
+|Result field |Description
+|salesPrices[0].isDisplayedByDefault
+|Contains a Boolean that returns true if the respective sales price is displayed by default.
+
+|salesPrices[0].createdAt
+|Contains the timestamp of when the sales price was created.
+
+|salesPrices[0].names.nameInternal
+|Contains the backend name of the sales price.
+
+|salesPrices[0].names.nameExternal
+|Contains the frontend name of the sales price.
+
+|salesPrices[0].names.lang
+|Contains the language of the names of the sales price.
+
+|salesPrices[0].names.priceId
+|Contains the id of the sales price.
+
+|salesPrices[0].minimumOrderQuantity
+|Contains the minimum order quantity necessary for the price to be available.
+
+|salesPrices[0].price
+|Contains the item price in the respective sales price version.
+
+|salesPrices[0].id
+|Contains the id of the sales price. This holds the same information as salesPrices[0].names.priceId.
+
+|salesPrices[0].type
+|Contains the type of the sales price, i.e. default, rrp, specialOffer or setPrice.
+
+|salesPrices[0].isLiveConversion
+|Contains a Boolean that returns true if live conversion is activated for the sales price.
+|===
+
+== Tags
+
+The following table lists the result fields pertaining to tags that are linked to items.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|tags[0].names.name
+|Contains the name of the tag.
+
+|tags[0].names.lang
+|Contains the language of the name of the tag.
+
+|tags[0].names.id
+|Contains the id of the tag.
+|===
+
+== Units
+
+The following table lists the result fields pertaining to the unit of the item.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|unit.unitOfMeasurement
+|Contains the ISO-code of the unit of measurement.
+
+|unit.createdAt
+|Contains the timestamp of when the unit was created.
+
+|unit.names.name
+|Contains the name of the unit.
+
+|unit.names.unitId
+|Contains the id of the unit.
+
+|unit.names.lang
+|Contains the language of the name of the unit.
+
+|unit.id
+|Contains the id of the unit. This is equivalent to the information contained in unit.names.unitId
+
+|unit.position
+|Contains the position of the unit.
+
+|unit.isDecimalPlacesAllowed
+|Contains a Boolean that returns true if the unit allows the use of decimal places in its quanitification.
+
+|unit.content
+|Contains the number of units.
+
+|unit.updatedAt
+|Contains the timestamp of when the unit was last updated.
+|===
+
+== Variation information
+
+The following table lists the result fields pertaining to variations of an item.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|variation.intervalOrderQuantity
+|Contains the interval order quantity of the variation.
+
+|variation.stockLimitation
+|Contains an the variation's stock limitation. 0 = None, 1 = To net stock, 2 = Do not administer stock for this variation.
+
+|variation.minimumOrderQuantity
+|Contains the minimum order quantity of the variation.
+
+|variation.isUnavailableIfNetStockIsNotPositive
+|Contains a Boolean that states whether the variation is unavailable if the net stock is not positive.
+
+|variation.packingUnits
+|Contains the number of packing units of the variation.
+
+|variation.purchasePrice
+|Contains the net purchase price of the variation.
+
+|variation.isActive
+|Contains a Boolean that returns true when the variation is active.
+
+|variation.widthMM
+|Contains the width of the variation in millimeter.
+
+|variation.number
+|Contains the variation number as defined in the variation's basic settings.
+
+|variation.createdAt
+|Contains the timestamp of when the variation was created.
+
+|variation.availableUntil
+|Contains the timestamp of when the variation will become unavailable.
+
+|variation.isInvisibleIfNetStockIsNotPositive
+|Contains a Boolean that returns true when the variation is invisible if its net stock is not positive.
+
+|variation.weightG
+|Contains the variation's weight in gramme.
+
+|variation.customs
+|Contains the value in percent for customs.
+
+|variation.model
+|Contains the model name of the variation.
+
+|variation.id
+|Contains the variation id.
+
+|variation.updatedAt
+|Contains the timestamp of when the variation was last updated.
+
+|variation.extraShippingCharge1
+|Contains the first extra shipping charge in the standard currency of your plentymarkets system.
+
+|variation.extraShippingCharge2
+|Contains the second extra shipping charge in the standard currency of your plentymarkets system.
+
+|variation.isMain
+|Contains a Boolean that returns true if the current variation is the main variation.
+
+|variation.picking
+|Contains the order picking settings for the variation.
+
+|variation.palletTypeId
+|Contains the id of the pallet type.
+
+|variation.isVisibleIfNetStockIsPositive
+|Contains a Boolean that returns true when the variation is visible if its net stock is positive.
+
+|variation.itemId
+|Contains the id of the item the variation derives from.
+
+|variation.operatingCosts
+|Contains the variations operating costs in percent.
+
+|variation.mainWarehouseId
+|Contains the id of the variation's main warehouse.
+
+|variation.name
+|Contains the name of the variation.
+
+|variation.activeChildren
+|Contains the number of active child variations.
+
+|variation.position
+|Contains the position of the variation.
+
+|variation.mayShowUnitPrice
+|Contains a Boolean that returns true if the unit price is displayed.
+
+|variation.releasedAt
+|Contains the variation's release date and time.
+
+|variation.weightNetG
+|Contains the variation's net weight in gramme.
+
+|variation.transportationCosts
+|Contains the variation's transportation costs.
+
+|variation.packingUnitTypeId
+|Contains the id of the variation's packing unit type.
+
+|variation.isAvailableIfNetStockIsPositive
+|Contains a Boolean that returns true if the variation is available if the net stock is positive.
+
+|variation.isHiddenInCategoryList
+|Contains a Boolean that returns true if the variation is hidden in the category list.
+
+|variation.availability.averageDays
+|Contains the average number delivery period of the variation in days.
+
+|variation.availability.names.name
+|Contains the name of the variation's availability.
+
+|variation.availability.names.lang
+|Contains the language of the name of the variation's availability.
+
+|variation.availability.id
+|Contains the id of the variation's availability.
+
+|variation.availability.id
+|Contains the id of the variation's availability.
+
+|variation.bundleType
+|Returns "bundle_item" if the variation is part of an item bundle.
+
+|variation.maximumOrderQuantity
+|Contains the maximum order quantity of the variation.
+
+|variation.unitsContained
+|Contains the number of units contained in the variation, as per the settings in the dimensions area in the backend.
+
+|variation.salesRank
+|Contains the sales rank of the variation, from which the position in the top seller list is derived.
+
+|variation.heightMM
+|Contains the height of the variation in millimeter.
+
+|variation.externalId
+|Contains the external id of the variation.
+
+|variation.priceCalculationId
+|Contains the id of the price calculation. Returns null if no price calculation has been selected.
+
+|variation.defaultShippingCosts
+|Contains the default shipping costs of the variation.
+
+|variation.lengthMM
+|Contains the length of the variation in millimeter.
+
+|variation.storageCosts
+|Contains the storage costs of the variation.
+
+|variation.movingAveragePrice
+|Contains the moving average purchase net price of the variation.
+
+|variation.movingAveragePrice
+|Contains the moving average purchase net price of the variation.
+|===
+
+== Variation property groups
+
+The following table lists the result fields pertaining to variation
+property groups.
+
+[cols="1,3"]
+|===
+|Result field |Description
+
+|variationPropertyGroups[0].names.name
+|Contains the name of the property group.
+
+|variationPropertyGroups[0].names.description
+|Contains the description of the property group.
+
+|variationPropertyGroups[0].names.lang
+|Contains the language of the name and the description of the property group.
+
+|variationPropertyGroups[0].id
+|Contains the id of the property group.
+
+|variationPropertyGroups[0].position
+|Contains the position of the property group.
+|===
+
+=== A schematic overview of containers on the Ceres homepage
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/ceres-homepage-containers.png[image]

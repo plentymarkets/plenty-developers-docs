@@ -1,0 +1,95 @@
+= Validating addresses in template plugins
+
+Template plugins that want to validate address fields using the validators in *IO* must have a configuration file following certain rules. IO can get the configuration values set in the template plugin and validate addresses based on these settings. The easiest way to do this is to copy part of the `config.json` file of *Ceres* and edit the code. Then, the namespace of the template plugin must be specified in *IO*.
+
+. Go to *Plugins » Plugin overview*.
+. Click on *IO*. +
+→ The plugin will open.
+. Click on *Configuration* in the directory tree. +
+→ The *Template* tab will open.
+. Enter the namespace of your template plugin.
+. *Save* the settings.
+
+== Example code of the configuration
+
+[source,php]
+----
+...
+
+{
+    "tab"                                   : "Checkout and My account",
+    "key"                                   : "billing_address.require",
+        "label"                             : "Enable invoice address field validation",
+        "type"                              : "multi_select",
+        "possibleValues"                    :
+            {
+                "billing_address.name1"     : "Company",
+                "billing_address.vatNumber" : "VAT number",
+                "billing_address.birthday"  : "Date of birth",
+                "billing_address.name4"     : "Name affix",
+                "billing_address.address3"  : "Additional address 1 / Building name",
+                "billing_address.address4"  : "Additional address 2",
+                "billing_address.stateId"   : "State"
+
+            },
+        "default"                           : "billing_address.birthday, billing_address.name4, billing_address.address3, billing_address.address4"
+},
+
+...
+----
+
+The values specified under `possibleValues` will be validated with the help of the `BillingAddressValidator` of *IO*.
+
+== Example code of the validator
+
+[source,php]
+----
+<?php
+
+namespace IO\Validators\Customer;
+
+use Plenty\Validation\Validator;
+use IO\Services\TemplateConfigService;
+
+class BillingAddressValidator extends Validator
+{
+    private $requiredFields;
+
+    public function defineAttributes()
+    {
+        /**
+         * @var TemplateConfigService $templateConfigService
+         */
+        $templateConfigService = pluginApp(TemplateConfigService::class);
+        $requiredFieldsString  = $templateConfigService->get('billing_address.require');
+        $this->requiredFields  = explode(', ', $requiredFieldsString);
+        foreach ($this->requiredFields as $key => $value)
+        {
+            $this->requiredFields[$key] = str_replace('billing_address.', '', $value);
+        }
+
+        $this->addString('name2',      true);
+        $this->addString('name3',      true);
+        $this->addString('address1',   true);
+        $this->addString('address2',   true);
+        $this->addString('postalCode', true);
+        $this->addString('town',       true);
+
+        if(count($this->requiredFields))
+        {
+            $this->addString('name1',     $this->isRequired('name1'));
+            $this->addString('vatNumber', $this->isRequired('vatNumber'));
+            $this->addString('birthday',  $this->isRequired('birthday'));
+            $this->addString('name4',     $this->isRequired('name4'));
+            $this->addString('address3',  $this->isRequired('address3'));
+            $this->addString('address4',  $this->isRequired('address4'));
+            $this->addString('stateId',  $this->isRequired('stateId'));
+        }
+    }
+
+    private function isRequired($fieldName)
+    {
+        return in_array($fieldName, $this->requiredFields);
+    }
+}
+----

@@ -1,0 +1,17 @@
+= Adding a custom address field
+
+If you want to add one or multiple custom address fields to the address form of the template plugin *Ceres*, you can use the link:/dev-doc/template-containers#container-table[template container] *Additional address fields*. Create a plugin that provides the data to be displayed in the container, e.g. with the help of this link:/tutorials/container[tutorial]. Then add the following code to the `.twig` template:
+
+[source,twig]
+----
+<div class="col-xs-12 col-sm-4">
+    <div class="input-unit" data-validate="text">
+        <input type="text" name="town" id="txtPackstationNo${_uid}" v-model="addressData.packstationNo">
+        <label for="txtPackstationNo${_uid}">Packstation</label>
+    </div>
+</div>
+----
+
+In the example, we add another input field for the packstation number. Refer to the link:/api-doc/Account[Address] model to find an overview of available fields. We also want to make this field a required field and validate the input. To do so, we add `data-validate="text"` for the property of the `String` type.
+
+You can also check out the `AddressInputGroupDE.twig` file in the link:https://github.com/plentymarkets/plugin-ceres/blob/stable/resources/views/Customer/Components/AddressInputGroup/AddressInputGroup.twig[Ceres] template for further reference.
