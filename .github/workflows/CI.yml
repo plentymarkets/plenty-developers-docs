@@ -46,6 +46,8 @@ jobs:
         run: |
           # Move index to build directory
           mv index.html ./build/index.html
+          # Create REST directory
+          mkdir ./build/rest-api/
           # Move REST docs to build directory
           mv ./api-doc/plentymarkets/openApiV3/openApiV3WithExamples.min.json ./build/rest-api/
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
