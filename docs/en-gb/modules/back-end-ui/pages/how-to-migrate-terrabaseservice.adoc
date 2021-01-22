@@ -1,0 +1,42 @@
+= How to migrate from TerraBaseService
+
+The following paragraphs will offer a step-by-step guide on how to replace the deprecated *TerraBaseService* as well as angular's http package (@angular/http) with the functionality mostly provided by angular’s *HttpClient* (@angular/common/http).
+
+In addition to this document, we highly recommend to read https://angular.io/guide/http[angular's complete guide] on the usage of the HttpClient.
+
+== Steps
+
+. Remove or replace the extension to *TerraBaseService*.
+.. In case you are not using any caching functionality such as handleLocalDataModelGet, remove the complete extension.
+.. In case you are using any caching functionality, please replace *TerraBaseService* with *ModelCache*. +
+This class is a one-to-one replacement for all the caching functionality originally provided by the *TerraBaseService*.
+. Remove all occurrences of this.setAuthorization() method calls. Authorisation is now handled automatically using an https://angular.io/api/common/http/HttpInterceptorHttpInterceptor[HttpInterceptor].
+*Important*: Setting the headers in the request’s options can be omitted in most of the cases since all mandatory information are added automatically! If you explicitly need to modify the headers of the request, please review link:https://angular.io/guide/http#http-headers[these information] beforehand.
+. Remove injection of the *TerraLoadingSpinnerService*. Another *HttpInterceptor* now takes care of starting and stopping the loading spinner.
+. Replace occurrences of the class **Http**__(@angular/http)__ with *HttpClient* _(@angular/common/http)_.
+. Create a [.underline]#private readonly# property named url to provide the URL to the rest endpoint previously passed as third argument to the constructor of the *TerraBaseService*, e.g.
++
+[source,typescript]
+----
+private readonly url:string = '/rest/webstores';
+----
+. Remove the call to the base class’s constructor aka super(), as long as you are not using any caching functionality. +
+Your service’s constructor should now look similar to the following
++
+[source,typescript]
+----
+constructor(private http:HttpClient) {}
+----
+. Remove all calls to this.mapRequest(). Parsing the data to a JSON-Object is now automatically handled by the HttpClient itself. +
+If the body of your request’s response should not be parsed to a JSON-Object, please see link:https://angular.io/guide/http#requesting-non-json-data[this page] for further instruction.
+. Type your responses by passing a type to the HttpClient method's type parameter, e.g.
++
+[source,typescript]
+----
+this.http.get< PluginSetInterface>(this.url + '/' + webstoreId + '/plugin_set')
+----
++
+For more details see link:https://angular.io/guide/http#requesting-a-typed-response[this page].
+. Replace occurences of the this.createUrlSearchParams() method calls with calls to the new utility function createHttpParams() provided by _@plentymarkets/terra-components_. Make sure to pass the instance of *HttpParams* to the params property of the request’s option. For simple use cases, please consider using angular’s build in ways to append query strings to the URL (see link:https://angular.io/guide/http#url-query-strings[this page]).
+
+For more specific use cases or advanced usages, either see the link:https://angular.io/guide/http#advanced-usage[advanced usage section] of angular’s official guide covering the HttpClient or get in touch with one of the members of the terra team.
