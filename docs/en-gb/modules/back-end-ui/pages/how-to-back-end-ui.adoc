@@ -1,3 +1,265 @@
 = How to create a back end UI
 
-See tutorial "My first back end view"
+In this how-to guide, you will learn how to create a back end UI by using Angular.
+In the first part, you will be shown how to start an Angular UI project for your plugin.
+
+The instructions given on this page require that you have
+//ADD new links
+xref:https://developers.plentymarkets.com/dev-doc/basics#ide-support[established your IDE] and have xref:https://developers.plentymarkets.com/tutorials/helloworld#introduction[created your first plugins].
+
+If you're new to Angular, check out the link:https://angular.io/tutorial[angular.io tutorial: Tour of Heroes^].
+
+== Downloading the plugin
+
+First of all, you need to download the *Terra-Basic* plugin, which you will use as a template throughout this how-to guide. It includes a basic Angular application and all packages you’re going to use. The Terra Components are already installed as well.
+//Insert link when TC documentation is up to date again <<#_terra_components, Terra Components>>
+
+Download or clone the plugin on link:https://github.com/plentymarkets/plugin-terra-basic[GitHub^].
+
+== Setting up Node.js
+
+*Node.js* is required to compile the project. To set it up, proceed as follows:
+
+. Install the link:https://nodejs.org/en/download/[LTS version^].
+. Open your command line. This is the terminal on macOS and Linux, or the Command Prompt on Windows.
+. Run *node -v*.
+
+If you receive a version number as output, node.js has been installed. It should look something like this:
+
+.Version-number
+       `v14.15.4`
+
+== Compiling the project
+
+To compile the project, carry out the following steps:
+
+. Change directory to the directory of your project.
+. Run `npm install`. +
+→ All dependencies of the package.json file are installed.
+. Run `npm start`. +
+→ The project is compiled and shown in your browser on *localhost:3002*.
+
+You can change the port in the file `/plugin-terra-basic/config/webpack.dev.js`.
+
+== Creating the PHP environment
+
+Now you need to employ the UI part in the PHP environment. For this, use the compiled Plugin Terra-Basic as UI part in your plugin and proceed as follows:
+
+. To compile the UI project, run `npm run build`. +
+→ The `dist` directory is created with the compiled files in it.
+. Copy and paste the content of the `dist` directory to your plugin project's `ui` directory.
+
+Once you have completed these steps, set up the `ui.json` file with actions for the different views.
+
+For being able to test your copied UI within the plugin, you can install the extension link:https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf[Allow-Control-Allow-Origin^] in the Chrome browser.
+// ADD NEW LINK
+Alternatively, you can use the xref:https://developers.plentymarkets.com/tools/plentydevtool-introduction[plentyDevTool] to test the UI in any browser.
+
+== Creating the ui.json
+
+Next, create the ui.json
+
+.ui.json
+[source,json]
+----
+include::example$ui.json[]
+----
+
+Once you have reached this part of the how-to guide, you are done with all preparatory steps and can now start implementing the plugin’s functionality.
+
+== Setting up a local test environment
+
+In the next step, set up a local test environment. This will allow you to check the UI in the browser. To do so, proceed as follows:
+
+. Open your IDE.
+. Go to *File » Open*.
+. Open the *Plugin-Terra-Basic* folder.
+
+For the actual setup, carry out the following steps:
+
+. Open the terminal.
+. Run the command `cd /your-dir/plugin-terra-basic` to navigate to the Plugin-Terra-Basic directory.
+. Run `npm install` to install all required packages. This may take some time.
+. Run `ng serve` to start your local test server.
+
+You can now view your project in your browser on *localhost:3002*. You can change the port in the file */plugin-terra-basic/angular.json*.
+
+.Plugin Terra-Basic
+image::plugin-terra-basic-overview.png[Plugin Terra-Basic overview,640,360]
+
+// NOT UP TO DATE === Terra Components
+
+//The `Terra-Components` have been developed for the Terra back end of plentymarkets. The `Terra-Components` are in constant development.
+//TO DO: insert link of new TC documentation
+//xref:https://developers.plentymarkets.com/terra-doc/icons[Terra icons]
+//link:https://material.io/resources/icons/?style=baseline[Material icons^]
+//link:https://www.npmjs.com/package/@plentymarkets/terra-components[Npm^]
+//link:https://github.com/plentymarkets/terra-components[Github^]
+
+//If you have any issues with the Terra-Components, the fastest way to get a response from the Terra dev team is to create an issue in the link:https://github.com/plentymarkets/terra-components/issues[GitHub repository^].
+
+== Creating a new view
+
+To create a new view, use link:https://angular.io/cli[`angular’s cli`^].
+If you have globally installed the cli, you can use it with `ng [command] [parameter]`. Otherwise, you can use it via `npx ng [command] [parameter]`.
+
+=== NgModule
+
+`NgModule` defines a module that contains components, directives, pipes and providers. If you use `angular cli` to create components, directives etc. the entries are added automatically. Otherwise, you have to add it manually in the right section.
+
+=== Creating a new component
+
+In the next step, create a new component and add it to the routing file and the menu so it can be accessed in the UI.
+To do so, proceed as follows:
+
+. Run the command `ng generate component view/my-new-view`. +
+→ This command generates all necessary files in `plugin-terra-basic/src/app/views/my-new-view` and adds the component to the closest module - in this case `PluginTerraBasicModule`.
+
+The following files will be generated:
+* my-new-view.component.html -> Template file for your html Code
+* my-new-view.component.scss -> Styles for your template. Supports scss Format. Delete this and the `styleUrls` entry in the .ts file if you have no custom styles.
+* my-new-view.component.spec.ts -> File for unit testing
+* my-new-view.component.ts -> Here goes your view logic
+
+The generated code.ts file looks like the following:
+
+.my-new-view.component.ts
+[source,ts]
+----
+include::example$my-new-view.component.ts[]
+----
+
+== Navigation
+
+Next, implement some logic to navigate to a different view. You need to create a new route for this. To do so, proceed as follows:
+
+. Open `src/app/plugin-terra-basic.routing.ts`.
+. Add the following to the `plugin-terra-basic.routing.ts` right after the entry for `ExampleViewComponent`.
+
+.plugin-terra-basic.routing.ts
+[source,ts]
+----
+include::example$plugin-terra-basic.routing.ts[]
+----
+
+=== Adding a menu entry
+
+To create a new menu entry, use `TerraNodeTree`. This component defines a tree structure made up of nodes that can be used to render a multi-level menu tree.
+
+To do so, add the following to the ngOnInit() method in `main-menu.component.ts`.
+The menu entries are shown in the order in which they are added.
+
+.main-menu.component.ts
+[source,ts]
+----
+include::example$main-menu.component.ts[]
+----
+
+=== Adding table and filter
+
+Next, add a table and a filter that will appear when clicking on your new menu entry.
+To do so, the following steps are necessary:
+
+. Open `src/app/views/my-new-view/my-new-view.component.htm`.
+. Replace the automatically generated html code with the one shown below. The `terra-2-col` tag separates the screen into two parts (left and right).
+
+.my-new-view.component.html
+[source,html]
+----
+include::example$my-new-view.component.html[]
+----
+
+=== Adding a service
+
+In this step you will create a service to provide your table with data from the database.
+
+Open the `src/app/services` folder. It already contains the `contact.service.ts` file. To create a new service you can use `ng generate service` and then enter `services/contact` when prompted for a name, or by creating it manually. When using the generate option, you will also be provided with a spec file which you can use to create tests.
+
+.src/app/services/contact.service.ts
+[source,ts]
+----
+include::example$contact-service.ts[]
+----
+
+To use the service and be able to send REST calls, you need to get an authentication token.
+To do so, proceed as follows:
+
+. Log in to your plentymarkets system.
+. Open your browser dev tools.
+. Right click and click on `Inspect`.
+. Go to `Application`.
+. Open `Local Storage`.
+. Click on your connection example: http://master.login.plentymarkets.com. +
+→ This will open a list where you can copy the `accessToken`.
+. Open `plugin-terra-basic.component.ts` and go to `line 17`.
+. Paste the copied token into the `accessToken` variable. +
+*_Tip:_* To avoid errors while accessing the `accessToken`, use the <<#_enabling_cross_origin, Allow-Control-Allow-Origin plugin>>. +
+→  You are ready to use the service.
+
+[TIP]
+.Token changes when login expires
+====
+Note that the token will change every time your login session expires. This means you may have to repeat this step several times during the course of development.
+====
+
+=== Linking your service to the module
+
+If you used the generate option, the service should be added to the module automatically.
+If not, you may need to add it to the `NgModule` manually.
+
+.src/app/plugin-terra-basic.module.ts
+[source,ts]
+----
+include::example$plugin-terra-basic.module.ts[]
+----
+
+<1> Import the service.
+<2> Add the service to providers.
+
+=== Using the DataSource for the Plugin Terra-Basic
+
+The Terra-Components provide you with the base class of a fully functional DataSource that can be used in the DataSource for your table. It’s called *TerraTableDataSource*.
+To use it, proceed as follows:
+
+. Provide a generic type for it.
+. Inject the service from which you will get the data in your created data-sources constructor.
+. In the request method of your DataSource, return an observable of the type *TerraPagerInterface*<type specified for the DataSource> if you want a paginated result or just of the generic type which emits your data. +
+→ Later, you can use this DataSource in your mat-table to display your data.
+
+An example is provided in the plugin Terra-Basic:
+
+.src/app/views/example/overview/table/contacts-data-source.ts
+[source,ts]
+----
+include::example$contacts-data-source.ts[]
+----
+
+== Enabling cross origin
+
+If you get errors due to cross origin resource sharing, you need to allow it by using a plugin. For example the *Allow-Control-Allow-Origin* in Chrome. Activate the plugin and allow all resources from your test system domain.
+
+.Enable cross origin
+image::enable-cross-origin.png[Enable cross origin,640,360]
+
+At this point of the how-to guide, your Angular UI should look like this:
+
+.Plugin Terra-Basic
+image::plugin-terra-basic.png[Plugin Terra-Basic,640,360]
+
+== Disabling back end caching
+
+To disable caching in the plentymarkets back end, carry out the following steps:
+
+. Go to *Setup » Settings » Developer*.
+. In the *Run backend without PHP-OPcache* section, switch on the toggle. +
+→ The cache is disabled.
+
+A red label in the bottom left corner indicates that the cache is disabled. To enable caching again, switch off the toggle or hover over the label and click on *Close*.
+
+== Find out more
+
+If you want to find out more, refer to the information listed below.
+
+Download or clone the complete plugin guide at link:https://github.com/plentymarkets/plugin-terra-basic[Github^].
+
+Find a public repository with a link:https://github.com/plentymarkets/plugin-etsy-ui[plugin written in Angular^]. You can find the corresponding `ui.json` in the main link:https://github.com/plentymarkets/plugin-etsy[Etsy plugin^].
