@@ -40,7 +40,7 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           # Clone API repository
-          git clone plentymarkets/api-doc ./api-doc
+          git clone https://github.com/plentymarkets/api-doc.git ./api-doc
           
       - name: Assemble site
         run: |
