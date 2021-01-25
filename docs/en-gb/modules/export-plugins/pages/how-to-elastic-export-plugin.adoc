@@ -1,0 +1,666 @@
+= A basic export format plugin
+
+In this tutorial, you will develop a basic plugin to integrate an export format in plentymarkets. The plugin will enable the user to export data using the well-known processes within the plentymarkets elastic export.
+
+https://github.com/plentymarkets/plugin-export-format-tutorial[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+
+== Step 1: Creating the plugin files
+
+The plugin needs to be organised in a specific structure. You need the `src` folder for your plugin. The `src` folder can be organised in sub-folders and contains the `ExportFormatServiceProvider.php`, the `ExportFormatGenerator.php` and the `ExportFormatResultField.php`. The `ExportFormatServiceProvider.php` is needed for registering the plugin in plentymarkets.
+
+All information about the plugin is defined in the link:/dev-doc/basics#plugin-information[plugin.json] file. This file defines the service provider of your plugin, which will be called by plentymarkets to register and run your plugin.
+
+[source]
+----
+PluginExportFormatTutorial/
+    ├── meta/
+    │   ├── documents/
+    │   │   └── changelog_de.md
+    │   │   └── changelog_en.md
+    │   │   └── user_guide_de.md
+    │   │   └── user_guide_en.md
+    │   │
+    │   └── images/
+    │       └── icon_author_md.png
+    │       └── icon_author_sm.png
+    │       └── icon_author_xs.png
+    │       └── icon_plugin_md.png
+    │       └── icon_plugin_sm.png
+    │       └── icon_plugin_xs.png
+    │
+    ├── src/
+    │   ├── Generator/
+    │   │   └── ExportFormatGenerator.php
+    │   │
+    │   ├── ResultField/
+    │   │   └── ExportFormatResultFields.php
+    │   │
+    │   └── ExportFormatServiceProvider.php
+    │
+    ├── LICENSE.json // license information
+    ├── plugin.json // plugin information
+    └── README.md // plugin README file
+----
+
+== Step 2: Filling the source files
+
+This plugin consists of four files in total. One JSON file, the `plugin.json`, and three PHP files, a *ServiceProvider*, a *Generator* and a *ResultField*. You will also need a `config.json` as well as a *ServiceProvider*. Create these files and copy the code examples. Start by creating the `plugin.json` file.
+
+=== Code for the plugin.json
+
+.PluginExportFormatTutorial/plugin.json
+[source,json]
+----
+{
+    "name": "PluginExportFormatTutorial",
+    "namespace": "PluginExportFormatTutorial",
+    "type": "export",
+    "version": "1.0.0",
+    "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007",
+    "pluginIcon": "icon_plugin_md.png",
+    "price": 0.00,
+    "description": "This plugin adds the format ExportFormat to the Elastic Export.",
+    "shortDescription": {
+        "de": "Ein einfaches Exportformat-Plugin.",
+        "en": "A basic export format plugin."
+    },
+    "categories": [
+        "3523"
+    ],
+    "marketplaceName": {
+        "de":"Exportformat-Tutorial",
+        "en":"Export format tutorial"
+    },
+    "require": [
+        "ElasticExport"
+    ],
+    "author": "plentymarkets GmbH",
+    "authorIcon": "icon_author_xs.png",
+    "serviceProvider": "PluginExportFormatTutorial\\ExportFormatServiceProvider",
+    "keywords": [
+        "plugin",
+        "export",
+        "format",
+        "tutorial"
+    ]
+}
+----
+
+The plugin is of the `export` type. A list of keywords describing the plugin is entered under `keywords`.
+
+=== Code for the ServiceProvider
+
+.PluginExportFormatTutorial/src/ExportFormatServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace PluginExportFormatTutorial;
+
+use Plenty\Modules\DataExchange\Services\ExportPresetContainer;
+use Plenty\Plugin\ServiceProvider;
+
+/**
+ * Class ExportFormatServiceProvider
+ * @package PluginExportFormatTutorial
+ */
+class ExportFormatServiceProvider extends ServiceProvider
+{
+    /**
+     * Abstract function for registering the service provider.
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Adds the export format to the export container.
+     *
+     * @param ExportPresetContainer $container
+     */
+    public function boot(ExportPresetContainer $container)
+    {
+        $container->add(
+            'ExportFormat',
+            'PluginExportFormatTutorial\ResultField\ExportFormatResultFields',
+            'PluginExportFormatTutorial\Generator\ExportFormatGenerator',
+            '',
+            true,
+            true,
+            'item'
+        );
+    }
+}
+----
+
+In the first part of the *ServiceProvider*, include `use`, a service that allows to register different methods of this export format service provider for usage in the plentymarkets elastic export.
+
+In the second part of the code, there is a list of functions, e.g. the `boot` function. This function adds the export format to the list of formats within the elastic export using the *ExportPresetContainer* with its parameters `exportKey`, `resultfieldsClass`, `generatorClass`, `filterClass`, `isPlugin`, `generatorExecute` and `exportType`.
+
+=== Code for the ResultField
+
+.PluginExportFormatTutorial/src/ResultField/ExportFormatResultFields.php
+[source,php]
+----
+<?php
+
+namespace PluginExportFormatTutorial\ResultField;
+
+use Plenty\Modules\Cloud\ElasticSearch\Lib\Source\Mutator\BuiltIn\LanguageMutator;
+use Plenty\Modules\DataExchange\Contracts\ResultFields;
+use Plenty\Modules\Helper\Services\ArrayHelper;
+use Plenty\Modules\Item\Search\Mutators\BarcodeMutator;
+use Plenty\Modules\Item\Search\Mutators\ImageMutator;
+use Plenty\Modules\Item\Search\Mutators\KeyMutator;
+use Plenty\Modules\Helper\Models\KeyValue;
+
+/**
+ * Class ExportFormatResultFields
+ * @package PluginExportFormatTutorial\ResultField
+ */
+class ExportFormatResultFields extends ResultFields
+{
+    const DEFAULT_MARKET_REFERENCE = 100.00;
+
+    /**
+     * @var ArrayHelper
+     */
+    private $arrayHelper;
+
+    /**
+     * ExportFormatResultFields constructor.
+     * @param ArrayHelper $arrayHelper
+     */
+    public function __construct(ArrayHelper $arrayHelper)
+    {
+        $this->arrayHelper = $arrayHelper;
+    }
+
+    /**
+     * Creates the fields set to be retrieved from ElasticSearch.
+     *
+     * @param array $formatSettings
+     * @return array
+     */
+    public function generateResultFields(array $formatSettings = []):array
+    {
+        /** @var KeyValue $settings */
+        $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
+        $reference = $settings->get('referrerId') ? $settings->get('referrerId') : self::DEFAULT_MARKET_REFERENCE;
+
+        $this->setOrderByList(['variation.itemId', 'ASC']);
+
+        $itemDescriptionFields = ['texts.urlPath'];
+        $itemDescriptionFields[] = ($settings->get('nameId')) ? 'texts.name' . $settings->get('nameId') : 'texts.name1';
+
+        if($settings->get('descriptionType') == 'itemShortDescription' || $settings->get('previewTextType') == 'itemShortDescription')
+        {
+            $itemDescriptionFields[] = 'texts.shortDescription';
+        }
+
+        if($settings->get('descriptionType') == 'itemDescription'
+            || $settings->get('descriptionType') == 'itemDescriptionAndTechnicalData'
+            || $settings->get('previewTextType') == 'itemDescription'
+            || $settings->get('previewTextType') == 'itemDescriptionAndTechnicalData')
+        {
+            $itemDescriptionFields[] = 'texts.description';
+        }
+
+        if($settings->get('descriptionType') == 'technicalData'
+            || $settings->get('descriptionType') == 'itemDescriptionAndTechnicalData'
+            || $settings->get('previewTextType') == 'technicalData'
+            || $settings->get('previewTextType') == 'itemDescriptionAndTechnicalData')
+        {
+            $itemDescriptionFields[] = 'texts.technicalData';
+        }
+
+        $itemDescriptionFields[] = 'texts.lang';
+
+        // Mutators
+
+        /** @var ImageMutator $imageMutator */
+        $imageMutator = pluginApp(ImageMutator::class);
+        if($imageMutator instanceof ImageMutator)
+        {
+            $imageMutator->addMarket($reference);
+        }
+
+        /** @var LanguageMutator $languageMutator */
+        $languageMutator = pluginApp(LanguageMutator::class, [[$settings->get('lang')]]);
+
+        /** @var BarcodeMutator $barcodeMutator */
+        $barcodeMutator = pluginApp(BarcodeMutator::class);
+        if($barcodeMutator instanceof BarcodeMutator)
+        {
+            $barcodeMutator->addMarket($reference);
+        }
+
+        /** @var KeyMutator */
+        $keyMutator = pluginApp(KeyMutator::class);
+        if($keyMutator instanceof KeyMutator)
+        {
+            $keyMutator->setKeyList($this->getKeyList());
+            $keyMutator->setNestedKeyList($this->getNestedKeyList());
+        }
+
+        // Fields
+        $fields = [
+            [
+                //item
+                'item.id',
+                'item.manufacturer.id',
+
+                //variation
+                'id',
+                'variation.availability.id',
+                'variation.stockLimitation',
+                'variation.vatId',
+                'variation.model',
+                'variation.isMain',
+                'variation.number',
+
+                //images
+                'images.all.urlMiddle',
+                'images.all.urlPreview',
+                'images.all.urlSecondPreview',
+                'images.all.url',
+                'images.all.path',
+                'images.all.position',
+
+                'images.item.urlMiddle',
+                'images.item.urlPreview',
+                'images.item.urlSecondPreview',
+                'images.item.url',
+                'images.item.path',
+                'images.item.position',
+
+                'images.variation.urlMiddle',
+                'images.variation.urlPreview',
+                'images.variation.urlSecondPreview',
+                'images.variation.url',
+                'images.variation.path',
+                'images.variation.position',
+
+                //unit
+                'unit.content',
+                'unit.id',
+
+                //defaultCategories
+                'defaultCategories.id',
+
+                //allCategories
+                'ids.categories.all',
+
+                //barcodes
+                'barcodes.code',
+                'barcodes.type',
+
+                //attributes
+                'attributes.attributeValueSetId',
+                'attributes.attributeId',
+                'attributes.valueId',
+
+                //properties
+                'properties.property.id',
+                'properties.property.valueType',
+                'properties.selection.name',
+                'properties.selection.lang',
+                'properties.texts.value',
+                'properties.texts.lang'
+            ],
+            [
+                $languageMutator,
+                $barcodeMutator,
+                $keyMutator
+            ],
+        ];
+
+        // Get the associated images if reference is selected
+        if($reference != -1)
+        {
+            $fields[1][] = $imageMutator;
+        }
+
+        foreach($itemDescriptionFields as $itemDescriptionField)
+        {
+            //texts
+            $fields[0][] = $itemDescriptionField;
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Returns predefined keys to make sure that they will be available in the feed.
+     *
+     * @return array
+     */
+    private function getKeyList()
+    {
+        return [
+            // Item
+            'item.id',
+            'item.manufacturer.id',
+            'item.conditionApi',
+
+            // Variation
+            'variation.availability.id',
+            'variation.model',
+            'variation.releasedAt',
+            'variation.stockLimitation',
+            'variation.weightG',
+            'variation.number',
+
+            // Unit
+            'unit.content',
+            'unit.id',
+
+            'ids.categories.all',
+        ];
+    }
+
+    /**
+     * Returns the predefined nested keys to make sure that they will be available in the feed.
+     *
+     * @return array
+     */
+    private function getNestedKeyList()
+    {
+        return [
+            'keys' => [
+                // Attributes
+                'attributes',
+
+                // Barcodes
+                'barcodes',
+
+                // Default categories
+                'defaultCategories',
+
+                // Images
+                'images.all',
+                'images.item',
+                'images.variation',
+            ],
+
+            'nestedKeys' => [
+                // Attributes
+                'attributes' => [
+                    'attributeValueSetId',
+                    'attributeId',
+                    'valueId'
+                ],
+
+                // Barcodes
+                'barcodes' => [
+                    'code',
+                    'type'
+                ],
+
+                // Default categories
+                'defaultCategories' => [
+                    'id'
+                ],
+
+                // Images
+                'images.all' => [
+                    'urlMiddle',
+                    'urlPreview',
+                    'urlSecondPreview',
+                    'url',
+                    'path',
+                    'position',
+                ],
+                'images.item' => [
+                    'urlMiddle',
+                    'urlPreview',
+                    'urlSecondPreview',
+                    'url',
+                    'path',
+                    'position',
+                ],
+                'images.variation' => [
+                    'urlMiddle',
+                    'urlPreview',
+                    'urlSecondPreview',
+                    'url',
+                    'path',
+                    'position',
+                ],
+
+                // texts
+                'texts' => [
+                    'urlPath',
+                    'name1',
+                    'name2',
+                    'name3',
+                    'shortDescription',
+                    'description',
+                    'technicalData',
+                    'lang'
+                ],
+            ]
+        ];
+    }
+}
+----
+
+The `use` function employs different classes to be used in this result fields class.
+
+The main part can be found in the *generateResultFields* function. This function is being called from within the plentymarkets elastic export and defines the result fields.
+
+=== Code for the Generator
+
+.PluginExportFormatTutorial/src/Generator/ExportFormatGenerator.php
+[source,php]
+----
+<?php
+
+namespace PluginExportFormatTutorial\Generator;
+
+use ElasticExport\Helper\ElasticExportCoreHelper;
+use ElasticExport\Helper\ElasticExportPriceHelper;
+use ElasticExport\Helper\ElasticExportStockHelper;
+use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
+use Plenty\Modules\Helper\Services\ArrayHelper;
+use Plenty\Modules\Helper\Models\KeyValue;
+use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
+use Plenty\Plugin\Log\Loggable;
+
+/**
+ * Class ExportFormatGenerator
+ * @package PluginExportFormatTutorial\Generator
+ */
+class ExportFormatGenerator extends CSVPluginGenerator
+{
+    use Loggable;
+
+    /**
+     * @var ElasticExportCoreHelper $elasticExportCoreHelper
+     */
+    private $elasticExportCoreHelper;
+
+    /**
+     * @var ElasticExportPriceHelper $elasticExportPriceHelper
+     */
+    private $elasticExportPriceHelper;
+
+    /**
+     * @var ElasticExportStockHelper $elasticExportStockHelper
+     */
+    private $elasticExportStockHelper;
+
+    /**
+     * @var ArrayHelper $arrayHelper
+     */
+    private $arrayHelper;
+
+    /**
+     * ExportFormatGenerator constructor.
+     * @param ArrayHelper $arrayHelper
+     */
+    public function __construct(ArrayHelper $arrayHelper)
+    {
+        $this->arrayHelper = $arrayHelper;
+    }
+
+    /**
+     * Generates and populates the data into the CSV file.
+     *
+     * @param VariationElasticSearchScrollRepositoryContract $elasticSearch
+     * @param array $formatSettings
+     * @param array $filter
+     */
+    protected function generatePluginContent($elasticSearch, array $formatSettings = [], array $filter = [])
+    {
+        $this->elasticExportCoreHelper = pluginApp(ElasticExportCoreHelper::class);
+        $this->elasticExportPriceHelper = pluginApp(ElasticExportPriceHelper::class);
+        $this->elasticExportStockHelper = pluginApp(ElasticExportStockHelper::class);
+
+        /** @var KeyValue $settings */
+        $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
+
+        $this->setDelimiter(";");
+
+        // add header
+        $this->addCSVContent([
+            'VariationID',
+            'VariationNo',
+            'Model',
+            'Name',
+            'Description',
+            'Image',
+            'Brand',
+            'Barcode',
+            'Currency',
+            'ShippingCosts',
+            'RRP',
+            'Price',
+            'BasePrice',
+            'BasePriceUnit',
+            'Link'
+        ]);
+
+        if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
+        {
+            $limitReached = false;
+            $lines = 0;
+
+            do
+            {
+                if($limitReached === true)
+                {
+                    break;
+                }
+
+                $resultList = $elasticSearch->execute();
+
+                foreach($resultList['documents'] as $variation)
+                {
+                    if($lines == $filter['limit'])
+                    {
+                        $limitReached = true;
+                        break;
+                    }
+
+                    if(is_array($resultList['documents']) && count($resultList['documents']) > 0)
+                    {
+                        // filter manually for stock limitations
+                        if($this->elasticExportStockHelper->isFilteredByStock($variation, $filter) === true)
+                        {
+                            continue;
+                        }
+
+                        try
+                        {
+                            $this->buildRow($variation, $settings);
+                        }
+                        catch(\Throwable $exception)
+                        {
+                            $this->getLogger('PluginExportFormatTutorial')->logException($exception);
+                        }
+
+                        $lines++;
+                    }
+                }
+            } while ($elasticSearch->hasNext());
+        }
+    }
+
+    /**
+     * Builds one data row.
+     *
+     * @param array $variation
+     * @param KeyValue $settings
+     */
+    private function buildRow($variation, $settings)
+    {
+        $priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
+
+        if((float)$priceList['recommendedRetailPrice'] > 0)
+        {
+            $price = $priceList['recommendedRetailPrice'] > $priceList['price'] ? $priceList['price'] : $priceList['recommendedRetailPrice'];
+        }
+        else
+        {
+            $price = $priceList['price'];
+        }
+
+        $rrp = $priceList['recommendedRetailPrice'] > $priceList['price'] ? $priceList['recommendedRetailPrice'] : $priceList['price'];
+
+        if((float)$rrp == 0 || (float)$price == 0 || (float)$rrp == (float)$price)
+        {
+            $rrp = '';
+        }
+
+        $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
+        $deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings);
+
+        if(!is_null($deliveryCost))
+        {
+            $deliveryCost = number_format((float)$deliveryCost, 2, '.', '');
+        }
+        else
+        {
+            $deliveryCost = '';
+        }
+
+        $data = [
+            'VariationID' => $variation['id'],
+            'VariationNo' => $variation['data']['variation']['number'],
+            'Model' => $variation['data']['variation']['model'],
+            'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
+            'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
+            'Image' => $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 1, ElasticExportCoreHelper::ALL_IMAGES),
+            'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
+            'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
+            'Currency' => $priceList['currency'],
+            'ShippingCosts' => $deliveryCost,
+            'RRP' => $rrp,
+            'Price' => $price,
+            'BasePrice' => $this->elasticExportPriceHelper->getBasePrice($variation, $priceList['price'], $settings->get('lang'), '/', false, false, $priceList['currency']),
+            'BasePriceUnit' => $basePriceList['lot'],
+            'Link' => $this->elasticExportCoreHelper->getMutatedUrl($variation, $settings),
+        ];
+
+        $this->addCSVContent(array_values($data));
+    }
+}
+----
+
+Again, `use` different classes to be used in this generator.
+
+The main part can be found in the generatePluginContent function. This function is being called from within the plentymarkets elastic export and generates one or more data rows.
+
+== Deploying the plugin
+
+Finally, link:/dev-doc/basics#provisioning[deploy] the plugin in a plugin set. The new export format will be available in the elastic export menu in plentymarkets.
+
+. Go to *Plugins » Plugin overview*.
+. Select the desired plugin set.
+. Activate the plugin in the *Active* column.
+. In the toolbar, click on *Save & publish plugins*. +
+→ Once a success message is displayed, you are ready to check the output.
+
+Now you can export data using your newly added plugin code.
