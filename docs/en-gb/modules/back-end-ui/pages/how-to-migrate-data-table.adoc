@@ -2,31 +2,31 @@
 
 In order to migrate to the DataTable structure, the following steps are necessary.
 
-First of all, create a service. As an example, MyService extends TerraDataTableBaseService, which expects two interfaces specifying the type of data that is retrieved and the parameters that can be applied to the search. Type 1 is the interface of an element, e.g. when having a table of the contacts, it is the ContactInterface. Type 2 is the interface that specifies the possible search parameters, e.g. ContactsParameterInterface. For the search parameter interface you may remove `extends TerraPagerParameterInterface`. Make sure to provide the table service in the main component - not in the module.
+1. First of all, create a service. As an example, *MyService* extends *TerraDataTableBaseService*, which expects two interfaces specifying the type of data that is retrieved and the parameters that can be applied to the search. Type 1 is the interface of an element, e.g. when having a table of the contacts, it is the *ContactInterface*. Type 2 is the interface that specifies the possible search parameters, e.g. *ContactsParameterInterface*. For the search parameter interface you may remove `extends TerraPagerParameterInterface`. Make sure to provide the table service in the main component - not in the module.
 
-In the next step, implement requestTableData(), an abstract method inherited from the base class. It receives the search parameter interface and returns an Observable of the type TerraPagerInterface, which in turn is of type 1 (Contact,Address,Whatever).
+2. In the next step, implement `requestTableData()`, an abstract method inherited from the base class. It receives the search parameter interface and returns an Observable of the type *TerraPagerInterface*, which in turn is of type 1 (Contact,Address,Whatever).
 
-Then implement dataToRowMapping(), another abstract method inherited from the base class. It receives a single data object (Contact,Address,Whatever) and returns a TerraDataTableRowInterface of the type Contact,Address,Whatever. Insert the mapping logic from the directive.
+3. Then implement `dataToRowMapping()`, another abstract method inherited from the base class. It receives a single data object (Contact,Address,Whatever) and returns a *TerraDataTableRowInterface* of the type Contact,Address,Whatever. Insert the mapping logic from the directive.
 
-Further functions that are necessary for mapping the data need to be moved into the service.(It may be necessary to outsource logic such as deleting, creating etc. from the component). For all actions that are intended to happen when clicking on a row or a button in the table, create an EventEmitter in the service. This applies particularly if information (variables, instances,...) from the component are required. Then subscribe on the EventEmitter in the component and carry out the corresponding action.
+4. Further functions that are necessary for mapping the data need to be moved into the service. It may be necessary to outsource logic such as deleting, creating etc. from the component. For all actions that are intended to happen when clicking on a row or a button in the table, create an *EventEmitter* in the service. This applies particularly if information (variables, instances,...) from the component are required. Then subscribe on the *EventEmitter* in the component and carry out the corresponding action.
 
-As a next step, drag the definition of the headers from the directive into the component. Per data binding, transfer it to `inputHeaderList` in the template.
+5. As a next step, drag the definition of the headers from the directive into the component. Per data binding, transfer it to *inputHeaderList* in the template.
 
-Carry out the initialisation of the paging information (possibly pagingSizes or defaultPagingSize) and the filter parameter in the Constructor of the DataTableService.
+6. Carry out the initialisation of the paging information (possibly pagingSizes or defaultPagingSize) and the filter parameter in the Constructor of the *DataTableService*.
 
-Delete the config and the directive and remove all imports and usages. Instead of the config, inject the service wherever required.
+7. Delete the config and the directive and remove all imports and usages. Instead of the config, inject the service wherever required.
 
-Replace references on the Config’s doSearch method with MyService.getResults (in FilterComponent, DetailsComponent etc.). If loadFirstPage is given as true, it will search for the first page (useful when you click on the search button).
+8. Replace references on the Config’s *doSearch* method with `MyService.getResults` (in FilterComponent, DetailsComponent etc.). If `loadFirstPage` is given as true, it will search for the first page (useful when you click on the search button).
 
-Change the ngModel-Bindings of the Filter Component from config.filterParameter.xyz to service.filterParameter.xyz. Make sure that the instance of your service in the typescript file carries the protected access modifier to be accessible in the template.
+9. Change the ngModel-Bindings of the Filter Component from `config.filterParameter.xyz` to `service.filterParameter.xyz`. Make sure that the instance of your service in the typescript file carries the protected access modifier to be accessible in the template.
 
-The inputHasInitialLoading is omitted. Instead, in ngOnInit of the component, call the getResults() method of the service.
+10. The *inputHasInitialLoading* is omitted. Instead, in *ngOnInit* of the component, call the `getResults()` method of the service.
 
-The inputDataType is omitted (possibly delete from html).
+11. The *inputDataType* is omitted (possibly delete from html).
 
-In the Component, remove all the directive’s inputs from the DataTable’s template.
+12. In the Component, remove all the directive’s inputs from the DataTable’s template.
 
-Bind the inputService with the instance of the new DataTableService.
+13. Bind the *inputService* with the instance of the new *DataTableService*.
 
 == Best Practices
 
