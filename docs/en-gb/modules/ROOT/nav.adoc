@@ -33,9 +33,9 @@
 * xref:rest-api-guides:contact-data.adoc[How to query contact data]
 * xref:rest-api-guides:item-data.adoc[How to query item data]
 * xref:rest-api-guides:order-data.adoc[How to query order data]
-* xref:rest-api-guides:purchase-order-data.adoc[How to query purchase order data]
+* xref:rest-api-guides:purchase-orders.adoc[How to query purchase order data]
 * xref:rest-api-guides:bulk-routes.adoc[How to use bulk routes]
-* xref:master@rest-api:ROOT:index.adoc[plentymarkets REST API reference]
+* xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
 * plentyBase REST API reference
 
 .plentyShop plugins
@@ -60,7 +60,7 @@
 * xref:payment-plugins:overview.adoc[Payment plugin overview]
 
 .Shipping plugins
-* xref:shipping-plugins:how-to-shipping-plugins.adoc[Shipping plugin overview]
+* xref:shipping-plugins:how-to-shipping-plugin.adoc[Shipping plugin overview]
 
 .Export format plugins
 * xref:export-plugins:how-to-elastic-export-plugin.adoc[Elastic export plugin]
