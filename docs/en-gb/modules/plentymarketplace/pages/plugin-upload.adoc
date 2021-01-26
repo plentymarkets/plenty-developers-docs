@@ -1,0 +1,28 @@
+= Uploading plugins to plentyMarketplace
+
+If your plugin fulfils the link:/marketplace/plugin-requirements[requirements], you can upload your plugin to https://marketplace.plentymarkets.com[plentyMarketplace].
+
+First, link:/dev-doc/basics#add-repository[add] your plugin to the plentymarkets inbox and link:/dev-doc/basics#provisioning[deploy] the plugin. Then, proceed as follows to upload your plugin:
+
+. Open the plentymarkets back end.
+. Go to *Plugins » Plugin overview*.
+. Click on the plugin that you want to upload to plentyMarketplace. +
+→ A new tab will open.
+. Check the plugin information, i.e. *description*, *images*, *changelog* and *configuration*.
+. Click on *Marketplace upload*. +
+→ The *Marketplace upload* window will open.
+. Click on *Upload*. +
+→ The plugin will be uploaded to plentyMarketplace.
+. The plugin requires a review by plentymarkets. +
+→ The plugin will be made available on plentyMarketplace after the review.
+. Log in to plentyMarketplace and go to the *My Partner portal* page to check the review status of your plugin.
+
+== Uploading a new plugin version
+
+When updating a plugin, the new version of the plugin must also be uploaded. Note that the following tasks must be taken into consideration when updating a plugin:
+
+* Update the change log
+* Update the user guide
+* Update the version in the `+plugin.json+`
+* Deploy the plugin in a *plugin set*
+* Upload the plugin to plentyMarketplace

@@ -1,0 +1,170 @@
+= Containers in the Ceres template
+
+Approximately 70 containers are available on the different pages and views of the Ceres template plugin allowing you to replace existing content or display additional content. The content provided by other plugins can be integrated in the following areas of the online store:
+
+* Header and footer of the page
+* Homepage
+* Other content pages
+* Category view
+* Single item view
+* Shopping cart and shopping cart preview
+* Checkout
+* Order confirmation page
+
+== List of containers
+
+Find a detailed list of all containers in the table below:
+
+include::partial$ceres-containers.adoc[leveloffset=+1]
+
+== Containers on the homepage
+
+The *Ceres* homepage provides multiple containers which can be used to replace the content of the default homepage or add more content to the homepage. Find an overview of the homepage containers below:
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/ceres-homepage-containers.png[image]
+
+== Using containers in the template
+
+Following the tutorial above, we have learned about the plugin providing the data for our template. Now, you will learn how to use containers in template plugins.
+
+=== Container entry point
+
+The entry point of a container is defined in the `plugin.json` file of a plugin.
+
+.Ceres/plugin.json
+[source,json]
+----
+"containers"        :
+    [
+        {
+            "key"           : "Homepage.Certified",
+            "name"          : "Homepage: Certified container",
+            "description"   : "Add an icon to the certified by container on the homepage",
+            "multiple"      : false
+        }
+    ]
+----
+
+[NOTE]
+.Explanation
+====
+The `containers` key stores an array of values that consist of a `key`, a `name` and a `description` representing our containers. The content provided by our data provider, the *Placeholder* plugin, is linked to the container in this template plugin.
+
+`key` specifies the container. `name` and `description` are texts for the plentymarkets back end.
+
+`multiple` is an optional property that defines whether multiple data providers can provide content for this container. Set it to `false` if you want to display the content of the first data provider only.
+====
+
+=== Container macro
+
+The content to be displayed in a container is processed by the `show()` function in a macro. This macro is stored in the `LayoutContainer.twig` file. With the help of this macro, you can also access objects in layout containers, e.g. the `item` object in the `SingleItemView.twig` template.
+
+.Ceres/resources/views/PageDesign/Macros/LayoutContainer.twig
+[source,twig]
+----
+{% macro show( containerName, object ) %}
+    {% if object == null %}
+        {% for content in container(containerName) %}
+            {{ content.result|raw }}
+        {% endfor %}
+    {% else %}
+        {% for content in container(containerName, object) %}
+            {{ content.result|raw }}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+----
+
+=== Container in the template
+
+Our *Certified by* container is integrated into the template of *Ceres* using the following code.
+
+.Ceres/resources/views/PageDesign/Partials/Footer.twig
+[source,twig]
+----
+{% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
+
+...
+
+{% set certifiedContent = LayoutContainer.show("Ceres::Homepage.Certified") %}
+{% if certifiedContent|trim is not empty %}
+    <div class="services-certificate m-b-1">
+        <strong class="services-title">{{ trans("Ceres::Template.generalCertifiedBy") }}</strong>
+        {{ certifiedContent }}
+    </div>
+{% endif %}
+----
+
+[NOTE]
+.Explanation
+====
+A Twig function sets the variable `certifiedContent`. The variable is equal to the content of the `Homepage.Certified` container defined in the `plugin.json` file.
+
+The title of the container is displayed using the `{{ trans("Ceres::Template.generalCertifiedBy") }}` variable. The text for this variable is stored in the `Template.properties` file.
+
+The `{{ certifiedContent }}` variable is used to display the content provided by our *Placeholder* plugin below the title.
+====
+
+=== Objects in containers
+
+By using the `LayoutContainer.twig` macro, we can access objects in layout containers. We specify the object as a parameter in the container and can make use of all the information of the current object.
+
+.Ceres/resources/views/Item/SingleItem.twig
+[source,twig]
+----
+{{ LayoutContainer.show("Ceres::SingleItem.BeforePrice", item.documents[0].data) }}
+{% if ('item.recommendedPrice' in itemData or 'all' in itemData) %}
+    <div class="crossprice" v-resource-if:currentVariation="documents[0].data.calculatedPrices.rrp.price > 0">
+        <del class="text-muted small" v-resource-bind:currentVariation="documents.0.data.calculatedPrices.rrp.price" :filters="['currency']">
+            {#{{ item.data.salesPrices[1].price | formatMonetary(item.variationRetailPrice.currency) }} TODO get correct currency#}
+            {{ item.documents[0].data.calculatedPrices.rrp.price | formatMonetary(item.documents[0].data.calculatedPrices.rrp.currency) }}
+        </del>
+    </div>
+{% endif %}
+----
+
+[NOTE]
+.Explanation
+====
+Here, we specify the `item` object as the second parameter of our layout container. This allows us to use the information saved in the object for further processing, e.g. for calculating the instalments of certain payment methods.
+
+In addition to the `Item` object, other objects can be used in different layout containers. The `Order` object, for example, can be used in several containers on the order confirmation page.
+====
+
+.Ceres/resources/views/Checkout/Components/OrderDetails.twig
+[source,twig]
+----
+{{ LayoutContainer.show("Ceres::OrderConfirmation.AdditionalPaymentInformation", services.customer.getLatestOrder().order) }}
+----
+
+Here, we specify the `order` object as the second parameter of our layout container. This allows us to use the information about the latest order saved in the object for further processing.
+
+=== Additional tabs in the single item view
+
+In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs` is used for displaying one or multiple additional tabs in the view of an item in the Ceres online store. The second container `SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual link:/tutorials/container#code-placeholdercontainer[data provider] is required.
+
+.MyPlugin/resources/views/CustomTab.twig
+[source,twig]
+----
+<li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#my-custom-tab" role="tab">Custom Tab</a>
+</li>
+----
+
+Our tab is a `li` element with the class `nav-item`. If more tabs are required, further list items can be added here. In the `href` attribute, we provide a link to our tab content.
+
+.MyPlugin/resources/views/CustomTabContent.twig
+[source,twig]
+----
+<div class="tab-pane" id="my-custom-tab" role="tabpanel">
+    <div class="m-y-2">
+        Enter Custom Tab content here...
+    </div>
+</div>
+----
+
+In a second `Twig` file, we enter the content for our tab. Our container has the same ID, that is referenced in the previous code example, e.g. `id="my-custom-tab"`.
+
+=== A schematic overview of containers on the Ceres homepage
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/ceres-homepage-containers.png[image]

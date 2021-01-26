@@ -1,0 +1,176 @@
+= Introducing the plentymarkets plugin interface
+
+The plentymarkets plugin interface is a collection of interfaces representing the modules and sub-modules available in plentymarkets. The plugin interface defines the core services for plentymarkets plugins and contains all necessary methods for your plugin to communicate with plentymarkets. For each module of plentymarkets, individual interfaces are available. The documentation for these interfaces can be accessed via the *Interface* drop-down menu in the navigation bar. Learn how to integrate the plentymarkets plugin interface into your IDE to support auto-completion.
+
+// @TODO Add link above.
+.AuthHelper.php
+[source,php]
+----
+include::example$AuthHelper.php[]
+----
+
+<1> Inside the function, the process is unguarded.
+
+== Overview of interfaces
+
+Find an overview of all available interfaces below:
+
+[cols="1,3"]
+|===
+|Interface |Description
+
+|xref:stable7@docs-raw::Account.adoc[Account]
+|Contains sub-modules for *Addresses* and *Contacts*. This interface is the
+counterpart to the plentymarkets CRM module.
+
+|xref:stable7@docs-raw::Accounting.adoc[Accounting]
+|Contains a sub-module for *VAT* and classes for determining the VAT.
+
+|xref:stable7@docs-raw::Amazon.adoc[Amazon]
+|Interface for Amazon.
+
+|xref:stable7@docs-raw::Authentication.adoc[Authentication]
+|Interface for user authentication.
+
+|xref:stable7@docs-raw::Authorization.adoc[Authorization]
+|Interface for user permissions and user roles.
+
+|xref:stable7@docs-raw::Basket.adoc[Basket]
+|Contains sub-modules for determining the basket and the items within the basket.
+
+|xref:stable7@docs-raw::Blog.adoc[Blog]
+|Interface for blog posts.
+
+|xref:stable7@docs-raw::Board.adoc[Board]
+|Interface for boards.
+
+|xref:stable7@docs-raw::Catalog.adoc[Catalog]
+|Interface for the catalog.
+
+|xref:stable7@docs-raw::Category.adoc[Category]
+|Interface with sub-modules and models for categories.
+
+|xref:stable7@docs-raw::Cloud.adoc[Cloud]
+|Interface for cloud services, e.g. ElasticSearch and Storage.
+
+|xref:stable7@docs-raw::Comment.adoc[Comment]
+|Contains the comment model.
+
+|xref:stable7@docs-raw::ContentBuilder.adoc[ContentBuilder]
+|Interface for the content builder.
+
+|xref:stable7@docs-raw::ContentCache.adoc[ContentCache]
+|Interface for the content cache.
+
+|xref:stable7@docs-raw::Cron.adoc[Cron]
+|Interface for accessing cron jobs.
+
+|xref:stable7@docs-raw::CustomerContract.adoc[CustomerContract]
+|Interface for customer contracts.
+
+|xref:stable7@docs-raw::Data.adoc[Data]
+|Contains the data model.
+
+|xref:stable7@docs-raw::DataExchange.adoc[DataExchange]
+|Interface for exchanging data. Contains models for export and filters.
+
+|xref:stable7@docs-raw::DeleteLog.adoc[DeleteLog]
+|Interface for the delete log.
+
+|xref:stable7@docs-raw::Document.adoc[Document]
+|Contains the document model.
+
+|xref:stable7@docs-raw::ElasticSync.adoc[ElasticSync]
+|Interface for ElasticSync.
+
+|xref:stable7@docs-raw::EventProcedures.adoc[EventProcedures]
+|Interface with events and services for event procedures.
+
+|xref:stable7@docs-raw::Facet.adoc[Facet]
+|Interface for facets.
+
+|xref:stable7@docs-raw::Feedback.adoc[Feedback]
+|Interface for feedbacks.
+
+|xref:stable7@docs-raw::Frontend.adoc[Frontend]
+|Interface with services for the online store.
+
+|xref:stable7@docs-raw::Helper.adoc[Helper]
+|Interface with contracts, models and services for helpers.
+
+|xref:stable7@docs-raw::Item.adoc[Item]
+|Contains sub-modules for attributes, availability, item and variation data, manufacturers, shipping and units.
+
+|xref:stable7@docs-raw::ItemSet.adoc[ItemSet]
+|Interface for item sets. Contains methods to get and create item sets and item set components.
+
+|xref:stable7@docs-raw::Listing.adoc[Listing]
+|Interface for listings.
+
+|xref:stable7@docs-raw::LiveShopping.adoc[LiveShopping]
+|Interface for LiveShopping.
+
+|xref:stable7@docs-raw::Market.adoc[Market]
+|Contains the sub-module *Ebay* for fitments and fitment items.
+
+|xref:stable7@docs-raw::Messenger.adoc[Messenger]
+|Interface for the messenger.
+
+|xref:stable7@docs-raw::Order.adoc[Order]
+|Contains contracts and models for orders and order items as well as the sub-modules *Currency*, *Payment* and *Shipping*. This interface is the counterpart to the plentymarkets order module.
+
+|xref:stable7@docs-raw::Payment.adoc[Payment]
+|Contains the sub-modules for payment methods, the payment history, as well as contracts and models for payments and payment properties.
+
+|xref:stable7@docs-raw::Pim.adoc[Pim]
+|Interface for prices.
+
+|xref:stable7@docs-raw::PlentyMarketplace.adoc[plentyMarketplace]
+|Interface for plentyMarketplace.
+
+|xref:stable7@docs-raw::Plugin.adoc[Plugin]
+|Contains the sub-modules for storing data in a plugin database or accessing external SDKs.
+
+|xref:stable7@docs-raw::PluginMultilingualism.adoc[PluginMultilingualism]
+|Interface for multilingualism.
+
+|xref:stable7@docs-raw::Property.adoc[Property]
+|Interface for properties.
+
+|xref:stable7@docs-raw::Report.adoc[Report]
+|Interface for reports.
+
+|xref:stable7@docs-raw::ShopBuilder.adoc[ShopBuilder]
+|Interface for ShopBuilder.
+
+|xref:stable7@docs-raw::StockManagement.adoc[StockManagement]
+|Contains contracts and models for stock management and storage data.
+
+|xref:stable7@docs-raw::System.adoc[System]
+|Contains the *Webstore* model.
+
+|xref:stable7@docs-raw::Tag.adoc[Tag]
+|Interface for tags.
+
+|xref:stable7@docs-raw::Template.adoc[Template]
+|Contains contracts and models for the design and design configuration.
+
+|xref:stable7@docs-raw::Ticket.adoc[Ticket]
+|Contains contracts and models related to the plentymarkets ticket system.
+
+|xref:stable7@docs-raw::User.adoc[User]
+|Interface for users.
+
+|xref:stable7@docs-raw::Warehouse.adoc[Warehouse]
+|Interface for warehouses.
+
+|xref:stable7@docs-raw::Webshop.adoc[Webshop]
+|Interface for the online store.
+
+|xref:stable7@docs-raw::Wizard.adoc[Wizard]
+|Interface for assistants.
+
+|xref:stable7@docs-raw::Miscellaneous.adoc[Miscellaneous]
+|Contains interfaces that cannot be organised in the listed interfaces.
+
+|===

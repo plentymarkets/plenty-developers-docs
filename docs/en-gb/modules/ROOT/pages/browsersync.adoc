@@ -1,0 +1,146 @@
+= High-speed JS/CSS deployment with Browsersync
+
+https://www.browsersync.io/[Browsersync] allows you to load JS and CSS files from your local system directly in your browser. This cuts down on development time for plugins using these files since you no longer need to push your changes to Git and pull them in your plugin set or rely on webhooks.
+
+You still have to go through the push-and-pull process eventually - but only once, when you are done developing.
+
+*Note* that you cannot use this method to synchronise PHP files.
+
+== Setup
+
+In order to run Browsersync, you need Node.js. If you do not already use Node.js, https://nodejs.org/en/download/[download the LTS version here]. Once you have finished installing it, open your terminal and enter the
+following commands:
+
+. *npm install -g browser-sync* +
+→ This will install the latest version of Browsersync. Adding -g means the package is installed globally. If you get a permissions error, you should https://docs.npmjs.com/downloading-and-installing-node-js-and-npm[reinstall Node.js using a node version manager].
+. *browser-sync --version* +
+→ Check if the install was successful. The terminal should return the version number of the installed version.
+
+== Plugin resources
+
+You will only benefit from Browsersync when working with JS or CSS files. These files, as well as the TWIG template they are included in, should be in the resources folder of your plugin.
+
+[source]
+----
+myPlugin/
+    ├── resources/
+    |   ├── js/
+    |   |   └── fancyScript.js
+    |   |
+    │   ├── css/
+    │   │   └── awesomeUI.css
+    │   │
+    │   └── views/
+    │       └── content/
+    │           └── template.twig
+    ├── src/
+    │   ├── Controllers/
+    │   │   └── ContentController.php
+    │   │
+    │   └── Providers/
+    │       └── PluginServiceProvider.php
+    │
+    └── plugin.json // plugin information
+----
+
+== NPM package
+
+Before you can start to configure Browsersync, you still need a `package.json` for your plugin. Open your terminal and navigate to the root directory of your plugin, then enter *npm init*. Follow the instructions to configure the package. You can enter any details you want or keep the default values. By the end, you should have a `package.json` file in your plugin directory.
+
+Open the `package.json` with a text editor. Extend the scripts section with a new script called `bs.js`, so that it reads as follows:
+
+.myPlugin/package.json
+[source,json]
+----
+{
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        “start” :  "node bs.js"
+    },
+}
+----
+
+== Browsersync configuration
+
+With all preparations complete, you can now start configuring Browsersync itself. By using Browsersync in proxy mode, you can test your local code on remote servers such as plentymarkets.
+
+Start by creating the `bs.js` file in the root folder of your plugin that you just referenced in the `package.json`. Enter the following content. *Be sure to replace all placeholders.*
+
+.myPlugin/bs.js
+[source,javascript]
+----
+//Create a new Browsersync instance
+let bs = require('browser-sync').create();
+
+//Initialize the browsersync instance
+bs.init({
+    //Enter the remote URL of the plugin on your plentymarkets system
+    proxy: "https://myPlentySystemLiveUrl.de/myPlugin",
+
+    //Directories to watch for changes
+    //The browser refreshes whenever a file in this directory is changed
+    files: [
+        'resources/js/**',
+        'resources/css/**',
+    ],
+
+    //Add rewrite rules for CSS and JS
+    //This will make it look for CSS and JS files in the plugin directory
+    rewriteRules: [
+        {
+            match: new RegExp('http.*\\/myplugin\\/js\\/(.*.js)'),
+            replace: '/resources/js/$1'
+        },
+        {
+            match: new RegExp('http.*\\/myplugin\\/css\\/(.*.css)'),
+            replace: '/resources/css/$1'
+        },
+    ],
+
+    //Instruct Browsersync to provide static resources for JS and CSS files
+    //This way, your browser will load the local resources instead of remote ones
+    serveStatic: [
+        {
+            route: ['/resources/js'],
+            dir: 'resources/js'
+        },
+        {
+            route: ['/resources/css'],
+            dir: 'resources/css'
+        },
+    ]
+});
+----
+
+Thanks to `bs.init`, Browsersync will recognize when files in the `resources/js` and `resources/css` folders change. The `rewriteRules` and `serveStatic` methods ensure that your browser uses these local resources instead of the ones on your remote system.
+
+== Developing with Browsersync
+
+By now, your plugin folder structure should look something like this:
+
+[source]
+----
+myPlugin/
+    ├── resources/
+    |   ├── js/
+    |   |   └── fancyScript.js
+    |   |
+    │   ├── css/
+    │   │   └── awesomeUI.css
+    │   │
+    │   └── views/
+    │       └── content/
+    │           └── template.twig
+    ├── src/
+    │   ├── Controllers/
+    │   │   └── ContentController.php
+    │   │
+    │   └── Providers/
+    │       └── PluginServiceProvider.php
+    │
+    ├── bs.js // your custom Browsersync init script
+    ├── package.json // npm package information
+    └── plugin.json // plugin information
+----
+
+Open your terminal again and navigate to the root folder of your plugin directory. Run *npm start*. This should open a local browsync address in a new browser window. Now you can edit your JS and CSS files or add new ones. As soon as you save your changes, they will automatically appear in your browser.

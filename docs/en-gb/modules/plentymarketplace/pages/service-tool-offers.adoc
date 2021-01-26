@@ -1,0 +1,213 @@
+= Offering services and tools
+
+In addition to plugins, you can also offer services and tools on plentyMarketplace.
+
+* Services provide advice and assistance for plentymarkets, for example setting up an online store or integrating a marketplace. Services may be provided for a particular project or a fixed period of time.
+* Tools are software that provides functionality for a plentymarkets system without being deployed through the plugin structure. For example, link:https://marketplace.plentymarkets.com/en/plentydevtool/plenty-tools_6652[plentyDevTool^] and linkhttps://marketplace.plentymarkets.com/plugins/integration/plentybase_5053[plentyBase^] are both tools.
+
+Select the type of product you want to offer:
+
+[tabs]
+====
+
+Creating a service offer::
++
+--
+include::partial$service-tool-offer-instructions.adoc[]
+
+Whenever a customer purchases your service, customer information is sent to the address you provide in the *Webhook URL* field. The information is sent in a `JSON` file.
+
+If you have your own server, you can use it to receive the file by entering the payload URL in the webhook field. If not, you can use an external service, or our link:https://marketplace.plentymarkets.com/en/plugins/integration/marketplaceservice_6195[Service Helper plugin^] and receive customer data as tickets in your plentymarkets system.
+
+If you're using the plugin solution, enter `DOMAIN/service/tickets` as webhook URL, where `DOMAIN` is the domain of your plentymarkets system.
+
+[discrete]
+== Using the Service Helper plugin
+
+To use the Service Helper plugin, you need to set up the ticket system and configure the plugin.
+
+[discrete]
+=== Setting up the ticket system
+
+In the ticket system, create a new link:https://knowledge.plentymarkets.com/en/crm/using-the-ticket-system#700[role^], link:https://knowledge.plentymarkets.com/en/crm/using-the-ticket-system#800[type^], and link:https://knowledge.plentymarkets.com/en/crm/using-the-ticket-system#900[status^].
+
+[discrete]
+=== Configuring the plugin
+
+After purchasing the Service Helper plugin, link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[install it in your system].
+
+Once you've installed the plugin, proceed as follows:
+
+. Open the *Settings* of the Service Helper plugin.
+. Open the *Ticket* menu.
+. Enter the IDs of your newly created role, type, and status into the respective fields.
+. Enter the IDs of the users that are allowed to see the tickets with your customers' data. You have to enter at least one ID.
++
+[TIP]
+======
+To determine a user ID, go to the *Setup » Settings » User » Accounts*
+menu and click on the name of the user. +
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/back-end-user-id.png[image]
+======
+
+[discrete]
+== Automation
+
+After configuring the plugin, you can automate your processes. link:https://knowledge.plentymarkets.com/en/crm/using-the-ticket-system#2900[Automatically send emails^] when a new ticket is created to inform your customers about
+the next steps.
+
+[discrete]
+== Customer information
+
+Whenever a customer purchases your service, a `JSON` file is sent to your webhook URL. This file contains all the information necessary for you to contact the customer about their order. Below, you can find an example of the file, as well as descriptions of the individual fields.
+
+[source,json]
+----
+include::example$service.json[]
+----
+
+Each response contains the following information:
+
+[cols="2,1,3"]
+|===
+|Field |Type |Description
+
+|`id`
+|`string`
+|The ID of the service. The ID consists of a maximum of 200 characters and is used for the communication between the plentymarkets API and the service partner API.
+
+|`type`
+|`string`
+|The type of the service is `SERVICE.PLUGIN.PURCHASE`.
+
+|`createdAt`
+|`int`
+|The timestamp of the service.
+
+|`resource`
+|`Resource[]`
+|The response resource containing information about the `contact` of the customer, the invoice `address` of the customer and the `order`, including the order items that are associated with the order.
+|===
+
+The customer `contact` field contains the following information:
+
+[cols="2,1,3"]
+|===
+|Field |Type |Description
+
+|`id`
+|`int`
+|The ID of the contact.
+
+|`gender`
+|`string`
+|The gender of the contact. The gender can be `male`, `female` or empty.
+
+|`firstName`
+|`string`
+|The first name of the contact.
+
+|`lastName`
+|`string`
+|The last name of the contact.
+
+|`email`
+|`string`
+|The private email address of the contact.
+
+|`updatedAt`
+|`int`
+|The timestamp when the contact was last updated.
+|===
+
+The `address` field contains the following information:
+
+[cols="2,1,3"]
+|===
+|Field |Type |Description
+
+|`id`
+|`int`
+|The ID of the address.
+
+|`companyName`
+|`string`
+|The company name.
+
+|`firstName`
+|`string`
+|The first name.
+
+|`lastName`
+|`string`
+|The last name.
+
+|`street`
+|`string`
+|The street.
+
+|`houseNumber`
+|`string`
+|The house number.
+
+|`additional`
+|`string`
+|Any additional address information.
+
+|`postalCode`
+|`string`
+|The postcode.
+
+|`town`
+|`string`
+|The town.
+
+|`country`
+|`string`
+|The ISO code of the country. For further information about country codes, refer to https://developers.plentymarkets.com/rest-doc/introduction#countries[the list of Country IDs].
+
+|`phone`
+|`string`
+|The phone number.
+
+|`email`
+|`string`
+|The email address.
+
+|`updatedAt`
+|`int`
+|The timestamp when the address was last updated.
+|===
+
+The `order` field contains the following information:
+
+[cols="2,1,3"]
+|===
+|Field |Type |Description
+
+|`id` |`int` |The ID of the order.
+
+|`payPalTransactionId`
+|`string`
+|The ID of the PayPal transaction for this order.
+
+|`orderItems`
+|`OrderItem[]`
+a| The order items that are associated with the order. Each order item has the following properties:
+
+* `itemVariationId` (`int`): The ID of the item variation.
+* `quantity` (`float`): The quantity of items ordered.
+* `orderItemName` (`string`): The name of the order item.
+* `priceGross` (`float`): The total gross price including surcharges and discounts. The gross price can have up to 4 decimal places.
+* `priceNet` (`float`): The total net price including surcharges and discounts. The net price can have up to 4 decimal places.
+|===
+--
+
+Creating a tool offer::
++
+--
+include::partial$service-tool-offer-instructions.adoc[]
+
+When offering a tool, you can provide the software either via direct download links or by forwarding customers to another site.
+--
+====
