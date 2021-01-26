@@ -1,0 +1,6 @@
+To create a new offer, proceed as follows:
+
+. On plentyMarketplace, go to *My account » My offers*.
+. Click on *Create new offer*.
+. Fill out the form. +
+icon:arrow-right[] After completing the form, your offer needs to be reviewed by plentysystems. You can check the status of the review in the *My offers* menu.

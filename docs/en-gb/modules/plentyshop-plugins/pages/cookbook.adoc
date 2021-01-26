@@ -1,0 +1,23 @@
+= Introducing the plugin cookbook
+
+The plugin cookbook is a collection of recipes for plentymarkets plugin scenarios. On this page, you will find answers to questions that might arise when developing plentymarkets plugins.
+
+*Info*: The cookbook is just getting started. New recipes are already on the way. If you can't find an answer to your question, post your requests and feedback in our link:https://forum.plentymarkets.com/c/plugin-entwicklung[forum].
+
+include::partial$content-categories.adoc[]
+
+include::partial$ceres-scripts.adoc[]
+
+include::partial$ceres-style.adoc[]
+
+include::partial$changing-contexts.adoc[]
+
+include::partial$address-field.adoc[]
+
+include::partial$address-field-validation.adoc[]
+
+include::partial$disabling-lazy-loading.adoc[]
+
+include::partial$item-sorting.adoc[]
+
+include::partial$cache-busting.adoc[]

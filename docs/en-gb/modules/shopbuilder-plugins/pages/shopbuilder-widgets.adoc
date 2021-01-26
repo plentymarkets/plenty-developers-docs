@@ -1,0 +1,138 @@
+= Creating widgets
+
+== Widget information - contentWidgets.json
+
+All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to link:/tutorials/my-first-shop-builder-widget[the widget turorial].
+
+.contentWidgets.json
+[source,json]
+----
+[
+    {
+        "identifier": "MyWidget",
+        "label": "Widget.MyWidgetLabel",
+        "previewImageURL": "/images/my-widget.svg",
+        "type": "default",
+        "position": 2000,
+        "categories": ["category1", "category2"]
+        "widgetClass": "MyWidget\\Widgets\\MyWidget",
+        "settings": {
+            "MySetting": {
+                "type": "text",
+                "required": true,
+                "defaultValue": "myWidgetText",
+                "options": {
+                    "name": "Widget.MyWidgetTextLabel",
+                    "tooltip": "Widget.MyWidgetTooltip"
+                }
+            }
+        }
+    }
+]
+----
+
+=== identifier
+
+The unique identifier of the widget. It is sensible for this identifier to include the namespace of the plugin.
+
+=== label
+
+Contains the label of the widget that is used to display the widget's name in the ShopBuilder user interface. The label provided here refers to the translation key stored in the widgets.properties files under \resources\lang\de and \resources\lang\en.
+
+=== previewImageURL
+
+Contains the icon that is displayed in the widget list of the ShopBuilder interface. The path provided here refers to an image stored under \resources\images. The usual image formats are applicable (SVG, JPG, PNG), but we recommend that you use an image in SVG format with a width of 350px and a height of 120px. The icon can also be provided via a URL.
+
+=== type
+
+There are four types of widgets: *static*, *structure*, *header* and *footer*. The widget type determines where the widget can be implemented on a page. Widgets of the type header can only be integrated into the header section of a ShopBuilder page; widgets of the types default and structure can be integrated into the body and footer sections of a ShopBuilder page; widgets of the type footer can only be integrated into the footer section of a ShopBuilder page. The widget type is also relevant for the *allowedNestingTypes* detailed below.
+
+=== position
+
+Contains the position of the widget in the widget list of the ShopBuilder user interface. The positions of widgets provided by Ceres are numbered in steps of 100. Setting the position of a widget to 150, for instance, places it in the second position of the widget list between two Ceres widgets.
+
+=== category
+
+Contains the categories of the widget via which it is grouped in the ShopBuilder editor. One widget can belong to multiple categories. Available categories are listed in an array beneath containers and presets in the shopBuilder.json file in Ceres. You can add your own categories in a theme. Each category consists of the key-value pairs *key*, *label*, and *position*. The default categories native to Ceres are Header, Structure, Text, Image, Item and Footer. If categories is left empty or is not included in the JSON, the widget will be listed under "more widgets" in the ShopBuilder editor.
+
+=== widgetClass
+
+This is the path of the widget's PHP class. In our case, the class' label is MapsWidget and is located at src/Widgets/MapsWidget. In the widget's class, you define the location of the TWIG template and determine which data is handed over to the TIWG template.
+
+=== settings
+
+The settings provide the configuration options of the widget in the ShopBuilder. The settings are stored in a JSON object. Each item in the settings object needs to have a unique key, which is used in the code to refer to it. In the case of the Google Maps widget, the three setting keys are *apiKey*, *address* and *zoom*. You can provide as many settings as necessary for your widget.
+
+* *type*: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+* *required*: A Boolean that determines whether this widget setting is mandatory for the user.
+* *defaultValue*: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+* *options*: The options are a JSON object that includes the name of the setting and the tooltip. If the setting's input type is a *select*, i.e. a drop-down list, the options also include the *listBoxValues*, meaning the various entries in the drop-down list.
+** *name*: The key for the setting's name. The key is used to display the text stored in the widgets.properties file.
+** *tooltip*: The key which is used to display a tooltip when hovering above the setting. The text is stored in the widgets.properties file.
+* *isVisible*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of *isVisible*. An example of how this setting is implemented is described link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+* *isList*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+
+== Creating widget PHP classes
+
+We have reworked the way in which ShopBuilder widgets are constructed. The former way of structuring the widget in the form of a contentWidget.json is still valid and will continue to work with ShopBuilder; however, we advise you to use the process described in this guide in the future.
+
+Instead of relying on the contentWidget.json, we have outsourced the widget information in a number of separate PHP classes, in order to facilitate their organisation and to make overwriting, expanding and adjusting individual widgets a lot easier. Hitherto, the contentWidget.json file included the path to a PHP class called *widgetClass*; now it is the other way around: The PHP file is the principal file and has been expanded by the relevant widget information, such as name and category, as well as the *widget settings* and corresponding options.
+
+We added the two PHP helper classes *WidgetDataFactory* and *WidgetSettingsFactory* that provide important basic functions. The WidgetDatafactory is located under src/Widgets/Helper/Factories/WidgetDataFactory.php and provides functions pertaining to general widget data, including the widget identifier, label, preview image, type and category. The WidgetSettingFactory is located at the same location and provides functions that pertain to individual widget settings, such as appearance, button size, icons, etc. The WidgetSettingsFactory implements the auxiliary PHP classes located in the Factories/Settings folder and bundles them. Your widget can either use both of the described widget factories, or can cherrypick individual settings classes instead.
+
+After you have created the widget PHP class, you need to register the widget class in the service provider of your plugin. The ContentWidgetRepositoryContract provides the function `registerWidget ($widgetClass)`, in which you replace the variable with the widgetClass of your widget.
+
+=== widgetClass for Print button widget
+
+Take a look at the rudimentary print button widget from the ShopBuilder and how it is structured as a PHP class:
+
+.contentWidgets.json
+[source,prettyprint,lang-php,grey-back,linenums,code-example]
+----
+<?php
+
+namespace Ceres\Widgets\Common;
+
+use Ceres\Widgets\Helper\BaseWidget;
+use Ceres\Widgets\Helper\Factories\WidgetSettingsFactory;
+use Ceres\Widgets\Helper\Factories\WidgetDataFactory;
+use Ceres\Widgets\Helper\WidgetTypes;
+
+class PrintButtonWidget extends BaseWidget
+{
+    protected $template = "Ceres::Widgets.Common.PrintButtonWidget";
+
+    public function getData()
+    {
+        return WidgetDataFactory::make("Ceres::PrintButtonWidget")
+            ->withLabel("Widget.printButtonLabel")
+            ->withPreviewImageUrl("/images/widgets/print-button.svg")
+            ->withType(WidgetTypes::STATIC)
+            ->withPosition(300)
+            ->toArray();
+    }
+
+    public function getSettings()
+    {
+        /** @var WidgetSettingsFactory $settings */
+        $settings = pluginApp(WidgetSettingsFactory::class);
+
+        $settings->createCustomClass();
+        $settings->createAppearance();
+        $settings->createButtonSize();
+        $settings->createSpacing();
+
+        return $settings->toArray();
+    }
+}
+----
+
+[NOTE]
+.Explanation
+====
+Here, the print button widgetClass implements both helper classes detailed above, the *WidgetDataFactory* and the *WidgetSettingsFactory*. The getData() method serves to set widget information, such as label and preview image. The getSettings() method defines widget settings such as the CSS class input and button size via the helper class. Previously, this information would have been stored in the contentWidget.json.
+====
+
+=== Overwriting individual widgets
+
+By constructing widgets via PHP classes, it becomes a lot easier for plugins to overwrite individual widgets. All you have to do, is add the call `$widgetRepository->overrideWidget($original, $newWidgetClass);` in your `boot()` method. In this context, *$original* is the identifier of the widget you want to overwrite, which in the future will be set within the PHP widgetClass via the `getData()` method. *$newWidgetClass* is the identifier of the widgetClass you want to replace the other widget with.

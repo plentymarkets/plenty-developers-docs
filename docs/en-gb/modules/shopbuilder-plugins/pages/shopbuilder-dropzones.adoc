@@ -1,0 +1,71 @@
+= Defining dropzones for ShopBuilder contents
+
+We added the possibility to compartmentalise ShopBuilder contents into smaller sections that can be edited individually, which we labeled "dropzones". For this purpose, we added the new parameter `$dropzone` to
+the function `shop_builder_category_template($categoryId, $contentType, $dropzone)`.
+
+The function serves to load ShopBuilder contents for specified categories. The $dropzone parameter is the parameter via which theme developers can label individual sections of the page. Take a look at the example below:
+
+== Defining dropzones
+
+[source,php]
+----
+<div class="top">
+    {{ shop_builder_category_template(42, "content", "top") }}
+</div>
+
+<div class="main">
+    {{ shop_builder_category_template(42, "content", "main") }}
+</div>
+
+<div class="footer">
+    {{ shop_builder_category_template(42, "content", "bottom") }}
+</div>
+----
+
+[NOTE]
+.Explanation
+====
+Here, the theme defines three separate sections , labeled "top", "main" and "footer", respectively. The Twig function takes on the category ID, in this case 42, the type of content, and a unique identifier for each dropzone.
+====
+
+Regardless of the number of dropzones the ShopBuilder content is divided into, the end user of the ShopBuilder is still only editing a single content, which here is split into three separate sections. The developer of the theme can choose freely, in which parts of the template they display these sections.
+
+In the past, static contents were output with the help of layout containers. We added the new Twig function `shop_builder_template($containerName, $contentType, $dropzone)`. This function works analogously to the one detailed above. Instead of a category ID, however, the function takes on a layout container as parameter, for instance "Ceres::Header" or "Ceres::Footer".
+
+== Example of implementing dropzones
+
+In the following example, the user wants to establish 2 dropzones for the ShopBuilder in their theme. The goal is to create 2 dropzones of equal size next to each other. For this, the user's theme extends the `page-design` partial and includes new elements in the page body. The theme sets two dropzones as variables, one for the left column and one for the right column. The content type of both dropzones is specified as *content*.
+
+The layout of the dropzones is controlled by the arrangement of the divs: The row class is used in the enveloping div to determine that both dropzones are to be arranged next to one another. Each dropzone is placed within their own div with a specified column class. The code snippet also includes an if condition.
+
+It is thereby possible to include content around and in between the specified dropzones, for instance by adding another div with the column class between the left and right dropzone. That way, it is possible to construct ShopBuilder pages, in which certain parts can be edited, while other parts remain the same.
+
+[source,php]
+----
+{% extends getPartial('page-design') %}
+
+{% block PageBody %}
+
+    {% set shopBuilderTemplate = shop_builder_category_template(category.id) %}
+    {% set ShopBuilderTemplateSide = shop_builder_category_template(category.id, "content", "side") %}
+
+    {% if shopBuilderTemplate | trim is not empty %}
+        <div class="container-max">
+            <div class="row">
+                <div class="col">
+                    {{ shopBuilderTemplate | raw }}
+                </div>
+                <div class="col">
+                    {{ ShopBuilderTemplateSide | raw}}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% include category_template( category.id, lang, webstoreConfig.webstoreId) ignore missing %}
+    {% endif %}
+{% endblock %}
+----
+
+The image below shows the resulting arrangement of the dropzones in the ShopBuilder:
+
+image::shopbuider_dropzones.png[]

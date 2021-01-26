@@ -9,18 +9,18 @@ Get started with one of the links below, or press (kbd:[CMD+K]) to open the site
 xref:setting-up-dev-environment.adoc[Entwicklungsumgebung einrichten]
 
 [.tile]
-xref:plugin-basics.adoc[Plugin basics]
+xref:plugin-architecture.adoc[Plugin basics]
 
 [.tile]
-xref:plentyshop.adoc[plentyShop]
+xref:plentyshop-plugins:template-setup.adoc[plentyShop]
 
 [.tile]
-xref:plugin-interface.adoc[Plugin interface]
+xref:plugin-interface:interface-introduction.adoc[Plugin interface]
 
 [.tile]
-xref:rest-api.adoc[REST API]
+xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API]
 
 [.tile]
-xref:plentybase.adoc[plentyBase]
+plentyBase REST API
 
 plentymarkets plugins are powered by:

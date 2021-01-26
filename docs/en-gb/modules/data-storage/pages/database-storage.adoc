@@ -1,0 +1,265 @@
+= Database storage
+
+You can store data in your plugin using datatables. This requires a model for defining the structure of the datatable, as well as a migration to create the datatable itself.
+
+This guide only covers defining the structure a datatable and manipulating the datatable. For an example of how to manipulate the data stored in the table, see the data storage tutorial.
+
+== Defining the data structure
+
+The fields of the datatable are declared in a database model. This model has to extend the class Plenty\Modules\Plugin\DataBase\Contracts\Model`.
+
+.PluginDirectory/src/Models/MyModel.php
+[source,php]
+----
+            <?php
+            namespace PluginDirectory\Models;
+
+            use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+
+            /**
+            * Class MyModel
+            *
+            * @property int     $id
+            * @property int     $contactId
+            */
+            class MyModel extends Model
+            {
+                public $id              = 0;
+                public $contactId       = 0;
+
+                /**
+                * @return string
+                */
+                public function getTableName(): string
+                {
+                    return 'PluginDirectory::MyModel';
+                }
+            }
+        
+----
+
+You can declare the data type of each attribute included in the datatable using class annotations like in the example above. The following data types are permitted:
+
+* `array`
+* `boolean`
+* `double`
+* `float`
+* `int`
+* `string`
+
+*Note 1:* The `string` attribute is limited to 255 characters. If you want to save longer strings, use an `array` instead.
+
+*Note 2:* All attributes must be declared as `public`.
+
+=== Primary key
+
+Each model requires exactly one attribute that serves as primary key.
+The primary key is a unique identifier to distinguish datatable entries.
+The Database Model has several protected attributes to alter the primary key and its behaviour.
+
+[cols=",",options="header",]
+|===
+|Attribute |Description
+|`$primaryKeyFieldName`
+|Name of the primary key. Default is `id`.
+
+|`$primaryKeyFieldType`
+|Type of the primary key. Default is `int`.
+
+|`$autoIncrementPrimaryKey`
+|Determines if the primary key increments.
+Default is `true`. Only primary keys of type `int` can increment.
+|===
+
+.PluginDirectory/src/Models/MyModel.php
+[source,php]
+----
+            <?php
+            namespace PluginDirectory\Models;
+
+            use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+
+            /**
+            * Class MyModel
+            *
+            * @property string     $name
+            */
+            class MyModel extends Model
+            {
+                public    $name                     = '';
+                protected $primaryKeyFieldName      = 'name';
+                protected $primaryKeyFieldType      = 'string';
+                protected $autoIncrementPrimaryKey  = 'false';
+
+                /**
+                * @return string
+                */
+                public function getTableName(): string
+                {
+                    return 'PluginDirectory::MyModel';
+                }
+            }
+        
+----
+
+=== Foreign keys
+
+You can declare any attribute of your database as a foreign key. Foreign keys allow you to reference your data from a different datatable and ensure it remains consistent across tables.
+
+For example, if you reference the plentymarkets `Plenty\Modules\Account\Contact\Model` and a contact is deleted from this table, it is automatically deleted from your datatable, too.
+
+.PluginDirectory/src/Models/MyModel.php
+[source,php]
+----
+            <?php
+            namespace PluginDirectory\Models;
+
+            use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+
+            /**
+            * Class MyModel
+            *
+            * @property int     $id
+            * @property int     $contactId
+            * @Relation(model="Plenty\Modules\Account\Contact\Models\Contact", name="my_model_contact_id_fk", attribute="id", column="contactId", onUpdate="Cascade", onDelete="Cascade")
+            */
+            class MyModel extends Model
+            {
+                public $id              = 0;
+                public $contactId       = 0;
+
+                /**
+                    * @return string
+                    */
+                public function getTableName(): string
+                {
+                    return 'PluginDirectory'::MyModel;
+                }
+            }
+        
+----
+
+You can declare a key as foreign key in the class annotations like in the example above.
+
+=== Nullable attributes
+
+There may be cases where you don't have values for all attributes of a datatable entry. One way to handle these cases is to use dummy values. For example, you could fill all string attributes without value with an empty string, or designate a negative number for missing integers.
+
+A better way of accounting for missing values is to declare an attribute as nullable. This means that instead of using a placeholder for a missing value, all missing values become `NULL`.
+
+.PluginDirectory/src/Models/MyModel.php
+[source,php]
+----
+            <?php
+            namespace PluginDirectory\Models;
+
+            use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+
+            /**
+            * Class MyModel
+            *
+            * @property int $id;
+            * @property int $contactId;
+            * @property int $age;
+            * @property string $email;
+            *
+            * @Nullable(columns={"age","email"})
+            */
+
+            class MyModel extends Model
+            {
+                public $id = 0;
+                public $contactId = 0;
+                public $age = 0;
+                public $email = '';
+
+                public function getTableName()
+                {
+                    return 'PluginDirectory'::MyModel;
+                }
+            }
+        
+----
+
+You can declare an attribute as nullable by using the `@Nullable` declaration like in the example above. This declaration accepts an array, so you can list any number of attributes in one go.
+
+For further information on how to query data in a datatable, see our xref:stable7@docs-raw::Plugin.adoc[Plugin interface documentation].
+
+=== Non-table attributes
+
+In addition to attributes without values, you may have some attributes you don't want to enter into your table at all. This makes them volatile, meaning they're only stored for as long as the plugin is active.
+
+To achieve this, you can declare an attribute as a non-table attribute.
+
+.PluginDirectory/src/Models/MyModel.php
+[source,php]
+----
+            <?php
+            namespace PluginDirectory\Models;
+
+            use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+
+            /**
+            * Class MySecondModel
+            *
+            * @property int $id;
+            * @property int $contactId;
+            * @property int $age;
+            *
+            * @NonTableAttribute(columns={"contactId", age”})
+            */
+            class MySecondModel extends Model
+            {
+            public $id = 0;
+            public $contactId = 0;
+            public $age = 0;
+
+            public function getTableName()
+            {
+                return ‘MigrateExample::MySecondModel’;
+            }
+            }
+        
+----
+
+You can declare attributes as non-table attributes using the `@NonTableAttribute` declaration like in the example above. This declaration accepts an array, so you can list any number of attributes in one go.
+
+For further information on how to handle non-table attributes, see our xref:memory-storage.adoc[corresponding documentation].
+
+== Migrating the datatable
+
+To create, update or delete a datatable, you have to run a migration. For this, you have to define the migration in a new class and declare that it should be run when the plugin is deployed, using the plugin JSON.
+
+=== Plugin JSON
+
+The plugin JSON determines which migrations are run on deploy. You can define the migrations you want to run with the `runOnBuild` property. This property accepts an array as value. The value includes the paths of all migrations you want to run, separated by comma.
+
+`"runOnBuild":["PluginDirectory\\Migrations\\CreateNewTable"]`
+
+=== Migration
+
+Migrations use the model defining the data structure and the `Plenty\Modules\Plugin\DataBase\Contracts\Migrate` class.
+
+.PluginDirectory/src/Models/MyModel.php
+[source,php]
+----
+include::example$MyModel.php[]
+----
+
+You can create, update, or delete tables this way.
+
+[cols="1,3"]
+|===
+
+|Function |Description
+|`$createTable()`
+|Creates a new table. The same table can only be created once this way. To modify the table after the first deploy,
+update it.
+
+|`$updateTable()`
+|Updates an existing table. Requires a separate migration.
+
+|`$deleteTable()`
+|Deletes a table
+
+|===
