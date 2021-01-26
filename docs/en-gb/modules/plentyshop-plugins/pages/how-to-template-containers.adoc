@@ -1,4 +1,4 @@
-= Template containers
+= How to add template containers
 
 This tutorial will introduce you to template containers. We will develop a small plugin that provides the data for displaying a placeholder image and text in a container of the template plugin. You will also learn about the plugin containers in Ceres and all options to integrate your own content in the template.
 

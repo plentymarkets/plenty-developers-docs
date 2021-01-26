@@ -1,4 +1,4 @@
-= Hello World SDK
+= How to integrate an SDK
 
 [#helloworldsdk]
 == Hello World Tutorial With External SDKs
