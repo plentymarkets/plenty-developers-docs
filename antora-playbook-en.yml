@@ -24,7 +24,7 @@ content:
   - url: https://github.com/plentymarkets/api-doc
     branches:
       - master
-    start_path: plentybase/docs
+    start_path: plentyBase/docs
   - url: https://github.com/plentymarkets/IO_docs-raw
     branches:
       - 4.*
