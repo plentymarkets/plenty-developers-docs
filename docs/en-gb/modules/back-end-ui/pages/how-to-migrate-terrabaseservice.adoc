@@ -1,4 +1,4 @@
-= How to migrate from TerraBaseService
+= How to migrate from the TerraBaseService
 
 The *TerraBaseService* is only available up to version 5.0.0 of the Terra-Components. The following paragraphs will offer a step-by-step guide on how to replace the deprecated *TerraBaseService* as well as angular's http package (@angular/http) with the functionality mostly provided by angular’s *HttpClient* (@angular/common/http).
 

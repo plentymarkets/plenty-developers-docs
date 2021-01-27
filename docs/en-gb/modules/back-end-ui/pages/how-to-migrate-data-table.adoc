@@ -1,4 +1,4 @@
-= How to migrate to DataTable
+= How to migrate to the DataTable
 
 In order to migrate to the DataTable structure, the following steps are necessary.
 
