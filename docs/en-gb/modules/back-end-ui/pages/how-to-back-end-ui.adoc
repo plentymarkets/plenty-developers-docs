@@ -39,7 +39,7 @@ You can change the port in the file `/plugin-terra-basic/config/webpack.dev.js`.
 
 == Creating the PHP environment
 
-Now you need to employ the UI part in the PHP environment. For this, use the compiled Plugin Terra-Basic as UI part in your plugin and proceed as follows:
+Now you need to deploy the UI part in the PHP environment. For this, use the compiled Plugin Terra-Basic as UI part in your plugin and proceed as follows:
 
 . To compile the UI project, run `npm run build`. +
 → The `dist` directory is created with the compiled files in it.
