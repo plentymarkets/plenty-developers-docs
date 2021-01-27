@@ -1,0 +1,45 @@
+= Adding scripts in Ceres
+
+Scripts of your plugin defined using the HTML `<script>` tag can be added to the scripts of the template plugin Ceres without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your script resource into Ceres.
+
+.Theme/src/Providers/ThemeServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace Theme\Providers;
+
+use IO\Helper\TemplateContainer;
+use IO\Helper\ResourceContainer;
+use Plenty\Plugin\Events\Dispatcher;
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Plugin\Templates\Twig;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Boot a template for the basket that will be displayed in the template plugin instead of the original basket.
+     */
+    public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    {
+        $eventDispatcher->listen('IO.Resources.Import', function (ResourceContainer $container)
+        {
+            // The script is imported in the Footer.twig of Ceres
+            $container->addScriptTemplate('Theme::content.SingleItemScript');
+        }, self::PRIORITY);
+    }
+}
+----
+
+Add the dependencies for the `ResourceContainer`, the `Dispatcher` and `Twig` classes.
+
+Add the `boot()` function and use the dispatcher for listening to the resource import event `IO.Resources.Import`. Use the `addScriptTemplate()` method and specify the location of your script resource, e.g. a twig template. In this template, use `<script>` tags to define the scripts to be added to the scripts of Ceres.

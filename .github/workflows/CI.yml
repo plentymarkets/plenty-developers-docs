@@ -31,7 +31,6 @@ jobs:
       - name: Build site
         run: |
           npm i -g @antora/cli @antora/site-generator-default
-          antora antora-playbook-de.yml --fetch --stacktrace
           antora antora-playbook-en.yml --fetch --stacktrace
           
       - name: Get REST API repository

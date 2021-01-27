@@ -1,0 +1,35 @@
+= Pricing models
+
+When offering a plugin on plentyMarketplace, you can choose from various pricing models or combine them to fit your needs. If you want to charge customers for your plugin, the simplest solution is using a purchase price. You can do this via the `price` field in the `marketplace.json` file. However, this is not your only option. You can also offer a 30 day trial period, utilize a subscription model or distinguish between Basic and Pro versions of your plugin using freemium.
+
+Below you will find introductions to the various options. For more information on how to implement them, see the end of the page.
+
+== Trial period
+
+A classic way to attract new customers is to offer them a trial period in which they can test a product for free. Enabling a trial period on plentyMarketplace means that users can use the full functionality of your plugin for 30 days free of charge. This is a one-time offer after which they have to purchase or subscribe to the plugin in order to keep using it.
+
+== Subscriptions
+
+Using subscriptions, you can offer your plugins on a monthly, quarterly, half-yearly, or yearly basis instead of selling them at a fixed price.
+
+Subscriptions provide your customers with greater flexibility when making purchases. Not only can they try services they would not have considered otherwise, by allowing them to pay less at a time, you provide them with a basis to manage their own expenditures more easily. The same goes for you. If customers subscribe to the service you offer over longer periods of time, you will have a more secure cash flow.
+
+There are other ways to increase customer satisfaction using a subscription model. For example, you may choose to offer your customers discounts when they purchase your service for a year rather than only a month. Subscriptions also provide you with a basis for engaging with your customers regularly. By keeping them engaged, you can elicit feedback more easily and tailor updates specifically to your customers' needs. Not just that, it gives you a chance to cross-promote other services you may offer.
+
+Take care, however, to not only focus on acquiring new customers, but to cultivate your relationship with existing ones as well. If you do not cater to their needs and give them reasons to continue using your plugin, they may simply unsubscribe from the service you offer.
+
+== Freemium
+
+If you have used services like Dropbox before, you are familiar with the freemium model: offer a basic version of your service for free and additional features in exchange for payments at set intervals. Customers may find this model more appealing than a free trial period because they can use the product indefinitely in at least some capacity. As such, freemium comes with its own challenges.
+
+The key question you should ask yourself is which functions of your plugin you want to make available for free and which ones should require customers paying a fee. On the one hand, you want to attract new customers with the free functions. On the other hand you want to create revenue with your premium content. This means you need to find the right balance between the two by offering enough content to make the free version of your plugin worth using while keeping the upgrade to premium attractive. For this, you should also ensure that customers have a good understanding of the benefits they receive from using the premium version.
+
+Finally, be conscious of conversion rates, that is how many of your customers make the switch to premium in the end. If your plugin caters toward a large user group, you may want to aim for having many customers in general and a relatively lower conversion rate. If your target audience is small, a higher conversion rate is more beneficial. Keep in mind that your conversion rate is likely to decrease over time if the functionality your plugin offers remains the same. This is because users are prone to becoming more price sensitive over time. To counteract this, you will want to continue to develop new features for your premium customers. This is not to say, however, that customers using the free version of your plugin provide no value for you - they can recommend your plugin to other users and draw in new users after all.
+
+== Requirements
+
+Before you can use the subscription plugin, you have to meet all required https://developers.plentymarkets.com/marketplace/plugin-requirements[plugin requirements]. In addition, you have to provide a valid `marketplace.json` file.
+
+== Overview of the differences between the subscription plugin and other plugins
+
+Below, you can find a complete list of all the required information in the `marketplace.json` file which is not covered by the basic plugin requirements.

@@ -1,11 +1,11 @@
-= Hello World SDK
+= How to integrate an SDK
 
 [#helloworldsdk]
 == Hello World Tutorial With External SDKs
 
 === Introduction
 
-This tutorial is aimed at plentymarkets users who completed the first Hello World Tutorial, and want to integrate an external SDK into their plugin. By integrating an external SDK and adding a dependency between your plugin and a repository on Packagist, you can access the functionality of the external SDK. Here you can find the link:https://github.com/plentymarkets/plugin-hello-world2[github repository] for this plugin in the branch h
+This tutorial is aimed at plentymarkets users who completed the first Hello World Tutorial, and want to integrate an external SDK into their plugin. By integrating an external SDK and adding a dependency between your plugin and a repository on Packagist, you can access the functionality of the external SDK. Here you can find the link:https://github.com/plentymarkets/plugin-hello-world2[github repository^] for this plugin in the branch h
 
 [NOTE]
 ====
@@ -46,12 +46,7 @@ The first thing that we are going to do is create a plugin.json, which contains 
 <4> The Author of the plugin, your company name or your personal name.
 <5> The type of the plugin, for now accept, that this is a template, there are also other type, which we will explain later.
 <6> The namespace of our ServiceProvider (We haven't created it yet)
-<7> We add the new attribute dependencies. The value for this attribute consists of the repository name on Packagist, here link:https://packagist.org/packages/guzzlehttp/guzzle[guzzlehttp/guzzle] and the required version, e.g. version 6.3.*. The asterisk means that any version starting with 6.3, e.g. 6.3.0, 6.3.1 or 6.3.2, is fine.
-
-
-
-
-
+<7> We add the new attribute dependencies. The value for this attribute consists of the repository name on Packagist, here link:https://packagist.org/packages/guzzlehttp/guzzle[guzzlehttp/guzzle^] and the required version, e.g. version 6.3.*. The asterisk means that any version starting with 6.3, e.g. 6.3.0, 6.3.1 or 6.3.2, is fine.
 
 === Folder Structure
 
@@ -79,16 +74,13 @@ HelloWorld/
       ContentController.php
   plugin.json
 ....
-<1> This is the file that we have added. Th guzzle_connector will execute
-
-
-
+<1> This is the file that we have added. The guzzle_connector will execute it.
 
 === Creating the guzzle_connector.php
 
 External PHP code can only be executed in PHP files that are saved in the lib folder. So, we create a new PHP file that will be the link between the plentymarkets plugin API and an external API.
 
-We take the code example from link:https://docs.guzzlephp.org/en/latest/[Guzzle] and make some adaptions so that the code fits our needs. Remember that we want to send an HTTP request to the link:https://packagist.org/apidoc[Packagist API]. Let's search link:https://packagist.org/apidoc#search-packages-by-name[packages by name].
+We take the code example from link:https://docs.guzzlephp.org/en/latest/[Guzzle^] and make some adaptions so that the code fits our needs. Remember that we want to send an HTTP request to the link:https://packagist.org/apidoc[Packagist API^]. Let's search link:https://packagist.org/apidoc#search-packages-by-name[packages by name^].
 
 .guzzle_connector.php
 [source%linenums,php,linenums]
@@ -114,20 +106,18 @@ return json_decode($res->getBody(), true); <4>
 
 [NOTE]
 ====
- SdkRestApi is a helper class that enables the communication between plentymarkets plugins and external
- SDKs. This class provides information about the requests sent by the plugin.
+SdkRestApi is a helper class that enables the communication between plentymarkets plugins and external
+SDKs. This class provides information about the requests sent by the plugin.
 
- In the getParam function of our query, we use packagist_query.
- This variable will be described in the code explanation of our ContentController.
+In the getParam function of our query, we use packagist_query.
+This variable will be described in the code explanation of our ContentController.
 ====
-
 
 === Extending the ContentController
 
 As we want to display more data we will have to modify the ContentController.
 In order to execute the previously created PHP file, we need to enable HTTP requests in the ContentController,
 add functionality to address the PHP response and process the returned data.
-
 
 .ContentController.php
 [source%linenums,php,linenums]
@@ -213,8 +203,6 @@ We mentioned above that we want to search Packagist packages by name. So when se
 }
 ----
 
-
-
 === Extending the TWIG template
 
 In our TWIG template we don't need all the information of the JSON response. We only want to display the total number of packages, the package name and the package repository. If no packages were found, we want to display the text No entries.
@@ -241,17 +229,14 @@ In our TWIG template we don't need all the information of the JSON response. We 
 
 === Searching for packages
 
-Now we <<hello-world-simple.adoc#deployplugin,deploy>> the plugin in a PluginSet. Now, we are able to search for packages via the address bar of the browser. Open your browser and go to `www.your-plentystore.com/hello`. The template will be rendered and an empty result list will be displayed.
+Now we link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[deploy^] the plugin in a PluginSet. Now, we are able to search for packages via the address bar of the browser. Open your browser and go to `www.your-plentystore.com/hello`. The template will be rendered and an empty result list will be displayed.
 
 By adding `?search=plentymarkets` to the URL, we will send an HTTP request to Packagist that returns all packages with the search word plentymarkets. The items of the result will be rendered in the result list. Requests are limited to prevent an overflow of queries.
-
 
 [NOTE]
 ====
 Once you have changed the files in your local `HelloWorld` folder, the changes must be pushed to GitHub. You also have to update the plugin in your plentymarkets inbox by pulling the changes from GitHub. Finally, you have to deploy the plugin again to display the changes in your browser.
 ====
-
-
 
 == Bonus: Styling the result
 
@@ -263,7 +248,6 @@ image::hello-world-fancy.gif[Fancy User Interface,500]
 
 For this result we will have to add a CSS and a JavaScript file. Therefor we add a css folder with `fancy.css in it and
 a `buttonlistener.js in a js folder inside resources.
-
 
 ....
 HelloWorld/
@@ -287,8 +271,6 @@ HelloWorld/
 ....
 <1> The new css folder, with fancy.css in it.
 <2> The new js folder, with our JavaScript code.
-
-
 
 Let's take a look at the new hello.twig file
 
@@ -317,7 +299,6 @@ Let's take a look at the new hello.twig file
     </div>
 </div>
 
-
 <p>{{ packagistResult.total }} Results</p>
 <ul>
     {% for packagistItem in packagistResult.results %}
@@ -340,7 +321,6 @@ Let's take a look at the new hello.twig file
 <5> with an svg. To show its for searching.
 <6> With this command we set up a counter, which will be used for our fancy css animation. Basically for every `<li>` element in this for loop we increase the counter by one. starting at 0.
 <7> By adding `--animation-order: {{ counter }}` this as a style to every `<li>` we can define a specific time every single one of them is going to appear. We will do this with CSS.
-
 
 Let's take a look at the part of our CSS responsible for the animation.
 
@@ -371,7 +351,6 @@ li {
 <2> Here we use the `--animation-order we defined for every `<li>` element to delay the results. Every Listelemet comes with 50ms. Furthermore the delay increases for every element. Increasing the delay the `--animation-order` increases. Resulting in a nice effect.
 <3> This is the actual animation function. We start with an invisible element with the opacity of 0 and a smaller scale. We increse the opacity to 1 in the last frame.
 
-
 .buttonlistener.js
 [source,javascript,prettyprint]
 ----
@@ -398,6 +377,5 @@ document.addEventListener('DOMContentLoaded', function () { <1>
 <4> This is the function to get the current search parameter of the URL.
 <5> Here we set the parameter `search` to an encoded value of the search term. It is encoded to exclude special characters and make it a valid URL.
 <6> Here we set the newly created URL as the URL in the current browser window to start the search process.
-
 
 Have fun creating new plugins and improving the experience of your customers.

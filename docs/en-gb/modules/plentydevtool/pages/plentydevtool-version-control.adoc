@@ -1,0 +1,38 @@
+= plentyDevTool and version control
+
+plentyDevTool itself doesn't support version control. If you want to record the changes you make to your plugin, you have to use an external version control system like GitHub. This is recommended in case something goes wrong during development and you want to restore a previous version of your plugin.
+
+This page describes a basic setup and workflow for using version control when working with plentyDevTool.
+
+== Setup
+
+When developing plugins with plentyDevTool, there are three possible
+starting points:
+
+* Creating a new plugin from scratch.
+* Modifying an open source plentyMarketplace plugin.
+* Modifying an open source Git plugin.
+
+If you want to create a new plugin or modify one from plentyMarketplace, proceed as described in the xref:tools:plentydevtool-guide.adoc[plentyDevTool guide]. Then, initialise the folder as a repository.
+
+If you want to modify a Git plugin, note that you cannot *Pull* it directly from the plentymarkets system. Instead, proceed as follows:
+
+. Fork the repository.
+. Clone the forked repository. When cloning the repository, place it into one of the plugin set folders created by plentyDevTool.
+. Rename the cloned folder, so that it matches the `name` and `namespace` of the plugin.
+. In plentyDevTool, click on *Detect new local plugins*. +
+→ The plugin appears on the dashboard. +
+If the plugin doesn't appear, check that the `plugin.json` xref:ROOT:plugin-definition.adoc[meets all requirements].
+. *Install* the plugin.
+
+The plugin appears as a local plugin in plentymarkets. Now you can both select the plugin for synchronisation in plentyDevTool and record the changes you make in your version control system.
+
+== Workflow
+
+Once you've set up your environment, you should adhere to the following workflow:
+
+. In plentyDevTool, toggle the plugin you want to work on for synchronisation.
+. *Pull* all remote changes.
+. Modify the plugin in your IDE.
+. Record the files you modified in your version control system by committing them.
+. *Push* your changes to the plentymarkets system.

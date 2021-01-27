@@ -1,0 +1,26 @@
+{
+    "marketplaceName"   : {"de":"Hallo Subscription Welt","en":"Hello subscription world"},
+    "license"           : "GPL",
+    "price"             : 0,
+    "shortDescription"  : {"de":"plentymarkets plugin subscription example","en":"plentymarkets plugin subscription example"},
+    "categories"        : ["3518"],
+    "keywords"          : ["plugins", "template"],
+    "subscription": [
+      {
+        "interval": "monthly",
+        "price": 10.00
+      },
+      {
+        "interval": "quarterly",
+        "price": 30.00
+      },
+      {
+        "interval": "half-yearly",
+        "price": 60.00
+      },
+      {
+        "interval": "yearly",
+        "price": 120.00
+      }
+    ]
+  }

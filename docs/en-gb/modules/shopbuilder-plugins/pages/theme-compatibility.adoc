@@ -1,0 +1,111 @@
+= Making a theme ShopBuilder compatible
+
+You can make your theme compatible with the Shopbuilder with only a few adjustments. You should make sure that the scripts and styles of the ShopBuilder are loaded in the theme and that you provide several Ceres LayoutContainers in there as well. For information on how to create widgets for the ShopBuilder, see https://developers.plentymarkets.com/tutorials/my-first-shop-builder-widget[this tutorial].
+
+== Preparations
+
+[source,php]
+----
+{{ get_shop_builder_styles() }}
+----
+
+[NOTE]
+.Explanation
+====
+This line of code needs to be executed in order to load the necessary styles for the ShopBuilder into the editor's iframe. This includes for example buttons for editing and deleting widgets. A <link> element is generated and therefore this code should be integrated at the same position where the theme loads CSS files. In Ceres this is the head.
+====
+
+[source,php]
+----
+{{ get_shop_builder_scripts() }}
+----
+
+[NOTE]
+.Explanation
+====
+This line of code inserts all scripts into the template that are necessary for the ShopBuilder. It is advised to enter this line below the scripts that are required by the theme. In Ceres, this is done in PageDesign.twig below all the scripts.
+====
+
+== General info
+
+The ShopBuilder works with 3 different areas where widgets can be placed: the homepage, the header and the footer. Each of these three areas requires the integration of a LayoutContainer. In this container, a dropzone is initialised and all of the widgets that are already placed there are loaded. The user can also add further widgets. The identifiers of these containers are:
+
+* "Ceres::Homepage"
+* "Ceres::Header"
+* "Ceres::Footer"
+
+See below for further information about each area.
+
+== Homepage
+
+[source,php]
+----
+{% if config("Ceres.homepage.showShopBuilderContent") == "true" or request.get('isContentBuilder') == 1 %}
+    ...
+{% endif %}
+----
+
+[NOTE]
+.Explanation
+====
+The first request checks the ShopBuilder homepage setting in the Ceres configuration, i.e. whether the ShopBuilder homepage or the Ceres default homepages is displayed. In the second request it is checked whether the store is currently opened in the ShopBuilder.
+====
+
+[source,php]
+----
+{% for content in container("Ceres::Homepage") if content.plugin == "Plenty" %}
+    {{ content.result | raw }}
+{% endfor %}
+----
+
+[NOTE]
+.Explanation
+====
+The content of the ShopBuilder homepage is linked to the container “Ceres::Homepage”. The code outputs the contents that are linked to the container. They are filtered by the plugin name “Plenty”, which in this case is content of the ShopBuilder.
+====
+
+Combined, this can look like the following:
+
+[source,php]
+----
+{% if config("Ceres.homepage.showShopBuilderContent") == "true" or request.get('isContentBuilder') == 1 %}
+
+    {% for content in container("Ceres::Homepage") if content.plugin == "Plenty" %}
+        {{ content.result | raw }}
+    {% endfor %}
+
+{% endif %}
+----
+
+== Header
+
+[source,php]
+----
+{% set headerContainer = LayoutContainer.show("Ceres::Header") | trim %}
+{% if headerContainer is not empty %}
+    {{ headerContainer | raw }}
+{% endif %}
+----
+
+Here, the LayoutContainer “Ceres::Header” needs to be output and the ShopBuilder takes care of the rest.
+
+=== How to inject header content (Ceres 5)
+
+Wherever possible, you should always inject your own contents you want to add to the header in the node with the ID *page-header-parent*. That way, these injected contents are considered in the calculation of the height and positioning of other widgets in the header. Take a look at the example below, in which additional content is injected via `+insertAdjacentHTML+`:
+
+[source,twig]
+----
+document.getElementById("page-header-parent").insertAdjacentHTML("afterbegin", '<div class="my-custom-header-element">This is a custom header element</div>');   
+----
+
+Elements that are injected in this way are initially always displayed as fixed elements, that don't follow the user's scrolling behaviour. If the injected content should follow along with the scrolling behaviour, you need to add the class `+.unfixed+` to the element you are injecting.
+
+== Footer
+
+[source,php]
+----
+{% set footerContainer = LayoutContainer.show("Ceres::Footer") | trim %}
+{{ footerContainer | raw }}
+----
+
+Here, the LayoutContainer “Ceres::Footer” needs to be output and the ShopBuilder takes care of the rest.

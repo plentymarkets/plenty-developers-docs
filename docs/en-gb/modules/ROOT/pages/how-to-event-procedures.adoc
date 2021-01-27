@@ -42,16 +42,18 @@ You need the following four parameters to register a procedure:
 * array of filter names
 * class name
 
-The first parameter of the `registerProcedure` method is the module name. You can choose the name freely. The event type is the second parameter. In this example the type is `EVENT_TYPE_ORDER`. This way the procedure will be available for order related event procedures. The third parameter is an array with the translations of the filter name.
+The first parameter of the `registerProcedure` method is the module name. You can choose the name freely. The event type is the second parameter. In this example the type is `EVENT_TYPE_ORDER`. This way the procedure will be available for order related event procedures.
 
-The name will be displayed in the UI and has to be provided in German and English. The fourth parameter that must be specified is a class name. The class name specifies the method that will be called when the procedure is executed. The class name must be fully qualified. A method name can be provided by separating it with an '@'. If no method is provided, the default method `execute` will be used.
+The third parameter is an array with the translations of the filter name. The name will be displayed in the UI and has to be provided in German and English. The fourth parameter that must be specified is a class name. The class name specifies the method that will be called when the procedure is executed. The class name must be fully qualified.
+
+A method name can be provided by separating it with an '@'. If no method is provided, the default method `execute` will be used.
 
 === Defining the action
 
 Define the procedures in the class that you specified at the registration.
 
 .ProcedurePlugin\EventProcedures\Procedures.php
-[source,php,prettyprint,lang-php,grey-back,linenums,code-example,example-code-expand,prettyprinted]
+[source,php]
 ----
 <?php
 namespace ProcedurePlugin\EventProcedures;
@@ -116,16 +118,19 @@ class ProcedurePluginServiceProvider extends ServiceProvider
 }
 ----
 
+
 [NOTE]
 ====
-The parameters for registering a filter are the same as for registering a procedure. The following four parameters are needed:
+The parameters for registering a filter are the same as
+for registering a procedure. The following four parameters are needed:
 
 * module name
 * event type
 * array of filter names
 * class name
 
-The last parameter is the name of the class with your filter logic. If no method name is provided, the default method `accept` will be used.
+The last parameter is the name of the class with your filter logic. If
+no method name is provided, the default method `accept` will be used.
 ====
 
 === Defining the filter logic
