@@ -31,12 +31,25 @@ jobs:
       - name: Build site
         run: |
           npm i -g @antora/cli @antora/site-generator-default
-          antora antora-playbook-de.yml --fetch --stacktrace
           antora antora-playbook-en.yml --fetch --stacktrace
           
-      - name: Copy index to build
+      - name: Get REST API repository
         run: |
-          cp index.html ./build/index.html
+          # Setup git details
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          # Clone API repository
+          git clone https://github.com/plentymarkets/api-doc.git ./api-doc
+          
+      - name: Assemble site
+        run: |
+          # Move index to build directory
+          mv index.html ./build/index.html
+          # Create REST directory
+          mkdir ./build/rest-api/
+          # Move REST docs to build directory
+          mv ./api-doc/plentymarkets/openApiV3/openApiV3WithExamples.min.json ./build/rest-api/
+          mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
           
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master

@@ -1,0 +1,150 @@
+= Registering cookies/consents in Ceres
+
+In preparation to the release of Ceres 4.4, we provided a consent interface via which external plugins can register essential and non-essential cookies. This is necessary, since current legislation mandates that users of a website need to consent to the use of non-essential cookies. We added the PHP class *ConsentRepositoryContract.php*, which provides a number of functions which you can use in your own plugins.
+
+The interface handles cookie information such as lifespan, provider and cookie group. In this context, Ceres version 4.4 adds a ShopBuilder widget, which communicates with the consent repository contract, gathers all necessary cookie information and displays it to the customer in the online store, where they can give or deny consent to individual cookies, groups of cookies or all cookies.
+
+The PHP class is located under *Plenty\Modules\Webshop\Consent\Contracts\ConsentRepositoryContract.php*. The class provides 6 functions, which are described in detail below.
+
+== Registering a group of cookies
+
+The function `registerConsentGroup` serves to register a new group of cookies (consents) and takes on the three parameters *$key*, *$label*, and *$options*. The `$key` parameter is a string that holds the *unique* identifier of the cookie group, via which other functions can call upon the group. The `$label` parameter is also a string and serves as the consent group's name that is displayed in the front end. The parameter `$options` is an array that can contain the following additional, optional information:
+
+[cols="1,3"]
+|===
+|Option |Description
+
+|necessary
+|This option takes on a boolean that needs to be *true* if the consent cannot be declined, i.e. if consenting to the cookie is mandatory.
+
+|description
+|This option takes on a string that contains a short description of the cookie group.
+
+|position
+|This option is a number which serves to sort multiple consent groups according to the numerical values stored here.
+|===
+
+== Registering a new cookie
+
+The function `registerConsent` serves to register a single cookie (consent). It takes on the same three parameters as `registerConsentGroup`: *$key*, *$label*, and *$options*. The `$options` parameter, however, may contain the following additional information:
+
+[cols="1,3"]
+|===
+|Option |Description
+
+|necessary
+|This option takes on a boolean that needs to be *true* if the consent cannot be declined.
+
+|description
+|This option takes on a string that contains a short description of the individual consent.
+
+|position
+|This option is a number which serves to sort multiple consents according to the numerical values stored here.
+
+|provider
+|A string that contains the cookie's provider.
+
+|lifespan
+|A string that informs users about how long the cookie is stored.
+
+|policyUrl
+|A string that contains the URL to an external privacy policy.
+
+|group
+|A string that contains the consent group this cookie is part of.
+
+|isOptOut
+|A boolean that, if set to true, consents to the use of the cookie by default.
+|===
+
+== Checking for user consent
+
+The consent repository contract provides multiple functions via which you can assess the status of consents and consent groups. These are:
+
+[cols="1,3"]
+|===
+|Function |Description
+
+|getConsentGroups()
+|This function gets all available consent groups, including all individual consents within, and returns them as a collection.
+
+|hasResponse()
+|This function returns a boolean that indicates whether or not a user has previously agreed or denied any cookie on the website.
+
+|setResponse($key, $isConsented = false)
+|This function sets the response for a consent or a group of consents. The `$key` parameter takes on the  identifying key of the consent group and the consent you want to set, e.g. "group.consent". Use "ungrouped.consent" for consents that are not part of a consent group. You can check all consents of a group at once by using `*` as the key, e.g. `group.*`. The `$isConsented` parameter is a boolean that is true if the user has accepted the referenced consent or group of consents.
+
+|isConsented($key)
+|This functions assesses whether the user has accepted a particular consent or group of consents, returning a boolean. The `$key` parameter takes on the identifying key of the consent group and the consent you want to set, e.g. "group.consent". Use "ungrouped.consent" for consents that are not part of a consent group. You can check all consents of a group at once by using `*` as the key, e.g. `group.*`.
+|===
+
+== Cookies registered in Ceres
+
+In Ceres, we have already established 4 groups of consents, the unique key of which are *necessary*, *tracking*, *marketing* and *media*. The necessary group contains three registered consents: The consent cookie, which stores which cookies the user consented to, the session cookie, which contains information regarding the user's behaviour on the website, and the CSRF cookie, which protects the website from cross-site request forgery attacks. Users cannot decline these consents, since they are declared as necessary, i.e. they are essential in ensuring smooth operation of the online store.
+
+The consent group *tracking* contains cookies that pertain to statistics and website use. GoogleAnalytics, for instance, would be registered in this group of consents.
+
+The consent group *marketing* contains cookies that help taylor the user's online experience to their tastes, for instance by providing the user with customised advertisements. Ceres does not register any marketing cookies out of the box.
+
+The *media* consent group serves to display contents by external media, such as Vimeo links. Ceres registers the GoogleMaps cookie in this consent group.
+
+== Loading scripts after cookie consent
+
+If you are a plugin developer that wants to register cookies with the consent interface, it is important that you change the script type from *"text/javascript"* to *"text/plain"*. Additionally, you will have to specify the attribute `data-cookie-consent` in the script tag, including the corresponding cookie. That way, the script is loaded automatically as soon as the visitor consents to the cookie. Have a look at how this has been implemented in the GoogleAnalytics plugin:
+
+[source,twig]
+----
+<script type="text/plain" data-cookie-consent="{{ config('GoogleAnalytics.consentGroup') }}.googleAnalytics">
+----
+
+== Registering the GoogleAnalytics cookie in your theme
+
+If you are using Ceres in combination with a theme plugin and have integrated the functionality for the GoogleAnalytics cookie plugin within your own theme, you will have to make a few adjustments, so that you can continue using your theme in combination with the consent interface provided by Ceres. The easiest way is to register a GoogleAnalytics cookie in the service provider of your plugin:
+
+[source,php]
+----
+
+public function register()
+    {
+        /** @var ConsentRepositoryContract $consentRepository */
+        $consentRepository = pluginApp(ConsentRepositoryContract::class);
+        $consentRepository->registerConsent(
+            'googleAnalytics',
+            'GoogleAnalytics::MyThemePlugin.consentLabel',
+            [
+                'description' => 'MyThemePlugin::MyThemePlugin.consentDescription',
+                'provider' => 'MyThemePlugin::MyThemePlugin.consentProvider',
+                'lifespan' => 'MyThemePlugin::MyThemePlugin.consentLifespan',
+                'policyUrl' => 'MyThemePlugin::MyThemePlugin.consentPolicyUrl',
+                'group' => 'tracking',
+                'necessary' => true,
+                'isOptOut' => true,
+                'cookieNames' => ['_ga', '_gid', '_gat']
+            ]
+        );
+    }
+----
+
+[NOTE]
+.Explanation
+====
+Here, the function registers a GoogleAnalytics cookie with the ConsentRepositoryContract. The values for description, provider, etc. are keys taken from .properties file of your plugin, so that these values can be multilingual.
+
+However, it is possible to specify these as strings. The key *cookieNames* contains the names of the three GoogleAnalytics cookies necessary to maintain tracking functionality. It is important that these names are correct. Make sure to replace "MyThemePlugin" with the name of your theme.
+====
+
+== Summary: Using the consent tool in the online store
+
+The consent solution for plentyShop sits at the intersection of multiple moving parts that need to interact in order to provide the full functionality. There are three basic components:
+
+The first is the central data management via the system-internal interface. plentymarkets provides interfaces via the plugin API that serve to store cookies and their descriptions, as has been outlined above. Initially, registering cookies via this interface has no effects. For processing or evaluating the data in the online store, the Twig function `\`get_consent_scripts()\`` provides a script, which can be integrated into the online store template. You can use the function parameter to determine whether unaccepted cookies should be blocked or not. Blocking cookies automatically works, so that external plugins or code snippets (e.g. by tracking providers) do not need to be adjusted.
+
+The second component is the display in the online shop. Registered entries can be displayed in the online store via the ShopBuilder cookie bar widget or via third party plugins, such as the link:https://marketplace.plentymarkets.com/plugins/storefront/widgets/cookiebar_4809[CookieBar^]. Once displayed in the online store, users can use the tool to manage their cookies. For this purpose, plugins can gather all information about cookies that have been registered in the system via corresponding interfaces and display this information accordingly.
+
+The third component is the execution of scripts that require cookies in order to function properly. If cookies are blocked by the system, errors may occur for scripts that are executed before the user has accepted the necessary cookies. Plugins that integrate scripts in the online store have the possibility to only execute them after the cookies have been accepted. In contrast to blocked cookies, you have to adjust the corresponding plugins. We described the process above.
+
+== Using Google Analytics for tracking
+
+Google Analytics uses cookies to identify a visitor during their time in the online store. If this cookie is blocked, all page accesses will be interpreted as individual user sessions, since it is no longer possible to assign the visitor to the accesses over multiple pages. That is why the script that submits data to Google Analytics is only executed after the user has given their consent, as long as the setting *Block unaccepted cookies* is active. In this case, no tracking data is submitted to Google until the user accepts the cookie.
+
+If the setting *Block unaccepted cookies* is inactive, the script is executed upon page access and regardless of the user's consent. This distinction of cases is integrated into the Google Analytics plugin. If the GA tracking code is integrated into the system via a custom theme plugin or another third party plugin, the correct evaluation of the script at this point has to be verified.

@@ -1,0 +1,391 @@
+= How to migrate to the Material Table
+
+The Angular Material Table offers many useful functionalities, such as pagination or sorting. Moreover, you can easily add inputs into the columns and it means less maintenance effort for us. In order to migrate to the mat-table, you need the terra-components version 5.4.0 or higher.
+
+== Switching to the mat-table
+
+link:https://v8.material.angular.io/components/table/overview[Angular Material Table]
+
+First of all, add the MatTableModule to your module. In order to switch to the mat-table, wrap the table into a `<div>` container by using the `.mat-table-container` class.
+
+[source,html]
+----
+<div class="mat-table-container">
+    <terra-data-table...>
+</div>
+----
+
+In a next step, replace the `<terra-data-table>` by the `<mat-table>` (or `<table mat-table>`).
+
+[source,html]
+----
+<div class="mat-table-container">
+  <table mat-table...>
+    <terra-no-result-notice...>
+  </table>
+</div>
+----
+
+Then place the `<terra-no-result-notice>` below the `<div>` container.
+
+[source,html]
+----
+<div class="mat-table-container">
+  <table mat-table...>
+  </table>
+  <terra-no-result-notice...>
+  </terra-no-result-notice>
+</div>
+----
+
+Transfer the column definition to a string-based array.
+
+[source,typescript]
+----
+public _columnList:Array<string> =
+       ['id', 'firstName', 'lastName'];
+----
+
+[source,html]
+----
+<div class="mat-table-container">
+  <table mat-table...>
+    <tr mat-header-row *matHeaderRowDef="_columnList"></tr>
+  </table>
+  <terra-no-result-notice...>
+  </terra-no-result-notice>
+</div>
+----
+
+Afterwards, add all required cells to the template. Note that these have to be the same as in the column definition array.
+
+[source,html]
+----
+<div class="mat-table-container">
+    <table mat-table...>
+        <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let contact">
+            {{contact.id}}
+        </td>
+        </ng-container>
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef>First name</th>
+            <td mat-cell *matCellDef="let contact"> \{\{contact.firstName}}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="lastName">
+            <th> mat-header-cell *matHeaderCellDef>Last name</th>
+            <td mat-cell *matCellDef="let contact"> \{\{contact.lastName}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="_columnList"></tr>
+        <tr mat-row *matRowDef="let contact; columns: _columnList"></tr>
+    </table>
+
+    <terra-no-result-notice...>
+    </terra-no-result-notice>
+</div>
+----
+
+Optional: Create SelectionModel in the `.ts` file, add the selection column to the column list and replace `table.selectedRowList` by `selection.selected` in order to get the group function to work again. An example implementation of the check box toggle logic can be found in the https://v8.material.angular.io/components/table/examples[Angular Material documentation]. Don’t forget to add the MatCheckboxModule to your module.
+
+[source,typescript]
+----
+public _columnList:Array<string> =
+             ['select', 'id', 'firstName', 'lastName'];
+
+/**
+* @param _multiple defines if multiple selections are possible or not
+* @param initiallySelectedValues is an array of ContactInterfaces, which are preselected
+*/
+public _selection:SelectionModel<ContactInterface> =
+             new SelectionModel<ContactInterface>(true, []);
+----
+
+[source,html]
+----
+<div class="mat-table-container">
+  <table mat-table>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? _masterToggle() : null"
+          [checked]="_selection.hasValue() && _isAllSelected()"
+          [indeterminate]="_selection.hasValue() && !_isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let contact">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? _selection.toggle(contact) : null"
+          [checked]="_selection.isSelected(contact)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    ...
+    <tr mat-header-row *matHeaderRowDef="_columnList"></tr>
+    <tr mat-row *matRowDef="let contact; columns: _columnList" [class.selected]="_selection.isSelected(contact)">
+  </table>
+  <terra-no-result-notice...>
+  </terra-no-result-notice>
+</div>
+----
+
+Optional: When implementing the material table you can use the 'tc-table-settings' component to add additional functionality to the table. This includes configuring which columns you want to display, rearranging the order in which the columns are displayed and adding an alternative text for each column.
+
+In order to do so, you need to pass an array of the type ColumnInterface to the component via the 'columns' input and the currently displayed columns via the 'selectedColumns' input. The 'ColumnInterface' consists of the attributes 'key' for the column key from the material table and 'label' for the alternative text you want to be displayed in the settings. The 'selectedColumns' input also provides you with a list of the displayed columns whenever you change anything on the columns' arrangement.
+
+== Creating a DataSource
+
+Create a DataSource that extends the desired DataSource:
+
+* TableDataSource
+* TablePagingDataSource (link:#use-paginator[chapter 4])
+* TableSortingDataSource (link:#use-sorting[chapter 5])
+* TablePagingSortingDataSource (link:#use-sorting-and-paginator[chapter 6])
+
+Keep in mind that extra steps are required (explained below).
+
+First, implement the request method.
+
+[source,typescript]
+----
+public request(requestParams:RequestParameterInterface):Observable<TerraPagerInterface<ContactInterface>>
+{
+   return this.contactService.getContacts(requestParams);
+}
+----
+
+Afterwards, add DataSource to the `<mat-table>`.
+
+[source,html]
+----
+<div class="mat-table-container">
+  <table mat-table [dataSource]="_dataSource">
+    ...
+  </table>
+</div>
+----
+
+Optional: The data of the search result is available in the DataSource and can be used to display or hide containers such as the `<terra-no-result-notice>` or disable the `<mat-paginator>` (see chapter 4).
+
+[source,html]
+----
+<div class="...">
+  <table mat-table [dataSource]="_dataSource">
+  </table>
+  <terra-no-result-notice *ngIf="_dataSource.data.length === 0" ...>
+  </terra-no-result-notice>
+</div>
+----
+
+Optional: Use the search() method to trigger the REST call (e.g. in the `<terra-no-result-notice>`).
+
+== Creating a TerraFilter (optional)
+
+This is useful if you have filters and works with all four DataSource variations.
+
+First, create a *public field* for the filter in the FilterComponent.
+
+[source,typescript]
+----
+public filter:TerraFilter<ContactFilterInterface> = new TerraFilter<ContactFilterInterface>();
+----
+
+In order to trigger the search, use the `search()` method from the filter.
+
+[source,typescript]
+----
+<tc-filter (search)="filter.search()">
+  ...
+</tc-filter>
+----
+
+Replace the `dataTableService.filterParameter` by `filter.filterParameter`.
+
+[source,typescript]
+----
+<tc-filter (search)="filter.search()">
+  <mat-form-field class="example-form-field">
+    <mat-label>Name</mat-label>
+    <input matInput type="text"
+      [(ngModel)]="filter.filterParameter.name">
+  </mat-form-field>
+</tc-filter>
+----
+
+Then pass the filter to the dataTable (e.g. in the overview).
+
+[source,typescript]
+----
+<terra-2-col mobileRouting>
+  <ptb-filter #filter left></ptb-filter>
+  <ptb-table [filter]="filter?.filter" right></ptb-table>
+</terra-2-col>
+----
+
+In the data table component, you now need to assign the filter to the
+`DataSource`.
+
+[source,typescript]
+----
+@Input()
+public filter:TerraFilter<ContactFilterInterface>;
+...
+public ngOnInit():void
+{
+  this._dataSource.filter = this.filter;
+}
+----
+
+== Using a paginator (optional)
+
+First of all, add the MatSelectModule and the MatPaginatorModule to your module. In case the `defaultPagingSize` logic (to save the default paging size) exists, move it to the DataSource.
+
+In HTML:
+
+[source,html]
+----
+<mat-paginator [pageSize]="dataSource.pagingSize" [pageSizeOptions]="[3, 25, 50, 100]"></mat-paginator>
+----
+
+In DataSource:
+
+[source,typescript]
+----
+export class ContactsTableDataSource extends TablePagingSortingDataSource<ContactInterface>
+{
+   public pagingSize:number;
+
+   private readonly uiConfigKey:UiConfigEnum = UiConfigEnum.contactsTablePagerUiConfig;
+
+   constructor(private contactsService:ContactsService,
+               private globalRegistry:GlobalRegistryService,
+               private uiConfigService:UiConfigService)
+   {
+       super();
+
+       if(!isNullOrUndefined(globalRegistry.userData.uiConfig[this.uiConfigKey]))
+       {
+           this.pagingSize = globalRegistry.userData.uiConfig[this.uiConfigKey][0];
+       }
+   }
+
+   public request(requestParams:RequestParameterInterface):Observable<TerraPagerInterface<ContactInterface>>
+   {
+       if(this.paginator.pageSize !== this.pagingSize)
+       {
+           this.savePagerSettingsToUiConfig(this.paginator.pageSize);
+       }
+
+       return this.contactsService.getContacts(requestParams);
+   }
+
+   private savePagerSettingsToUiConfig(itemsPerPage:number):void
+   {
+       this.uiConfigService.updateUiConfigValue(this.uiConfigKey, itemsPerPage).subscribe(() =>
+       {
+           this.pagingSize = itemsPerPage;
+       });
+   }
+}
+----
+
+In order to use a paginator, extend the DataSource of the `TablePagingDataSource`.
+
+Then add the `mat-paginator` to the template.
+
+[source,html]
+----
+<div ...>
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    [disabled]="_dataSource.data.length === 0">
+  </mat-paginator>
+  <table mat-table [dataSource]="_dataSource">
+    ...
+  </table>
+</div>
+----
+
+In a next step, create a `ViewChild` in the `.ts` file.
+
+[source,typescript]
+----
+@ViewChild(MatPaginator, {static: true})
+public paginator:MatPaginator;
+----
+
+Afterwards, assign the `mat-paginator` to the `dataSource`.
+
+[source,typescript]
+----
+public ngOnInit():void
+{
+   ...
+   this._dataSource.paginator = this.paginator;
+}
+----
+
+Make sure that the response can handle pagination.
+
+[source]
+----
+public getContacts(
+  requestParams:any
+):Observable<TerraPagerInterface<ContactInterface>>
+{
+   return this
+            .http
+            .get<TerraPagerInterface<ContactInterface>>(
+              this.url,
+              {params:  createHttpParams(requestParams)
+            );
+}
+----
+
+== Using sorting (optional)
+
+First of all, add the MatSortModule to your module. In order to use sorting, extend the DataSource of `TableSortingDataSource` and add the `matSort` directive to the `<table mat-table>` or `<mat-table>`.
+
+[source,html]
+----
+<div ...>
+   <mat-paginator ...></mat-paginator>
+  <table mat-table
+         matSort
+         matSortActive="id"
+         matSortDirection="desc"
+         [dataSource]="_dataSource" >
+  </table>
+</div>
+----
+
+In a next step, create a `ViewChild` in the `.ts` file.
+
+[source,typescript]
+----
+@ViewChild(MatSort, {static: true})
+public sort:MatSort;
+----
+
+Afterwards, assign the `mat-sort` to the `dataSource`.
+
+[source,typescript]
+----
+public ngOnInit():void
+{
+   ...
+   this._dataSource.sort = this.sort;
+}
+----
+
+== Using sorting and paginator (optional)
+
+To use both sorting and paginator, first extend the DataSource of `TablePagingSortingDataSource`. To implement both, carry out the steps in chapter 4 and 5 (except for extending the data source).
+
+== Deleting old services
+
+Before deleting the data table service, check the implementation and make sure not to forget anything. Once you have done so, you can delete the data table service.

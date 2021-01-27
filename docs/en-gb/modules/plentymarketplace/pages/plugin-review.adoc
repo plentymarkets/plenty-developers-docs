@@ -1,0 +1,85 @@
+= plentyMarketplace review guidelines
+
+The plentyMarketplace is a huge success. We currently have more than 100 plugins developed by plentymarkets and a dozen providers (both steadily growing!). With such a huge portfolio, certain challenges arise. To meet these challenges, this document provides guidelines for code review, user guide experience and other important aspects of plugin and tool content in addition to the basic xref:plentymarketplace:plugin-upload-requirements.adoc[plugin requirements] and xref:plentymarketplace:plugin-upload.adoc[upload guide]. Be advised that the plentymarkets reviewers will check any software thoroughly to make sure these standards are met.
+
+*Note* that before you can upload plugins to plentyMarketplace, you need to become a link:https://www.plentymarkets.co.uk/service/our-partners/[plentyMarketplace partner]. To become a partner, submit the contact form https://www.plentymarkets.eu/service/partner-werden/[here].
+
+The following offers a broad overview of the dos and don’ts of plugin programming for the plentyMarketplace. Please note that this is by no means an exhaustive list, rather a living document of pitfalls we are aware of and wish you’d rather avoid. This document can and will be amended over time as soon as new realisations are made. If you have any questions or input regarding this matter, feel free to tell us in our link:https://forum.plentymarkets.com/c/plenty-marketplace[forum^].
+
+== Review criteria for the plentyMarketplace
+
+The plugin name is limited to two lines of text in standard resolutions and responsive. No marketing of any kind is allowed, just the name of the plugin.
+
+The short description is exactly that – a brief summary of the basic functions of the plugin. Some marketing is allowed, but this should not be an advertisement with no or little information about what the plugin actually does.
+
+The version number must use https://semver.org/[semantic versioning] and has to match the changelog at all times.
+
+The changelog must match the version number and offer the date of the upload. Its changes are divided into the following categories:
+
+* Changed
+* Added
+* Removed
+* Fixed
+* ToDo (for necessary actions to perform in the new version)
+
+The plugin must provide a suitable category in the `plugin.json`.
+
+The support tab must provide at least basic contact data. A plentymarkets forum category is merely an additional option and does not suffice as contact data.
+
+== Review criteria for the plentymarkets software
+
+*Back end criteria:*
+
+The look and feel of the plugin back end have to harmonise with the overall plentymarkets style.
+
+Plugins have to use the link:https://material.io/components[Material components^] in their back end UI.
+
+The entry point of the plugin has to match the category and use of the plugin. Any deviation has to be explained in writing.
+
+Language options for English and German must be provided for all elements.
+
+*Code criteria:*
+
+The code must not produce any loops.
+
+Log entries must be proportional to the code volume.
+
+=== Review criteria by category
+
+*General:*
+
+For performance reasons, Dependency Injection must be used, especially with any logic loading or processing data repeatedly.
+
+When using Dependency Injection, it must be impossible for classes to use each other. This results in a loop not registered by the code check.
+
+New plugins must not be based on deprecated technologies (e.g. `ItemDataLayer`).
+
+If the plugin offers any kind of settings, they must be combined into a single menu.
+
+If the logger is used, it must be used correctly to avoid filling the ElasticSearch server with data the user cannot analyse.
+
+*Payment:*
+
+The payment method ID must be dynamically loaded using PaymentMethodRepository.
+
+Payment plugins must not create payments for other payment methods than the ones used by them. Events have to check if this is the case.
+
+All routes must begin with `payment/pluginName/` (in lowerCamelCase).
+
+Any routes for use within the plugin itself must be secured by the middleware.
+
+*Fulfillment:*
+
+Saving delivery and export documents must use xref:beta7@interface:Document.adoc[DocumentRepository].
+
+*Marketplaces, price comparison websites, ElasticExport formats:*
+
+There must be an option to deactivate crons for data exports and imports at least in the plugin settings.
+
+*Theme:*
+
+Theme plugins must display dependencies to Ceres/IO versions to reduce support enquiries.
+
+== API keys and Login data
+
+If an API key or login data is required to use the plugin, please ensure to provide the relevant information in a direct message to us via *plentyMarketplace » Partner Portal » Plugins » Published » [Plugin]*. Otherwise, we will not be able to review your plugin properly and the process will be delayed.

@@ -1,0 +1,185 @@
+= Memory storage
+
+You can use the plugin model to xref:database-storage.adoc[store data in a MySQL database]. But, there may be cases where you only want to store data in memory, without using a datatable. You can achieve this by using so-called accessors and mutators. This page describes how to define accessors and mutators, as well as how to cast attributes to convert them to common data types.
+
+Take care when defining which fields to enter into a database. Otherwise you might expect some data to be stored when, in reality, it's not.
+
+== Using attributes
+
+You can declare an attribute as a non-table attribute to make it volatile. This means the data is only stored for as long as the plugin is executed. The system executes a plugin during a cron job or when one of the plugin's routes is called.
+
+Note that you can only handle `public` fields this way. Attributes defined as `private` or `protected` cannot be stored in the database at all. If you want to access and modify them, use <<#_using_getters_setters, getters and setters>> instead.
+
+.PluginNameSpace/src/Models/MyModel.php
+[source,php]
+----
+        <?php
+        namespace MyPlugin\Model;
+
+        use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+        
+        /**
+         * Class MyCustomPersonModel
+         *
+         * @property int $id;
+         * @property string $firstName;
+         * @property string $lastName;
+         *
+         * @property bool $isParent;
+         * @property int $childId;
+         *
+         * @NonTableAttribute(columns={"isParent","childId"})
+         */
+        
+        class MyCustomPersonModel extends Model
+        {
+            public $id = 0;
+            public $firstName;
+            public $lastName;
+        
+            public $isParent;
+            public $childId;
+        
+            public function getTableName()
+            {
+                return 'my_custom_person_model';
+            }
+        }
+        
+        // Directly access public fields not stored in a database
+        $person = pluginApp(MyCustomPersonModel::class);
+        
+        $person->isParent = true;
+        $person->childId = 123;
+        
+        $child = $person->childId;
+    
+----
+
+The example above defines three fields that are stored in the database: `$id`, `$firstName` and `lastName`. At the same time, it uses the `@NonTableAttribute` declaration to define two more fields that are not stored in the database: `$isParent` and `$child`. The `@NonTableAttribute` declaration accepts an array, so you can list any
+number of attributes in one go.
+
+Access fields not stored in the database using the `pluginApp`.
+
+== Using getters and setters
+
+Getters and setters are an alternative to non-table attributes. Use them when working with `private` and `protected` attributes.
+
+The following example shows the same model as the non-table attributes example in the previous section, but makes the `$isChild` and `parentId` attributes `private`.
+
+.PluginNameSpace/src/Models/MyModel.php
+[source,php]
+----
+        <?php
+        namespace MyPlugin\Model;
+
+        use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+        
+        /**
+         * Class MyCustomPersonModel
+         *
+         * @property int $id;
+         * @property string $firstName;
+         * @property string $lastName;
+         *
+         * @property bool $isParent;
+         * @property int $childId;
+         *
+         * @NonTableAttribute(columns={"isParent","childId"})
+         */
+        
+        class MyCustomPersonModel extends Model
+        {
+            public $id = 0;
+            public $firstName;
+            public $lastName;
+        
+            /** @var bool $isChild */
+            private $isChild;
+        
+            /** @var int $parentId */
+            private $parentId;
+        
+            public function setParent(int $parentId) {
+                $this->isChild = true;
+                $this->parentId = $parentId;
+            }
+        
+            public function isChild()
+            {
+                return $this->isChild;
+            }
+        
+            public function getParent()
+            {
+                return $this->parentId;
+            }
+
+            public function getTableName()
+            {
+                return 'my_custom_person_model';
+            }
+        }
+        
+        // Access fields
+        $person2 = pluginApp(MyCustomPersonModel::class);
+        $person2 -> setParent(321);
+        $isChild = $person2 -> isChild();
+        if ($isChild) {
+            $parentId = $person2 -> getParent();
+        }
+    
+----
+
+This time, you need to use `setParent` and `getParent` to handle the fields.
+
+== Attribute casting
+
+The model's `$casts` property lets you convert attributes to common data types. The `$casts` property is an array. The array consists of key-value pairs. The key is the name of the attribute you want to cast. The value is the type you want to cast the field to.
+
+The following cast types are supported:
+
+* `array`
+* `boolean`
+* `collection`
+* `date`
+* `datetime`
+* `decimal:` +
+Digits is the number of decimal digits.
+* `double`
+* `double`
+* `float`
+* `integer`
+* `object`
+* `real`
+* `string`
+* `timestamp`
+
+The following example shows how to cast attributes.
+
+.PluginNameSpace/src/Models/MyModel.php
+[source,php]
+----
+        <?php
+        use Plenty\Modules\Plugin\DataBase\Contracts\Model;
+
+        class MyModel extends Model
+        {
+            public function __construct()
+            {
+                $this->casts = [
+                    'intAtt' => 'int',
+                    'floatAtt' => 'float',
+                    'stringAtt' => 'string',
+                    'boolAtt' => 'boolean',
+                    'objAtt' => 'object',
+                    'arrAtt' => 'array',
+                    'collAtt' => 'collection',
+                    'dateAtt' => 'date',
+                    'dateTimeAtt' => 'datetime',
+                    'timeStampAtt' => 'timestamp',
+                ];
+            }
+        }      
+    
+----

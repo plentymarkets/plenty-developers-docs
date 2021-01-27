@@ -1,0 +1,445 @@
+= My first plentyBase plugin
+
+[NOTE]
+====
+Plugins are supported since plentyBase version 1.6 and higher
+====
+
+In this tutorial we will show you the steps to create a simple plentyBase plugin.
+
+== Further reading
+
+* link:https://pf4j.org/[PF4J: Java plugin framework]
+
+link:https://github.com/plentymarkets/plentyBase-plugin-hello-world[Download the example plugin on GitHub.^]
+
+== Step 1: Setting up an IDE
+
+We recommend using an IDE which supports the Java language and Gradle. To get started, install *IntelliJ*.
+
+=== Installing IntelliJ
+
+. link:https://www.jetbrains.com/idea/download/[Download] and link:https://www.jetbrains.com/help/idea/install-and-set-up-product.html[install] the IntelliJ IDE.
+
+== Step 2: Create project with Gradle
+
+. Open IntelliJ
+. Create a new Gradle project with minimum Java 1.8 SDK
+. On Gradle location selection select *Use default gradle wrapper (recommended)* +
+→ It is recommended to use Gradle 5.0 or newer. We will select the correct version later
+. Enter a name for your project and select a location
+. After you finished setting up your project select the gradle (not .gradle) → wrapper directory. +
+There you will find a file called gradle-wrapper.properties.
+. Open this file and select the 'distributionUrl' property. There you have to change the version number at the end of the URL.
+. Change it to the latest available version. On link:https://gradle.org/install/[gradle.org] you can find the latest
+available version number.
+
+== Step 3: Set up your build.gradle
+
+For our plugin we need at least two dependencies. One of them is plentyBase itself and the other one is the plugin framework (pf4j). Later we will add some more elements to our build.gradle. You will find the complete build.gradle in the extras section on this page or in the link:https://github.com/plentymarkets/plentyBase-plugin-hello-world/blob/master/build.gradle[github] repository.
+
+[source,java]
+----
+dependencies {
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.1'
+
+    compileOnly fileTree(dir: 'C:\Program Files (x86)\plentyBase', include: '*.jar')
+    // On gradle 5.0 and newer you have to set the annotationProcessor. On older versions it will get called automatically
+    annotationProcessor fileTree(dir: 'C:\Program Files (x86)\plentyBase', include: '*.jar')
+
+    // https://mvnrepository.com/artifact/org.pf4j/pf4j/2.6.0
+    compileOnly group: 'org.pf4j', name: 'pf4j', version: '2.6.0'
+    // On gradle 5.0 and newer you have to set the annotationProcessor. On older versions it will get called automatically
+    annotationProcessor group: 'org.pf4j', name: 'pf4j', version: '2.6.0'
+}
+----
+
+Add this dependency `compileOnly fileTree(dir: 'C:\Program Files (x86)\plentyBase', include: '*.jar')` to your dependencies block.
+
+Don't forget to set the annotationProcessors for both dependencies.
+
+== Step 4: Create classes
+
+=== Creating the start up class
+
+Create a new class which extends from org.pf4j.Plugin. If you don't implement this class it will be implemented automatically by the framework. After that you will be encouraged to implement the constructor and some
+missing methods like:
+
+* `public void start()`
+* `public void stop()`
+* `public void delete()`
+
+This is what the class looks like in the hello world project:
+
+[source,java]
+----
+package helloworld;
+
+import org.pf4j.Plugin;
+import org.pf4j.PluginException;
+import org.pf4j.PluginWrapper;
+
+public class HelloWorldPlugin extends Plugin
+{
+    /**
+        * Constructor to be used by plugin manager for plugin instantiation.
+        * Your plugins have to provide constructor with this exact signature to
+        * be successfully loaded by manager.
+        *
+        * @param wrapper
+        */
+    public HelloWorldPlugin(PluginWrapper wrapper)
+    {
+        super(wrapper);
+    }
+
+    @Override
+    public void start() throws PluginException
+    {
+
+    }
+
+    @Override
+    public void stop() throws PluginException
+    {
+
+    }
+
+    @Override
+    public void delete() throws PluginException
+    {
+
+    }
+}
+----
+
+After this it is possible to add some more extras like:
+
+* Extending context menu on tray icon
+* Adding own REST-routes
+* Adding own event listener entries or hook into existing ones
+
+=== Extending the context menu
+
+You can add some entries to the plugin section in the context menu. In order to extend the context menu you need to create a new class which implements the PopupMenuExtension class. You will have to implement the method buildMenu in which you can create the menu and its actions. Lastly, you have to add the @Extension annotation to the class so
+plentyBase can find and load your extension.
+
+This is what the extension looks like in the hello world plugin
+
+[source,java]
+----
+package helloworld.extensions;
+
+import com.plentymarkets.tool.plugins.api.extensions.PopupMenuExtension;
+import org.pf4j.Extension;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+@Extension
+public class MenuExtension implements PopupMenuExtension
+{
+    @Override
+    public void buildMenu(Menu menu)
+    {
+        MenuItem menuItem = new MenuItem("Hello world!");
+        menuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                System.out.println("Hello world!");
+            }
+        });
+
+        menu.add(menuItem);
+    }
+}
+----
+
+=== Adding a REST-route
+
+You can extend the plentyBase REST-api. In order to extend the plentyBase REST-api you need to create a new
+class which implements the ServletExtension class. You will have to implement the method getServlets in which you can create the new servlets. Lastly, you have to add the @Extension annotation to the class so plentyBase can find and load your extension.
+
+This is what the extension looks like in the hello world plugin
+
+[source,java]
+----
+package helloworld.extensions;
+
+import com.plentymarkets.tool.plugins.api.extensions.ServletExtension;
+import helloworld.HelloWorldServlet;
+import org.pf4j.Extension;
+
+import javax.servlet.http.HttpServlet;
+import java.util.HashMap;
+import java.util.Map;
+
+@Extension
+public class HttpServletExtension implements ServletExtension
+{
+    @Override
+    public Map<String, HttpServlet> getServlets()
+    {
+        Map<String, HttpServlet> httpServletMap = new HashMap<>();
+        httpServletMap.put("/helloworld", new HelloWorldServlet());
+
+        return httpServletMap;
+    }
+}
+----
+
+This is the corresponding HelloWorldServlet class:
+
+[source,java]
+----
+package helloworld;
+
+import org.apache.http.entity.ContentType;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class HelloWorldServlet extends HttpServlet
+{
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        resp.setContentType(ContentType.TEXT_HTML.getMimeType());
+
+        PrintWriter printWriter = resp.getWriter();
+        printWriter.println("Hello world from http servlet!");
+    }
+}
+----
+
+Your new routes will be placed under *https://local.plentybase.de:7331/plugins/your-plugin-id/.*
+
+In the case of the hello world plugin the full endpoint is *https://local.plentybase.de:7331/plugins/helloworld/helloworld.*
+
+=== Adding an event listener entry
+
+You can add listeners to some events to get notified if those events are called. You can even add your own events as you can see in the example.
+
+This is what the extension looks like in the hello world plugin
+
+[source,java]
+----
+package helloworld.extensions;
+
+import com.plentymarkets.tool.core.event.BaseEventListener;
+import com.plentymarkets.tool.core.event.EventBean;
+import com.plentymarkets.tool.plugins.api.extensions.EventExtension;
+import org.pf4j.Extension;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Extension
+public class EventListenerExtension implements EventExtension
+{
+    @Override
+    public Map<String, BaseEventListener> getEventListeners()
+    {
+        Map<String, BaseEventListener> eventListenerMap = new HashMap<>();
+        eventListenerMap.put("helloworld", new BaseEventListener()
+        {
+            @Override
+            public void fireEvent(EventBean eventBean)
+            {
+                System.out.println("Hello world!");
+            }
+        });
+
+        return eventListenerMap;
+    }
+}
+----
+
+This will add helloworld as a new event and you can call it with https://local.plentybase.de:7331/events/helloworld.
+
+==== Some available events
+
+* registeritems/scan
+* process/start
+* process/end
+* picklist/created
+
+== Step 4: Write default configuration
+
+In the root of your resource directory in your project you can create a default configuration for your plugin in case there is no current configuration in your plugin data directory. You have to create a json file called defaults.json in which you have to add your configuration parameters.
+
+This file will be loaded if there is no configuration found.
+
+.resources/defaults.json
+[source,json]
+----
+{
+    "key_one": "value_one",
+    "key_two": true,
+    "key_three": false,
+    "key_four": 1234
+}
+----
+
+== Step 5: Get plugin configuration and logger
+
+To get the configuration of your plugin and the logger with file logging you need to create a new class in which an object of PluginApplicationContext will be inserted when the plugin starts. From this object you will get configuration and logger.
+
+First, create a new class and set the @PluginContext annotation to it. Then create a new static variable of type PluginApplicationContext. Lastly, you need a static method for injecting the object. The method needs the @ContextInjector as annotation and one parameter of type PluginApplicationContext where to set the
+class variable.
+
+This is what it looks like in hello world plugin:
+
+[source,java]
+----
+package helloworld;
+
+import com.plentymarkets.tool.plugins.api.context.ContextInjector;
+import com.plentymarkets.tool.plugins.api.context.PluginApplicationContext;
+import com.plentymarkets.tool.plugins.api.context.PluginContext;
+import org.apache.logging.log4j.Logger;
+
+@PluginContext
+public class PluginAppContext
+{
+    protected static PluginApplicationContext pluginApplicationContext;
+
+    @ContextInjector
+    public static void inject(PluginApplicationContext context)
+    {
+        pluginApplicationContext = context;
+    }
+
+    public static Logger getPluginLogger()
+    {
+        return pluginApplicationContext.getPluginLogger();
+    }
+}
+----
+
+== Step 6: Write manifest and default configuration
+
+In the manifest you will need to add some information like
+
+* Fully qualified class name *(optional)*
+* Plugin id (name) *(required)*
+* Version *(required)* (according to https://semver.org/[Semantic
+Versioning Sepcification])
+* Required application version *(optional)*
+* Dependencies with other plugins *(optional)*
+* Description *(optional)*
+* Author/provider *(optional)*
+* License *(optional)*
+
+To do this you need to open the build.gradle again. Create a new task with type Jar and add the manifest as below:
+
+[source,java]
+----
+task uberJar(type: Jar) {
+    manifest {
+        attributes(
+                "Plugin-Class": "helloworld.HelloWorldPlugin",
+                "Plugin-Id": "hello-world",
+                "Plugin-Version": "1.0.0",
+                "Plugin-Description": "Description of my plentyBase plugin",
+                "Plugin-Provider": "plentysystems AG"
+                "Plugin-Requires": "1.6.0",
+                "Plugin-Dependencies": x, y, z,
+                "Plugin-License": "Apache License 2.0"
+                )
+    }
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}
+----
+
+== Step 7: Debug your plugin
+
+In order to debug your plugin you have to use the remote debug run configuration in IntelliJ. In your plentyBase installation directory you'll find a file called vmoptions.txt in which you have to uncomment the following line:
+
+`-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005`
+
+Setting the suspend parameter to y lets plentyBase wait for your plugin to connect before it starts. Now you only have to start plentyBase and then start your remote debug run connfiguration in your plugin.
+
+== Step 8: Build your plugin
+
+Once you are ready you can build your project. Open your build.gradle and click on the little green play icon next to the new task or execute the uberJar task.
+
+After the build finished without any errors you will find your plugin `.jar` in build → libs.
+
+== Step 9: Install your plugin
+
+There are three ways of installing your plugin in plentyBase.
+
+=== Install via plugin directory
+
+One way is to take your plugin.jar and copy it to the plugin location of plentyBase. The default location is:
+
+On Windows:
+`%LocalAppData%\plentymarkets\plentybase\PluginProductive`
+
+On macOS:
+`~/Library/Caches/eu.plentymarkets.plentybase/PluginProductive`
+
+on Linux:
+`~/.plentybase/PluginProductive`
+
+After you copied the file you have to restart plentyBase.
+
+=== Install via backend
+
+Another way is to install your plugin on the plentyBase → Plugins page in your plentymarkets backend. After installing the plugin this way you don't need to restart plentyBase. Your plugin starts automatically.
+
+=== Install via REST-route
+
+You can either use an API development tool like https://www.getpostman.com/[Postman] to install a plugin in plentyBase or you can create a new task in build.gradle to install your plugin in plentyBase. First, you have to add a new plugin to your build.gradle.
+
+Add the following line to the plugins \{} section in your build.gradle:
+
+`id "io.github.http-builder-ng.http-plugin" version "0.1.1"` Following this you need to add some imports. You have to add these lines to the top of your gradle file:
+
+`import io.github.httpbuilderng.http.*`
+`import groovyx.net.http.*``
+`import static groovyx.net.http.MultipartContent.multipart`
+
+The last step is to add the install task: +
+
+[source,java]
+----
+task installPlugin(dependsOn: uberJar, type: HttpTask) {
+    config {
+        request.uri = 'https://local.plentybase.de:7331'
+    }
+
+    post {
+        request.uri.path = '/plugins/install'
+        request.contentType = 'multipart/form-data'
+        request.headers['Authorization'] = ''
+        request.body = multipart {
+            field 'activated', 'true'
+            part 'plugin', jar.getArchiveFileName().get(), 'application/java-archive', jar.getArchiveFile().get().asFile
+        }
+
+        request.encoder 'multipart/form-data', OkHttpEncoders.&multipart
+        request.encoder('application/java-archive') { ChainedHttpConfig config, ToServer req ->
+            req.toServer(new ByteArrayInputStream(jar.getArchiveFile().get().asFile.bytes))
+        }
+        response.success {
+            println "Successful"
+        }
+    }
+}
+----

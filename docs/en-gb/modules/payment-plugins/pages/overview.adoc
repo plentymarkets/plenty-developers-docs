@@ -1,0 +1,1755 @@
+= Introducing payment plugins
+
+On this page, you will find relevant information about payment plugins. The information reflects the process of developing a payment plugin step by step. Thus, the first part is about the initial steps to get started, followed by necessary configurations including Assistants.
+
+Next, the general workflow of a payment plugin is explained as well as additional steps such as assigning payments to orders. Processes as these reflect workflows in plentymarkets systems and are required of payment plugins. The chapter *Optional steps* describes functions that are important but not necessarily needed for every payment plugin.
+
+Please make sure to pay attention to the test cases explained in the final chapter. These are important to ensure the functionality of your payment plugin and thus the successful integration. Code examples and descriptions are provided in every part to illustrate the different subjects.
+
+If you have not developed or worked with plugins before this point, refer to the general information first.
+
+xref:plugin-architecture.adoc[Introducing plentymarkets plugins]
+xref:plugin-definition.adoc[Plugin definition]
+
+== First steps
+
+The first steps consist in creating the payment method, defining the
+payment method and registering the payment method, in this order. The
+following chapters take you through these procedures step by step.
+
+=== Creating the payment method
+
+The payment method has to be created once by means of a migration. The
+migration has to be entered in the property "runOnBuild" within the
+plugin.json in order to be executed.
+
+[source,php]
+----
+namespace PaymentMethod\Migrations;
+
+use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
+
+/**
+ * Class CreatePaymentMethod
+ */
+class CreatePaymentMethod
+{
+    /**
+     * @var PaymentMethodRepositoryContract
+     */
+    private $paymentMethodRepositoryContract;
+
+    /**
+     * CreatePaymentMethod constructor.
+     *
+     * @param PaymentMethodRepositoryContract $paymentMethodRepositoryContract
+     */
+    public function __construct(PaymentMethodRepositoryContract $paymentMethodRepositoryContract)
+    {
+        $this->paymentMethodRepositoryContract = $paymentMethodRepositoryContract;
+    }
+
+    /**
+     * The run method will register the payment method when the migration runs.
+     */
+    public function run()
+    {
+        $this->paymentMethodRepositoryContract->createPaymentMethod([
+            'pluginKey' => 'pluginKey', // Unique key for the plugin
+            'paymentKey' => 'paymentKey', // Unique key for the payment method
+            'name' => 'Payment Name' // Default name for the payment method
+        ]);
+    }
+}
+    
+----
+
+=== Defining the payment method
+
+For every payment method, a class has to be defined which extends from
+the PaymentMethodBaseService.
+
+[cols="1,3"]
+|===
+|Method |Description
+
+|isActive()
+|Check if the payment method is active for the frontend or whether it is not. Use settings to decide if the method is active. Return "true" if activem "false" if not.
+
+|getName(string $lang)
+|Return the payment method name for the frontend as a string.
+
+|getFee ()
+|If required you can add an additional fee in the checkout. Return as a float value.
+
+|getIcon(string $lang)
+|Return an icon for the frontend, shown within the payment methods list. Return the icon path as a string.
+
+|getDescripton(string $lang)
+|Payment method description for the frontend, also shown within the payment methods list.
+
+|getSourceUrl(string $lang)
+|If you have to provide additional information on an extra page you can return an url to this page. The link will be shown within the payment methods list.
+
+|isSwitchableTo()
+|Determine if it is possible to switch to this payment method after the order has been placed. You have to make sure that it is possible to reinitialise the payment process based on the order.
+
+|isSwitchableFrom()
+|Determine if it is possible to switch from this payment method to another after the order has been placed. Thus, customers are goven the possibility to change the payment method. Default is false..
+
+|isBackendSearchable()
+|Determine if the payment method is available in the search drop-down lists in the back end. Default is true.
+
+|isBackendActive()
+|Determine if it is possible to select the payment method in the back end for an already existing order or when an order is created manually. You have to make sure that your payment method can handle this. Default is true.
+
+|getBackendName(string $lang)
+|Return the payment method name for the back end as string.
+
+|canHandleSubscriptions()
+|Determine if the payment method can handle recurring payments.
+
+|getBackendIcon()
+|Return an icon for the back end, shown in the payment UI. The icon has to be provided as a "svg" file. Return the path to the icon as string.
+|===
+
+[source,php]
+----
+namespace PaymentMethod\Methods;
+
+use Plenty\Plugin\ConfigRepository;
+use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
+use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Basket\Models\Basket;
+
+/**
+ * Class PaymentMethod
+ * @package PaymentMethod\Methods
+ */
+class PaymentMethod extends PaymentMethodBaseService
+{
+    /** @var BasketRepositoryContract */
+    private $basketRepo;
+
+    /** @var  SettingsService */
+    private $settings;
+
+    /** @var  Checkout */
+    private $checkout;
+
+    /**
+     * PaymentMethod constructor.
+     * @param BasketRepositoryContract $basketRepo
+     * @param SettingsService $settingsService
+     * @param Checkout $checkout
+     */
+    public function __construct(
+        BasketRepositoryContract $basketRepo,
+        SettingsService $settingsService,
+        Checkout $checkout
+    ) {
+        $this->basketRepo = $basketRepo;
+        $this->settings = $settingsService;
+        $this->checkout = $checkout;
+    }
+
+    /**
+     * Check if the payment method is active.
+     * Return true if the payment method is active, if not return false.
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        /**
+         * In our assistant, we let the user decide in which shipping countries the payment method
+         * is allowed, therefore we have to check it here.
+         */
+        if (!in_array($this->checkout->getShippingCountryId(), $this->settings->getShippingCountries())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the name of the payment method.
+     *
+     * @param string $lang
+     * @return string
+     */
+    public function getName(string $lang = 'de'): string
+    {
+        /** @var Translator $translator */
+        $translator = pluginApp(Translator::class);
+        /**
+         * Here, we use the translator class to allow multilingualism. Every variable
+         * of the translator can be found and configured in the CMS » Multilingualism menu.
+         */
+        return $translator->trans('PaymentMethod::PaymentMethod.paymentMethodName', [], $lang);
+    }
+
+    /**
+     * Return an additional payment fee for the payment method.
+     *
+     * @return float
+     */
+    public function getFee(): float
+    {
+        return 0.00;
+    }
+
+    /**
+     * Get the path of the icon.
+     *
+     * @return string
+     */
+    public function getIcon(string $lang): string
+    {
+        /**
+         * Here, we want to get the logo, but we let our user decide in the assistant if
+         * he wants a custom logo or the basic logo. Therefore, we have to get our logo settings
+         * and either return the uploaded image url or the default image.
+         */
+        if ($this->settings->getSetting('logo') == 1) {
+            return $this->settings->getSetting('logoUrl');
+        } elseif ($this->settings->getSetting('logo') == 2) {
+            $app = pluginApp(Application::class);
+            $icon = $app->getUrlPath('paymentmethod').'/images/icon.png';
+            return $icon;
+        }
+        return '';
+    }
+
+    /**
+     * Get the description of the payment method.
+     *
+     * @return string
+     */
+    public function getDescription(string $lang): string
+    {
+        /**
+         * Here, we want to use the frontend session to detect the language and
+         * return the description of a payment method.
+         */
+         /** @var FrontendSessionStorageFactoryContract $session */
+        $session = pluginApp(FrontendSessionStorageFactoryContract::class);
+        $lang = $session->getLocaleSettings()->language;
+
+        /**
+         * Here, we use the translator class to allow multilingualism. Every variable of
+         * the translator can be found and configured in the CMS » Multilingualism menu.
+         */
+         /** @var Translator $translator */
+        $translator = pluginApp(Translator::class);
+        return $translator->trans('PaymentMethod::PaymentMethod.paymentMethodDescription', [], $lang);
+    }
+
+    /**
+     * Return an URL with additional information about the payment method shown in the frontend
+     * in the corresponding language.
+     *
+     * @param string $lang
+     * @return string
+     */
+    public function getSourceUrl(string $lang): string
+    {
+        return '';
+    }
+
+    /**
+     * Check if it is allowed to switch to this payment method after the order has been placed.
+     *
+     * @return bool
+     */
+    public function isSwitchableTo(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Check if it is allowed to switch from this payment method to another after the order has been placed.
+     *
+     * @return bool
+     */
+    public function isSwitchableFrom(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Check if this payment method should be searchable in the back end.
+     *
+     * @return bool
+     */
+    public function isBackendSearchable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if this payment method should be active in the back end.
+     *
+     * @return bool
+     */
+    public function isBackendActive(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the name for the back end.
+     *
+     * @param string $lang
+     * @return string
+     */
+    public function getBackendName(string $lang): string
+    {
+        return $this->getName($lang);
+    }
+
+    /**
+     * Check if this payment method can handle subscriptions.
+     *
+     * @return bool
+     */
+    public function canHandleSubscriptions(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Return the icon for the back end, shown in the payments UI.
+     *
+     * @return string
+     */
+    public function getBackendIcon(): string
+    {
+        $app = pluginApp(Application::class);
+        $icon = $app->getUrlPath('paymentmethod').'/images/backend_icon.svg';
+        return $icon;
+    }
+}
+----
+
+=== Registering the payment method
+
+In order to make a payment method available for a plentymarkets system, the payment method must be registered by the plugin. This is done in the ServiceProvider. There, a payment method is registered within the `boot()` method. Multiple payment methods can be registered that way. A payment method is registered with a unique key consisting of the *PluginKey* and the *PaymentKey*. Registering a payment method is always based on one or multiple events. When the event is triggered, the payment method is loaded.
+
+[source,php]
+----
+namespace PaymentMethod\Providers;
+
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
+use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
+use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
+
+/**
+ * Class PaymentMethodServiceProvider
+ * @package PaymentMethod\Providers
+ */
+class PaymentMethodServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+    }
+
+    /**
+     * Register the payment methods within the boot process of the plugin.
+     *
+     * @param PaymentMethodContainer $payContainer
+     */
+    public function boot(PaymentMethodContainer $payContainer)
+    {
+        // Register the payment method in the payment method container.
+        $payContainer->register('pluginKey::paymentKey', PaymentMethod::class,
+            [
+                AfterBasketChanged::class,
+              AfterBasketItemAdd::class,
+                AfterBasketCreate::class,
+                            AfterBasketItemUpdate::class,
+                AfterBasketItemRemove::class,
+                FrontendLanguageChanged::class,
+                FrontendShippingCountryChanged::class,
+                FrontendCustomerAddressChanged::class
+            ]
+        );
+
+        ...
+    }
+}
+----
+
+== Configurations
+
+Configurations and settings of the plugin need to be integrated into an assistant. This way, the plugin is incorporated seamlessly into the plentymarktes user experience and the functionality of the plugin to work with different clients is ensured. The assistant needs to contain the option to disable the payment method for certain delivery countries and, as mentioned, the function to work with different clients. To get a deeper knowledge of assistants we recommend to read the xref:plugin-configuration:reference-plugin-assistant.adoc[Assistant documentation].
+
+=== Example for an assistant
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/payuponpickupconfig.png[image]
+
+==== Basic structure
+
+[source,php]
+----
+  namespace PaymentMethod\Assistants;
+
+  use PaymentMethod\Assistants\SettingsHandlers\PaymentMethodAssistantSettingsHandler;
+  use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
+  use Plenty\Modules\Wizard\Services\WizardProvider;
+  use Plenty\Plugin\Application;
+
+  class PaymentMethodAssistant extends WizardProvider
+  {
+      /**
+       * @var WebstoreRepositoryContract
+       */
+      private $webstoreRepository;
+
+      /**
+       * @var Array
+       */
+      private $webstoreValues;
+
+      public function __construct(
+          WebstoreRepositoryContract $webstoreRepository
+      ) {
+          $this->webstoreRepository = $webstoreRepository;
+      }
+
+      /**
+       *  In this method we define the basic settings and the structure of the assistant in an array.
+       *  Here, we have to define aspects like the topic, settings handler, steps and form elements.
+       */
+      protected function structure()
+      {
+          return [
+              /** Use translate keys for multilingualism. */
+              "title" => 'assistant.assistantTitle',
+              "shortDescription" => 'assistant.assistantShortDescription',
+              "iconPath" => $this->getIcon(),
+              /** Add our settings handler class. */
+              "settingsHandlerClass" => PaymentMethodAssistantSettingsHandler::class,
+              "translationNamespace" => "PaymentMethod",
+              "key" => "payment-paymentMethodAssistant-assistant",
+              /** The topic needs to be payment. */
+              "topics" => ["payment"],
+              "priority" => 990,
+              "options" => [
+                  "config_name" => [
+                      "type" => 'select',
+                      'defaultValue' => $this->getMainWebstore(),
+                      /** We need a list of all webstores to configure each individually. */
+                      "options" => [
+                          "name" => 'assistant.storeName',
+                          'required' => true,
+                          'listBoxValues' => $this->getWebstoreListForm(),
+                      ],
+                  ],
+              ],
+              /** Define steps for the assistant. */
+              "steps" => [
+                  "stepOne" => [
+                      "title" => "assistant.stepOneTitle",
+                      "sections" => [
+                          [
+                              "title" => 'assistant.shippingCountriesTitle',
+                              "description" => 'assistant.shippingCountriesDescription',
+                              /**
+                               * Define form elements for the first step, in our case
+                               * a selection of available delivery countries.
+                               */
+                              "form" => [
+                                  "shippingCountries" => [
+                                      'type' => 'checkboxGroup',
+                                      'defaultValue' => [],
+                                      'options' => [
+                                          'name' => 'assistant.shippingCountries',
+                                          'checkboxValues' => $this->getCountriesListForm(),
+                                      ],
+                                  ],
+                              ],
+                          ],
+                      ],
+                  ],
+                  /** Define as many steps as needed. */
+                  "stepTwo" => [ /** ..... */ ],
+              ]
+          ];
+      }
+
+      /**
+       * We need an icon for our assistant, so we just return the basic icon as string. You may
+       * want to return different icons depending on the language of the back end user.
+       */
+      private function getIcon()
+      {
+          $app = pluginApp(Application::class);
+          $icon = $app->getUrlPath('PaymentMethod').'/images/icon.png';
+
+          return $icon;
+      }
+
+      /**
+       * We use this method to create a drop-down menu with all webstores
+       * to configure our assistant for each client individually.
+       */
+      private function getWebstoreListForm()
+      {
+          if ($this->webstoreValues === null) {
+              $webstores = $this->webstoreRepository->loadAll();
+              /** @var Webstore $webstore */
+              foreach ($webstores as $webstore) {
+                  /** We need a caption and a value because it is a drop-down menu. */
+                  $this->webstoreValues[] = [
+                      "caption" => $webstore->name,
+                      "value" => $webstore->storeIdentifier,
+                  ];
+              }
+
+              /** Sort the array for better usability. */
+              usort($this->webstoreValues, function ($a, $b) {
+                  return ($a['value'] <=> $b['value']);
+              });
+          }
+
+          return $this->webstoreValues;
+      }
+
+  }
+    
+----
+
+==== Settings handler
+
+[source,php]
+----
+namespace PaymentMethod\Assistants\SettingsHandlers;
+use Plenty\Modules\Plugin\Contracts\PluginLayoutContainerRepositoryContract;
+use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
+use Plenty\Modules\Wizard\Contracts\WizardSettingsHandler;
+
+class PaymentMethodAssistantSettingsHandler implements WizardSettingsHandler
+{
+    /**
+     * @param array $parameter
+     * @return bool
+     */
+    public function handle(array $parameter)
+    {
+        $data = $parameter['data'];
+        $webstoreId = $data['config_name'];
+
+        if(!is_numeric($webstoreId) || $webstoreId <= 0){
+            $webstoreId = $this->getWebstore($parameter['optionId'])->storeIdentifier;
+        }
+
+        /**
+         * Save the settings within an own function.
+         */
+        $this->saveSettings($webstoreId, $data);
+
+        /**
+         * Make other configurations after saving these configurations,
+         * e.g. creating required container links.
+         */
+        $this->createContainer($webstoreId, $data);
+        return true;
+    }
+
+    ...
+}
+  
+----
+
+*Explanation*: In the `PaymentMethodAssistant` class you have to extend the `WizardProvider` and define a structure for you assistant with all available options. You also need some extra methods. In this case, we are using `getWebstoreListForm` to return a list of all webstores. This list of webstores is needed to individually configure the assistant for each webstore. `getCountriesListForm` will return a country list so you can select different delivery countries.
+
+=== Multilingualism configurations
+
+The plugin needs to contain the functionality to display texts, such as names, labels or configurations, in different languages. For more information on the multilingualism of a plugin refer to xref:plugin-configuration:how-to-plugin-configuration.adoc#_multilingualism[Plugin multilingualism].
+
+== Payment plugin workflow
+
+The flowchart below describes the general workflow of payment plugins and the interaction of payment and template plugins.
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/payment-plugin-flowchart.png[image]
+
+=== Getting the payment method content
+
+Active payment plugins are displayed in the checkout of the template plugin. When the customer clicks on the *Order now* button, the `GetPaymentMethodContent` event is triggered. Depending on the content type, the following results are possible:
+
+[cols="1,3"]
+|===
+|Type |Description
+
+|*errorCode*
+|The payment will not be prepared. An error message will be displayed on the *Checkout* page.
+
+|*continue*
+|The payment will be processed by the *IO* plugin. Payment plugins that do not require specific code for displaying own content in the template or redirecting to a payment provider can use this type.
+
+|*externalContentUrl*; +
+*htmlContent*
+|Payment plugins with specific code for displaying own content in the template can use these types to show either HTML content or external content by defining an external content URL. A pop-up window will be displayed on the *Checkout* page. The customer must click on *Confirm* to continue the payment process.
+
+|*redirectUrl*
+|The customer will be forwarded to the payment provider. After entering the required data on the payment provider page, the customer will be directed back and the payment plugin continues the payment process with the entered payment data.
+|===
+
+=== Creating the order
+
+The order is created. This can be done in two different ways:
+
+* *IO:* An order is created by the *IO* plugin using the `place-order` URL. Then, the `executePayment` event is triggered in the *IO* plugin. If no order is created, an error message is displayed on the *Checkout* page.
+* *Payment plugin:* An order is created by the payment plugin. Then, the `execute-payment` URL is used to trigger the `executePayment` event in the payment plugin. If no order is created, an error message is displayed on the *Checkout* page.
+
+=== Executing the payment
+
+The `executePayment` event is triggered. The payment plugin checks whether the payment is executed. If the payment is executed, the customer will be forwarded to the *Confirmation* page displaying an overview of the order. If no payment is executed, the customer will also be forwarded to the *Confirmation* page, but an *Order not paid* note will be displayed.
+
+=== Registering event listener and events
+
+In order to respond to different events, a listener for the respective events must be registered. The listener is registered in the `boot()` method of the ServiceProvider. Every event to be responded to must be registered here, too.
+
+[source,php]
+----
+...
+
+// Listen for the event that gets the payment method content.
+$eventDispatcher->listen(GetPaymentMethodContent::class,
+   function(GetPaymentMethodContent $event) use( $paymentHelper, $basket, $paymentService)
+   {
+       // Check if the given method of payment is one of the plugin.
+        if($event->getMop() == $paymentHelper->getPayPalMopId())
+        {
+              // Collect necessary informations
+              $basket = $basket->load();
+
+              ...
+
+              // Set the content and return type for the event.
+              $event->setValue($content);
+              $event->setType($returnType);
+        }
+   });
+
+// Listen for the event that executes the payment.
+$eventDispatcher->listen(ExecutePayment::class,
+  function(ExecutePayment $event) use ( $paymentHelper, $paymentService)
+  {
+        // Check if the given method of payment is one of the plugin.
+        if($event->getMop() == $paymentHelper->getPayPalMopId())
+        {
+              // Execute the payment
+              ....
+
+              // Check whether the payment has been executed successfully.
+              if($paymentService->getReturnType() != 'errorCode')
+              {
+                    // Create a payment in plentymarkets with the data from the payment provider.
+                    $plentyPayment = $paymentHelper->createPlentyPaymentFromJson($payPalPayment);
+                    if($plentyPayment instanceof Payment)
+                    {
+                          // Assign the payment to an order in plentymarkets.
+                          $paymentHelper->assignPlentyPaymentToPlentyOrder($plentyPayment, $event->getOrderId());
+
+                          // Set the return type and value for the event.
+                          $event->setType('success');
+                          $event->setValue('The payment has been executed successfully!');
+                    }
+              }
+              else
+              {
+                  // Handle an error case and set the return type and value for the event.
+                  $event->setType('error');
+                  $event->setValue('The payment could not be executed!');
+              }
+        }
+  });
+
+...
+----
+
+In the `boot()` method, the `$eventDispatcher` is registered. This is our event listener. It uses the `listen()` method, to listen to the necessary events. It listens to the `GetPaymentMethodContent()` in order to send necessary information to the payment provider. The second event is `ExecutePayment`. If not previously done so, this event executes the payment at the payment provider, creates a payment in the system and also assigns it to the corresponding order.
+
+== Additional Steps
+
+The next part describes necessary steps to ensure the correct workflow concerning payments in the system.
+
+=== Creating payments
+
+Payments are an important component in the order processing. They are needed to mark orders as paid and thus to notify sellers of the order status and that the order can be shipped. An order should only be further processed in the plentymarkets system if a payment is assigned to the order. Therefore, the plugin must ensure that a payment is created and assigned. Depending on the payment method, assigning a payment can be done right after placing an order, e.g. by responding to the respective event. Another possibility to create a payment is by calling a specific route. The payment must be structured according to the xref:beta7@interface:Payment.adoc[Payment model].
+
+[source,php]
+----
+      ...
+
+      /**
+      * Create a payment in plentymarkets from an array.
+      *
+      * @param array $data
+      * @return Payment
+      */
+      public function createPlentyPaymentFromArray(array $data)
+      {
+        $paymentData = [];
+
+        // Set the payment data
+        $paymentData['mopId']           = (int)$this->getlMopId(); // Load the unique payment method ID from the plugin.
+        $paymentData['transactionType'] = 2;
+        $paymentData['status']          = $this->mapStatus($data['status']); // Map the status from the payment provider to the payment status.
+        $paymentData['currency']        = $data['currency'];
+        $paymentData['amount']          = $data['amount'];
+        $paymentData['receivedAt']       = $data['entryDate'];
+
+        $paymentData['properties'] = [
+          [
+            'typeId'  => 1 // Transaction Id
+            'value'   => $data['transactionId']
+          ], [
+            'typeId'  => 3 // Booking text
+            'value'   => $data['bookingText']
+          ], [
+            'typeId'  => 23 // Payment origin
+            'value'   => 6 // Plugin origin
+          ]
+        ]
+
+        $payment = $this->paymentRepository->createPayment($paymentData);
+        return $payment;
+      }
+
+      ...
+      
+----
+
+As an example, here a payment is created in the `createPlentyPayment` method of the PayPal plugin.
+
+=== Assigning payments to orders
+
+After creating a payment, the payment can be assigned to an order. This is done with the `createOrderRelation` function within the PaymentOrderRelationRepositoryContract repository. Note that the order can be loaded with the xref:beta7@interface:Order.adoc[OrderRepositoryContract].
+
+[source,php]
+----
+      ...
+
+      /**
+      * Assign the payment to an order in plentymarkets.
+      *
+      * @param Payment $payment
+      * @param int $orderId
+      */
+      public function assignPlentyPaymentToPlentyOrder(Payment $payment, int $orderId)
+      {
+        // Load the order by the given order ID.
+        /** @var OrderRepositoryContract $orderRepositoryContract */
+        $orderRepositoryContract = pluginApp(OrderRepositoryContract::class);
+        $order = $orderRepositoryContract->findOrderById($orderId);
+
+        // Check whether the order truly exists in plentymarkets.
+        if(!is_null($order) && $order instanceof Order)
+        {
+          // Assign the given payment to the given order
+          /** @var PaymentOrderRelationRepositoryContract $paymentOrderRelationRepositoryContract */
+          $paymentOrderRelationRepositoryContract = pluginApp(PaymentOrderRelationRepositoryContract::class);
+          $paymentOrderRelationRepositoryContract->createOrderRelation($payment, $order);
+        }
+      }
+
+      ...
+      
+----
+
+=== Rejecting payments
+
+When a payment provider rejects a payment, this information must be saved in the payment. This is done with the help of the payment status. The payment status can be changed. The plugin can change the status of a payment via a predefined route. For this purpose, the xref:beta7@interface:Payment.adoc[PaymentRepositoryContract] with the `updatePayment` method must be used.
+
+The following IDs are used for payment statuses:
+
+[cols="1,3"]
+|===
+|ID |Payment status
+
+|1
+|Awaiting approval
+
+|2
+|Approved
+
+|3
+|Captured
+
+|4
+|Partially captured
+
+|5
+|Cancelled
+
+|6
+|Refused
+
+|7
+|Awaiting renewal
+
+|8
+|Expired
+
+|9
+|Refunded
+
+|10
+|Partially refunded
+|===
+
+=== Changing the payment method
+
+Every payment plugin has to have the functionality to allow a change of payment methods. Therefore, it has to check whether the payment method can be changed by customers in the *My account* area after the order has been placed. For this purpose, the two methods `isSwitchableTo` and `isSwitchableFrom` are used and have to be implemented in the plugin.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Methods;
+
+class PaymentMethod extends PaymentMethodBaseService
+{
+  ...
+
+  /**
+    * Check if it is allowed to switch to this payment method.
+    *
+    * @param int $orderId
+    * @return bool
+    */
+    public function isSwitchableTo($orderId)
+    {
+      return true;
+    }
+
+    /**
+    * Check if it is allowed to switch from this payment method to another.
+    *
+    * @param int $orderId
+    * @return bool
+    */
+    public function isSwitchableFrom($orderId)
+    {
+      // Check the current status of the payment, check if the order is already prepared or something similar.
+      // Return true if it is allowed to change from this payment method to another.
+      return true;
+    }
+}
+      
+----
+
+In the example, the method `isSwitchableTo` is set to `true` for the order with the respective `$orderId`. This means that this payment method will appear in the list of payment methods the customer will be able to switch to. The second method `isSwitchableFrom` returns `true` and enables the customer to switch from this payment method to another payment method even after purchasing the product in the webshop. This method also has to check whether the payment status allows a change to another payment method. For example, if the payment status is *pending*, switching the payment method is not possible. Note that the workflow and processes have to be determined by the payment method and are not the same for every payment method.
+
+A button will be displayed in the *My account* area of Ceres next to the respective order in the order history. When clicking the button *Change payment method*, a list of available payment methods is shown. When the customer clicks the button, a REST call is sent and triggers a method in the `Ceres/resources/views/MyAccount/Components/OrderHistory.twig` template.
+
+=== Reinitialising the payment
+
+After having changed the payment method, the new payment method has to be initialised. The plugin has to provide the required components that are needed to execute a payment subsequently. To do so, the plugin needs two containers: one for a button in the *My account* area and another one for the script that manages it. These  containers need to be set up first. The following example shows the button as well as the required scripts that are needed for this.
+
+.plugin.json
+[source,json]
+----
+...
+
+{
+  "key":"PaymentMethod\\Providers\\DataProvider\\ReinitializePayment",
+  "name":"Payment Method Reinitialize Payment",
+  "description":"Display the Payment Button after the Payment changed to the PaymentMethod"
+},
+{
+  "key":"PaymentMethod\\Providers\\DataProvider\\PaymentMethodReinitializePaymentScript",
+  "name":"PaymentMethod Reinitialize Payment Script",
+  "description":"A Script for displaying the Payment Button after the Payment changed to the PaymentMethod"
+}
+
+...
+----
+
+The two containers are implemented as `dataProviders` in the `plugin.json`.
+
+The functionality for the button is constructed in two parts: the button needs to be rendered and the script needs to be provided.
+
+.PaymentMethod/src/Providers/DataProvider/PaymentMethodReinitializePayment.php
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Providers\DataProvider;
+
+use Plenty\Plugin\Templates\Twig;
+use PaymentMethod\Helpers\PaymentHelper;
+
+class PaymentMethodReinitializePayment
+{
+  public function call(Twig $twig, $arg):string
+  {
+    /** @var PaymentHelper $paymentHelper */
+    $paymentHelper = pluginApp(PaymntHelper::class);
+    $paymentMethodId = $paymentHelper->getPaymentMethodId();
+    return $twig->render('PaymentMethod::PaymentMethodReinitializePayment', ["order" => $arg[0], "paymentMethodId" => $paymentMethodId]);
+  }
+}
+----
+
+This function will render the button with the `order` and `paymentMethodId` to determine for each order whether the button is displayed or not.
+
+.PaymentMethod/src/Providers/DataProvider/PaymentMethodReinitializePaymentScript.php
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Providers\DataProvider;
+
+use Plenty\Plugin\Templates\Twig;
+use PaymentMethod\Helper\PaymentHelper;
+
+class PaymentMethodReinitializePaymentScript
+{
+  public function call(Twig $twig):string
+  {
+    $paymentHelper = pluginApp(PaymentHelper::class);
+    $paymentMethodId = $paymentHelper->getPaymentMethodId();
+    return $twig->render('PaymentMethod::PaymentMethodReinitializePaymentScript', ['mopIds' => ['paymentMethodId' => $paymentMethodId]]);
+  }
+}
+----
+
+This function will provide the script independently from the button.
+
+The button has to be displayed in the `My account` area for every order with an applicable payment method. In addition, the button can displayed on the *Order confirmation page*.
+
+.PaymentMethod/resources/views/PaymentMethodReinitializePayment.twig
+[source,twig]
+----
+{% set paymentId = 0 %}
+{% set paidStatus = '' %}
+
+{% set properties = order.properties %}
+
+{% for property in properties %}
+  {% if property.typeId == 3 %}
+    {% set paymentId = property.value %}
+  {% endif %}
+  {% if property.typeId == 4 %}
+    {% set paidStatus = property.value %}
+  {% endif %}
+{% endfor %}
+{% if (paymentId == paymentMethodId) and (paidStatus != 'fullyPaid') %}
+  {% set display = "block" %}
+{% else %}
+  {% set display = "none" %}
+{% endif %}
+
+{% if services.template.isCurrentTemplate('tpl.my-account') %}
+  <button id="reinitPaymentMethod-{{order.id}}" class="btn btn-primary btn-block" @click="" data-toggle="modal" data-target="#paymentMethod" :disabled="" style="display: {{ display }}; margin-top: 0.5rem">
+    {{ trans("PaymentMethod::PaymentMethod.myAccountReinitPayment") }}
+  </button>
+{% elseif services.template.isCurrentTemplate('tpl.confirmation') %}
+  <div id="reinitPaymentMethod-{{order.id}}" class="row con-reinit" style="display: {{ display }};">
+    <strong class="col-xs-6 col-sm-5"></strong>
+    <span class="col-xs-6 col-sm-7">
+      <a class="payment-confirmation-btn" @click="" data-toggle="modal" data-target="#payPalPlusWall" :disabled="">
+        <span>{{ trans("PayPal::PayPal.myAccountReinitPayment") }}</span>
+      </a>
+    </span>
+  </div>
+{% endif %}
+----
+
+This template identifies the current template and renders the button respectively, i.e., in the `My account` area or on the *order confirmation page*. It also checks if the `paymentId` of the order matches the `paymentMethodId` of the plugin and if the order is already fully paid. In addition to this example, other checks could be executed as well, depending on what is needed.
+
+.PaymentMethod/resources/views/PaymentMethodReinitializePaymentScript.twig
+[source,twig]
+----
+<script type="text/javascript">
+  $(function () {
+    $("[id^='reinitPaymentMethod-']").click(function () {
+      var orderId = $(this).attr('id').split('-')[1];
+      $.get("/payment/paymentMethod/payOrderNow/"+orderId, function(data)
+      {
+        window.location = data;
+      });
+    });
+  });
+
+  document.addEventListener('historyPaymentMethodChanged', e => {
+    for(let property in e.detail.newOrder.order.properties){
+      if(e.detail.newOrder.order.properties[property].typeId === 3){
+        if (e.detail.newOrder.order.properties[property].value == {{ mopIds.pp }}) {
+          document.getElementById("reinitPaymentMethod-" + e.detail.oldOrder.order.id).style.display = "block";
+        } else {
+          document.getElementById("reinitPaymentMethod-" + e.detail.oldOrder.order.id).style.display = "none";
+        }
+      }
+    }
+  });
+</script>
+----
+
+This template listens for the event `historyPaymentMethodChanged` to determine whether the button is displayed or not. It also provides the on-click listener for the button which will redirect the customer to the URL previously defined in the script. This URL is registered as a route in the plugin. With the functionality behind the route, the necessary information required for the payment process are collected and the process is executed correspondingly. In this example, the function returns and redirects the URL and the customer will be redirected to the payment provider to complete the payment.
+
+== Optional Steps
+
+Furthermore, there are optional steps to be carried out. These depend on the payment method and what is needed for the plugin. Therefore, make sure to include all steps needed for your payment plugin.
+
+=== Event procedures
+
+Functions or processes that are carried out after the order is placed and paid are to be integrated via event procedures. These ensure that needed information about the payment are sent to the payment provider. These events usually comprise the shipping of the order items, cancellations, returns and refunds. Below is an example of a refund event procedure.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Procedures;
+
+...
+
+/**
+ * Class RefundEventProcedure
+ * @package PaymentMethod\Procedures
+ */
+class RefundEventProcedure
+{
+    /**
+     * @param EventProceduresTriggered $eventProceduresTriggered
+     * @param PaymentService $paymentService
+     * @param PaymentRepositoryContract $paymentContract
+     */
+    public function run(
+        EventProceduresTriggered $eventProceduresTriggered,
+        PaymentService $paymentService,
+        PaymentRepositoryContract $paymentContract
+    )
+    {
+        /**
+         * Get current order the event is triggered from.
+         *
+         * @var Order $order
+         */
+        $order = $eventProceduresTriggered->getOrder();
+
+        /**
+         * Load the payment from the current order to get the amount and the currency.
+         *
+         * @var Payment $payment
+         */
+        $payment = $paymentContract->getPaymentsByOrderId($order->id);
+        $paymentData = [
+          'currency' => $payment->currency,
+          'total'    => $payment->amount
+        ];
+
+        // Refund the given payment.
+        $paymentService->refundPayment($paymentData);
+    }
+}  
+----
+
+The order is retrieved in the `run()` method of the `RefundEventProcedure` class. The payment assigned to the order is loaded to collect the information needed to send the refund to the payment provider. After the information are sent, further steps such as creating a debit payment or updating the payment status could be carried out. This way, the sellers are also informed that the refund has been carried out.
+
+In order for the event procedure to be available in the back end of the plentymarkets system, it has to be registered in the ServiceProvider.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Providers;
+
+use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
+use Plenty\Modules\EventProcedures\Services\EventProceduresService;
+
+...
+
+use PayPal\Procedures\RefundEventProcedure;
+
+...
+
+/**
+ * Class PayPalServiceProvider
+ * @package PaymentMethod\Providers
+ */
+class PaymentMethodServiceProvider extends ServiceProvider
+{
+  /**
+   * Register the route service provider and bind event procedures.
+   */
+  public function register()
+  {
+      ...
+      $this->getApplication()->bind(RefundEventProcedure::class);
+  }
+
+  public function boot(EventProceduresService $eventProceduresService)
+  {
+    // Register PaymentMethod Refund Event Procedure
+    $eventProceduresService->registerProcedure(
+      'plentyPaymentMethod',
+      ProcedureEntry::PROCEDURE_GROUP_ORDER,
+      [
+        'de' => 'Rückzahlung der Zahlung',
+        'en' => 'Refund of the payment'
+      ],
+      '\PaymentMethod\Procedures\RefundEventProcedure@run');
+  }
+
+  ...
+}
+----
+
+The `registerProcedure` method is used to register the event procedure in the plentymarkets back end. The plugin key `plentyPaymentMethod`, the entry point `PROCEDURE_GROUP_ORDER` and the text to be shown in German and English are specified.
+
+=== Registering routes
+
+A plugin can register its own routes that can then be used to map specific functions. These routes are used, for example, as end points for payment confirmations or other notifications.
+
+The `PaymentMethodRouteServiceProvider` has to extend the Plenty\Plugin\RouteServiceProvider and has also to be registered there.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Providers;
+
+use Plenty\Plugin\RouteServiceProvider;
+use Plenty\Plugin\Routing\Router;
+
+/**
+* Class PaymentMethodRouteServiceProvider
+* @package PaymentMethod\Providers
+*/
+class PaymentMethodRouteServiceProvider extends RouteServiceProvider
+{
+  /**
+  * @param Router $router
+  */
+  public function map(Router $router)
+  {
+    // Get the PayPal success and cancellation URLs
+    $router->get('payment/paymentMethod/checkoutSuccess', 'PaymentMethod\Controllers\PaymentController@checkoutSuccess');
+    $router->get('payment/paymentMethod/checkoutCancel' , 'PaymentMethod\Controllers\PaymentController@checkoutCancel' );
+    $router->get('payment/paymentMethod/expressCheckout', 'PaymentMethod\Controllers\PaymentController@expressCheckout');
+    $router->post('payment/paymentMethod/notification'  , 'PaymentMethod\Controllers\PaymentNotificationController@handleNotification');
+  }
+}  
+----
+
+In the code example, routes for success and cancellation URLs are registered. Additionally, routes for the express checkout and for posting payment notifications can be registered.
+
+=== Using the "read only" checkout
+
+In plentyShop, you have the possibility to redirect users who initialise a payment via a plugin to the "read-only" checkout. This version of the checkout serves to provide customers with an overview of their order, while preventing them from changing certain order information such as the order quantity of an item, after the order and payment have been authorised. The redirect to the "read only" checkout is carried out by adding the parameter `?readonlyCheckout=1` to the redirect URL.
+
+The "read only" checkout is used to provide customers with information. For example, it is legally required to display information about address changes made during the payment process and also to give an overview of all information about paying in installments if a customer selected this payment method. The "read-only" checkout is also needed if a customer selects an express payment method such as e.g. PayPal Express.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Controllers;
+
+
+use Plenty\Plugin\Http\Response;
+
+/**
+ * Class PaymentController
+ * @package PaymentMethod\Controllers
+ */
+class PaymentController
+{
+  /**
+   * @param Router $router
+   */
+  public function checkoutSuccess(Response $response)
+  {
+    /**
+     * Do some stuff
+     */
+     return $response->redirectTo('/checkout?readonlyCheckout=1');
+  }
+}
+----
+
+Here, the plugin uses the route for the successful checkout that was registered in the preceding chapter on *Registering routes*. Upon successful checkout, the redirect to the *"read only"* is implemented through appending the parameter `?readonlyCheckout=1`. The customer is thus redirected to an overview of the order, in which they
+cannot change any information they provided.
+
+In addition to the redirect parameter, the implementation of the "read only" checkout also introduces the event `CheckoutReadonlyChanged`. This event is triggered when `isReadOnlyCheckout` equates to false. If the customer makes changes to information in the "read only" checkout, for instance by means of the browser's developer tools, the event is triggered and the "read only" flag is removed. Therefore, you should add an event listener to handle this case and delete all session data or needed data to prevent creating an order with incorrect data.
+
+[source,php]
+----
+$eventDispatcher->listen(
+  CheckoutReadonlyChanged::class,
+  function (CheckoutReadonlyChanged $event) use ($sessionStorageService) {
+    if($event->isReadOnlyCheckout() === false) {
+      // For example: Delete all session data
+    }
+});
+----
+
+=== Widgets and template containers
+
+Buttons, logos or other content to be displayed in the template can be made available for template plugins with the help of data providers. A data provider is the source for content. A content container in the layout is the target. If a data provider is linked to a content container, the content provided by the data provider is displayed in the content container. Content for the ShopBuilder has to be made available with widgets which are configured differently than template containers.
+
+==== ShopBuilder Widgets
+
+All content should be available for the ShopBuilder, so that sellers can place it where it is needed. For this, widgets are needed. In order to have functioning widgets, 3 steps are necessary. First, you have to create a class for the widget itself. Then Twig for providing the content is needed. In the third step, widgets have to be registered. The following example illustrates how a button can be displayed.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Widgets\Express;
+
+
+use Ceres\Widgets\Helper\BaseWidget;
+use Ceres\Widgets\Helper\Factories\WidgetDataFactory;
+use Ceres\Widgets\Helper\Factories\WidgetSettingsFactory;
+use Ceres\Widgets\Helper\WidgetCategories;
+use Ceres\Widgets\Helper\WidgetTypes;
+
+class ExpressButtonWidget extends BaseWidget
+{
+  protected $template = 'PaymentMethod::Widgets.ExpressButton';
+
+  protected function getTemplateData($widgetSettings, $isPreview)
+  {
+      return parent::getTemplateData($widgetSettings, $isPreview); // TODO: Change the autogenerated stub
+  }
+
+  public function getData()
+  {
+      return WidgetDataFactory::make('PaymentMethodWidgets::PaymentMethodExpressWidget.expressButton')
+          ->withLabel('Widget.express.button')
+          ->withPreviewImageUrl('/images/widgets/express/express_de.png')
+          ->withType(WidgetTypes::STATIC)
+          ->withCategory(WidgetCategories::BASKET)
+          ->withCategory(WidgetCategories::ITEM)
+          ->withPosition(1050)
+          ->toArray();
+  }
+
+  public function getSettings()
+  {
+    /** @var WidgetSettingsFactory $settings */
+    $settings = pluginApp(WidgetSettingsFactory::class);
+    $settings->createCustomClass();
+    $settings->createSpacing();
+    return $settings->toArray();
+  }
+}
+    
+----
+
+The following example illustrates how Twig is provided. With the function `isPreview`, you can check whether you are in the preview of the ShopBuilder or whether you are already live. The preview displays a fixed image whereas in live mode the code is already rendered.
+
+[source,twig]
+----
+<div class="widget express-button" style="width: 100%">
+    {% if isPreview %}
+        <img src="{{ plugin_path('PaymentMethod') }}/images/widgets/express/express_de.png" />
+    {% else %}
+        <div id="expressButton">
+            <a onclick="doExpressCheckout($(this))" rel="nofollow" style="cursor:pointer">
+                {% set ppeLang = 'en' %}
+                {% if lang in ['de','en','es','fr','it','nl','pl'] %}
+                    {%  set ppeLang = lang %}
+                {% endif %}
+                <img src="{{ plugin_path('PaymentMethod') }}/images/buttons/express_{{ ppeLang }}.png" />
+            </a>
+        </div>
+    {% endif %}
+</div>
+  
+----
+
+Widgets have to be registered within the `ContentWidgetRepositoryContract`. The whole registration process has
+to be executed within the `boot()` function in the `PaymentMethodServiceProvider`.
+
+[source,php]
+----
+<?php
+namespace PaymentMethod\Providers;
+
+...
+
+public function boot()
+{
+  /** @var ContentWidgetRepositoryContract $contentWidgetRepositoryContract */
+  $contentWidgetRepositoryContract = pluginApp(ContentWidgetRepositoryContract::class);
+
+  // Express Button
+  $contentWidgetRepositoryContract->registerWidget(ExpressButtonWidget::class);
+}
+...
+    
+----
+
+==== Template Container
+
+Template containers can have the same content as widgets but they cannot be placed as individually. They can only be linked to predetermined containers which provide the corresponding theme.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Providers;
+
+use Plenty\Plugin\Templates\Twig;
+
+/**
+ * Class PaymentMethodExpressButtonDataProvider
+ * @package PaymentMethod\Providers
+ */
+class PaymentMethodExpressButtonDataProvider
+{
+    /**
+     * @param Twig $twig
+     * @param $args
+     * @return string
+     */
+    public function call( Twig $twig, $args)
+    {
+        return $twig->render('PaymentMethod::PaymentMethod.ExpressButton');
+    }
+}
+----
+
+The `PaymentMethodExpressButtonDataProvider` class renders a twig file that returns an image. This image is saved in the *resources/images/buttons* folder within the plugin.
+
+===== Linking content to containers
+
+In the plentymarkets back end, you can link the content to one or multiple containers. This is done in the plugin which provides the content. Go to *Plugins » Plugin set overview*, open the required plugin and go to *Container-Links*. Select the data provider and the containers you want to link. As an example, the PayPal Express button is linked to the `Single item: After "Add to shopping cart" button` container in the image below.
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/payment-content-container-gui.png[]
+
+===== Displaying the content in the webshop
+
+A large number of content containers are available in different views of the template, e.g. the shopping cart preview, the item view, the checkout etc. The following chapter describes how these containers are implemented in the template.
+
+[source,twig]
+----
+<div class="col-xs-12 col-sm-6">
+{{ LayoutContainer.show("Ceres::BasketPreview.BeforeCheckoutButton") }}
+    <a v-resource-if:user="isLoggedIn" href="/checkout" class="btn btn-primary btn-block checkOutBtn" title="{{ trans("Ceres::Ceres.basketToCheckout") }}">
+    {{ trans("Ceres::Ceres.basketToCheckout") }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </a>
+    <a v-resource-if:user="!isLoggedIn" href="/login" class="btn btn-primary btn-block checkOutBtn" title="{{ trans("Ceres::Ceres.basketToCheckout") }}">
+    {{ trans("Ceres::Ceres.basketToCheckout") }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </a>
+    {{ LayoutContainer.show("Ceres::BasketPreview.AfterCheckoutButton") }}
+</div>
+----
+
+In line 9, you can see the Twig function `LayoutContainer.show()`. The PayPal Express button from the PayPal plugin will be displayed with the help of this function.
+
+In the plentyShop template, the PayPal Express button will be displayed on the single item page below the shopping cart.
+
+image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/paypal-express-button-preview.png[]
+
+=== Retreiving addresses from the payment provider
+
+If the customer selects an address from the payment provider, this address has to be imported into the plentymarkets system and then linked to the current checkout. To do so, the xref:beta7@interface:Payment.adoc[AddressRepositoryContract] must be used in the `ContactService.php` file.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Services;
+
+use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
+use Plenty\Modules\Frontend\Services\AccountService;
+
+use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
+use Plenty\Modules\Account\Address\Models\Address;
+
+/**
+* Class ContactService
+* @package PaymentMethod\Services
+*/
+class ContactService
+{
+  /**
+  * @var AddressRepositoryContract
+  */
+  private $addressRepository;
+
+  /**
+  * ContactService constructor.
+  * @param AddressRepositoryContract $addressRepository
+  */
+  public function __construct(AddressRepositoryContract $addressRepository)
+  {
+    $this->addressRepository = $addressRepository;
+  }
+
+  /**
+  * Create an address
+  *
+  * @param array $params
+  * @return Address
+  */
+  public function createAddress(array $params):Address
+  {
+    if (isset($params['shipping_address']) && !empty($params['shipping_address'])) {
+        /**
+         * Map the address to a plenty address
+         * @var Address $address
+         */
+        $address = $this->mapAddressToAddress($params'shipping_address']);
+
+        /** @var AccountService $accountService */
+        $accountService = pluginApp(AccountService::class);
+
+        $contactId = $accountService->getAccountContactId();
+
+        // if there is a logged in user, update the contact delivery address
+        if (!empty($contactId) && $contactId > 0) {
+            /** @var ContactAddressRepositoryContract $contactAddress */
+            $contactAddress = pluginApp(ContactAddressRepositoryContract::class);
+
+            $createdAddress = $contactAddress->createAddress($address->toArray(), $contactId, AddressRelationType::DELIVERY_ADDRESS);
+        } else {
+            // if the user is a guest, create a address and set the invoice address ID if necessary
+            $createdAddress = $this->addressRepository->createAddress($address->toArray());
+
+            //Set the guest email address in the session to prevent a second login
+            $this->sessionStorageService->setSessionValue(SessionStorageKeys::GUEST_EMAIL, $email);
+
+            if (empty($this->checkout->getCustomerInvoiceAddressId())) {
+                // set the customer invoice address ID
+                $this->checkout->setCustomerInvoiceAddressId($createdAddress->id);
+            }
+        }
+
+        // update/set the customer shipping address ID
+        $this->checkout->setCustomerShippingAddressId($createdAddress->id);
+
+        return $createdAddress;
+      }
+   }
+}
+----
+
+The address transmitted by the payment provider has to be mapped with the structure of the address model. Depending on whether the customer is logged in or not, the address is either assigned to this customer or created as a guest address. An *address* must be structured according to the xref:beta7@interface:Account.adoc#address_address_account[Address] model. Addresses are divided into two types, delivery addresses and invoice addresses.
+
+== Test cases
+
+The test cases described in the following chapters are general cases which can come up in every plentyShop. Since they can be configured, they have to be taken into account for payment plugins as well. Thus, you have to make sure that the following cases are considered and amounts are transferred correctly to the payment provider.
+
+=== Order properties
+
+Variations can have different order properties that are selected by customers during the order process, for example an engraving for an item. A variation can have any number of order properties. These added properties can cause additional costs. These additional costs are added to the item price and thus does not have to be considered separately. The total amount transferred to the payment provider has to be correct.
+
+=== Item characteristics
+
+Items can have different characteristics, for example different sizes or colours. These characteristics can cause additional costs. Here, as in the other cases, it has to be ensured that these are transferred to the payment provider as well because the total amount has to match. As with order properties, there can also be any number of characteristics.
+
+When there is no order existing yet, the characteristics surcharge has to be loaded like this:
+
+[source,php]
+----
+use Plenty\Modules\Item\Variation\Contracts\VariationRepositoryContract;
+
+...
+
+$variationId = 1000; // Variation ID is given in the basket items.
+$surcharge = 0;
+
+// Load the item with the variation ID.
+$variationRepository = pluginApp(VariationRepositoryContract::class);
+$variation = $variationRepository->findById($variationId);
+$item = $variation->item;
+
+// Load each property and check if it has a surcharge.
+foreach ($item->itemProperties as $itemProperty) {
+    $property = $itemProperty->property;
+    if (!$property->isOderProperty && $property->isShownAsAdditionalCosts) {
+        // The surcharge is given in the system currency.
+        $surcharge += $property->surcharge;
+    }
+}
+----
+
+When the order is existing, the characteristics surcharge is saved as an order item type:
+
+[source,php]
+----
+use Plenty\Modules\Order\Models\OrderItemType;
+
+...
+
+$surcharge = 0;
+
+foreach ($order->orderItems as $orderItem) {
+    if ($orderItem->typeId == OrderItemType::TYPE_DEPOSIT) {
+        // Get the amount in order currency (see the section Currencies).
+        $orderItemAmount = $orderItem->amount;
+        $surcharge += $orderItemAmount->priceGross;
+    }
+}
+----
+
+=== Promotional coupons and gift cards
+
+Customers can redeem promotional coupons and gift cards in the checkout. These can reduce either the total of the order items (promotional coupon) and/or the total amount of the order (gift card). Depending on the payment provider, these amounts are transferred differently, as can be seen in the example below.
+
+When there is no order existing yet, the coupon amount needs to be loaded like this:
+
+[source,php]
+----
+use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Order\Coupon\Campaign\Contracts\CouponCampaignRepositoryContract;
+use Plenty\Modules\Order\Coupon\Campaign\Models\CouponCampaign;
+
+...
+
+$basketRepository = pluginApp(BasketRepositoryContract::class);
+$basket = $basketRepository->load();
+
+// In the basket, the amount of promotional coupons and of gift cards are
+// saved in the same variable.
+$couponAmount = $basket->couponDiscount; // Given as negative amount, e.g. -10.
+
+$isPromotionalCoupon = false;
+$isGiftCard = false;
+
+if ($couponAmount != 0 && strlen($basket->couponCode)) {
+    $couponCampaignRepository = pluginApp(CouponCampaignRepositoryContract::class);
+    $couponCampaign = $couponCampaignRepository->findByCouponCode($basket->couponCode);
+
+    $isPromotionalCoupon = ($couponCampaign->campaignType == CouponCampaign::CAMPAIGN_TYPE_COUPON && $couponCampaign->couponType == CouponCampaign::COUPON_TYPE_PROMOTION);
+    $isGiftCard = ($couponCampaign->campaignType == CouponCampaign::CAMPAIGN_TYPE_COUPON && $couponCampaign->couponType == CouponCampaign::COUPON_TYPE_SALES);
+}
+----
+
+When there is an existing order, the coupon amounts are loaded like this:
+
+[source,php]
+----
+use Plenty\Modules\Order\Models\OrderItemType;
+
+...
+
+$couponAmountPromotionalCoupon = 0;
+$couponAmountGiftCard = 0;
+
+foreach ($order->orderItems as $orderItem) {
+    if ($orderItem->typeId == OrderItemType::TYPE_PROMOTIONAL_COUPON) {
+        // Given as negative amount, e.g. -10.
+        $couponAmountPromotionalCoupon += $orderItem->amount->priceGross;
+    }
+    if ($orderItem->typeId == OrderItemType::TYPE_GIFT_CARD) {
+        // Given as negative amount, e.g. -10.
+        $couponAmountGiftCard += $orderItem->amount->priceGross;
+    }
+}
+----
+
+=== Currencies
+
+Sellers can make several currencies available in their plentyShops. These currencies have to be transferred to the payment provider or converted using the conversion rates from the plentymarekts system. Note that an order always only has one currency.
+
+[source,php]
+----
+use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Frontend\Contracts\CurrencyExchangeRepositoryContract;
+
+...
+$basketRepository = pluginApp(BasketRepositoryContract::class);
+
+// Get the shopping cart from the current customer session.
+$basket = $basketRepository->load();
+
+// Get the currency of the shopping cart.
+$basketCurrency = $basket->currency;
+
+try {
+   $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+   // Get the default system currency.
+   $defaultCurrency = $currencyService->getDefaultCurrency();
+
+   // If the basket currency and the default currency are different, the basket is in the foreign currency.
+   if ($basketCurrency != $defaultCurrency) {
+      // Get exchange ratio for basket currency to default system currency.
+      $exchangeRatio = $currencyService->getExchangeRatioByCurrency($basketCurrency);
+
+      // Convert basket foreign amount to default system currency amount.
+      $amountInSystemCurrency = $currencyService->convertToDefaultCurrency($basketCurrency, $basket->amount, $exchangeRatio);
+   }
+} catch (\Exception $currencyServiceException) {
+   // Define what to do if an exception is thrown by the currency service.
+}
+...
+  
+----
+
+[source,php]
+----
+...
+// If there is already an existing order, the information can be found in the order amounts.
+
+// Get the amount of an order in foreign currency if it exists otherwise in system currency.
+$orderAmount = $order->amount;
+
+// Get the currency of the order amount.
+$orderAmountCurrency = $orderAmount->currency;
+
+// Flag that states whether the current currency is the same as system currency or not.
+$orderAmountIsSystemCurrency = $orderAmount->isSystemCurrency;
+
+// Get the exchange rate for converting the current currency into the system currency.
+// The exchange rate is 1 if the currency of the amount is the same as system currency.
+$orderAmountExchangeRateToSystemCurrency = $orderAmount->exchangeRate;
+...
+  
+----
+
+=== Rounding
+
+Item prices can be maintained with up to 4 decimal places and rounding can either be applied to single item prices or to totals. These are individual settings in every plentymarkets system. It has to be ensured that these individual settings are taken into account when transferring amounts to payment providers so that no rounding errors occur. Prices should be rounded with these same settings for the transferral because these are also used for the order creation.
+
+When there is no order existing yet, the rounding settings need to be loaded like this:
+
+[source,php]
+----
+use Plenty\Modules\Accounting\Contracts\AccountingLocationRepositoryContract;
+use Plenty\Modules\System\Contracts\WebstoreConfigurationRepositoryContract;
+use Plenty\Plugin\Application;
+
+...
+
+// Get the plenty ID.
+$application = pluginApp(Application::class);
+$plentyId = $application->getPlentyId();
+
+// Load the default accounting location ID from the webstore configuration.
+$webstoreConfigurationRepository = pluginApp(WebstoreConfigurationRepositoryContract::class);
+$webstoreConfiguration = $webstoreConfigurationRepository->findByPlentyId(plentyId);
+$accountingLocationId = $webstoreConfiguration->defaultAccountingLocation;
+
+// Load the accounting location settings.
+$accountingLocationRepository = pluginApp(AccountingLocationRepositoryContract::class);
+$accountingLocationSettings = $accountingLocationRepository->getSettings(accountingLocationId);
+
+// Can be 2 or 4.
+$numberOfDecimalPlaces = $accountingLocationSettings->numberOfDecimalPlaces;
+// Decide whether to round intermedial values or totals.
+$roundTotalsOnly = $accountingLocationSettings->roundTotalsOnly;
+----
+
+When there is an existing order, the rounding settings are saved there:
+
+[source,php]
+----
+$numberOfDecimalPlaces = $order->numberOfDecimals;
+$roundTotalsOnly = $order->roundTotalsOnly;
+----
+
+=== Taxes
+
+There can be different VAT rates within an order because these are applied to each individual order item. This has to be taken into account for the transferral to the payment provider. If the payment provider expects an amount total, VAT amounts can be added up. Otherwise amounts can also be transferred individually.
+
+[source,php]
+----
+use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+
+...
+$basketRepository = pluginApp(BasketRepositoryContract::class);
+
+// Get the basket of the current customer session.
+$basket = $basketRepository->load();
+
+// VAT total amount can be loaded from the basket.
+$basketVatTotalAmount = $basket->basketAmount - $basket->basketAmountNet;
+
+// The individual VAT amounts of basket items can be calculated.
+$shippingCostVatRate = 0.00;
+foreach ($basket->basketItems as $basketItem) {
+   if ($basketItem instanceof BasketItem) {
+
+      // VAT rate of a basket item.
+      $basketItemVatRate = $basketItem->vat;
+
+      // The rebate inpercentage for the basket.
+      // This discount can either be set as:
+      // A discount scale for items, a customer class discount or a discount based on the payment method.
+      $discount = 0.00;
+      if ($basket->basketRebate > 0.00) {
+         // Discount of a basket item.
+         $discount = $basketItem->price * ($basket->basketRebate / 100);
+      }
+
+      // The VAT amount of a basket item.
+      $basketItemVatAmount = (($basketItem->price - $discount) * ($basketItem->vat / (100.0 + $basketItem->vat))) * $basketItem->quantity;
+
+      // VAT rate of the shipping cost item is the maximum VAT rate of all basket items.
+      $shippingCostVatRate = max($basketItemVatRate, $shippingCostVatRate);
+   }
+}
+
+// Shipping cost item
+$shippingCosts = $basket->shippingAmount;
+$ShippingCostItemVatAmount = $shippingCosts * ($shippingCostVatRate / (100.0 + $shippingCostVatRate));
+$vatTotalAmount += $ShippingCostItemVatAmount;
+...
+    
+----
+
+[source,php]
+----
+...
+// If there is already an existing order, the information can be loaded from order or order items.
+
+// VAT total amount can be loaded from the order.
+$basketVatTotalAmount = $order->amount->vatTotal;
+
+// The individual VAT amounts of order items can be calculated.
+foreach ($order->orderItems as $orderItem) {
+   // VAT rate of an order item.
+   $orderItemVatRate = $orderItem->vatRate;
+
+   // Get the amount of an order in foreign currency if it exists otherwise in system currency.
+   $orderItemAmount = $orderItem->amount;
+
+   // The VAT amount of an order item.
+   $orderItemVatAmount =  $orderItemAmount->priceGross - $orderItemAmount->priceNet;
+}
+...
+----
+
+=== Payment method fees
+
+Concerning payment fees it is important to ensure first that it is legally compliant to raise a payment fee at all. If a payment fee is allowed, it has to be defined within the payment method in the function `getFee()`. In the plentyShop checkout, the payment fee has to be settled with the shipping fees. The fee can be both, either a surcharge or a discount. The function for a surcharge returns a positive value and the function for a discount returns a negative value.
+
+[source,php]
+----
+<?php
+
+namespace PaymentMethod\Methods;
+
+/**
+ * Class PaymentMethod
+ * @package PaymentMethod\Methods
+ */
+class PaymentMethod extends PaymentMethodBaseService
+{
+
+  ...
+
+  /**
+  * Return Payment Method Fee
+  *
+  * @return float
+  */
+  public function getFee()
+  {
+      return 0.00;
+  }
+}
+----
+

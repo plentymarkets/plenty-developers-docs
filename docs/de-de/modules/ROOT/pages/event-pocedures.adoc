@@ -1,24 +1,17 @@
 = Event Procedures
 
-Event procedures are triggered on certain events if the given filters
-apply. This tutorial will show you how to add custom event procedures
-and filters with a plugin. To achieve this, excerpts of a small plugin
-with the name `ProcedurePlugin` will be shown and explained.
+Event procedures are triggered on certain events if the given filters apply. This tutorial will show you how to add custom event procedures and filters with a plugin. To achieve this, excerpts of a small plugin with the name `ProcedurePlugin` will be shown and explained.
 
-=== Procedures
+== Procedures
 
-This chapter will show you how to add a custom procedure. A procedure is
-the part of an event procedure that will be executed if filters apply.
-The example procedure here will set the status of an order to 3.
+This chapter will show you how to add a custom procedure. A procedure is the part of an event procedure that will be executed if filters apply. The example procedure here will set the status of an order to 3.
 
-[[procedures-service-provider]]
-==== Registering the procedure
+=== Registering the procedure
 
-The procedure has to be registered in the `boot` method of a service
-provider of the plugin by using `EventProceduresService`.
+The procedure has to be registered in the `boot` method of a service provider of the plugin by using `EventProceduresService`.
 
 .ProcedurePlugin\Providers\ProcedurePluginServiceProvider.php
-[source,php,prettyprint,lang-php,grey-back,linenums,code-example,example-code-expand,prettyprinted]
+[source,php]
 ----
 <?php
 namespace ProcedurePlugin\EventProcedures;
@@ -42,31 +35,20 @@ class Procedures
 ----
 
 
-You need the following four parameters to register a
-procedure:
+You need the following four parameters to register a procedure:
 
 * module name
 * event type
 * array of filter names
 * class name
 
-The first parameter of the `registerProcedure` method is the module
-name. You can choose the name freely. The event type is the second
-parameter. In this example the type is `EVENT_TYPE_ORDER`. This way the
-procedure will be available for order related event procedures. The
-third parameter is an array with the translations of the filter name.
-The name will be displayed in the UI and has to be provided in German
-and English. The fourth parameter that must be specified is a class
-name. The class name specifies the method that will be called when the
-procedure is executed. The class name must be fully qualified. A method
-name can be provided by separating it with an '@'. If no method is
-provided, the default method `execute` will be used.
+The first parameter of the `registerProcedure` method is the module name. You can choose the name freely. The event type is the second parameter. In this example the type is `EVENT_TYPE_ORDER`. This way the procedure will be available for order related event procedures. The third parameter is an array with the translations of the filter name.
 
-[[procedures-method]]
-==== Defining the actionlink:#procedures-method
+The name will be displayed in the UI and has to be provided in German and English. The fourth parameter that must be specified is a class name. The class name specifies the method that will be called when the procedure is executed. The class name must be fully qualified. A method name can be provided by separating it with an '@'. If no method is provided, the default method `execute` will be used.
 
-Define the procedures in the class that you specified at the
-registration.
+=== Defining the action
+
+Define the procedures in the class that you specified at the registration.
 
 .ProcedurePlugin\EventProcedures\Procedures.php
 [source,php,prettyprint,lang-php,grey-back,linenums,code-example,example-code-expand,prettyprinted]
@@ -94,26 +76,19 @@ class Procedures
 
 [NOTE]
 ====
-The method does not have a return statement. You can
-retrieve the affected order by adding a parameter and calling the
-`getOrder` method. You need to declare the type of the parameter that
-you add as `EventProceduresTriggered`.
+The method does not have a return statement. You can retrieve the affected order by adding a parameter and calling the `getOrder` method. You need to declare the type of the parameter that you add as `EventProceduresTriggered`.
 ====
 
-=== Filters
+== Filters
 
-This chapter will show you how to add a custom filter. You can use
-filters to define under which circumstances an event procedure will be
-executed. The filter in our example will check if the order is locked.
+This chapter will show you how to add a custom filter. You can use filters to define under which circumstances an event procedure will be executed. The filter in our example will check if the order is locked.
 
-[[filters-service-provider]]
-==== Registering the filter
+=== Registering the filter
 
-The filter has to be registered in the `boot` method of a service
-provider of the plugin by using `EventProceduresService`.
+The filter has to be registered in the `boot` method of a service provider of the plugin by using `EventProceduresService`.
 
 .ProcedurePlugin\Providers\ProcedurePluginServiceProvider
-[source,php,prettyprint,lang-php,grey-back,linenums,code-example,example-code-expand,prettyprinted]
+[source,php]
 ----
 <?php
 namespace ProcedurePlugin\Providers;
@@ -141,29 +116,24 @@ class ProcedurePluginServiceProvider extends ServiceProvider
 }
 ----
 
-
 [NOTE]
 ====
-The parameters for registering a filter are the same as
-for registering a procedure. The following four parameters are needed:
+The parameters for registering a filter are the same as for registering a procedure. The following four parameters are needed:
 
 * module name
 * event type
 * array of filter names
 * class name
 
-The last parameter is the name of the class with your filter logic. If
-no method name is provided, the default method `accept` will be used.
+The last parameter is the name of the class with your filter logic. If no method name is provided, the default method `accept` will be used.
 ====
 
-[[filters-method]]
-==== Defining the filter logic
+=== Defining the filter logic
 
-Define the filter logic in the class that you specified at the
-registration.
+Define the filter logic in the class that you specified at the registration.
 
 .ProcedurePlugin\EventProcedures\Filters.php
-[source,php,prettyprint,lang-php,grey-back,linenums,code-example,example-code-expand,prettyprinted]
+[source,php]
 ----
 <?php
 namespace ProcedurePlugin\EventProcedures;
@@ -183,12 +153,7 @@ class Filters
 }
 ----
 
-
 [NOTE]
 ====
-The method has to return a boolean. When true is
-returned, the filter applies. Otherwise the filter does not apply. The
-affected order can be retrieved again. To retrieve the order again you
-need to declare the type of the parameter as `EventProceduresTriggered`
-and call the `getOrder` method.
+The method has to return a boolean. When true is returned, the filter applies. Otherwise the filter does not apply. The affected order can be retrieved again. To retrieve the order again you need to declare the type of the parameter as `EventProceduresTriggered` and call the `getOrder` method.
 ====

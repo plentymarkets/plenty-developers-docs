@@ -1,0 +1,1669 @@
+= Introducing the plentymarkets REST API
+
+The plentymarkets REST API expands the functionality of the plentymarkets CMS and allows access to resources, i.e. data records, via unique URI paths. To use the REST API, you need to run an HTTP request and analyse the result. The REST API uses JSON as the communication format combined with the default HTTP methods GET, PUT, POST and DELETE:
+
+* *GET* returns data. This method does not modify data saved on the server.
+* *PUT* modifies an existing data record.
+* *POST* creates a new data record.
+* *DELETE* deletes an existing data record.
+
+== OpenAPI format
+
+We want to enhance your workflow with our API. For that reason, we built a whole new internal annotation progress. At the moment, we deliver a file you can use with your preferred API software. You can checkout our REST-Documentation, based upon the Swagger-UI, xref:plentymarkets-rest-api:ROOT:index.adoc[here].
+
+You either can download it or check out our link:https://github.com/plentymarkets/api-doc/[GitHub repository].
+
+== Authentication
+
+plentymarkets REST API uses *OAuth 2.0*. Most REST API calls do not require any specific authentication. There are a few exceptions, as some calls are only permitted for logged in front end or in some cases back end users. Calls that require authentication are flagged in the documentation.
+
+`/rest/login`
+
+The API uses the "Bearer" authentication scheme to transmit the access token. To get the token for authentication, use the xref:plentymarkets-rest-api:ROOT:index.adoc##tag/Authentication/paths/~1rest~1check_pin/post[Login] call. By executing this POST method with a valid body, it will return a JSON object with the necessary data.
+
+[source,json]
+----
+    POST /rest/login HTTP/1.1
+    HOST: https://myplentyshop.com
+    Content-Type: application/json
+    Accept: application/json
+
+    {
+        "username": "myUsername",
+        "password": "myPassword",
+    }
+----
+
+[source]
+----
+\{"token_type":"Bearer","expires_in":86400,"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQ2M2MzYjkyZjNkNjgzMGQyOWE5MjQxYmNjYWZmYThlMmQyMmVmODc4MGU0MjZmYmFmMjQ1Mjc3ZTcwNWY1Y2RiZmNkZmMwNmEyNDA1MmQ4In0.eyJhdWQiOiIxIiwianRpIjoiZDYzYzNiOTJmM2Q2ODMwZDI5YTkyNDFiY2NhZmZhOGUyZDIyZWY4NzgwZTQyNmZiYWYyNDUyNzdlNzA1ZjVjZGJmY2RmYzA2YTI0MDUyZDgiLCJpYXQiOjE1MDQ2NzY3OTEsIm5iZiI6MTUwNDY3Njc5MSwiZXhwIjoxNTA0NzYzMTkwLCJzdWIiOiIzIiwic2NvcGVzIjpbIioiXX0.D5g9On1SNTYyYqd02BjGm_2eOVs0H5aBKqJ0oxL9bcKbDlBzwVw2Mo6ObNRXmcgCW4YHK-U67MiZLAmJ8IuqTaq3JkvRbLLuSaB4rhktTE-i5OPPBx0TNZ4D1v9bIz5q56BEnE4YpJ3fw_WmU2xUIcuJPnRfSkDFYlnS3JvEonV3X5LS6_-JQNKKCgaQTETioiu-GdRLmq3Gq22L9Xpd4SGDQYDY8gKgLdzuYtw3swoPrscIQVxF_ZxtMRz4BN9qI2YKKsBk6b28jdQ8SopYUzN3C82GXfHgBkUEkCR4Q574IqfBuR3-8s-XORTdqmN_okgnm2AQGKf2Ka1fmsco4WOqzgdenPoEWyeuBG0AB5FfF_BnZ3wQ5Y6r7ohUXo5qsbolaKe1x8EPLrGLl4xCiEbWuv06t56r9YeeuJnmhTgI-fwGC_2sCBo_APHb6LIUeP47ptfzQhMVyCMJ56lnMw-oawm2lFqwMRchbD5GYfHEdWOwMkuuk0cZACeWeV2qmnC01uWoiaYGFRr6rRQxM9OnijR-Qzwq7kgPiu0WGx6ik8G7YgaDJyYZzGKR-I3aL40ho1bGTtKGIIgsY4fpvTdiaDUa-0usWFnvZ1zXD0ta8V7acQEbLjUo4KE8PMYdLvTGD1YcTiJqe0g890B7rs2IoUsJK4rR8tTUpiciQ40","refresh_token":"def502003d741bf9f7336c3c08cd610cd93da9ecc4ff9ad2e9342810a61d21e064c1101029ab4b00e8e934fefce93ab2139bafd4d69d5d9d057871df7ac5287e023d78bbd5701e687db148376e749325cb6ac3bfd9fef970b7166cb6d3fc8c0e735101014b565fcbcf9acafc39d7c446fa133b9cec7e218e4762e58b882a2519ed5c6e9387df505216767d50ac814b13c8d84739b62b32e618997998c32a9ea55124aaee2640871734c2541f6fa99304d3de3933f98f97b34557ea485810c6a834439ecdc01be1d675746019650a7307b31c66d3118a00c0b36512761a6eb902611f26a87e573193d54af03aad17d325673f1cd3198f8d4bc347326e591a18472492516fe56c5461a314247b576a28b4c505a302b12103dfa2ada519b04682a7eedc27981d0d038a4cda9093ab0f45a4e5200fde64ea9105c3f3207869130735d4a444cdac581a56b2104020c3b4752d332dc0fdc59efdf51ccd3bade8c113562efc"}
+----
+
+Enter the `Authorization` key together with the token as the value in the HTTP header:
+
+`Authorization: Bearer TOKEN`
+
+=== Simultaneously active users
+
+The plentymarkets REST API supports a maximum amount of simultaneously active users (the default number is 3, but it is dependent on your contract). If you try to access the API with more than the maximum number of users, you will receive the following a response with a `429` status code and the following content:
+
+[source]
+----
+\{"error":"too_many_concurrent_sessions","max_current_sessions":3,"message":"Too many users. Only 3 users can be logged in simultaneously in the back end. Try again soon or upgrade your contract (https://www.plentymarkets.eu/preise/)"}
+----
+
+== Throttling
+
+=== Limits
+
+To prevent misuse of the REST API and ensure a system's performance and stability, access to the REST API of any given plentymarkets system is *throttled*. The following limits apply:
+
+[cols="5"]
+|===
+|Function |Rate: Basic |Rate: Classic |Rate: Flex |Rate: Plus
+
+|Reading calls per user and minute
+|80
+|200
+|240
+|280
+
+|Reading calls per system and day
+|59,760
+|166,000
+|282,000
+|282,000
+
+|Writing calls per user and minute
+|40
+|80
+|100
+|120
+
+|Writing calls per system and day
+|17,280
+|48,000
+|72,000
+|72,000
+|===
+
+In addition to these limits, specific routes may be fitted with an individual limit, only applying to this route. For these routes, the limit will be visible in the REST documentation here on the plentymarkets developers website. The route will be labeled with a "THROTTLING" badge, the exact limit can be seen in the "Errors" section of that call.
+
+Bulk REST routes help you to work efficiently within the throttling limits when handling large amounts of data. Check out the https://developers.plentymarkets.com/tutorials/bulk-routes[tutorial on bulk routes] to find out which bulk routes are currently available.
+
+=== Handling
+
+To give external clients the ability to adjust to these limits and react accordingly, we will send additional headers with each response to a REST call. These headers are prefixed with one of these three prefixes, telling you what specific limitation they are informing about:
+
+[cols="1,3"]
+|===
+|Header-Prefix |Meaning
+
+|`X-Plenty-Global-Long-Period`
+|The information in this header field refers to the *Long period limit*
+
+|`X-Plenty-Global-Short-Period`
+|The information in this header field refers to the *Short period limit*
+
+|`X-Plenty-Route`
+|The information in this header field refers to the *individual route limit*
+|===
+
+Depending on what follows the prefix, the headers have the following meanings:
+
+[cols="1,3"]
+|===
+|Header |Meaning
+
+|`$PREFIX$-Limit`
+|The maximum number of calls for this limit
+
+|`$PREFIX$-Decay`
+|Seconds until the current period ends and number of calls gets reset
+
+|`$PREFIX$-Calls-Left`
+|Number of calls left for this period
+|===
+
+In addition, the following headers will be sent to the client if one or more of these limits are exceeded:
+
+[cols="1,3"]
+|===
+|Header |Meaning
+
+|`Retry-After`
+|Seconds until the current period is over and the call count is reset. Hence, the number of seconds the client must wait until making the next call.
+
+|`$PREFIX$-Calls-Reset`
+|Timestamp denoting the point in time when the call count for the specific limit (specified by the prefix) is reset
+|===
+
+== Versioning
+
+When using the plentymarkets REST API, versioning is optional. If no version is specified in the HTTP header, then the newest version of the API is used. Alternatively, you can enter the following line in the HTTP header and swap out the version:
+
+`Accept: application/x.plentymarkets.v1+json`
+
+== Handling of JSON
+
+As a rule, a JSON document is returned when a REST resource of the HTTP method `GET` is called. This JSON document can be parsed to a JSON object.
+
+If PUT, POST or DELETE methods are also available for the resource, it accepts the JSON document received via GET. In many cases, this allows for a very efficient work flow based on the following principle:
+
+. JSON document is retrieved via GET
+. JSON object is manipulated
+. Manipulated JSON object is transferred via PUT, POST or DELETE
+
+== Pagination
+
+For designated GET requests, you can use the request parameters `page` and `itemsPerPage` to limit your request to the specified values. Both parameters are optional. With `itemsPerPage`, the call returns the numbers of entries specified with this parameter. In case of a maximum limit for `itemsPerPage`, the limit is defined in the parameter definition. The `page` parameter returns the specified page. In the example below, the plugins 1 to 10 (if there are 10+ plugins) from the first page of the plugin inbox will be returned in the response JSON:
+
+./rest/plugins/search?page=1&itemsPerPage=10
+[source]
+----
+\{"page":"1","totalsCount":1,"isLastPage":true,"entries":[\{"name":"PlentyPluginShowcase","type":"template","activeStage":false,"activeProductive":false,"id":1,"position":"0",
+"created_at":"2016-06-21 09:16:10", "updated_at":"2016-06-21
+09:16:10","inProductive":false,"inStage":false,"version":0.1,"description":"showcase
+of plentymarkets plugins","namespace":"Showcase",
+"author":"plentymarkets
+GmbH","keywords":["plentymarkets","showcase","plugins"],"require":[],"authorIcon":null,"pluginIcon":null,"webstores":[],"permissions":[]}]}
+----
+
+== Resources
+
+Click on the *REST* dropdown list, to access the pages that provide information on all resources currently available. Listed are the possible HTTP methods, the required parameters and the server response for each resource.
+
+== Language codes
+
+The following language codes are used in the plentymarkets REST API.
+
+[cols="1,3"]
+|===
+|Code |Description
+
+|*bg*
+|Bulgarian
+
+|*cn*
+|Chinese
+
+|*cz*
+|Czech
+
+|*da*
+|Danish
+
+|*de*
+|German
+
+|*en*
+|English
+
+|*es*
+|Spanish
+
+|*fr*
+|French
+
+|*it*
+|Italian
+
+|*nl*
+|Dutch
+
+|*nn*
+|Norwegian
+
+|*pl*
+|Polish
+
+|*pt*
+|Portuguese
+
+|*ro*
+|Romanian
+
+|*ru*
+|Russian
+
+|*se*
+|Swedish
+
+|*sk*
+|Slovak
+
+|*tr*
+|Turkish
+
+|*vn*
+|Vietnamese
+|===
+
+== Country IDs
+
+The following country IDs are used in the plentymarkets REST API.
+
+[cols="3,1,1"]
+|===
+|Country |ISO 3166-1 |plentymarkets ID
+
+|Germany
+|DE
+|1
+
+|Austria
+|AT
+|2
+
+|Belgium
+|BE
+|3
+
+|Switzerland
+|CH
+|4
+
+|Cyprus
+|CY
+|5
+
+|Czech Republic
+|CZ
+|6
+
+|Denmark
+|DK
+|7
+
+|Spain
+|ES
+|8
+
+|Estonia
+|EE
+|9
+
+|France
+|FR
+|10
+
+|Finland
+|FI
+|11
+
+|United Kingdom
+|GB
+|12
+
+|Greece
+|GR
+|13
+
+|Hungary
+|HU
+|14
+
+|Italy
+|IT
+|15
+
+|Ireland
+|IE
+|16
+
+|Luxembourg
+|LU
+|17
+
+|Latvia
+|LV
+|18
+
+|Malta
+|MT
+|19
+
+|Norway
+|NO
+|20
+
+|Netherlands
+|NL
+|21
+
+|Portugal
+|PT
+|22
+
+|Poland
+|PL
+|23
+
+|Sweden
+|SE
+|24
+
+|Singapore
+|SG
+|25
+
+|Slovakia
+|SK
+|26
+
+|Slovenia
+|SI
+|27
+
+|USA
+|US
+|28
+
+|Australia
+|AU
+|29
+
+|Canada
+|CA
+|30
+
+|China
+|CN
+|31
+
+|Japan
+|JP
+|32
+
+|Lithuania
+|LT
+|33
+
+|Liechtenstein
+|LI
+|34
+
+|Monaco
+|MC
+|35
+
+|Mexico
+|MX
+|36
+
+|Canary Islands
+|IC
+|37
+
+|India
+|IN
+|38
+
+|Brazil
+|BR
+|39
+
+|Russia
+|RU
+|40
+
+|Romania
+|RO
+|41
+
+|Ceuta
+|EA
+|42
+
+|Melilla
+|EA
+|43
+
+|Bulgaria
+|BG
+|44
+
+|Kosovo
+|XZ
+|45
+
+|Kyrgyzstan
+|KG
+|46
+
+|Kazakhstan
+|KZ
+|47
+
+|Belarus
+|BY
+|48
+
+|Uzbekistan
+|UZ
+|49
+
+|Morocco
+|MA
+|50
+
+|Armenia
+|AM
+|51
+
+|Albania
+|AL
+|52
+
+|Egypt
+|EG
+|53
+
+|Croatia
+|HR
+|54
+
+|Maldives
+|MV
+|55
+
+|Malaysia
+|MY
+|56
+
+|Hong Kong
+|HK
+|57
+
+|Yemen
+|YE
+|58
+
+|Israel
+|IL
+|59
+
+|Taiwan
+|TW
+|60
+
+|Guadeloupe
+|GP
+|61
+
+|Thailand
+|TH
+|62
+
+|Turkey
+|TR
+|63
+
+|Greek Islands
+|GR
+|64
+
+|Balearic Islands
+|ES
+|65
+
+|New Zealand
+|NZ
+|66
+
+|Afghanistan
+|AF
+|67
+
+|Aland Islands
+|AX
+|68
+
+|Algeria
+|DZ
+|69
+
+|American Samoa
+|AS
+|70
+
+|Andorra
+|AD
+|71
+
+|Angola
+|AO
+|72
+
+|Anguilla
+|AI
+|73
+
+|Antarctica
+|AQ
+|74
+
+|Antigua and Barbuda
+|AG
+|75
+
+|Argentina
+|AR
+|76
+
+|Aruba
+|AW
+|77
+
+|Azerbaijan
+|AZ
+|78
+
+|The Bahamas
+|BS
+|79
+
+|Bahrain
+|BH
+|80
+
+|Bangladesh
+|BD
+|81
+
+|Barbados
+|BB
+|82
+
+|Belize
+|BZ
+|83
+
+|Benin
+|BJ
+|84
+
+|Bermuda
+|BM
+|85
+
+|Bhutan
+|BT
+|86
+
+|Bolivia
+|BO
+|87
+
+|Bosnia and Herzegovina
+|BA
+|88
+
+|Botswana
+|BW
+|89
+
+|Bouvet Island
+|BV
+|90
+
+|British Indian Ocean Territory
+|IO
+|91
+
+|Brunei Darussalam
+|BN
+|92
+
+|Burkina Faso
+|BF
+|93
+
+|Burundi
+|BI
+|94
+
+|Cambodia
+|KH
+|95
+
+|Cameroon
+|CM
+|96
+
+|Cape Verde
+|CV
+|97
+
+|Cayman Islands
+|KY
+|98
+
+|Central African Republic
+|CF
+|99
+
+|Chad
+|TD
+|100
+
+|Chile
+|CL
+|101
+
+|Christmas Island
+|CX
+|102
+
+|Cocos Islands/Keeling Islands
+|CC
+|103
+
+|Columbia
+|CO
+|104
+
+|Comoros
+|KM
+|105
+
+|Congo
+|CG
+|106
+
+|Democratic Republic of the Congo
+|CD
+|107
+
+|Cook Islands
+|CK
+|108
+
+|Costa Rica
+|CR
+|109
+
+|Ivory coast
+|CI
+|110
+
+|Cuba
+|CU
+|112
+
+|Djibouti
+|DJ
+|113
+
+|Dominica
+|DM
+|114
+
+|Dominican Republic
+|DO
+|115
+
+|Ecuador
+|EC
+|116
+
+|El Salvador
+|SV
+|117
+
+|Equatorial Guinea
+|GQ
+|118
+
+|Eritrea
+|ER
+|119
+
+|Ethiopia
+|ET
+|120
+
+|Falkland Islands
+|FK
+|121
+
+|Faroe Islands
+|FO
+|122
+
+|Fiji
+|FJ
+|123
+
+|French Guiana
+|GF
+|124
+
+|French Polynesia
+|PF
+|125
+
+|French Southern and Antarctic Lands
+|TF
+|126
+
+|Gabon
+|GA
+|127
+
+|Gambia
+|GM
+|128
+
+|Georgia
+|GE
+|129
+
+|Ghana
+|GH
+|130
+
+|Gibraltar
+|GI
+|131
+
+|Greenland
+|GL
+|132
+
+|Grenada
+|GD
+|133
+
+|Guam
+|GU
+|134
+
+|Guatemala
+|GT
+|135
+
+|Guernsey
+|GG
+|136
+
+|Guinea
+|GN
+|137
+
+|Guinea-Bissau
+|GW
+|138
+
+|Guyana
+|GY
+|139
+
+|Haiti
+|HT
+|140
+
+|Heard Island and McDonald Islands
+|HM
+|141
+
+|Vatican City
+|VA
+|142
+
+|Honduras
+|HN
+|143
+
+|Iceland
+|IS
+|144
+
+|Indonesia
+|ID
+|145
+
+|Iran
+|IR
+|146
+
+|Iraq
+|IQ
+|147
+
+|Isle of Man
+|IM
+|148
+
+|Jamaica
+|JM
+|149
+
+|Jersey
+|JE
+|150
+
+|Jordan
+|JO
+|151
+
+|Kenya
+|KE
+|152
+
+|Kiribati
+|KI
+|153
+
+|Democratic People's Republic of Korea
+|KP
+|154
+
+|Republic of Korea
+|KR
+|155
+
+|Kuwait
+|KW
+|156
+
+|Laos
+|LA
+|158
+
+|Lebanon
+|LB
+|159
+
+|Lesotho
+|LS
+|160
+
+|Liberia
+|LR
+|161
+
+|Libya
+|LY
+|162
+
+|Macao
+|MO
+|163
+
+|Macedonia
+|MK
+|164
+
+|Madagascar
+|MG
+|165
+
+|Malawi
+|MW
+|166
+
+|Mali
+|ML
+|168
+
+|Marshall Islands
+|MH
+|169
+
+|Martinique
+|MQ
+|170
+
+|Mauritania
+|MR
+|171
+
+|Mauritius
+|MU
+|172
+
+|Mayotte
+|YT
+|173
+
+|Micronesia
+|FM
+|174
+
+|Moldova
+|MD
+|175
+
+|Mongolia
+|MN
+|176
+
+|Montenegro
+|ME
+|177
+
+|Montserrat
+|MS
+|178
+
+|Mozambique
+|MZ
+|179
+
+|Myanmar
+|MM
+|180
+
+|Namibia
+|NA
+|181
+
+|Nauru
+|NR
+|182
+
+|Nepal
+|NP
+|183
+
+|Netherlands Antilles
+|AN
+|184
+
+|New Caledonia
+|NC
+|185
+
+|Nicaragua
+|NI
+|186
+
+|Niger
+|NE
+|187
+
+|Nigeria
+|NG
+|188
+
+|Niue
+|NU
+|189
+
+|Norfolk Island
+|NF
+|190
+
+|Northern Mariana Islands
+|MP
+|191
+
+|Oman
+|OM
+|192
+
+|Pakistan
+|PK
+|193
+
+|Palau
+|PW
+|194
+
+|Palestinian territories
+|PS
+|195
+
+|Panama
+|PA
+|196
+
+|Papua New Guinea
+|PG
+|197
+
+|Paraguay
+|PY
+|198
+
+|Peru
+|PE
+|199
+
+|Philippines
+|PH
+|200
+
+|Pitcairn Islands
+|PN
+|201
+
+|Puerto Rico
+|PR
+|202
+
+|Qatar
+|QA
+|203
+
+|Reunion
+|RE
+|204
+
+|Rwanda
+|RW
+|205
+
+|Saint Helena
+|SH
+|206
+
+|Saint Kitts and Nevis
+|KN
+|207
+
+|Saint Lucia
+|LC
+|208
+
+|Saint Pierre and Miquelon
+|PM
+|209
+
+|Saint Vincent and the Grenadines
+|VC
+|210
+
+|Samoa
+|WS
+|211
+
+|San Marino
+|SM
+|212
+
+|Sao Tome and Principe
+|ST
+|213
+
+|Saudi Arabia
+|SA
+|214
+
+|Senegal
+|SN
+|215
+
+|Serbia
+|RS
+|216
+
+|Seychelles
+|SC
+|217
+
+|Sierra Leone
+|SL
+|218
+
+|Solomon Islands
+|SB
+|219
+
+|Somalia
+|SO
+|220
+
+|South Africa
+|ZA
+|221
+
+|South Georgia and the South Sandwich Islands
+|GS
+|222
+
+|Sri Lanka
+|LK
+|223
+
+|Sudan
+|SD
+|224
+
+|Suriname
+|SR
+|225
+
+|Spitsbergen and Jan Mayen
+|SJ
+|226
+
+|Swaziland
+|SZ
+|227
+
+|Syria
+|SY
+|228
+
+|Tajikistan
+|TJ
+|229
+
+|Tanzania
+|TZ
+|230
+
+|Timor-Leste
+|TL
+|231
+
+|Togo
+|TG
+|232
+
+|Tokelau
+|TK
+|233
+
+|Tonga
+|TO
+|234
+
+|Trinidad and Tobago
+|TT
+|235
+
+|Tunisia
+|TN
+|236
+
+|Turkmenistan
+|TM
+|237
+
+|Turks and Caicos Islands
+|TC
+|238
+
+|Tuvalu
+|TV
+|239
+
+|Uganda
+|UG
+|240
+
+|Ukraine
+|UA
+|241
+
+|United States Minor Outlying Islands
+|UM
+|242
+
+|Uruguay
+|UY
+|243
+
+|Vanuatu
+|VU
+|244
+
+|Venezuela
+|VE
+|245
+
+|Vietnam
+|VN
+|246
+
+|British Virgin Islands
+|VG
+|247
+
+|United States Virgin Islands
+|VI
+|248
+
+|Wallis and Futuna
+|WF
+|249
+
+|Western Sahara
+|EH
+|250
+
+|Zambia
+|ZM
+|252
+
+|Zimbabwe
+|ZW
+|253
+
+|United Arab Emirates
+|AE
+|254
+
+|Helgoland
+|DE
+|255
+
+|Buesingen
+|DE
+|256
+
+|Curaçao
+|CUW
+|258
+
+|Sint Maarten
+|SXM
+|259
+
+|BES Islands
+|BES
+|260
+
+|Saint Barthélemy
+|BL
+|261
+
+|Livigno
+|IT
+|262
+
+|Campione d'Italia
+|IT
+|263
+
+|Lake Lugano from Ponte Tresa to Porto Ceresio
+|IT
+|264
+
+|Unknown
+|--
+|0
+|===
+
+== Default unit IDs
+
+The following IDs are used for default units in the plentymarkets REST API.
+
+[cols="3,1,1"]
+|===
+|Unit |ISO code |plentymarkets ID
+
+|Piece
+|C62
+|1
+
+|Kilogram
+|KGM
+|2
+
+|Gram
+|GRM
+|3
+
+|Milligram
+|MGM
+|4
+
+|Litre
+|LTR
+|5
+
+|12 pieces/dozen
+|DPC
+|6
+
+|Two pack
+|OP
+|7
+
+|Bale
+|BL
+|8
+
+|Dispenser
+|DI
+|9
+
+|Bag
+|BG
+|10
+
+|Sheet
+|ST
+|11
+
+|Block
+|D64
+|12
+
+|Block
+|PD
+|13
+
+|Quire
+|QR
+|14
+
+|Box
+|BX
+|15
+
+|Coil
+|CL
+|16
+
+|Container
+|CH
+|17
+
+|Tin
+|TN
+|18
+
+|Can
+|CA
+|19
+
+|Dozen
+|DZN
+|20
+
+|Bucket
+|BJ
+|21
+
+|Case
+|CS
+|22
+
+|Cask
+|Z3
+|23
+
+|Bottle
+|BO
+|24
+
+|Fluid ounce
+|OZA
+|25
+
+|Jar
+|JR
+|26
+
+|Cardboard box
+|CG
+|27
+
+|Carton
+|CT
+|28
+
+|Kit
+|KT 
+|29
+
+|Ball
+|AA
+|30
+
+|Metre
+|MTR
+|31
+
+|Millilitre
+|MLT
+|32
+
+|Millimetre
+|MMT
+|33
+
+|Pair
+|PR
+|34
+
+|Packet
+|PA
+|35
+
+|Bundle
+|PK
+|36
+
+|Pallet/unit load
+|D97
+|37
+
+|Square metre
+|MTK
+|38
+
+|Square centimetre
+|CMK
+|39
+
+|Square millimetre
+|MMK
+|40
+
+|Square centimetre (non-standard)
+|SCM
+|41
+
+|Square millimetre (non-standard)
+|SMM
+|42
+
+|Role
+|RO
+|43
+
+|Sack
+|SA
+|44
+
+|Set
+|SET
+|45
+
+|Reel
+|RL
+|46
+
+|Each
+|EA
+|47
+
+|Tube
+|TU
+|48
+
+|Ounce
+|OZ
+|49
+
+|Wet ton
+|WE
+|50
+
+|Centimetre
+|CMT
+|51
+
+|Inch
+|INH
+|52
+|===
+
+== Supported currencies
+
+The plentymarkets REST API supports the following currencies. The currency ID is equivalent to the currency's ISO code.
+
+[cols="1,3"]
+|===
+|ISO code |Currency
+
+|AED
+|United Arab Emirates dirham
+
+|ARS
+|Argentine peso
+
+|AUD
+|Australian dollar
+
+|BGN
+|Bulgarian lev
+
+|BHD
+|Bahraini dinar
+
+|BRL
+|Brazilian real
+
+|CAD
+|Canadian dollar
+
+|CHF
+|Swiss franc
+
+|CNY
+|Chinese Renminbi
+
+|CZK
+|Czech koruna
+
+|DKK
+|Danish krone
+
+|EUR
+|Euro
+
+|GBP
+|Pound sterling
+
+|HKD
+|Hong Kong dollar
+
+|HRK
+|Croatian kuna
+
+|HUF
+|Hungarian forint
+
+|IDR
+|Indonesian rupiah
+
+|INR
+|Indian rupee
+
+|JPY
+|Japanese yen
+
+|MXN
+|Mexican peso
+
+|MYR
+|Malaysian ringgit
+
+|NOK
+|Norwegian krone
+
+|NZD
+|New Zealand dollar
+
+|PHP
+|Philippine peso
+
+|PLN
+|Polish zloty
+
+|QAR
+|Qatari riyal
+
+|RON
+|Romanian leu
+
+|RUB
+|Russian ruble
+
+|SEK
+|Swedish krona
+
+|SGD
+|Singapore dollar
+
+|THB
+|Thai baht
+
+|TRY
+|Turkish lira
+
+|TWD
+|New Taiwan dollar
+
+|UAH
+|Ukrainian hryvnia
+
+|USD
+|United States dollar
+
+|VND
+|Vietnamese dong
+
+|XCD
+|Eastern Caribbean dollar
+
+|ZAR
+|South African rand
+|===
+
+== Payment status IDs
+
+The following IDs are used for payment statuses in the plentymarkets
+REST API.
+
+[cols="1,3"]
+|===
+|ID |Payment status
+
+|1
+|Awaiting approval
+
+|2
+|Approved
+
+|3
+|Captured
+
+|4
+|Partially captured
+
+|5
+|Cancelled
+
+|6
+|Refused
+
+|7
+|Awaiting renewal
+
+|8
+|Expired
+
+|9
+|Refunded
+
+|10
+|Partially refunded
+|===
