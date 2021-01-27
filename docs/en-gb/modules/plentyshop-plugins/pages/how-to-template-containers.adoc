@@ -2,7 +2,7 @@
 
 This tutorial will introduce you to template containers. We will develop a small plugin that provides the data for displaying a placeholder image and text in a container of the template plugin. You will also learn about the plugin containers in Ceres and all options to integrate your own content in the template.
 
-https://github.com/plentymarkets/plugin-tutorial-template-container[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plugin-tutorial-template-container[Download the example plugin on GitHub.^]
 
 == Step 1: Installing the template
 

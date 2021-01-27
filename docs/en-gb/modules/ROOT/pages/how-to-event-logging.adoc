@@ -6,7 +6,7 @@ In this tutorial, you will learn how to integrate log functionality in your plug
 
 We will extend the functionality of the xref:data-storage:how-to-store-data.adoc[ToDoList] plugin by integrating a log function. We then use this log to retrieve certain information.
 
-https://github.com/plentymarkets/plugin-tutorial-todolist[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plugin-tutorial-todolist[Download the example plugin on GitHub.^]
 
 === The ToDoList plugin structure
 

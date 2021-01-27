@@ -2,7 +2,7 @@
 
 In this tutorial, we will develop a basic plugin to integrate a shipping service provider in plentymarkets. We are going to enable the user to register shipping orders using the well-known processes in the plentymarkets shipping centre and the plentymarkets Client.
 
-https://github.com/plentymarkets/plugin-shipping-tutorial[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plugin-shipping-tutorial[Download the example plugin on GitHub.^]
 
 == Step 1: Creating the plugin files
 

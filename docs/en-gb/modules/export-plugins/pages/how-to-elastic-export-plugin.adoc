@@ -2,7 +2,7 @@
 
 In this tutorial, you will develop a basic plugin to integrate an export format in plentymarkets. The plugin will enable the user to export data using the well-known processes within the plentymarkets elastic export.
 
-https://github.com/plentymarkets/plugin-export-format-tutorial[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plugin-export-format-tutorial[Download the example plugin on GitHub.^]
 
 == Step 1: Creating the plugin files
 

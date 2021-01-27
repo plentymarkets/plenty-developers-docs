@@ -4,7 +4,7 @@ This tutorial will show you how to build a plugin that provides a widget for the
 
 You can download the Google Maps widget from GitHub:
 
-https://github.com/plentymarkets/plugin-google-maps-widget[Download on GitHub^]
+link:https://github.com/plentymarkets/plugin-google-maps-widget[Download the example plugin on GitHub.^]
 
 Tutorial contents:
 
