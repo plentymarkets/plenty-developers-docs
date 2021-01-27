@@ -99,9 +99,8 @@ Each log has the following properties:
 
 Report information, as well as the log levels `error` and above are activated by default. Other log levels have to be activated in the log settings. [red]#required#
 
-// @TODO Replace link.
 |Message
-|Detailed information on the logged event. For the log levels `warning` and below, the message has to be link:/dev-doc/plugin-multilingualism[available in English _and_ German]. [red]#required#
+|Detailed information on the logged event. For the log levels `warning` and below, the message has to be xref:ROOT:multilingualism.adoc[available in English _and_ German]. [red]#required#
 
 |`setReferenceType`
 |Provides a filter option for log entries. Has to be unique.

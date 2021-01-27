@@ -1,8 +1,8 @@
 = Uploading plugins to plentyMarketplace
 
-If your plugin fulfils the link:/marketplace/plugin-requirements[requirements], you can upload your plugin to https://marketplace.plentymarkets.com[plentyMarketplace].
+If your plugin fulfils the xref:marketplace:plugin-upload-requirements.adoc[requirements], you can upload your plugin to link:https://marketplace.plentymarkets.com[plentyMarketplace^].
 
-First, link:/dev-doc/basics#add-repository[add] your plugin to the plentymarkets inbox and link:/dev-doc/basics#provisioning[deploy] the plugin. Then, proceed as follows to upload your plugin:
+First, link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[add your plugin^] to the plentymarkets inbox and link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy the plugin^]. Then, proceed as follows to upload your plugin:
 
 . Open the plentymarkets back end.
 . Go to *Plugins » Plugin overview*.

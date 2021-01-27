@@ -195,7 +195,7 @@ class ShippingResource extends ApiResource
 === Builder
 
 The builder class helps you work with interfaces. `ItemColumnBuilder.php`, for example, builds an array of
-link:/api-doc/Item#datalayer_item[ItemDataLayer] columns that can be requested with the `search` method. The fields for this array are defined in the related files in the *Fields* folder.
+xref:interface:Item#datalayer_item[ItemDataLayer] columns that can be requested with the `search` method. The fields for this array are defined in the related files in the *Fields* folder.
 
 .IO/src/Builder/Item/ItemColumnBuilder.php
 [source,php]

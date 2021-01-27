@@ -8,7 +8,7 @@ https://github.com/plentymarkets/plugin-export-format-tutorial[image:%7B%7B%20pl
 
 The plugin needs to be organised in a specific structure. You need the `src` folder for your plugin. The `src` folder can be organised in sub-folders and contains the `ExportFormatServiceProvider.php`, the `ExportFormatGenerator.php` and the `ExportFormatResultField.php`. The `ExportFormatServiceProvider.php` is needed for registering the plugin in plentymarkets.
 
-All information about the plugin is defined in the link:/dev-doc/basics#plugin-information[plugin.json] file. This file defines the service provider of your plugin, which will be called by plentymarkets to register and run your plugin.
+All information about the plugin is defined in the xref:plugin-basics:plugin-definition[plugin.json] file. This file defines the service provider of your plugin, which will be called by plentymarkets to register and run your plugin.
 
 [source]
 ----
@@ -655,7 +655,7 @@ The main part can be found in the generatePluginContent function. This function 
 
 == Deploying the plugin
 
-Finally, link:/dev-doc/basics#provisioning[deploy] the plugin in a plugin set. The new export format will be available in the elastic export menu in plentymarkets.
+Finally, link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy the plugin] in a plugin set. The new export format will be available in the elastic export menu in plentymarkets.
 
 . Go to *Plugins » Plugin overview*.
 . Select the desired plugin set.

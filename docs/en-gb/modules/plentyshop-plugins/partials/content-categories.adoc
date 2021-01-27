@@ -19,7 +19,7 @@ By default, content categories are not displayed in the navigation bar of Ceres.
 Note that these changes will be overwritten when updating the plugin to a higher version. Repeat the steps above in order to make all category types available again.
 ====
 
-After enabling the other category types in the Ceres online store, link:https://knowledge.plentymarkets.com/en/item/managing-categories#_creating_a_category[create a category] of the *Content* type. The following steps must be taken into account:
+After enabling the other category types in the Ceres online store, link:https://knowledge.plentymarkets.com/en/item/managing-categories#_creating_a_category[create a category^] of the *Content* type. The following steps must be taken into account:
 
 * Activate this category for your client.
 * Select *Display* in the *In link list* drop-down to display the category in the navigation.

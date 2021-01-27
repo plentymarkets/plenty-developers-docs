@@ -1,6 +1,6 @@
 = Catalog
 
-This tutorial will introduce you to the catalog export. We will develop a small plugin that exports variations to a fictional marketplace. You will learn how to create and work with a catalog to allow your users to map their data to a predefined format. If you are just getting started developing plugins for plentymarkets it is recommended to start with link:https://developers.plentymarkets.com/dev-doc/basics#ide-support[establishing your IDE] and link:https://developers.plentymarkets.com/tutorials/helloworld#introduction[creating your first plugin]
+This tutorial will introduce you to the catalog export. We will develop a small plugin that exports variations to a fictional marketplace. You will learn how to create and work with a catalog to allow your users to map their data to a predefined format. If you are just getting started developing plugins for plentymarkets it is recommended to start with establishing your IDE and xref:ROOT:tutorial.adoc[creating your first plugin].
 
 At the end of this tutorial you will have developed a plugin that exports variations in the format of a fictional marketplace. In the UI the result will look like this
 
@@ -12,34 +12,34 @@ The complete source code for this tutorial is available link:https://github.com/
 
 [source]
 ----
-                BasicCatalogExport/
-                    ├── src/
-                    │   ├── Controllers/
-                    │   │   └── VariationExportController.php
-                    │   │
-                    │   ├── DataProviders/
-                    │   │   ├── FirstBaseDataProvider.php
-                    │   │   ├── FirstKeyDataProvider.php
-                    │   │   └── FirstNestedKeyDataProvider.php
-                    │   │
-                    │   ├── Providers/
-                    │   │    ├── BasicCatalogExportServiceProvider.php
-                    │   │    ├── BasicCatalogExportRouteServiceProvider.php
-                    │   │    ├── BasicCatalogExportTemplateProvider.php
-                    │   │    └── CatalogBootServiceProvider.php
-                    │   │
-                    │   └── Services/
-                    │       └── VariationExportService.php
-                    │
-                    └── plugin.json // plugin information
+BasicCatalogExport/
+    ├── src/
+    │   ├── Controllers/
+    │   │   └── VariationExportController.php
+    │   │
+    │   ├── DataProviders/
+    │   │   ├── FirstBaseDataProvider.php
+    │   │   ├── FirstKeyDataProvider.php
+    │   │   └── FirstNestedKeyDataProvider.php
+    │   │
+    │   ├── Providers/
+    │   │    ├── BasicCatalogExportServiceProvider.php
+    │   │    ├── BasicCatalogExportRouteServiceProvider.php
+    │   │    ├── BasicCatalogExportTemplateProvider.php
+    │   │    └── CatalogBootServiceProvider.php
+    │   │
+    │   └── Services/
+    │       └── VariationExportService.php
+    │
+    └── plugin.json // plugin information
 ----
 
 == What is a catalog?
 
 Before we can start to develop a plugin that uses the catalog, we first need to clarify what a catalog actually is and of which components it consists of. A catalog describes the relation between source data in plentymarkets and a specific export format. The format is predefined by a template. This template is created by the plugin developer and can be used to create a new catalog in the plentymarkets backend. The actual data can then be mapped individually by the user of the plugin. A plugin needs to define the following components to work with a catalog:
 
-* link:#data-provider[Data providers]
-* link:#template[Templates]
+* <<_data_providers, Data providers>>
+* <<_templates, Templates>>
 
 The structure of a catalog roughly looks like this:
 

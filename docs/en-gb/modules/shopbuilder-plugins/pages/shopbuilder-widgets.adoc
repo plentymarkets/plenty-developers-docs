@@ -2,7 +2,7 @@
 
 == Widget information - contentWidgets.json
 
-All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to link:/tutorials/my-first-shop-builder-widget[the widget turorial].
+All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[the widget turorial].
 
 .contentWidgets.json
 [source,json]
@@ -63,14 +63,14 @@ This is the path of the widget's PHP class. In our case, the class' label is Map
 
 The settings provide the configuration options of the widget in the ShopBuilder. The settings are stored in a JSON object. Each item in the settings object needs to have a unique key, which is used in the code to refer to it. In the case of the Google Maps widget, the three setting keys are *apiKey*, *address* and *zoom*. You can provide as many settings as necessary for your widget.
 
-* *type*: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+* *type*: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[in the turorial].
 * *required*: A Boolean that determines whether this widget setting is mandatory for the user.
-* *defaultValue*: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+* *defaultValue*: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[in the turorial].
 * *options*: The options are a JSON object that includes the name of the setting and the tooltip. If the setting's input type is a *select*, i.e. a drop-down list, the options also include the *listBoxValues*, meaning the various entries in the drop-down list.
 ** *name*: The key for the setting's name. The key is used to display the text stored in the widgets.properties file.
 ** *tooltip*: The key which is used to display a tooltip when hovering above the setting. The text is stored in the widgets.properties file.
-* *isVisible*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of *isVisible*. An example of how this setting is implemented is described link:/tutorials/my-first-shop-builder-widget[in the tutorial].
-* *isList*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting link:/tutorials/my-first-shop-builder-widget[in the tutorial].
+* *isVisible*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of *isVisible*. An example of how this setting is implemented is described xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[in the turorial].
+* *isList*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[in the turorial].
 
 == Creating widget PHP classes
 

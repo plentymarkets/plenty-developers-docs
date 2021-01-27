@@ -1,6 +1,6 @@
 = Paginating interface results
 
-When working with the plugin interface, you can paginate the results of your queries, depending on the repository and query in question. This provides you with the results from the repository in a link:https://laravel.com/docs/5.8/collections[Collection]. It also gives you access to various helper classes.
+When working with the plugin interface, you can paginate the results of your queries, depending on the repository and query in question. This provides you with the results from the repository in a link:https://laravel.com/docs/5.8/collections[Collection^]. It also gives you access to various helper classes.
 
 Use pagination to get the data for only a single page. You can also utilize it in searches and filters that account for some set of accepted criteria. Finally, you can pass the query results to the UI and display them across multiple pages.
 

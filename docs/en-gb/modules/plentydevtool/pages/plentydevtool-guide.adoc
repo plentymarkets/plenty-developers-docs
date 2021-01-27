@@ -113,5 +113,5 @@ Click *Install* to add a plugin for synchronisation.
 
 == Best practices
 
-. plentyDevTool is not a version control system. Use it in combination with https://git-scm.com/[Git], so you can recover previous versions of your work in case anything goes wrong. For further information on how to set up your environment to accomodate both plentyDevTool and version control, see our link:/tools/plentydevtool-version-control[version control guide].
+. plentyDevTool is not a version control system. Use it in combination with link:https://git-scm.com/[Git], so you can recover previous versions of your work in case anything goes wrong. For further information on how to set up your environment to accomodate both plentyDevTool and version control, see our xref:tools:plentydevtool-version-control.adoc[version control guide].
 . Note that even though plentyDevTool creates backup versions of local files during *Pull*, it does not create backups of remote files during *Push*. This means that once you upload your local files to your plentymarkets system, the respective remote files will be overwritten. It is recommended that you always *Pull* before you *Push*.

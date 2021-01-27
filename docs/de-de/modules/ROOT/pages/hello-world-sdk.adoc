@@ -9,9 +9,9 @@ This tutorial is aimed at plentymarkets users who completed the first Hello Worl
 
 [NOTE]
 ====
- External SDKs will not be executed in plentymarkets directly. We separated the code of an external SDK from the
- plentymarkets plugin code for security reasons. The code of the external SDK is executed on another server that
- is not connected to the plentymarkets servers.
+External SDKs will not be executed in plentymarkets directly. We separated the code of an external SDK from the
+plentymarkets plugin code for security reasons. The code of the external SDK is executed on another server that
+is not connected to the plentymarkets servers.
 ====
 
 Let's take a look at the result first, to see what we want to implement.

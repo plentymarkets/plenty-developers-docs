@@ -6,7 +6,7 @@ https://github.com/plentymarkets/plugin-shipping-tutorial[image:%7B%7B%20plugin_
 
 == Step 1: Creating the plugin files
 
-Our plugin consists of link:/dev-doc/basics#plugin-information[plugin.json] and the link:/dev-doc/basics#plugin-options[config.json]. When interacting with an API, which will surely be necessary in most cases, you will also need the classes required for this communication.
+Our plugin consists of xref:ROOT:plugin-definition.adoc[plugin.json] and the xref:plugin-configuration:how-to-plugin-configuration.adoc[config.json]. When interacting with an API, which will surely be necessary in most cases, you will also need the classes required for this communication.
 
 [source]
 ----
@@ -696,7 +696,7 @@ There is a fixed array structure which has to be returned to the internal callin
 
 == Testing what we have just created
 
-After creating the plugin and configuring the settings in the configuration, we have to link:/dev-doc/basics#add-repository[add] our new plugin to the plentymarkets inbox.
+After creating the plugin and configuring the settings in the configuration, we have to link:https://knowledge.plentymarkets.com/en/plugins/adding-plugins-system#git-plugins[add^] our new plugin to the plentymarkets inbox.
 
 . Go to *Plugins » Plugin overview*.
 . In the list of plugins, click on *PluginShippingTutorial*. +
@@ -705,4 +705,4 @@ After creating the plugin and configuring the settings in the configuration, we 
 . Enter the sender's address data in the second tab *Sender*.
 . *Save* the settings.
 
-And finally, we link:/dev-doc/basics#provisioning[deploy] the plugin in a plugin set. Our shipping service provider *Plenty Shipping tutorial* will be available both in the drop-down menu of the shipping service providers in the plentymarkets shipping centre and in the procedure *Shipping centre* in the plentymarkets Client. Now we can register a shipping order using our newly added plugin code. Additional information such as shipment numbers are saved in the *Order Shipping Package*; the shipping status is saved in the *Shipping Information*. Both are related to the order.
+And finally, we link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[deploy^] the plugin in a plugin set. Our shipping service provider *Plenty Shipping tutorial* will be available both in the drop-down menu of the shipping service providers in the plentymarkets shipping centre and in the procedure *Shipping centre* in the plentymarkets Client. Now we can register a shipping order using our newly added plugin code. Additional information such as shipment numbers are saved in the *Order Shipping Package*; the shipping status is saved in the *Shipping Information*. Both are related to the order.

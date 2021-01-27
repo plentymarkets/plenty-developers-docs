@@ -1299,7 +1299,7 @@ We have now created an item and added several variations. However, to sell these
 
 ==== Shipping profiles
 
-To make sure shipping costs are calculated correctly, you need to link at least one shipping profile to every item. To find out more about shipping profiles, check the plentymarkets link:https://knowledge.plentymarkets.com/en/fulfilment/preparing-the-shipment[manual].
+To make sure shipping costs are calculated correctly, you need to link at least one shipping profile to every item. To find out more about shipping profiles, check the plentymarkets link:https://knowledge.plentymarkets.com/en/fulfilment/preparing-the-shipment[manual^].
 
 ===== Listing shipping profiles
 
