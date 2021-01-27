@@ -25,14 +25,19 @@ content:
     branches:
       - master
     start_path: plentyBase/docs
-  - url: https://github.com/plentymarkets/IO_docs-raw
-    branches:
-      - 4.*
-      - 5.*
   - url: https://github.com/plentymarkets/Ceres_docs-raw
     branches:
       - 4.*
       - 5.*
+  - url: https://github.com/plentymarkets/IO_docs-raw
+    branches:
+      - 4.*
+      - 5.*
+asciidoc:
+  attributes:
+    tabs: tabs
+  extensions:
+  - ./lib/tabs-block.js
 output:
     dir: ./build/en-gb
 ui:
