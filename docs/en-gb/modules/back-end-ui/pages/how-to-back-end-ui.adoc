@@ -154,16 +154,15 @@ include::example$main-menu.component.ts[]
 === Adding table and filter
 
 Next, add a table and a filter that will appear when clicking on your new menu entry.
-To do so, the following steps are necessary:
-
-. Open `src/app/views/my-new-view/my-new-view.component.htm`.
-. Replace the automatically generated html code with the one shown below. The `terra-2-col` tag separates the screen into two parts (left and right).
+To do so, open `src/app/views/my-new-view/my-new-view.component.html` and replace the html code as explained below.
 
 .my-new-view.component.html
 [source,html]
 ----
 include::example$my-new-view.component.html[]
 ----
+
+<1> Replace the automatically generated html code with the one shown below. The `terra-2-col` tag separates the screen into two parts (left and right).
 
 === Adding a service
 
