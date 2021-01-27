@@ -30,13 +30,12 @@
 
 .REST API
 * xref:rest-api-guides:getting-started.adoc[REST API overview]
+* xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
 * xref:rest-api-guides:contact-data.adoc[How to query contact data]
 * xref:rest-api-guides:item-data.adoc[How to query item data]
 * xref:rest-api-guides:order-data.adoc[How to query order data]
 * xref:rest-api-guides:purchase-orders.adoc[How to query purchase order data]
 * xref:rest-api-guides:bulk-routes.adoc[How to use bulk routes]
-* xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
-* plentyBase REST API reference
 
 .plentyShop plugins
 * xref:plentyshop-plugins:template-setup.adoc[Template setup]
@@ -67,6 +66,7 @@
 * xref:export-plugins:how-to-catalog-plugin.adoc[Catalog plugin]
 
 .plentyBase plugins
+* xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
 * xref:plentybase:plentybase-tutorial.adoc[plentyBase plugin tutorial]
 
 .Tools
