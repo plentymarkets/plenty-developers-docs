@@ -49,7 +49,7 @@ Once you have completed these steps, set up the `ui.json` file with actions for 
 
 For being able to test your copied UI within the plugin, you can install the extension link:https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf[Allow-Control-Allow-Origin^] in the Chrome browser.
 // ADD NEW LINK
-Alternatively, you can use the xref:https://developers.plentymarkets.com/tools/plentydevtool-introduction[plentyDevTool] to test the UI in any browser.
+Alternatively, you can use xref:tools:plentydevtool-introduction.adoc[plentyDevTool] to test the UI in any browser.
 
 == Creating the ui.json
 
