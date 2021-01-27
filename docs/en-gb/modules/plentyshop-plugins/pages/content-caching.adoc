@@ -25,7 +25,7 @@ Content caching is only available from Ceres and IO versions 2.12 onwards. Purch
 ** Linking layout containers in the settings of a plugin
 * The cache for individual variation pages is invalidated when changes are made to the item settings of the variation. The invalidation of variation pages is dependent on the refreshing of the Elasticsearch index, meaning that the aforementioned invalidation cycle of 5 minutes does not apply; the Elasticsearch index is refreshed every  10 to 15 minutes.
 
-The https://knowledge.plentymarkets.com/en/basics/first-steps/plugins#60[Preview mode] in the *Plugins » Plugin overview* menu completely circumvents the content caching. Changes to the online store will therefore be displayed
+The link:https://knowledge.plentymarkets.com/en/basics/first-steps/plugins#60[Preview mode] in the *Plugins » Plugin overview* menu completely circumvents the content caching. Changes to the online store will therefore be displayed
 immediately in the preview mode.
 
 == How to cache additional pages

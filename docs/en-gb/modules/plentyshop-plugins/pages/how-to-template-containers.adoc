@@ -2,15 +2,15 @@
 
 This tutorial will introduce you to template containers. We will develop a small plugin that provides the data for displaying a placeholder image and text in a container of the template plugin. You will also learn about the plugin containers in Ceres and all options to integrate your own content in the template.
 
-https://github.com/plentymarkets/plugin-tutorial-template-container[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plugin-tutorial-template-container[Download the example plugin on GitHub.^]
 
 == Step 1: Installing the template
 
-If you haven't already link:/dev-doc/design[set up a template] in your plentymarkets system, do it before you start developing the template container plugin. In this way, you have your test environment ready and can directly check your coding output.
+If you haven't already xref:plentyshop-plugins:template-setup.adoc[set up a template] in your plentymarkets system, do it before you start developing the template container plugin. In this way, you have your test environment ready and can directly check your coding output.
 
 == Step 2: Creating the plugin files
 
-Our plugin is of the *template* type and integrates with the Ceres template, i.e. our plugin consists of link:/dev-doc/template-plugins#features-core[core features] saved in the *src* folder and link:/dev-doc/template-plugins#features-design[design features] saved in the *resources* folder. Our plugin also requires a link:/dev-doc/basics#plugin-information[plugin.json] file and a link:/dev-doc/basics#plugin-options[config.json] file.
+Our plugin is of the *template* type and integrates with the Ceres template, i.e. our plugin consists of xref:plentyshop-plugins:template-overview#_core_features[core features] saved in the *src* folder and xref:plentyshop-plugins:template-overview#_design_features[design features] saved in the *resources* folder. Our plugin also requires a xref:ROOT:plugin-definition.adoc[plugin.json] file and a xref:plugin-configuration:how-to-plugin-configuration.adoc[config.json] file.
 
 [source]
 ----
@@ -35,7 +35,7 @@ Placeholder/
 
 == Step 3: Filling the source files
 
-Our plugin consists of 6 files in total. Two JSON files, the link:#code-pluginjson[plugin.json] and the link:#code-configjson[config.json], two PHP files, a link:#code-serviceprovider[ServiceProvider] and a link:#code-placeholdercontainer[Container] with the source code of the plugin, as well as a link:#code-template[Twig template] and an image file. Create these files and copy the code examples.
+Our plugin consists of 6 files in total. Two JSON files, the <<_code_for_the_plugin_json, plugin.json>> and the <<_code_for_the_config_json, config.json>>, two PHP files, a <<_code_for_the_serviceprovider, ServiceProvider>> and a <<_code_for_the_placeholder_container, container>> with the source code of the plugin, as well as a <<_code_for_the_placeholder_twig, Twig file>> and an image file. Create these files and copy the code examples.
 
 === Code for the plugin.json
 
@@ -128,7 +128,7 @@ class PlaceholderContainer
 }
 ----
 
-The `PlaceholderContainer` is specified in the link:#code-pluginjson[plugin.json] file. It is a completely new source file, a content container which uses the `call()` method for rendering the Twig template of our plugin. We will create the `Placeholder.twig` file in the next step.
+The `PlaceholderContainer` is specified in the <<_code_for_the_plugin_json, plugin.json>> file. It is a completely new source file, a content container which uses the `call()` method for rendering the Twig template of our plugin. We will create the `Placeholder.twig` file in the next step.
 
 === Code for the Placeholder.twig
 
@@ -149,7 +149,7 @@ In line 4, we use the `placeholderText` variable that we set in line 1 to displa
 
 == Step 4: Entering the placeholder text
 
-After creating the plugin, we have to link:/dev-doc/basics#add-repository[add] our new plugin to the plentymarkets inbox. Then, we enter the placeholder text in the plugin config.
+After creating the plugin, we have to link:https://knowledge.plentymarkets.com/en/plugins/adding-plugins-system#git-plugins[add^] our new plugin to the plentymarkets inbox. Then, we enter the placeholder text in the plugin config.
 
 . Go to *Plugins » Plugin overview*.
 . In the list of plugins, click on *Placeholder*. +
@@ -170,7 +170,7 @@ Now you simply have to link the content from our *Placeholder* plugin to one or 
 
 image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/template-container-backend.png[image]
 
-After link:/dev-doc/basics#provisioning[deploying] the plugins, the content of our *Placeholder* plugin is displayed in the footer of our online store.
+After link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[deploying^] the plugins, the content of our *Placeholder* plugin is displayed in the footer of our online store.
 
 image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/footer-template-container.png[image]
 

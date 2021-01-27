@@ -17,19 +17,19 @@ In this table, the different elements of the item view as well as the category v
 |No. |Description
 
 |1
-|The preview images of the plugin. For further information, refer to link:#marketplace-metadata[Other meta data].
+|The preview images of the plugin. For further information, refer to <<#_marketplace_metadata, Other meta data>>.
 
 |2
-|The user guide of the plugin. For further information, refer to link:#marketplace-user-guide[User guide].
+|The user guide of the plugin. For further information, refer to <<#_marketplace_user_guide, User guide>>.
 
 |3
-|The change log of the plugin. For further information, refer to link:#marketplace-changelog[Change log].
+|The change log of the plugin. For further information, refer to <<#_marketplace_changelog, Change log>>.
 
 |4
-|The support contact data of the plugin. For further information, refer to link:#marketplace-support-contact[Support contact data].
+|The support contact data of the plugin. For further information, refer to <<#_marketplace-support-contact, Support contact data>>.
 
 |5
-|The plugin icon. For further information, refer to link:#marketplace-metadata[Other meta data]. The plugin icon is also displayed in the *Plugins » Plugin overview* menu of the plentymarkets back end. The icon path must be specified in the `plugin.json`.
+|The plugin icon. For further information, refer to <<#_marketplace-metadata, Other meta data>>. The plugin icon is also displayed in the *Plugins » Plugin overview* menu of the plentymarkets back end. The icon path must be specified in the `plugin.json`.
 |===
 
 === Plugin data
@@ -49,7 +49,7 @@ a|The plugin information properties specified in the `plugin.json`:
 * price
 * category
 
-For further information, refer to link:#marketplace-pluginjson[Plugin data].
+For further information, refer to <<#_marketplace_pluginjson, Plugin data>>.
 |===
 
 A schematic overview of the category view on plentyMarketplace.

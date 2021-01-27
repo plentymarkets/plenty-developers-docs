@@ -31,7 +31,7 @@ You can add further types by using the POST call `/rest/accounts/contacts/types`
 
 == Create a new contact
 
-After you retrieved the data as described in link:#retrieve-basic-information[Retrieve basic information], you can create a new contact. To put it simply, a contact is nothing else than a natural person. Use the following REST call to create a contact.
+After you retrieved the data as described in <<#_retrieve_basic_information, Retrieve basic information>>, you can create a new contact. To put it simply, a contact is nothing else than a natural person. Use the following REST call to create a contact.
 
 `/rest/accounts/contacts`
 

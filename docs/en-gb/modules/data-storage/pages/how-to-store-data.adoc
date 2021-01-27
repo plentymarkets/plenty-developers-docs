@@ -605,7 +605,7 @@ For our To Do list plugin, we already created 3 files in the *resources* folder:
 </html>
 ----
 
-In the `head` of our template, we define meta information, add a title, link our CSS file and additional fonts that we use in our CSS. We also integrate https://jquery.com/[jQuery] in the `script` tag.
+In the `head` of our template, we define meta information, add a title, link our CSS file and additional fonts that we use in our CSS. We also integrate link:https://jquery.com/[jQuery] in the `script` tag.
 
 The `body` of our template contains the markup for our To Do list. A container with the `list` class wraps the header, the actual list, as well as the input field and the submit button.
 
@@ -819,7 +819,7 @@ The third script is executed when a user clicks on the *Delete from list* button
 
 == All tasks are done
 
-After creating the plugin, we have to link:/dev-doc/basics#add-repository[add] our new plugin to the plentymarkets inbox and link:/dev-doc/basics#provisioning[deploy] the plugin. Finally, to display the To Do list, open a new browser tab and type in your domain adding `/todo` at the end. Have fun with your new plugin!
+After creating the plugin, we have to link:https://knowledge.plentymarkets.com/en/plugins/adding-plugins-system#git-plugins[add our new plugin] to the plentymarkets inbox and link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy the plugin]. Finally, to display the To Do list, open a new browser tab and type in your domain adding `/todo` at the end. Have fun with your new plugin!
 
 image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/todolist-with-tasks.png[image]
 

@@ -1,9 +1,8 @@
 = plentyMarketplace review guidelines
 
-The plentyMarketplace is a huge success. We currently have more than 100 plugins developed by plentymarkets and a dozen providers (both steadily growing!). With such a huge portfolio, certain challenges arise. To meet these challenges, this document provides guidelines for code review, user guide experience and other important aspects of plugin and tool content in addition to the basic link:/marketplace/plugin-requirements[plugin requirements] and
-link:/marketplace/plugin-upload[upload guide]. Be advised that the plentymarkets reviewers will check any software thoroughly to make sure these standards are met.
+The plentyMarketplace is a huge success. We currently have more than 100 plugins developed by plentymarkets and a dozen providers (both steadily growing!). With such a huge portfolio, certain challenges arise. To meet these challenges, this document provides guidelines for code review, user guide experience and other important aspects of plugin and tool content in addition to the basic xref:plentymarketplace:plugin-upload-requirements.adoc[plugin requirements] and xref:plentymarketplace:plugin-upload.adoc[upload guide]. Be advised that the plentymarkets reviewers will check any software thoroughly to make sure these standards are met.
 
-*Note* that before you can upload plugins to plentyMarketplace, you need to become a link:https://www.plentymarkets.co.uk/service/our-partners/[plentyMarketplace partner]. To become a partner, submit the contact form on https://www.plentymarkets.eu/service/partner-werden/[here] (German) or https://www.plentymarkets.co.uk/company/be-our-plentymarketplace-partner/[here] (English).
+*Note* that before you can upload plugins to plentyMarketplace, you need to become a link:https://www.plentymarkets.co.uk/service/our-partners/[plentyMarketplace partner]. To become a partner, submit the contact form https://www.plentymarkets.eu/service/partner-werden/[here].
 
 The following offers a broad overview of the dos and don’ts of plugin programming for the plentyMarketplace. Please note that this is by no means an exhaustive list, rather a living document of pitfalls we are aware of and wish you’d rather avoid. This document can and will be amended over time as soon as new realisations are made. If you have any questions or input regarding this matter, feel free to tell us in our link:https://forum.plentymarkets.com/c/plenty-marketplace[forum^].
 
@@ -33,7 +32,7 @@ The support tab must provide at least basic contact data. A plentymarkets forum 
 
 The look and feel of the plugin back end have to harmonise with the overall plentymarkets style.
 
-Plugins have to use the link:/terra-doc/components[terra components] in their back end UI.
+Plugins have to use the link:https://material.io/components[Material components^] in their back end UI.
 
 The entry point of the plugin has to match the category and use of the plugin. Any deviation has to be explained in writing.
 
@@ -71,7 +70,7 @@ Any routes for use within the plugin itself must be secured by the middleware.
 
 *Fulfillment:*
 
-Saving delivery and export documents must use link:/api-doc/Document[DocumentRepository].
+Saving delivery and export documents must use xref:beta7@interface:Document.adoc[DocumentRepository].
 
 *Marketplaces, price comparison websites, ElasticExport formats:*
 

@@ -4,17 +4,17 @@ This tutorial will show you how to build a plugin that provides a widget for the
 
 You can download the Google Maps widget from GitHub:
 
-https://github.com/plentymarkets/plugin-google-maps-widget[Download on GitHub]
+link:https://github.com/plentymarkets/plugin-google-maps-widget[Download the example plugin on GitHub.^]
 
 Tutorial contents:
 
-* link:#widget-folder-structure[Widget plugin folder structure]
-* link:#contentwidgets[Description of the contentWidgets.json]
-* link:#widget-input-types[Widget input types]
-* link:#widget-isvisible-property[The isVisible property]
-* link:#widget-islist-property[The isList property]
-* link:#widget-php-class[The widget PHP class]
-* link:#widget-twig-chapter[The widget TWIG]
+* <<#_widget_plugin_folder_structure, Widget plugin folder structure>>
+* <<#_description_of_the_contentwidgets_json, Description of the contentWidgets.json>>
+* <<#_widget_input_types, Widget input types>>
+* <<#_the_isvisible_property, The isVisible property>>
+* <<#_the_islist_property, The isList property>>
+* <<#_the_widget_php_class, The widget PHP class>>
+* <<#_the_widget_twig, The widget TWIG>>
 
 == Widget plugin folder structure
 
@@ -128,14 +128,14 @@ This is the path of the widget's PHP class. In our case, the class' label is Map
 
 The settings provide the configuration options of the widget in the ShopBuilder. The settings are stored in a JSON object. Each item in the settings object needs to have a unique key, which is used in the code to refer to it. In the case of the Google Maps widget, the three setting keys are *apiKey*, *address* and *zoom*. You can provide as many settings as necessary for your widget.
 
-* *type*: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types link:#widget-input-types[further down the page].
+* *type*: Specifies the input type of the widget setting. Please find a detailed explanation of the various input types <<#_widget_input_types, Widget input types>>.
 * *required*: A Boolean that determines whether this widget setting is mandatory for the user.
-* *defaultValue*: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type further link:#widget-default-values[below].
+* *defaultValue*: Determines the default value for a setting. The type of value is contingent on the input type. Please find a detailed description of applicable default values for each input type further <<#_default_values_for_input_types, below>>.
 * *options*: The options are a JSON object that includes the name of the setting and the tooltip. If the setting's input type is a *select*, i.e. a drop-down list, the options also include the *listBoxValues*, meaning the various entries in the drop-down list.
 ** *name*: The key for the setting's name. The key is used to display the text stored in the widgets.properties file.
 ** *tooltip*: The key which is used to display a tooltip when hovering above the setting. The text is stored in the widgets.properties file.
-* *isVisible*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of *isVisible*. An example of how this setting is implemented is described further link:#widget-isvisible-property[below].
-* *isList*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting further link:#widget-islist-property[below].
+* *isVisible*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of *isVisible*. An example of how this setting is implemented is described further <<#_the_isvisible_property, below>>.
+* *isList*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting further <<#_the_islist_property, below>>.
 
 == Input types
 
@@ -176,10 +176,10 @@ You specify the input type in the settings section of the contentWidgets.json. T
 |Provides a drop-down list. If this input type is used for the widgets, the different entries of the drop-down list have to be specified in the *options* section of the settings. There, the JSON file needs to include *listBoxValues* underneath *name* and *tooltip*, which provides an array with objects that include the keys *value*, *caption* and *position*. The value key specifies the label that is used in the code; the caption retrieves the translation entry from the widgets.properties file and provides the label users see in the ShopBuilder interface; the position determines the order of entries in the drop-down list. If no position is specified for the entries of the drop-down list, the entries are displayed according to their order in the JSON file.
 
 |horizontal
-|Provides a horizontal container that allows the display of multiple input fields next to one another. It is used to group multiple settings under one headline. The grouped entries are displayed in the same line and are thereby identifiable as belonging together. It is advised that no more than two settings should be displayed next to each other, since a larger number of entries might negatively impact the layout. The horizontal container is most often used for settings that are expandable by the user via the isList property. The use of the horizontal container necessitates an additional JSON object on the level of the input type, namely the *children* object. This children object includes the *settings* you want to group within the container. See the implementation of the link:#widget-islist-property[isList property] below for an illustration of how to use containers.
+|Provides a horizontal container that allows the display of multiple input fields next to one another. It is used to group multiple settings under one headline. The grouped entries are displayed in the same line and are thereby identifiable as belonging together. It is advised that no more than two settings should be displayed next to each other, since a larger number of entries might negatively impact the layout. The horizontal container is most often used for settings that are expandable by the user via the isList property. The use of the horizontal container necessitates an additional JSON object on the level of the input type, namely the *children* object. This children object includes the *settings* you want to group within the container. See the implementation of <<#_the_islist_property, the isList property>> below for an illustration of how to use containers.
 
 |vertical
-|Provides a vertical container that allows the display of multiple input fields above one another. It is used to group multiple settings under one headline. The grouped entries are indented and are thereby identifiable as belonging together. The vertical container is most often used for settings that are expandable by the user via the isList property. The use of the vertical container necessitates an additional JSON object on the level of the input type, namely the *children* object. This children object includes the *settings* you want to group within the container. See the implementation of the link:#widget-islist-property[isList property] below for an illustration of how to use containers.
+|Provides a vertical container that allows the display of multiple input fields above one another. It is used to group multiple settings under one headline. The grouped entries are indented and are thereby identifiable as belonging together. The vertical container is most often used for settings that are expandable by the user via the isList property. The use of the vertical container necessitates an additional JSON object on the level of the input type, namely the *children* object. This children object includes the *settings* you want to group within the container. See the implementation of the <<#_the_islist_property, the isList property>> below for an illustration of how to use containers.
 |===
 
 === The isVisible property

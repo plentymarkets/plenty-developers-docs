@@ -4,9 +4,9 @@ In this tutorial, you will learn how to integrate log functionality in your plug
 
 == Step 1: Cloning the ToDoList plugin
 
-We will extend the functionality of the link:/tutorials/data-storage[ToDoList] plugin by integrating a log function. We then use this log to retrieve certain information.
+We will extend the functionality of the xref:data-storage:how-to-store-data.adoc[ToDoList] plugin by integrating a log function. We then use this log to retrieve certain information.
 
-https://github.com/plentymarkets/plugin-tutorial-todolist[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plugin-tutorial-todolist[Download the example plugin on GitHub.^]
 
 === The ToDoList plugin structure
 
@@ -64,7 +64,7 @@ In order to integrate the Loggable trait, we have to make changes to the followi
 
 === Extending the CreateToDoTable
 
-In order to log the creation of a to do table, we need to enter the functionality in the `CreateToDoTable.php` file. This example shows a simple log; you can find a reference type log link:#extend-todoserviceprovider[here].
+In order to log the creation of a to do table, we need to enter the functionality in the `CreateToDoTable.php` file. This example shows a simple log; you can find a reference type log <<_extending_the_todoserviceprovider, below>>.
 
 .ToDoList/src/Migrations/CreateToDoTable.php
 [source,php]
@@ -99,7 +99,7 @@ class CreateToDoTable
 
 We add `use Plenty\Plugin\Log\Loggable` and `$this->getLogger("CreateToDoTable_run")->debug('ToDoList::migration.successMessage',` `['tableName' => 'ToDo'])`.
 
-After the dependency injection in line 7, employ the `getLogger()` method in line 14 to introduce the log. In line 23, employ getLogger; it automatically identifies the integration key, in this case the plugin namespace. In the `getLogger()` method, you have to specify the log identifier for display in the back end. In this example, this is the class `CreateToDoTable` with the added method `run`. As an alternative, you can use a link:http://php.net/manual/en/language.oop5.magic.php[*php magic method*], e.g. `__METHOD__` or `__FUNCTION__`.
+After the dependency injection in line 7, employ the `getLogger()` method in line 14 to introduce the log. In line 23, employ getLogger; it automatically identifies the integration key, in this case the plugin namespace. In the `getLogger()` method, you have to specify the log identifier for display in the back end. In this example, this is the class `CreateToDoTable` with the added method `run`. As an alternative, you can use a link:http://php.net/manual/en/language.oop5.magic.php[php magic method^], e.g. `__METHOD__` or `__FUNCTION__`.
 
 The employed log level is *debug*. In the debug method, the first parameter is the path to the message (which will be provided by the `migration.properties` file in the next step), the second parameter can provide additional information, in this case, the table name.
 
@@ -324,7 +324,7 @@ To see the log functionality at work, you have to go to your plentymarkets back 
 . Select a log level from the *Log level* drop-down menu.
 . *Save* the settings.
 
-In choosing a log level, you set the minimum level to be triggered; any higher level occurrence will be triggered as well. If you choose *debug*, the lowest level, every event that occurs will also be logged. If you choose *critical*, only *critical*, *alert*, and *emergency* will be logged. You can find a detailed description link:https://laravel.com/docs/5.3/errors#log-severity-levels[*here*].
+In choosing a log level, you set the minimum level to be triggered; any higher level occurrence will be triggered as well. If you choose *debug*, the lowest level, every event that occurs will also be logged. If you choose *critical*, only *critical*, *alert*, and *emergency* will be logged. You can find a detailed description link:https://laravel.com/docs/5.3/errors#log-severity-levels[here^].
 
 Finally, you can log your newly created tasks in your back end.
 

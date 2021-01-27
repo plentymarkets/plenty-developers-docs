@@ -3,7 +3,7 @@
 In addition to plugins, you can also offer services and tools on plentyMarketplace.
 
 * Services provide advice and assistance for plentymarkets, for example setting up an online store or integrating a marketplace. Services may be provided for a particular project or a fixed period of time.
-* Tools are software that provides functionality for a plentymarkets system without being deployed through the plugin structure. For example, link:https://marketplace.plentymarkets.com/en/plentydevtool/plenty-tools_6652[plentyDevTool^] and linkhttps://marketplace.plentymarkets.com/plugins/integration/plentybase_5053[plentyBase^] are both tools.
+* Tools are software that provides functionality for a plentymarkets system without being deployed through the plugin structure. For example, link:https://marketplace.plentymarkets.com/en/plentydevtool/plenty-tools_6652[plentyDevTool^] and link:https://marketplace.plentymarkets.com/plugins/integration/plentybase_5053[plentyBase^] are both tools.
 
 Select the type of product you want to offer:
 

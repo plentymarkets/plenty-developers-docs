@@ -9,13 +9,9 @@ The plentymarkets REST API expands the functionality of the plentymarkets CMS an
 
 == OpenAPI format
 
-We want to enhance your workflow with our API. For that reason, we built a whole new internal annotation progress. At the moment, we deliver a file you can use with your preferred API software. You can checkout our REST-Documentation, based upon the Swagger-UI, link:/rest-doc[here].
+We want to enhance your workflow with our API. For that reason, we built a whole new internal annotation progress. At the moment, we deliver a file you can use with your preferred API software. You can checkout our REST-Documentation, based upon the Swagger-UI, xref:plentymarkets-rest-api:ROOT:index.adoc[here].
 
-
-You either can download it or check out our GitHub repository.
-
-https://github.com/plentymarkets/api-doc/[GitHub]
-link:/downloads/plentymarkets-openapi?type=plentymarkets[Download]
+You either can download it or check out our link:https://github.com/plentymarkets/api-doc/[GitHub repository].
 
 == Authentication
 
@@ -23,7 +19,7 @@ plentymarkets REST API uses *OAuth 2.0*. Most REST API calls do not require any 
 
 `/rest/login`
 
-The API uses the "Bearer" authentication scheme to transmit the access token. To get the token for authentication, use the link:/rest-doc/authentication#login[Login] call. By executing this POST method with a valid body, it will return a JSON object with the necessary data.
+The API uses the "Bearer" authentication scheme to transmit the access token. To get the token for authentication, use the xref:plentymarkets-rest-api:ROOT:index.adoc##tag/Authentication/paths/~1rest~1check_pin/post[Login] call. By executing this POST method with a valid body, it will return a JSON object with the necessary data.
 
 [source,json]
 ----

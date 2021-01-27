@@ -6,6 +6,6 @@ https://marketplace.plentymarkets.com/plugins/integration/plentydevtool_6652[ima
 
 == Demonstration
 
-For a demonstration, check out the video below. You can also read link:/tools/plentydevtool-guide[our guide] for more usage details.
+For a demonstration, check out the video below. You can also read xref:tools:plentydevtool-guide.adoc[our guide] for more usage details.
 
 video::387654600[vimeo]

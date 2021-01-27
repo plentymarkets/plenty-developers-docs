@@ -19,13 +19,13 @@ The way you structure information in your guide impacts how easily users can fin
 A good *document structure* allows users to find the information they're looking for through skimming. You can achieve this by using headings, lists and tables. Also, start with general information, requirements and setup information before becoming more specific.
 
 Adding sections to your user guide lets you employ a *table of contents*. A table of contents gives users an overview of everything covered in the guide at a glance. +
-While Markdown has no such feature by default, your IDE probably has an extension to generate a table of contents automatically, for example link:https://atom.io/packages/markdown-toc[markdown-toc (Atom)] or link:https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc[Markdown-TOC (Visual Studio Code)].
+While Markdown has no such feature by default, your IDE probably has an extension to generate a table of contents automatically, for example link:https://atom.io/packages/markdown-toc[markdown-toc (Atom)^] or link:https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc[Markdown-TOC (Visual Studio Code)^].
 
 Use *links* to provide readers with general additional information, which is not required for the instructions, or to give more context. It's possible to link to the plentymarkets manual or other external pages.
 
 Indicate links as keywords or a number of words which appropriately cover the link's content, but don't indicate links as menu paths, URLs, "here", and so on.
 
-With *admonition blocks*, you can highlight specific information. Use admonition blocks via https://getbootstrap.com/docs/4.0/components/alerts/[Bootstrap alerts]. Use `info` for tips and tricks and `warning` in case users have to take special care with certain configurations.
+With *admonition blocks*, you can highlight specific information. Use admonition blocks via link:https://getbootstrap.com/docs/4.0/components/alerts/[Bootstrap alerts^]. Use `info` for tips and tricks and `warning` in case users have to take special care with certain configurations.
 
 Warnings should always include a way to fix problems that may arise or, if the user cannot fix the problem themselves, a contact person.
 
@@ -64,11 +64,11 @@ By installing the billiger.de plugin you will receive the export format *Billige
 
 In order to use the billiger.de format in plentymarkets, you have to meet the following requirements:
 
-* Register as seller with http://www.billiger.de/[billiger.de].
+* Register as seller with http://www.billiger.de/[billiger.de^].
 * Install the link:https://marketplace.plentymarkets.com/en/plugins/sales/marktplaetze/elasticexport_4763[Elastic Export^] plugin.
 * Install the link:http://https://marketplace.plentymarkets.com/en/plugins/channels/preisportale/elasticexportbilligerde_4901[ElasticExportBilligerDE^] plugin.
 
-For further information on how to install plugins, refer to the link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[Installing added plugins] page of the plentymarkets manual.
+For further information on how to install plugins, refer to the link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[Installing added plugins^] page of the plentymarkets manual.
 
 Install the plugins *Elastic Export* and *ElasticExportBilligerDE* in a plugin set that is linked to the default client. You will not be able to use the export format if you install the plugins in another plugin set.
 

@@ -13,7 +13,7 @@ starting points:
 * Modifying an open source plentyMarketplace plugin.
 * Modifying an open source Git plugin.
 
-If you want to create a new plugin or modify one from plentyMarketplace, proceed as described in the link:/tools/plentydevtool-guide[plentyDevTool guide]. Then, initialise the folder as a repository.
+If you want to create a new plugin or modify one from plentyMarketplace, proceed as described in the xref:tools:plentydevtool-guide.adoc[plentyDevTool guide]. Then, initialise the folder as a repository.
 
 If you want to modify a Git plugin, note that you cannot *Pull* it directly from the plentymarkets system. Instead, proceed as follows:
 
@@ -22,7 +22,7 @@ If you want to modify a Git plugin, note that you cannot *Pull* it directly from
 . Rename the cloned folder, so that it matches the `name` and `namespace` of the plugin.
 . In plentyDevTool, click on *Detect new local plugins*. +
 → The plugin appears on the dashboard. +
-If the plugin doesn't appear, check that the `plugin.json` link:/dev-doc/plugin-information[meets all requirements].
+If the plugin doesn't appear, check that the `plugin.json` xref:ROOT:plugin-definition.adoc[meets all requirements].
 . *Install* the plugin.
 
 The plugin appears as a local plugin in plentymarkets. Now you can both select the plugin for synchronisation in plentyDevTool and record the changes you make in your version control system.

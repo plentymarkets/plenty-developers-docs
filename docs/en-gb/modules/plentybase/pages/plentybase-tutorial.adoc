@@ -11,7 +11,7 @@ In this tutorial we will show you the steps to create a simple plentyBase plugin
 
 * link:https://pf4j.org/[PF4J: Java plugin framework]
 
-https://github.com/plentymarkets/plentyBase-plugin-hello-world[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download on GitHub]
+link:https://github.com/plentymarkets/plentyBase-plugin-hello-world[Download the example plugin on GitHub.^]
 
 == Step 1: Setting up an IDE
 

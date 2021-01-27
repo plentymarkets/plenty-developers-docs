@@ -145,7 +145,7 @@ Here, we specify the `order` object as the second parameter of our layout contai
 
 === Additional tabs in the single item view
 
-In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs` is used for displaying one or multiple additional tabs in the view of an item in the Ceres online store. The second container `SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual link:/tutorials/container#code-placeholdercontainer[data provider] is required.
+In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs` is used for displaying one or multiple additional tabs in the view of an item in the Ceres online store. The second container `SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual xref:plentyshop-plugins:how-to-template-containers.adoc#_code_for_the_placeholder_container[data provider] is required.
 
 .MyPlugin/resources/views/CustomTab.twig
 [source,twig]
