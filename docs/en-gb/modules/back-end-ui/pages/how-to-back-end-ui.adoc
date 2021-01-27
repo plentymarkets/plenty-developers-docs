@@ -101,7 +101,7 @@ If you have globally installed the CLI, you can use it with `ng [command] [param
 
 === NgModule
 
-`NgModule` defines a module that contains components, directives, pipes and providers. If you use `angular cli` to create components, directives etc. the entries are added automatically. Otherwise, you have to add it manually in the right section.
+`NgModule` defines a module that contains components, directives, pipes and providers. If you use the Angular CLI to create components, directives etc. the entries are added automatically. Otherwise, you have to add it manually in the right section.
 
 === Creating a new component
 
