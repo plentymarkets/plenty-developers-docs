@@ -38,6 +38,22 @@ To check or change your system version, proceed as follows:
 Note that the system versions stable and beta correspond to the branches stable7 and beta7 respectively in the plugin interface repository.
 ====
 
+For the next step, you need link:https://www.jetbrains.com/phpstorm/download/[PhpStorm^].
+
+. Open PhpStorm.
+. Open the TopItemsPlugin project.
+. In the project tree area, click on *External Libraries*. +
+icon:arrow-right[] A new window opens.
+. As *Development environment*, select *PHP language level 7*.
+. In the *Include path area*, click on *Add*.
+. Select the plentymarkets plugin interface folder.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface is added as an external library.
+. Click on *Apply*.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface is now a source.
+
+////
 Select your IDE of choice to continue.
 
 [tabs]
@@ -69,6 +85,7 @@ icon:arrow-right[] The plugin interface is added as an external library.
 icon:arrow-right[] The plugin interface is now a source.
 --
 ====
+////
 
 You can now use the auto-complete feature of your IDE when developing plugins.
 

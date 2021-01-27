@@ -8,7 +8,8 @@ It can also deploy certain types of changes automatically.
 Start by installing plentyDevTool:
 
 . link:https://marketplace.plentymarkets.com/en/plentydevtool_6652[Download plentyDevTool^] from the marketplace.
-. Install the application.
+. Install the application. +
+If you use macOS, you may have to allow installation of plentyDevTool in your security settings.
 
 Once you've installed plentyDevTool, you can configure it.
 To configure the tool, carry out the following steps:
