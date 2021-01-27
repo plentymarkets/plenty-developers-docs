@@ -117,7 +117,7 @@ The following files will be generated:
 * my-new-view.component.spec.ts -> File for unit testing
 * my-new-view.component.ts -> Here goes your view logic
 
-The generated code.ts file looks like the following:
+The generated `code.ts` file looks like the following:
 
 .my-new-view.component.ts
 [source,ts]
