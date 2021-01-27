@@ -188,10 +188,10 @@ To do so, proceed as follows:
 → This will open a list where you can copy the `accessToken`.
 . Open `plugin-terra-basic.component.ts` and go to `line 17`.
 . Paste the copied token into the `accessToken` variable. +
-*_Warning:_* To avoid errors while accessing the `accessToken`, use the <<#_enabling_cross_origin, Allow-Control-Allow-Origin plugin>>. +
+*_Tip:_* To avoid errors while accessing the `accessToken`, use the <<#_enabling_cross_origin, Allow-Control-Allow-Origin plugin>>. +
 →  You are ready to use the service.
 
-[TIP]
+[WARNING]
 .Token changes when login expires
 ====
 Note that the token will change every time your login session expires. This means you may have to repeat this step several times during the course of development.
