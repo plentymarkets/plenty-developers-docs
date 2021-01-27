@@ -33,7 +33,7 @@ To compile the project, carry out the following steps:
 . Run `npm install`. +
 → All dependencies of the package.json file are installed.
 . Run `npm start`. +
-→ The project is compiled and shown in your browser on *localhost:3002*.
+→ The project is compiled and shown in your browser on `localhost:3002`.
 
 You can change the port in the file `/plugin-terra-basic/config/webpack.dev.js`.
 
@@ -63,7 +63,7 @@ include::example$ui.json[]
 
 At this point, you've set up the basic structure of your plugin and compiled the project. This concludes the preparation. You can now start implementing the plugin’s functionality.
 
-== Setting up a local test environment
+== Creating a local test environment
 
 In the next step, set up a local test environment. This will allow you to check the UI in the browser. To do so, proceed as follows:
 
@@ -105,7 +105,7 @@ If you have globally installed the CLI, you can use it with `ng [command] [param
 
 === Creating a new component
 
-In the next step, create a new component and add it to the routing file and the menu so it can be accessed in the UI.
+Next, create a new component and add it to the routing file and the menu. This lets you access the plugin UI.
 To do so, proceed as follows:
 
 . Run the command `ng generate component view/my-new-view`. +
@@ -189,7 +189,7 @@ To do so, proceed as follows:
 → This will open a list where you can copy the `accessToken`.
 . Open `plugin-terra-basic.component.ts` and go to `line 17`.
 . Paste the copied token into the `accessToken` variable. +
-*_Tip:_* To avoid errors while accessing the `accessToken`, use the <<#_enabling_cross_origin, Allow-Control-Allow-Origin plugin>>. +
+*_Warning:_* To avoid errors while accessing the `accessToken`, use the <<#_enabling_cross_origin, Allow-Control-Allow-Origin plugin>>. +
 →  You are ready to use the service.
 
 [TIP]
