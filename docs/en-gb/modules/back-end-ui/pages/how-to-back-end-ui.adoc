@@ -97,7 +97,7 @@ image::plugin-terra-basic-overview.png[Plugin Terra-Basic overview,640,360]
 == Creating a new view
 
 To create a new view, use link:https://angular.io/cli[`angular’s cli`^].
-If you have globally installed the cli, you can use it with `ng [command] [parameter]`. Otherwise, you can use it via `npx ng [command] [parameter]`.
+If you have globally installed the CLI, you can use it with `ng [command] [parameter]`. Otherwise, you can use it via `npx ng [command] [parameter]`.
 
 === NgModule
 
