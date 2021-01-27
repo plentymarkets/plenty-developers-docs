@@ -19,6 +19,12 @@
 ** How to create an assistant
 ** Assistant reference
 ** Assistant style guide
+* Back end UI
++
+--
+include::back-end-ui:partial$nav.adoc[]
+--
++
 * Data storage
 ** xref:data-storage:database-storage.adoc[Database storage]
 ** xref:data-storage:memory-storage.adoc[Memory storage]
