@@ -61,7 +61,7 @@ Next, create the ui.json
 include::example$ui.json[]
 ----
 
-Once you have reached this part of the how-to guide, you are done with all preparatory steps and can now start implementing the plugin’s functionality.
+At this point, you've set up the basic structure of your plugin and compiled the project. This concludes the preparation. You can now start implementing the plugin’s functionality.
 
 == Setting up a local test environment
 
