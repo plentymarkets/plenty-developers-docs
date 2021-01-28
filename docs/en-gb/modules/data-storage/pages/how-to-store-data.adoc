@@ -9,8 +9,7 @@ In the example plugin below, we create a simple To Do list. The plugin has the f
 * Mark existing tasks as done
 * Delete tasks that are marked as done
 
-https://github.com/plentymarkets/plugin-tutorial-todolist[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download
-on GitHub]
+link:https://github.com/plentymarkets/plugin-tutorial-todolist[Download the example plugin on GitHub.^]
 
 == Step 1: Creating the plugin files
 
@@ -727,7 +726,7 @@ a {
 
 By adding the CSS code, our plugin will look like this in the browser. We still need the JavaScript code to add the desired functionality to our buttons.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/todolist-without-tasks.png[image]
+image::todolist-without-tasks.png[width=640, height=360]
 
 === Code for the JS file
 
@@ -821,12 +820,12 @@ The third script is executed when a user clicks on the *Delete from list* button
 
 After creating the plugin, we have to link:https://knowledge.plentymarkets.com/en/plugins/adding-plugins-system#git-plugins[add our new plugin] to the plentymarkets inbox and link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy the plugin]. Finally, to display the To Do list, open a new browser tab and type in your domain adding `/todo` at the end. Have fun with your new plugin!
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/todolist-with-tasks.png[image]
+image::todolist-with-tasks.png[width=640, height=360]
 
 === The To Do list plugin
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/todolist-without-tasks.png[image]
+image::todolist-without-tasks.png[width=640, height=360]
 
 === Adding tasks to the To Do list
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/todolist-with-tasks.png[image]
+image::todolist-with-tasks.png[width=640, height=360]
