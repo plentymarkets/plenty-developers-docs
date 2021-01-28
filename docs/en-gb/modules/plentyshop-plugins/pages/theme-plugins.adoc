@@ -1,0 +1,1178 @@
+= Introducing theme plugins
+
+On this page, you will find an overview of relevant information about theme plugins. Theme plugins let you change the colour and style of your template in an easy and convenient way. In contrast to other plugins, you only have to deploy a theme once to then activate and deactivate it without further configuration.
+
+Theme plugins make use of a xref:plentyshop:how-to-template-containers.adoc[template container] in the Ceres template and extend the CSS of Ceres. In doing so, the CSS of the theme will override all concerned classes in the Ceres stylesheet. Classes that are not styled in the CSS of the theme but in the Ceres stylesheet are not affected.
+
+== Further reading
+
+* xref:ROOT:plugin-architecture.adoc[Plugin structure]
+* xref:plentyshop-plugins:template-setup.adoc[Installing a template]
+* xref:plentyshop-plugins:template-overview.adoc[Developing template plugins]
+* xref:plentyshop-plugins:template-containers.adoc[Template containers]
+* xref:plentymarketplace:plugin-upload-requirements.adoc[Plugin requirements for plentyMarketplace]
+* link:http://twig.sensiolabs.org/doc/templates.html#template-inheritance[Template inheritance^]
+* link:http://twig.sensiolabs.org/doc/templates.html#including-other-templates[Including other templates^]
+* xref:plentyshop-plugins:cookbook#_adding_style[Adding style and scripts in Ceres]
+
+[NOTE]
+.Plugin priorities
+====
+In order to ensure that the theme plugin is working properly, you are advised to assign a priority number to the plugin, that is higher than that of the plugin *Ceres* and lower than that of the plugin *IO*.
+
+For instance, if IO is assigned the position number 999 and Ceres is asigned the priority number 997, the theme plugin should receive the priority number 998.
+====
+
+== Creating a theme
+
+Create the following files and develop a theme that changes the background colour of the template plugin. If you want to offer the theme in the plentyMarketplace, pay attention to our xref:plentymarketplace:plugin-upload-requirements.adoc[plugin requirements].
+
+=== Changing the CSS of a template
+
+This basic theme plugin for changing the CSS of a template consists of a `plugin.json` file, a ServiceProvider, a Container, a CSS file and a TWIG template.
+
+[source]
+----
+Theme/
+    ├── resources/
+    │   ├── css/
+    │   │   └── main.css // theme stylesheet
+    │   │
+    │   └── views/
+    │       └── content/
+    │           └── Theme.twig // content to be injected into the Ceres template container
+    ├── src/
+    │   ├── Containers/
+    │   │   └── ThemeContainer.php
+    │   │
+    │   └── Providers/
+    │       └── ThemeServiceProvider.php
+    │
+    └── plugin.json // plugin information
+----
+
+==== Code for the plugin.json
+
+.ThemePlugin/plugin.json
+[source,json]
+----
+{
+    "name"                  :"Theme",
+    "description"           :"Basic theme plugin",
+    "namespace"             :"Theme",
+    "author"                :"Your name",
+    "keywords"              : ["theme", "Ceres", "template"],
+    "type"                  :"theme",
+    "require"               : [],
+    "serviceProvider"       :"Theme\\Providers\\ThemeServiceProvider",
+    "dataProviders"         :
+    [
+        {
+            "key"           :"Theme\\Containers\\ThemeContainer",
+            "name"          :"Dark background",
+            "description"   :"Change the background colour of the Ceres template"
+        }
+    ]
+}
+----
+
+Specify the `serviceProvider` and the `dataProviders`.
+
+==== Code for the ServiceProvider
+
+.Theme/src/Providers/ThemeServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace Theme\Providers;
+
+use Plenty\Plugin\ServiceProvider;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+
+    }
+}
+----
+
+==== Code for the Container
+
+.Theme/src/Containers/ThemeContainer.php
+[source,php]
+----
+<?php
+
+namespace Theme\Containers;
+
+use Plenty\Plugin\Templates\Twig;
+
+class ThemeContainer
+{
+    public function call(Twig $twig):string
+    {
+        return $twig->render('Theme::content.Theme');
+    }
+}
+----
+
+Specify the path to the TWIG template `Theme::content.Theme`. Note that the path is case-sensitive.
+
+==== Code for the TWIG template
+
+.Theme/resources/views/content/Theme.twig
+[source,twig]
+----
+<link rel="stylesheet" href="{{ plugin_path('Theme') }}/css/main.css">
+----
+
+Specify the path to the CSS file `{{ plugin_path('Theme') }}/css/main.css`. You can link one or multiple stylesheets here. Note that only CSS files are allowed. SCSS files must be compiled into one or multiple CSS files first.
+
+==== Code for the CSS file
+
+.Theme/resources/css/main.css
+[source,css]
+----
+/* Change background colour */
+body {
+    background-color: #808080;
+}
+----
+
+Change the style in the stylesheet according to your preferences. This stylesheet will extend the existing stylesheet of the template plugin. This CSS will have a higher priority than the CSS of the template plugin.
+
+=== Activating a theme
+
+Create the theme as described, then link:https://knowledge.plentymarkets.com/en/plugins/adding-plugins-system#git-plugins[add^] the plugin to the plentymarkets inbox and link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy^] it in a *plugin set*. After deploying the theme plugin once, you can activate and deactivate it without further configuration.
+
+. Open the plentymarkets back end.
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set you want to edit.
+. Open the settings plugin whose containers you want to link.
+. Click on *Container links*.
+. From the drop-down list, select the provider *Dark background (Theme)*.
+. Activate the *Template: Style* container.
+. *Save* the settings.
+. Refresh the browser window. +
+→ The new theme will be loaded.
+
+== Editing a template plugin
+
+A theme plugin can not only extend the CSS file of the template plugin, but also change the entire markup of individual template components or the overall page design.
+
+This facilitates adding your own markup and style to an existing template plugin. Maintaining the code of your theme plugin is not directly linked to the code of the template plugin, i.e. changes made in your theme plugin are not overwritten when the template plugin is updated.
+
+=== Page structure
+
+You can either change parts of the page design or edit the entire page design to meet your needs. The page design of Ceres consists of two main sections, the *head* and the *body*. The head contains the meta data of the page as well as the linked stylesheets. The body is divided into multiple sub-sections called wrappers. Wrappers include different components, partials or pages.
+
+The most important wrapper is the main wrapper containing the following partials:
+
+* *Header*: includes the navigation, the login button, the search field etc.
+* *PageBody*: includes dynamic pages, e.g. the single item view, or static pages, e.g. the cancellation rights
+* *Footer*: includes store features, containers for icons as well as columns
+
+image::Ceres_PageDesign.png[width=640, height=360]
+
+=== Context classes
+
+Context classes are php classes that retrieve and provide data for templates. You can include context classes in order to reduce the number of function calls in your .twig files. By using context classes you improve the performance and are able to maintain the template-relevant data concisely and in one central location. The controller passes the relevant parameters to the context via the init function. The context classes are located under src/contexts. The xref:plentyshop-plugins:cookbook.adoc[cookbook] provides examples about how to modify and extend contexts.
+
+==== List of context classes
+
+The following context classes are available:
+
+* GlobalContext
+* CategoryContext
+* CategoryItemContext
+* ItemListContext
+* ItemSearchContext
+* ItemWishlistContext
+* OrderConfirmationContext
+* OrderReturnContext
+* PasswordResetContext
+* SingleItemContext
+
+==== List of variables for each context
+
+The following tables list the available variables for each of the context classes. In Twig, the output of context class variables is effected by including \{\{ myVariable }}, whereby "myVariable" is a placeholder for the relevant class variable.
+
+===== GlobalContext
+
+The GlobalContext provides variables that are utilised by all other contexts. Therefore, the other contexts listed here automatically inherit variables from the global context.
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$ceresConfig
+|Contains the data of the current Ceres configuration.
+
+|$lang
+|Contains the selected language.
+
+|$metaLang
+|Contains the selected language for meta information.
+
+|$categories
+|Contains the category tree.
+
+|$categoryBreadcrumbs
+|Contains the category breadcrumb navigation.
+
+|$notifications
+|Contains the notifications that can be displayed in the online store.
+
+|$basket
+|Contains the shopping cart information.
+
+|$webstoreConfig
+|Contains the configuration of the online store.
+|===
+
+===== CategoryContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$category
+|Contains the current category.
+
+|$metaRobots
+|Contains SEO-relevant settings for the category.
+|===
+
+===== CategoryItemContext
+
+The CategoryItemContext inherits variables from the CategoryContext. It does not provide data itself, but feeds parameters to the *ItemListContext* in order to load item data from ElasticSearch.
+
+===== ItemListContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$currentPage
+|Contains the current page.
+
+|$pageMax
+|Contains the maximum number of pages.
+
+|$itemsPerPage
+|Contains the number of items to be displayed on one page.
+
+|$itemCountPage
+|Contains the actual number of items on a page.
+
+|$itemCountTotal
+|Contains the total number of items.
+
+|$itemSorting
+|Contains the type of item sorting.
+
+|$query
+|Contains the search query consisting of $itemsPerPage and $itemSorting.
+
+|$itemList
+|Contains the results of ElasticSearch.
+
+|$facets
+|Contains the facets.
+
+|$searchOptions
+a|Contains the search options that are avilable in the item search in the online store. $searchOptions itself contains the following variables:
+
+* $itemsPerPage: Contains a list from which to select the number of items to be displayed on one page.
+* $defaultItemsPerPage: The default number of items to be displayed on one page.
+* $sorting: Contains the available sorting values.
+* $defaultSorting: The default sorting value.
+|===
+
+===== ItemSearchContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$isSearch
+|Inquires whether the current template is a search.
+
+|$searchString
+|Contains the search string.
+|===
+
+===== ItemWishListContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$wishList
+|Contains the items of the wish list.
+|===
+
+===== OrderConfirmationContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$data
+|Contains the current order of the order confirmation page.
+
+|$totals
+|Contains the gross and net sums.
+
+|$showAdditionalPaymentInformation
+|Contains additional payment information that is displayed on the order confirmation page.
+|===
+
+===== OrderReturnContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$orderData
+|Contains the data for returns processing.
+|===
+
+===== PasswordResetContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$contactId
+|Contains the ID of the user whose password is to be changed.
+
+|$hash
+|Contains the hash for password verification.
+|===
+
+===== SingleItemContext
+
+[cols="1,3"]
+|===
+|Variable |Description
+
+|$variations
+|Contains the variations of an item.
+
+|$attributeNameMap
+|Contains the combination of attributes that constitute the variation.
+
+|$customerShowNetPrices
+|Determines whether net prices are displayed to the customer.
+|===
+
+==== Template to context mapping
+
+The following table depicts which context is applicable to which template.
+
+[cols="1,3"]
+|===
+|Template |Context
+
+|Homepage
+|GlobalContext
+
+|CategoryContent
+|CategoryContext
+
+|CategoryItem
+|CategoryItemContext
+
+|PageDesign
+|GlobalContext
+
+|SingleItemWrapper
+|SingleItemContext
+
+|Basket
+|GlobalContext
+
+|CheckoutView
+|GlobalContext
+
+|MyAccount
+|GlobalContext
+
+|OrderConfirmation
+|OrderConfirmationContext
+
+|Login
+|GlobalContext
+
+|Register
+|GlobalContext
+
+|Guest
+|GlobalContext
+
+|ResetPassword
+|PasswordResetContext
+
+|Contact
+|GlobalContext
+
+|ItemListView
+|ItemSearchContext
+
+|WishListView
+|ItemWishListContext
+
+|OrderReturnView
+|OrderReturnContext
+
+|OrderReturnCofirmation
+|GlobalContext
+
+|CancellationRights
+|GlobalContext
+
+|CancellationForm
+|GlobalContext
+
+|LegalDisclosure
+|GlobalContext
+
+|PrivacyPolicy
+|GlobalContext
+
+|TermsAndConditions
+|GlobalContext
+
+|ItemNotFound
+|GlobalContext
+
+|PageNotFound
+|GlobalContext
+|===
+
+=== Changing the page design
+
+The TWIG http://twig.sensiolabs.org/doc/2.x/tags/include.html[include statement^] is used for this purpose. In the example below the `ThemeFooter.twig` file is included in the `PageDesign.twig` file of Ceres. You can simply create your own footer template and replace the Ceres footer.
+
+==== Code for the ServiceProvider
+
+The code of the ServiceProvider must be updated to inject your own template paths into the template plugin.
+
+.Theme/src/Providers/ThemeServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace Theme\Providers;
+
+use IO\Extensions\Functions\Partial;
+use Plenty\Plugin\Events\Dispatcher;
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Plugin\Templates\Twig;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Boot a template for the footer that will be displayed in the template plugin instead of the original footer.
+     */
+    public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    {
+        $eventDispatcher->listen('IO.init.templates', function(Partial $partial)
+        {
+           $partial->set('footer', 'Theme::content.ThemeFooter');
+        }, 0);
+        return false;
+    }
+}
+----
+
+Add the dependencies for the `Partial` function as well as the `Dispatcher` and `Twig` classes.
+
+Add the `boot()` function and specify one or multiple partials, e.g. `IO.init.templates`, as well as the TWIG template(s) for the partial(s), e.g. `Theme::content.ThemeFooter`. We will add the TWIG template in the next step. 
+
+The priority of the template is set in line 29. Original Ceres templates have a priority of 100. Any number less than 100 will indicate a higher priority.
+
+Available partials are: `head`, `header`, `footer` and `page-design`. You can also add your own partials by using the `set('your-partial', 'Plugin::PartialTemplate')` method to extend the original page design. Replace `your-partial` with your own partial and `Plugin::PartialTemplate` with the template path.
+
+We use the `return false` statement to interrupt the chain of events.
+
+Include the partial in the page design template with the TWIG include statement: `{% include getPartial('your-partial') %}`.
+
+==== Code for the Footer template
+
+.Theme/resources/views/content/ThemeFooter.twig
+[source,twig]
+----
+<div class="footer">
+
+    <!-- Insert footer markup here -->
+
+</div>
+----
+
+By using the `{% include getPartial('footer') %}` statement in the `PageDesign.twig` file, we include the content of this template in our PageDesign template.
+
+=== Changing the template of a page
+
+The link:http://twig.sensiolabs.org/doc/2.x/tags/extends.html[extends tag^] is used to extend a template from another template. In the example below, the `ThemeBasket.twig` file extends the `PageDesign.twig` file of Ceres. TWIG link:http://twig.sensiolabs.org/doc/2.x/tags/block.html[blocks^] are used to define the content that will be inserted in the main wrapper of the page design. We only have to edit the ServiceProvider of our theme and create the page template, e.g. the basket.
+
+image::Ceres_Basket.png[width=640, height=360]
+
+==== Code for the ServiceProvider
+
+.Theme/src/Providers/ThemeServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace Theme\Providers;
+
+use IO\Helper\TemplateContainer;
+use Plenty\Plugin\Events\Dispatcher;
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Plugin\Templates\Twig;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Boot a template for the basket that will be displayed in the template plugin instead of the original basket.
+     */
+    public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    {
+        $eventDispatcher->listen('IO.tpl.basket', function(TemplateContainer $container, $templateData)
+        {
+            $container->setTemplate('Theme::content.ThemeBasket');
+            return false;
+        }, 0);
+    }
+}
+----
+
+Add the dependencies for the `TemplateContainer`, the `Dispatcher` and `Twig` classes.
+
+Add the `boot()` function and specify one or multiple pages, e.g. `IO.tpl.basket` as well as the TWIG template(s) for the page(s), e.g. `Theme::content.ThemeBasket`. We will add the TWIG template in the next step.
+
+We use the `return false` statement to interrupt the chain of events.
+
+The priority of the template is set in line 29. Original Ceres templates have a priority of 100. Any number less than 100 will indicate a higher priority.
+
+A list of available pages can be found in the xref:plentyshop-plugins:theme-plugins.adoc#_theme_ceres_pages[template overview] for Ceres.
+
+[[code-template-basket]]
+==== Code for the Basket template
+
+.Theme/resources/views/content/ThemeBasket.twig
+[source,twig]
+----
+{% extends getPartial('page-design') %}
+
+{% block PageBody %}
+
+    <!-- Insert markup for the basket here -->
+
+{% endblock %}
+----
+
+By using the `{% extends getPartial('page-design') %}` statement in the `ThemeBasket.twig` file, we extend our page design and inject the content of this template in the `{% block PageBody %}` area of the PageDesign template.
+
+=== Changing the template of a page component
+
+Page components, e.g. the BasketList of the Basket template, can also be individualised. For this purpose, the template of the page where the component is used must be updated and a new template for the component must be created.
+
+image::Ceres_BasketList.png[width=640, height=360]
+
+==== Code for the Basket template
+
+.Theme/resources/views/content/ThemeBasket.twig
+[source,twig]
+----
+{% extends getPartial('page-design') %}
+{% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
+
+{% block PageBody %}
+
+    {{ component( "Theme::content.Components.ThemeBasketList" ) }}
+
+    ...
+
+    <div class="page-content basket container-max">
+
+        <div class="row m-t-1">
+            <div class="col-xs-12">
+                <h1 class="h4">{{ trans("Ceres::Template.basket") }}</h1>
+            </div>
+        </div>
+
+        <hr class="m-b-3">
+
+        <div class="row">
+            <div class="col-xs-12">
+              <basket-list template="#theme-basket-list"></basket-list>
+            </div>
+        </div>
+
+    ...
+
+{% endblock %}
+----
+
+In line 6 of the basket template, we specify the template path of the new template component: `{{ component( "Theme::content.Components.ThemeBasketList" ) }}`.
+
+In line 22, a new ID for the component must be indicated. Note that this ID must be the same as in the BasketList template. We will create this template in the next step.
+
+==== Code for the BasketList template
+
+.Theme/resources/views/content/Components/ThemeBasketList.twig
+[source,twig]
+----
+<script type="x/template" id="theme-basket-list">
+
+    <!-- Insert BasketList markup here -->
+
+</script>
+----
+
+In this template, we specify a new unique ID. This is the same ID that we use in the code of the `ThemeBasket.twig` file. Here, we use `id="theme-basket-list"`.
+
+Note that a component template is always linked to a specific http://v1.vuejs.org/[Vue.js] component, i.e. http://v1.vuejs.org/guide/syntax.html#Shorthands[Vue.js shorthand] is used in the template. The prefix `v-` is one indicator of Vue.js syntax. Other indicators are `:` representing `v-bind` and `@` representing `v-on`. If you change the Vue.js notation, the linked component might not work properly anymore.
+
+=== Changing the template of a Vue component
+
+Vue components, e.g. the SingleItem component of the SingleItemView template, can also be individualised. For this purpose, the ServiceProvider of your theme must be updated and a new template for the Vue component must be created.
+
+==== Code for the ServiceProvider
+
+.Theme/src/Providers/ThemeServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace Theme\Providers;
+
+use IO\Helper\TemplateContainer;
+use IO\Helper\ComponentContainer;
+use Plenty\Plugin\Events\Dispatcher;
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Plugin\Templates\Twig;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+  const PRIORITY = 0;
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Boot a template for the basket that will be displayed in the template plugin instead of the original basket.
+     */
+    public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    {
+        $eventDispatcher->listen('IO.Component.Import', function (ComponentContainer $container)
+        {
+            if ($container->getOriginComponentTemplate()=='Ceres::Item.Components.SingleItem')
+            {
+                $container->setNewComponentTemplate('Theme::content.SingleItem');
+            }
+        }, self::PRIORITY);
+    }
+}
+----
+
+Add the dependencies for the `ComponentContainer`, the `Dispatcher` and `Twig` classes.
+
+Add the `boot()` function and use the dispatcher for listening to the component import event `IO.Component.Import`. We get the component that we want to change by using the `getOriginComponentTemplate()` method, e.g. the SingleItem template in Ceres. We then set our own component template by using `setNewComponentTemplate` and specifying the path to the component, here `Theme::content.SingleItem`.
+
+==== Code for the Vue component template
+
+.Theme/resources/views/content/SingleItem.twig
+[source,twig]
+----
+<!-- Insert SingleItem markup here -->
+----
+
+Simply add a template for your Vue component and insert your markup into the template.
+
+== Overwriting Twig templates and macros
+
+If you are plugin developer who wants to replace specific portions of Ceres with your own theme, we have good news for you. We've made it a lot easier to overwrite specific Twig templates, thereby facilitating the development of themes for the online store. By implementing the method detailed below you can overwrite templates as well as entire macros.
+
+Now, all you need to do to overwrite Twig templates is modify the ServiceProvider of your theme plugin to inherit from the class *Plenty\Modules\Webshop\Template\Providers\TemplateServiceProvider*. You will have to implement this class via the *use* and *extends* directives.
+
+After you have integrated the TemplateServiceProvider into the ServiceProvider of your theme plugin, you can overwrite any Twig template by sending the following call in the `boot()` method:
+
+[source,php]
+----
+$this->overrideTemplate($original, $newTemplate);
+----
+
+Here, `$original` is a placeholder for the template or macro you want to replace; `$newTemplate` is a placeholder for the template you want to overwrite the original Twig template with. A concrete example might look like this:
+
+[source,php]
+----
+$this->overrideTemplate("Ceres::Widgets.Common.ImageBoxWidget", "MyTheme::Widgets.CustomImageBoxWidget");
+----
+
+This replaces the Ceres image box widget for the ShopBuilder with a custom image box widget that the theme plugin "MyTheme" provides.
+
+== Overview of pages and page components
+
+Find the template folder structure of Ceres as well as an overview of pages and page components used in the Ceres template plugin below.
+
+=== Ceres template folder
+
+The template folder is structured into 10 sub-folders that include the main pages of Ceres and the respective components.
+
+[source]
+----
+Ceres/
+    └── resources/
+        └── views/
+            ├── Basket/
+            │   ├── Basket.twig
+            │   └── Components/
+            │       ├── AddItemToBasket.twig
+            │       ├── AddItemToBasketOverlay.twig
+            │       ├── BasketList.twig
+            │       ├── BasketListItem_large.twig
+            │       ├── BasketListItem_small.twig
+            │       ├── BasketListItem.twig
+            │       ├── BasketPreview.twig
+            │       ├── BasketTotals.twig
+            │       └── Coupon.twig
+            │
+            ├── Category/
+            │   ├── Content/
+            │   │   └── CategoryContent.twig
+            │   └── Item/
+            │       ├── CategoryItem.twig
+            │       └── Partials/
+            │           ├── CategoryListItem.twig
+            │           ├── CategoryViewFilter.twig
+            │           ├── ListControls.twig
+            │           └── Pagination.twig
+            │
+            ├── Checkout/
+            │   ├── Checkout.twig
+            │   ├── OrderConfirmation.twig
+            │   ├── Components/
+            │   │   ├── OrderDetails.twig
+            │   │   ├── PaymentProviderSelect.twig
+            │   │   ├── PlaceOrder.twig
+            │   │   └── ShippingProfileSelect.twig
+            │   └── Macros/
+            │       └── Address.twig
+            │
+            ├── Customer/
+            │   ├── Guest.twig
+            │   ├── Login.twig
+            │   ├── Register.twig
+            │   └── Components/
+            │       ├── CountrySelect.twig
+            │       ├── Login.twig
+            │       ├── Registration.twig
+            │       ├── UserLoginHandler.twig
+            │       ├── AddressInputGroup/
+            │       │   ├── AddressInputGroup.twig
+            │       │   └── Locale/
+            │       │       ├── AddressInputGroupDE.twig
+            │       │       └── AddressInputGroupGB.twig
+            │       └── AddressSelect/
+            │           ├── AddressSelect.twig
+            │           └── CreateUpdateAddress.twig
+            │
+            ├── Homepage/
+            │   └── Homepage.twig
+            │
+            ├── Item/
+            │   ├── SingleItem.twig
+            │   ├── Components/
+            │   │   ├── QuantityInput.twig
+            │   │   ├── VariationImageList.twig
+            │   │   └── VariationSelect.twig
+            │   └── Partials/
+            │       └── ItemRating.twig
+            │
+            ├── ItemList/
+            │   ├── ItemListView.twig
+            │   └── Components/
+            │       ├── ItemList.twig
+            │       ├── ItemSortingList.twig
+            │       ├── ItemSearch.twig
+            │       ├── ItemsPerPage.twig
+            │       ├── LoadingAnimation.twig
+            │       └── Pagination.twig
+            │
+            ├── MyAccount/
+            │   ├── MyAccount.twig
+            │   └── Components/
+            │       ├── AccountSettings.twig
+            │       ├── BankDataSelect.twig
+            │       └── OrderHistory.twig
+            │
+            ├── PageDesign/
+            │   ├── PageDesign.twig
+            │   ├── Components/
+            │   │   ├── Notifications.twig
+            │   │   ├── ShippingCountrySelect.twig
+            │   │   └── ShopLanguageSelect.twig
+            │   ├── Macros/
+            │   │   ├── IncludeComponents.twig
+            │   │   └── LayoutContainer.twig
+            │   └── Partials/
+            │       ├── Footer.twig
+            │       ├── Head.twig
+            │       └── Header/
+            │           ├── Breadcrumb.twig
+            │           ├── Header.twig
+            │           └── Navigation.twig
+            │
+            └── StaticPages/
+                ├── CancellationRights.twig
+                ├── ItemNotFound.twig
+                ├── LegalDisclosure.twig
+                ├── PageNotFound.twig
+                ├── PrivacyPolicy.twig
+                └── TermsAndConditions.twig
+----
+
+=== Ceres page templates
+
+Ceres uses individual templates containing the markup of the main pages. Some templates include partials or components. Find a table of all page templates and their respective location in the *resources/views* folder below:
+
+[cols="1,3"]
+|===
+|Template |Description
+
+|Basket
+a| The template for the shopping cart of your online store. It can be found in the *Basket* sub-folder of Ceres. This template includes the following components:
+
+* BasketList
+* Coupon
+* BasketTotals
+
+|CategoryItem
+|The template for the category view of your online store. It can be found in the *Category/Item* sub-folder.
+
+|Checkout
+a| The template for the checkout of your online store. It can be found in the *Checkout* sub-folder. This template includes the following components:
+
+* AddressSelect
+* PaymentProviderSelect
+* ShippingProfileSelect
+* PlaceOrder
+* Coupon
+* BasketList
+* BasketTotals
+
+|Guest
+a| The template for guest orders. It can be found in the *Customer* sub-folder. This template includes the following components:
+
+* Registration
+
+|HomePage
+|The template for the homepage of your online store. It can be found in the *Homepage* sub-folder.
+
+|ItemListView
+a| The template for the item list view of your online store. It can be found in the *ItemList* sub-folder. This template includes the following components:
+
+* ItemList
+* ItemsPerPage
+* ItemListSorting
+* Pagination
+* LoadingAnimation
+
+|Login
+|The template for customer login. It can be found in the *Customer* sub-folder.
+
+|MyAccount
+a| The template for the *My Account* page of your online store. It can be found in the *MyAccount* sub-folder. This template includes the following components:
+
+* AddressSelect
+* AccountSettings
+* OrderHistory
+* BankDataSelect
+* OrderDetails
+
+|OrderConfirmation
+a| The template for the order confirmation page. It can be found in the *Checkout* sub-folder. This template includes the following components:
+
+* OrderDetails
+
+|PageDesign
+a| The general template for your online store. It can be found in the *PageDesign* sub-folder. This template includes the following partials and components
+
+* Notifications
+* BasketPreview
+* Login
+* Registration
+* AddItemToBasketOverlay
+* Head
+* Header
+* Footer
+
+|Register
+a| The template for customer registration. It can be found in the *Customer* sub-folder. This template includes the following components:
+
+* Registration
+
+|SingleItem
+a| The template for the single item view of your online store. It can be found in the *SingleItem* sub-folder. This template includes the following components:
+
+* VariationSelect
+* VariationImageList
+* AddItemToBasket
+
+|CancellationRights
+|The cancellation rights of your online store. It can be found in the *StaticPages* sub-folder.
+
+|ItemNotFound
+|The *Item not found* page of your online store. It can be found in the *StaticPages* sub-folder.
+
+|LegalDisclosure
+|The legal disclosure of your online store. It can be found in the *StaticPages* sub-folder.
+
+|PageNotFound
+|The *Page not found* page. It can be found in the *StaticPages* sub-folder.
+
+|PrivacyPolicy
+|The privacy policy of your online store. It can be found in the *StaticPages* sub-folder.
+
+|TermsAndConditions
+|The general terms and conditions of your online store. It can be found in the *StaticPages* sub-folder.
+|===
+
+===== The PageDesign template of Ceres
+
+image::Ceres_PageDesign.png[width=640, height=360]
+
+===== The Basket template of Ceres
+
+image::Ceres_Basket.png[width=640, height=360]
+
+===== The BasketList template of Ceres
+
+image::Ceres_BasketList.png[width=640, height=360]
+
+== Updating themes to Ceres 4.0
+
+The major release of Ceres 4.0 in April 2019 includes several changes to the code that are of particular importance for theme developers, since they necessitate adjustments to the themes.
+
+In order to minimise the size of documents and to accelerate the initialisation of Vue.js, we no longer include large JSON objects directly in the properties of a component. Instead, the JSON object is located in a separate <script> tag. The component's property merely contains a reference to this script tag that includes the JSON object.
+
+This page explains which namespace and components have been altered and which adjustments are necessary for your theme to work properly after the update. Please take a look at the current version comparison on GitHub for a complete overview of the changes.
+
+=== Removal of the "ItemLoader" namespace
+
+We have removed all classes of the namespace "IO\Services\ItemLoader" from Ceres. As an alternative, the classes of the namesspace "IO\Services\ItemSearch" should be used from now on.
+
+=== Overview of changed components
+
+In the following components, the *json_encode* filter has been substituted with the *json_data* filter:
+
+==== SingleItem
+
+In the SingleItem component, the two properties *item-data* and *variation-list-data* have been adjusted to use the json_data filter. The following code details the former as well as the current version. Please pay attention to the missing colon in the current version.
+
+[source,twig]
+----    
+<single-item :item-data="{{ item | json_encode }}" variation-list-data="{{ variations | json_encode }}"
+
+<single-item item-data="{{ item | json_data }}" variation-list-data="{{ variations | json_data }}"
+----
+
+==== MobileNavigation
+
+In the MobileNavigation component, the property *navigation-tree-data* has been adjusted to account for the json_data filter. Please pay attention to the missing colon in the current version.
+
+[source,twig]
+----    
+<mobile-navigation :navigation-tree-data="{{ categories | json_encode }}"
+
+<mobile-navigation navigation-tree-data="{{ categories | json_data }}"
+----
+
+==== CountrySelect
+
+In the CountrySelect component, the property *country-list* has been adjusted to use the json_data filter.
+
+[source,twig]
+----  
+<country-select :country-list="{{ services.country.getActiveCountriesList() | filterFields([...]) | json_encode }}"
+
+<country-select country-list="{{ services.country.getActiveCountriesList() | filterFields([...]) | json_data("activeCountriesList") }}"
+----
+
+==== ShopCountrySettings
+
+In the ShopCountrySettings component, the property *shipping-countries* has been adjusted to use the json_data filter.
+
+[source,twig]
+---- 
+<shop-country-settings :shipping-countries="{{ services.country.getActiveCountriesList() | filterFields([...]) | json_encode }}"
+
+<shop-country-settings shipping-countries="{{ services.country.getActiveCountriesList() | filterFields([...]) | json_data("activeCountriesList") }}"
+----
+
+==== CategoryItem (optional)
+
+The CategoryItem component is a special case, since not all instances of the component have been adjusted to use the json_data filter. In Ceres, we only changed the component in the */resources/views/Category/Item/CategoryItem.twig* file. Each call of this component has to be modified in the theme.
+
+[source,twig]
+----
+<category-item :item-data="{{ item.data | json_encode }}"
+
+<category-item item-data-ref="{{ item.data | json_data }}"
+----
+
+=== Using the json_data filter in own Vue components
+
+If your theme includes components that you designed yourself and are not native to Ceres, you can use the json_data filter in these components as well. As described above, large JSON objects are now relocated into an own <script> tag:
+
+[source,twig]
+----
+<my-component my-property="{{ twigValue | json_data }}"></my-component>
+
+<my-component my-property="xyz123"></my-component>
+...
+<script type="application/json" id="xyz123">{"key": "value"}</script>
+----
+
+In order to establish the reference to the <script> tag, you need to modify your Vue component accordingly:
+
+[source,twig]
+----
+  
+  Vue.component("my-component", {
+    props: [
+        "myProperty"
+    ]
+}
+
+  
+  Vue.component("my-component", {
+    jsonDataFields: [
+        "myProperty"
+    ]
+}
+----
+
+== Updating themes to Ceres 5.0
+
+For the latest major version Ceres 5.0, we reworked the file structure of many components. In the past, components usually consisted of 2 files: a TWIG file and a Javascript file. In order to improve maintainability and performance, these files have mostly been combined into single Vue.js components, which we call single file components, or SFC for short. These changes necessitate adjustments on part of theme developers. In this chapter you will learn which changes have been made to the components and what you need to watch out for when developing themes.
+
+Note that the update guide for Ceres 5.0 is still in progress and will
+continually be updated before the release of Ceres 5.0.
+
+=== Structure of single file components
+
+The components have been redesigned to combine the Twig and JS files into one. Therefore, the single file components now consist of two sections, the *template* section, which contains the content that used to be in the Twig file, and the *script* section, which contains the Javascript part. There are slight changes to how the syntax works for these two sections:
+
+==== Template section of single file components
+
+The interpolation has been changed in the `template` section. Instead of using the dollar sign and curly brackets (e.g. `${ country.currLangName }`), you now need to use double curly brackets instead (e.g. `{% verbatim %}{{ country.currLangName}}{% endverbatim %}`).
+
+You can no longer use the instance variable `$this` in the component. You can no longer include Twig syntax in the component. If you want to include Twig content, you need to import it as a property. You can no longer access the window.app object like before.
+
+Instead, we added the variable `$ceres` which contains the content of what formerly was the window.app object.
+
+We also added the variable `$translate` to access multilingualism keys via the translation service.
+
+==== Script section of single file components
+
+In the script section, the syntax remains largely the same. There are, however, two exceptions:
+
+In order to access the window.app object in the script section, use the variable `this.$ceres`.
+
+In order to access the translation service in the script section, use `this.$translate`
+
+==== Helper components: Intersect and Lazy Load
+
+We added two helper components that facilitate performance improvements: the intersect component and the lazy load component. Via these helper components, it is possible to equip individual components with lazy loading/lazy mounting.
+
+Using the lazy loading helper component, the embedded component is only loaded when the lazy loaded component enters the visible area in the online store. With the help of the intersect component, the embedded component is always loaded, but is only mounted and rendered when the intersect component enters the visible area in the online store.
+
+Both helper components (*Intersect.vue* and *LazyLoad.vue*) are located in the Ceres plugin under `ressources/js/app/components/common`.
+
+Below you will find two code snippets, the first of which illustrates the use of the lazy-load component and the second of which illustrates how to use the intersect component.
+
+[source,twig]
+----
+<lazy-load component="component-to-load">
+    <component-to-load>
+    </component-to-load>
+</lazy-load>  
+----
+
+[source,twig]
+----
+<intersect>
+    {# content to not load #}
+    <category-item></category-item>
+
+    {# display while not loaded / when to load #}
+    <template #loading>
+        <div class="category-item-placeholder w-100 invisible">
+            <a href="{{ Twig.print("item.data | itemURL(buildUrlWithVariationId | json_encode)") }}" class="small">
+                <i class="fa fa-image"></i>
+                <span>{{ Twig.print("item.data | itemName") }}</span>
+            </a>
+        </div>
+    </template>
+</intersect>
+----
+
+Here, the div in the template section includes a placeholder that is visible while the component is not yet visible.
+
+==== Overwriting single file components
+
+If you want to overwrite Ceres single file components, there are two ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every instance of the component will be replaced by your content.
+
+Take a look at how individual components can be overridden:
+
+[source,twig]
+----
+<category-item template-override="#other-comp"></category-item>
+----
+
+Here, the `template-override` property determines that the current component `<category-item>` is overridden by another component, which here is indicated with the placeholde #other-comp.
+
+For overwriting components globally for the entire online store, you need to set the type of the script tag as "x/template", specify which component you want to overwrite in the `data-component` property and include your content in the script tags. Take a look at the example below:
+
+[source,twig]
+----
+<script type="x/template" data-component="basket-preview">
+    <div>
+        ${  }
+    </div>
+</script>    
+----

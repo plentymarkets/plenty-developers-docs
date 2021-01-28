@@ -46,10 +46,14 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:plentyshop-plugins:template-containers.adoc[Template containers]
 * xref:plentyshop-plugins:how-to-template-containers.adoc[How to add template containers]
 * xref:plentyshop-plugins:default-layout-containers.adoc[Default layout containers]
+* xref:plentyshop-plugins:theme-plugins.adoc[Themes]
 * xref:plentyshop-plugins:how-to-plentyshop-multilingualism.adoc[Multilingualism]
 * xref:plentyshop-plugins:how-to-register-cookies.adoc[How to register cookies]
 * xref:plentyshop-plugins:content-caching.adoc[Content caching]
 * xref:plentyshop-plugins:cookbook.adoc[plentyShop cookbook]
+* Ceres 5
+** xref:plentyshop-plugins:ceres-5-update.adoc[Ceres 5 overview]
+** xref:plentyshop-plugins:reference-ceres-5-style-changes.adoc[CSS changes]
 
 .ShopBuilder plugins
 * xref:shopbuilder-plugins:shopbuilder-widgets.adoc[ShopBuilder widgets]
