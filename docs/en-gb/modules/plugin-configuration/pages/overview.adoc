@@ -23,8 +23,6 @@ Assistants also allow you inform the user of choices and consequences without re
 
 If your plugin doesn't meet any of the conditions outlined above, you should consider an alternative to assistants.
 Especially options that the user has to change frequently may be better placed elsewhere.
-// @TODO Add link to style guide.
-If you decide that an assistant is the right choice for your plugin, refer to our assistant style guide for design recommendations.
 
 == Configuration
 
@@ -38,10 +36,8 @@ This may, for example, include account details for communicating with external s
 
 == Custom UI
 
-// @TODO Add link to UI module.
-If your plugin provides a custom UI, you can also use this UI for settings.
-// @TODO Add link to DB module.
-In this case, you have to store the settings in a data table.
+If your plugin provides a xref:back-end-ui:overview.adoc[custom UI], you can also use this UI for settings.
+In this case, you have to store the settings in a xref:data-storage:database-storage.adoc[data table].
 This means that, unlike the plugin configuration, the settings aren't plugin set specific.
 They apply to all plugin sets that contain the plugin.
 

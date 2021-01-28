@@ -1,0 +1,217 @@
+= Plugin configuration
+
+The plugin configuration provides:
+
+* versioning to ensure backwards compatibility
+* multilingualism
+* unlimited menu nesting levels
+* new configuration field types
+* structured definitions of your configuration and configuration fields
+
+== Format of the plugin configuration file
+
+Each configuration needs the following properties:
+
+.PluginXY/config.json
+[source,json]
+----
+{
+  "formatVersion": 1,
+  "menu": {
+     "global": {
+        "label": "Config.global",
+        "fullWidth": true,
+        "formFields": {
+           "global.headerLogo": {
+              "type": "inputFile",
+              "required": true,
+              "label": "Config.globalHeaderLogoLabel",
+              "options": {
+                 "tooltip": "Config.globalHeaderLogoTooltip",
+                 "defaultValue": ""
+              }
+           },
+           "global.category": {
+              "type": "categoryPicker",
+              "required": true,
+              "label": "Config.globalCategoryLabel",
+              "options": {
+                 "tooltip": "Config.globalCategoryTooltip",
+                 "defaultValue": ""
+              }
+           },
+           "global.container": {
+              "type": "verticalContainer",
+              "label": "Config.globalContainerLabel",
+              "options": {
+                 "containerEntries":
+                 {
+                    "global.container.apiKey": {
+                       "type": "inputText",
+                       "label": "Config.globalContainerApiKeyLabel",
+                       "required": false
+                    }
+                 }
+              }
+           }
+        }
+     },
+     "additional": {
+        "label": "Config.additionalSettings",
+        "menu": {
+           "languages": {
+              "label": "Config.additionalSettingsLanguagesLabel",
+              "formFields": {
+                 "additional.languages.supportedLanguages": {
+                    "type": "multiCheckBox",
+                    "required": false,
+                    "label": "Config.additionalSettingsSupportedLanguagesLabel",
+                    "options": {
+                       "tooltip": "Config.additionalSettingsSupportedLanguagesTooltip",
+                       "defaultValue": "de, en",
+                       "checkBoxValues": [
+                          {
+                             "value": "de",
+                             "caption":"Config.languageGerman"
+                          },
+                          {
+                             "value": "en",
+                             "caption": "Config.languageEnglish"
+                          },
+                          {
+                             "value": "fr",
+                             "caption": "Config.languageFrench"
+                          },
+                          {
+                             "value": "es",
+                             "caption": "Config.languageSpanish"
+                          }
+                       ]
+                    }
+                 }
+              }
+           },
+           "moreSettings": {
+              "label": "Config.additionalSettingsMoreLabel",
+              "formFields": {
+                 "additional.more.fulfillmentClient": {
+                    "type": "selectBox",
+                    "required": false,
+                    "label": "Config.additionalSettingsMoreFulfillmentClientLabel",
+                    "options": {
+                       "tooltip": "Config.additionalSettingsMoreFulfillmentClientTooltip",
+                       "defaultValue": "dhl",
+                       "selectBoxValues": [
+                          {
+                             "value": "dhl",
+                             "caption": "Config.fulfillmentDHL"
+                          },
+                          {
+                             "value": "ups",
+                             "caption": "Config.fulfillmentUPS"
+                          },
+                          {
+                             "value": "hermes",
+                             "caption": "Config.fulfillmentHermes"
+                          },
+                          {
+                             "value": "dpd",
+                             "caption": "Config.fulfillmentDPD"
+                          }
+                       ]
+                    }
+                 }
+              }
+           }
+        }
+     }
+  }
+}
+----
+
+The key `menu` states whether the following value is interpreted as a menu entry. A menu entry must have a `label` property and can have another `menu` or `formFields` or a `fullWidth` property. With another `menu` property, a new menu level is created. With `fullWidth` set to `true`, the configuration is rendered with 100% width. Default value for `fullWidth` is `false`.
+
+The `formFields` property must be an object containing all the form fields to be shown when clicking on the related menu entry. Every key in this object corresponds to the configuration field’s key defined by the plugin. A form field has the following properties:
+
+* `type`
+* `required`
+* `scss`
+* `label`
+* `options`
+
+If the `scss` property is set to `true`, any scss files contained in the resources/css folder are compiled automatically during plugin build.
+
+The options property can include more properties that are optional, e.g.:
+
+* `tooltip`
+* `defaultValue`
+* `checkBoxValues`
+* `selectBoxValues`
+* `containerEntries`
+
+The following types are available:
+
+* `inputFile`
+* `inputText`
+* `inputTextArea`
+* `inputNumber`
+* `inputDouble`
+* `categoryPicker`
+* `colorPicker`
+* `datePicker`
+* `checkBox`
+* `selectBox`
+* `multiCheckBox`
+* `verticalContainer`
+* `horizontalContainer`
+
+Vertical and horizontal containers offer more flexibility for the layout of the configuration view. In a specific menu entry, form fields can be grouped in vertical and horizontal containers. Next to the `label` property the `options.containerEntries` property must be set. The `containerEntries` property contains the form fields that  should be grouped in the corresponding container.
+
+=== Password input
+
+You can use an `inputText` for passwords by adding the `isPassword` option.
+
+[source,php]
+----
+"type": "inputText",
+"options": {
+    "isPassword": true
+}
+----
+
+=== Default values of the picker elements
+
+The various picker elements use the following default values:
+
+* `categoryPicker`: the id of the proposed category
+* `colorPicker`: the color code in hex format as string, e.g. “#ffffff”
+* `datePicker`: the date in RFC2822 or ISO 8601 date format (with time) as string
+
+===== Accessing plugin options from PhpClass.php
+
+[source,php]
+----
+// access configuration from PHP
+function getTitle(ConfigRepository $config):string
+    {
+        if( $config->get('MyPlugin.show_title') == "1" )
+            {
+                return $config->get('MyPlugin.title_text');
+                    }
+                        else
+                    {
+                return "";
+            }
+    }
+----
+
+==== Accessing plugin options from Template.twig
+
+[source,twig]
+----
+{% verbatim %}
+{% if config('MyPlugin.show_title') == "1" %}
+    <h1>{{ config('MyPlugin.title_text') }}</h1>
+{% endif %}
+{% endverbatim %}
+----
