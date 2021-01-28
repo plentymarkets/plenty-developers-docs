@@ -444,5 +444,3 @@ Look at this example route. All you need to do is specify the item ID and you're
 `/rest/items/123/item_shipping_profiles`
 
 Awesome! You now know how to use bulk routes to manage your item and variation data more efficiently.
-
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/bulk-routes-catfood.png[image]

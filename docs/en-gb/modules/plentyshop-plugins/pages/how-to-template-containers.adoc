@@ -168,16 +168,16 @@ Now you simply have to link the content from our *Placeholder* plugin to one or 
 . Activate a container in the *Placeholder (Placeholder)* area, e.g. the *Certified* container on the homepage.
 . *Save* the settings.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/template-container-backend.png[image]
+image::template-container-backend.png[width=640, height=360]
 
 After link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[deploying^] the plugins, the content of our *Placeholder* plugin is displayed in the footer of our online store.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/footer-template-container.png[image]
+image::footer-template-container.png[width=640, height=360]
 
 === Placeholder in the *Certified by* container in the footer
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/footer-template-container.png[image]
+image::footer-template-container.png[width=640, height=360]
 
 === The *CMS » Container links* menu in the plentymarkets back end
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/template-container-backend.png[image]
+image::template-container-backend.png[width=640, height=360]

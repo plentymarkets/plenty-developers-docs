@@ -1213,4 +1213,4 @@ property groups.
 
 === A schematic overview of containers on the Ceres homepage
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/ceres-homepage-containers.png[image]
+image::ceres-homepage-containers.png[]

@@ -53,7 +53,7 @@ To make plentymarkets even more flexible, some data configurations are managed c
 
 We will illustrate this later by linking categories, sales prices, attributes and barcodes to the item we create.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/itemstructure.png[image]
+image::itemstructure.png[widht=640, height=360]
 
 == What is a variation?
 

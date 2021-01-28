@@ -8,10 +8,7 @@ On this page, you will find an overview of relevant information about template p
 * https://v4-alpha.getbootstrap.com/getting-started/introduction/[Bootstrap4]
 * http://learn.jquery.com/about-jquery/how-jquery-works/[jQuery]
 
-Get the complete code of the Ceres plugin developed by plentymarkets:
-
-https://github.com/plentymarkets/plugin-ceres[image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/github-logo.png[image]Download
-on GitHub]
+Get the complete code of the Ceres plugin developed by plentymarkets by link:https://github.com/plentymarkets/plugin-ceres[downloading the GitHub repository.^]
 
 == Setting up an IDE for template plugins
 

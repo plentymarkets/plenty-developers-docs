@@ -21,7 +21,7 @@ Find a detailed list of all containers in the table below:
 
 The *Ceres* homepage provides multiple containers which can be used to replace the content of the default homepage or add more content to the homepage. Find an overview of the homepage containers below:
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/ceres-homepage-containers.png[image]
+image::ceres-homepage-containers.png[]
 
 == Using containers in the template
 
@@ -179,4 +179,4 @@ In a second `Twig` file, we enter the content for our tab. Our container has the
 
 === A schematic overview of containers on the Ceres homepage
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/ceres-homepage-containers.png[image]
+image::ceres-homepage-containers.png[]

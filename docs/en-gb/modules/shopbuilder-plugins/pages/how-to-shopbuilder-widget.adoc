@@ -260,7 +260,7 @@ Take a look at an excerpt from the list widget of the ShopBuilder:
 
 Here, this simple isList property of the *texts* setting provides the user with the possibility of adding further text input fields, as shown in the following screenshot:
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/widget-list-widget.png[image]
+image::widget-list-widget.png[width=640, height=360]
 
 Since no maximum number of entries has been specified, a user can add any number of additional list entries.
 
@@ -304,7 +304,7 @@ The children object includes an input field for text and one for the URL. Both s
 
 The following screenshot illustrates what this looks like in the ShopBuilder interface:
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/widget-link-list-widget.png[image] +
+image::widget-link-list-widget.png[width=640, height=360]
 
 === Default values for input types
 

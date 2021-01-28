@@ -6,7 +6,7 @@ A plugin must fulfil certain requirements in order to be offered on https://mark
 
 Find a schematic overview of the item view on plentyMarketplace below.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-item-view.png[image]
+image::marketplace-item-view.png[width=640, height=360]
 
 In this table, the different elements of the item view as well as the category view are described.
 
@@ -54,7 +54,7 @@ For further information, refer to <<#_marketplace_pluginjson, Plugin data>>.
 
 A schematic overview of the category view on plentyMarketplace.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-category-view.png[image]
+image::marketplace-category-view.png[width=640, height=360]
 
 [[marketplace-marketplacejson]]
 === Marketplace data
@@ -126,7 +126,7 @@ Among other information, the change log informs the users of tasks to do when up
 - Added function 1
 ----
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-changelog.png[image]
+image::marketplace-changelog.png[width=640, height=360]
 
 [[marketplace-user-guide]]
 === User guide
@@ -239,7 +239,7 @@ Add links to further information.
 In this section, you can add information about your license, e.g. this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE - see the [LICENSE.md](/LICENSE.md) file for details.
 ----
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-userguide.png[image]
+image::marketplace-userguide.png[width=640, height=360]
 
 [[marketplace-support-contact]]
 === Support contact data
@@ -295,22 +295,18 @@ For rectangular images, the width should be the same as for the respective squar
 |The preview images of the plugin to be displayed in plentyMarketplace. The valid file format is PNG. The maximum file size for preview images is 1 MB. One image is required for plentyMarketplace. Upload up to 7 preview images, e.g. `preview_0.png`, `preview_1.png` etc. icon:warning[role=red] [red]#Required#
 |===
 
-[[myModalLabel]]
 ===== Example of a changelog
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-changelog.png[image]
+image::marketplace-changelog.png[width=640, height=360]
 
-[[myModalLabel]]
 ===== Example of a user guide
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-userguide.png[image]
+image::marketplace-userguide.png[width=640, height=360]
 
-[[myModalLabel]]
 ===== The item view on plentyMarketplace
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-item-view.png[image]
+image::marketplace-item-view.png[width=640, height=360]
 
-[[myModalLabel]]
 ===== The category view on plentyMarketplace
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/marketplace-category-view.png[image]
+image::marketplace-category-view.png[width=640, height=360]
