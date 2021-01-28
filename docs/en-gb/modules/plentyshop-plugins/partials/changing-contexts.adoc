@@ -1,0 +1,67 @@
+= Changing contexts in Ceres
+
+Contexts provided by your own theme plugin can overwrite and extend the PHP context classes of the template plugin Ceres without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your context resource into Ceres.
+
+.Theme/Providers/ThemeServiceProvider.php
+[source,php]
+----
+namespace Theme\Providers;
+
+use IO\Helper\TemplateContainer;
+use Plenty\Plugin\Events\Dispatcher;
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Plugin\Templates\Twig;
+use Theme\Contexts\MyContext;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+
+/**
+    * Register the service provider.
+    */
+public function register()
+{
+
+}
+
+public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    {
+        /**
+        * Extend the context for the basket template with MyContext.
+        */
+        $eventDispatcher->listen('IO.ctx.basket', function (TemplateContainer $templateContainer, $templateData = [])
+        {
+            $templateContainer->setContext( MyContext::class);
+            return false;
+        }, 0);
+    }
+}
+----
+
+Add the dependencies for the `TemplateContainer`, the `Dispatcher` and `Twig` classes.
+
+Add the `boot()` function and use the dispatcher for listening to the context event `IO.ctx.TEMPLATENAME`. Specify the template for which you want to modify the context, e.g. `IO.ctx.basket`. Use the `setContext()` method and specify which context should be used, e.g. MyContext. In your context, define the elements to be added to the PHP context classes of Ceres. You can find an example for how the context class MyContext extends the GlobalContext below.
+
+.Theme/src/Contexts/MyContext.php
+[source,php]
+----
+<?php
+
+namespace Theme\Contexts;
+
+use IO\Helper\ContextInterface;
+
+class MyContext extends GlobalContext implements ContextInterface
+{
+    public $myVariable;
+
+    public function init($params)
+    {
+        parent::init($params);
+
+        $this->myVariable = “This is how you extend context classes.“;
+    }
+}
+----
+
+The context class MyContext now extends the GlobalContext of Ceres, thereby inheriting the data that GlobalContext provides. Additionally, you are now able to transfer new data to the template via MyContext. In order to completely overwrite the context provided by Ceres, simply delete any `extends` elements in your own context.

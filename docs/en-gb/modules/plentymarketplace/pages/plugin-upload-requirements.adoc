@@ -1,0 +1,312 @@
+= Plugin requirements
+
+A plugin must fulfil certain requirements in order to be offered on https://marketplace.plentymarkets.com[plentyMarketplace]. The plugin must have a valid `plugin.json` file. Furthermore, the plugin must contain a *meta* folder that includes sub-folders with multiple required files, e.g. preview images, user guides and change logs.
+
+== Schematic overview of plugin data and files
+
+Find a schematic overview of the item view on plentyMarketplace below.
+
+image::marketplace-item-view.png[width=640, height=360]
+
+In this table, the different elements of the item view as well as the category view are described.
+
+=== Meta data
+
+[cols="1,3"]
+|===
+|No. |Description
+
+|1
+|The preview images of the plugin. For further information, refer to <<#_marketplace_metadata, Other meta data>>.
+
+|2
+|The user guide of the plugin. For further information, refer to <<#_marketplace_user_guide, User guide>>.
+
+|3
+|The change log of the plugin. For further information, refer to <<#_marketplace_changelog, Change log>>.
+
+|4
+|The support contact data of the plugin. For further information, refer to <<#_marketplace-support-contact, Support contact data>>.
+
+|5
+|The plugin icon. For further information, refer to <<#_marketplace-metadata, Other meta data>>. The plugin icon is also displayed in the *Plugins » Plugin overview* menu of the plentymarkets back end. The icon path must be specified in the `plugin.json`.
+|===
+
+=== Plugin data
+
+[cols="1,3"]
+|===
+|No. |Description
+
+|6-12
+a|The plugin information properties specified in the `plugin.json`:
+
+* marketplaceName or name
+* version
+* author
+* license
+* short description
+* price
+* category
+
+For further information, refer to <<#_marketplace_pluginjson, Plugin data>>.
+|===
+
+A schematic overview of the category view on plentyMarketplace.
+
+image::marketplace-category-view.png[width=640, height=360]
+
+[[marketplace-marketplacejson]]
+=== Marketplace data
+
+The `marketplace.json` file is the essential part for plugin for the plentyMarketplace. It must contain certain information for plentyMarketplace, such as the marketplace name, the price etc. Find an example of a valid `marketplace.json` below.
+
+include::example$marketplace.json[]
+
+[cols="1,3"]
+|===
+|Property |Description
+
+|marketplaceName
+|The name of your plugin which is displayed on the Marketplace. Specify an array for multiple languages, e.g. `{"de":"German plugin name","en":"English plugin name"}`.
+
+|license
+|The license type for your plugin. If you do not enter a license, it will default to the link:https://marketplace.plentymarkets.com/en/agb#4[plentyMarketplace terms and conditions^].
+
+|price
+|The price of your plugin in Euro. The value must be of the `float` type. The price specified in the plugin.json is the plugin's gross price. The price displayed in the marketplace is the net price. For a free plugin, enter a value of *0.00*. For paid plugins, the minimum net price is *10.00*. icon:warning[role=red] [red]#Required#
+
+|shortDescription
+|The short description for your plugin. Specify an array for multiple languages: e.g. `{"de":"German short description","en":"English short description"}`. The short description is displayed in the detail view of a plugin on plentyMarketplace. icon:warning[role=red] [red]#Required#
+
+|categories
+|An array including one category ID which will be linked to the plugin, e.g. `["3518"]`. The plugin will be available in this category on plentyMarketplace. Find a list of available categories on link:http://marketplace.plentymarkets.com/faq[plentyMarketplace^]. icon:warning[role=red] [red]#Required#
+
+|keywords
+|An array of keywords describing your plugin.
+|===
+
+
+[[marketplace-changelog]]
+=== Change log
+
+The change log for the plugin is saved in the sub-folder *documents* in the *meta* folder. The change log must be available in German and English and saved in MD file format, e.g. `changelog_de.md` and `changelog_en.md`. Change logs in other languages are optional. Change the language code in the file name accordingly. The following guidelines must be taken into consideration when writing the change log:
+
+Among other information, the change log informs the users of tasks to do when updating a plugin. Formatting this information like in the example below is especially important. When the formatting is correct, the system displays the to-do list when the user updates the plugin. If the formatting isn't correct, the list cannot be displayed. As a result, the user may miss out on crucial information.
+
+.PluginXY/meta/documents/changelog_en.md
+[source,markdown]
+----
+# Release Notes for PluginXY // Include the plugin name in headline 1
+
+## v1.0.1 (2016-12-24) // List version releases (MAJOR.MINOR.PATCH) with
+                       // the release date (YYYY-MM-DD) in reverse-chronological
+                       // order (newest on top) in headline 2
+
+### Added // List added features and functions in an unordered list
+- Added new feature 1
+- Added new feature 2
+
+### Changed // List all changes made to existing functionality in an unordered list
+- Replaced icon 1 with icon 2
+
+### Fixed // List all bug fixes and fixed issues in an unordered list
+- Fixed bug 1
+
+### Removed // List all removed features and functions in this release in an unordered list
+- Removed redundant function 1
+
+### TODO //List all steps the user has to carry out for the new version to work properly
+- Update some other plugin 1
+- Perform additional setup
+
+## v1.0.0 (2016-11-08) // Add one sub-section for each version with the release date in headline 2
+
+### Added // List added features and functions in an unordered list
+- Added function 1
+----
+
+image::marketplace-changelog.png[width=640, height=360]
+
+[[marketplace-user-guide]]
+=== User guide
+
+The user guide for the plugin is saved in the sub-folder *documents* in the *meta* folder. The user guide must be available in German and English and saved in MD file format, e.g. `user_guide_de.md` and `user_guide_en.md`. User guides in other languages are optional. Change the language code in the file name accordingly. The following
+guidelines must be taken into consideration when writing the user guide.
+
+.PluginXY/meta/documents/user_guide_en.md
+[source,markdown]
+----
+# This is the headline of your user guide
+
+Below the headline, include a short introduction describing your plugin, the scope of functionality and link the main features.
+
+## Getting started and requirements
+
+In the first chapter, provide information about setting up the plugin. Provide a short **Getting started** section. Also, mention **required plugins**, that must be installed to run your plugin. Finally, if the customer needs any **external resources** to configure the plugin, such as API keys, provide a step-by-step description for how to access them.
+
+## Plugin configuration
+
+Main chapters can be used to give a detailed description of the settings of your plugins. You can group settings descriptions.
+
+### The first feature of the plugin
+
+Single features are described in a sub-section. If you want to give instructions for setting up a function in the plentymarkets back end, use the following template:
+
+##### Setting up a feature:
+
+1. Go to the **Plugins » Plugin overview** menu.
+2. Click on **My plugin**.<br />→ A new window will open.
+3. Select a value from the **My plugin feature** drop-down.
+4. **Save** the settings.
+
+### Another feature
+
+Add the instructions. In this case we want to describe more than one setting, so we use a table below the instructions.
+
+![Add an image](http://placehold.it/350x150?text=Add+an+image)
+
+##### Setting up another feature with multiple settings:
+
+1. Go to the **Plugins » Plugin overview** menu.
+2. Click on **My plugin**.<br />→ A new window will open.
+3. Carry out the settings. Pay attention to the information given in table 1.
+4. **Save** the settings.
+
+| Settings  | Explanation   |
+|-----------|---------------|
+| Setting 1 | Description 1 |
+| Setting 2 | Description 2 |
+| Setting 3 | Description 3 |
+
+Table 1: Settings for another feature
+
+## Highlighting
+
+### Boldface
+
+Use **bold** for highlighting UI texts, menus and options.
+
+### Code
+
+A single line of code is highlighted using <code>`</code> at the beginning and at the end of the line:
+
+`This is a line of code`
+
+If you want to include multiple lines of code, use <code>```</code> before and after a code example.
+
+```
+Line 1 of code
+Line 2 of code
+Line 3 of code
+```
+
+
+### Warning
+
+<div class="alert alert-danger" role="alert">
+    This is a red box. Use this box for warning messages.
+</div>
+
+### Important
+
+<div class="alert alert-warning" role="alert">
+    This is a yellow box. Use this box for important information.
+</div>
+
+### Example
+
+<div class="alert alert-success" role="alert">
+    This is a green box. Use this box for examples.
+</div>
+
+### Note
+
+<div class="alert alert-info" role="alert">
+    This is a blue box. Use this box for notes.
+</div>
+
+
+## Further reading
+
+Add links to further information.
+
+* Here you can find a [markdown cheatsheet](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
+* [More markdown](http://www.markdowntutorial.com/)
+
+## License
+
+In this section, you can add information about your license, e.g. this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE - see the [LICENSE.md](/LICENSE.md) file for details.
+----
+
+image::marketplace-userguide.png[width=640, height=360]
+
+[[marketplace-support-contact]]
+=== Support contact data
+
+The contact data for plugin support is saved in the sub-folder *documents* in the *meta* folder. The contact data must be available in German and English and saved in MD file format, e.g. `support_contact_de.md` and `support_contact_en.md`. Contact data in other languages is optional. Change the language code in the file name accordingly. The contact data for support issues should include:
+
+* Your web page
+* Your email address
+* Your phone number
+
+.PluginXY/meta/documents/support_contact_en.md
+[source,markdown]
+----
+## Web page
+
+Add your web page, e.g. as a link
+
+## Email
+
+Add your email address for support issues, e.g. as a link
+
+## Phone
+
+Add your phone number
+----
+
+[[marketplace-metadata]]
+=== Other meta data
+
+The *meta* folder also contains the *images* folder with files that are needed to display your plugin as an item in plentyMarketplace, such as preview images, the author icon and the plugin icon.
+
+[cols="1,3"]
+|===
+|File |Description
+
+|Author icon
+a| The author icon. The valid file format is PNG. The author icon must be specified in the `plugin.json`. The author icon is required for plentyMarketplace. The icon must be available in the following image sizes: icon:warning[role=red] [red]#Required#
+
+* *icon_author_xs*: 32x32 px
+* *icon_author_sm*: 256x256 px
+* *icon_author_md*: 512x512 px
+
+|Plugin icon
+a| The plugin icon. The valid file format is PNG. The plugin icon must be specified in the `plugin.json`. The plugin icon is required for plentyMarketplace. The icon can be either square or rectangular. Square images should have the following sizes:
+
+* *icon_plugin_xs*: 32x32 px
+* *icon_plugin_sm*: 256x256 px
+* *icon_plugin_md*: 512x512 px
+
+For rectangular images, the width should be the same as for the respective square ones, but you can reduce the height as you see fit. icon:warning[role=red] [red]#Required#
+
+|Preview images
+|The preview images of the plugin to be displayed in plentyMarketplace. The valid file format is PNG. The maximum file size for preview images is 1 MB. One image is required for plentyMarketplace. Upload up to 7 preview images, e.g. `preview_0.png`, `preview_1.png` etc. icon:warning[role=red] [red]#Required#
+|===
+
+===== Example of a changelog
+
+image::marketplace-changelog.png[width=640, height=360]
+
+===== Example of a user guide
+
+image::marketplace-userguide.png[width=640, height=360]
+
+===== The item view on plentyMarketplace
+
+image::marketplace-item-view.png[width=640, height=360]
+
+===== The category view on plentyMarketplace
+
+image::marketplace-category-view.png[width=640, height=360]

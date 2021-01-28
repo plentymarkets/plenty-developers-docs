@@ -1,0 +1,8 @@
+{
+    "marketplaceName"   : {"de":"German display name of plugin","en":"English display name of plugin"},
+    "license"           : "The license for the plugin",
+    "price"             : 0.00,
+    "shortDescription"  : {"de":"German short description","en":"English short description"},
+    "categories"        : ["3518"],
+    "keywords"          : ["plugins", "template"]
+}

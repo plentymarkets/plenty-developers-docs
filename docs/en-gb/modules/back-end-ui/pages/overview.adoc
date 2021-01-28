@@ -1,0 +1,78 @@
+= Angular back end UI
+
+This page gives an introduction to back end UIs and its components.
+
+First of all, some basics about Angular and its usage in plentymarkets: +
+
+* All plentymarkets UIs are Angular UIs.
+* At the moment, we are using version 9.
+* Angular is a Javascript framework for creating web, desktop and mobile applications.
+* To develop Angular applications, you have to know Typescript, HTML and CSS.
+* Angular applications use components.
+* These components define different areas in the UI, where you can display static content or provide user inputs. +
+
+If you're not familiar with Angular yet and want to find out more, refer to the link:https://angular.io[Angular documentation].
+
+== Back end menu information
+
+All information about the back end menu entries is saved in a `ui.json` file. This file defines the entry points for the plugin. Views are then available at the respective menus.
+
+The following example shows a basic `ui.json`:
+
+.ui.json
+[source,json]
+----
+include::example$ui.json[]
+----
+
+== Plugin menu entries
+
+The following table lists the specific properties of your plugin's menu entries. +
+icon:warning[role=red] [red]#Required# All entries listed below are mandatory.
+
+[[table-plugin-menu-entries]]
+.Menu entry properties
+[cols="1,3"]
+|===
+|Property |Explanation
+
+|*defaultEntryPoint*
+|The default entry point of your plugin
+
+|*namespace*
+|The namespace of your plugin
+
+|*menuEntries*
+a|The menu entries of your plugin. +
+ The following information is saved for a menu entry:
+
+* `label`: plentymarkets displays the label as menu entry in the back end. +
+* `menu`: The menu the plugin accesses via an entry point. +
+* `urlKey`: The route for the view in our plentymarkets back end, e.g.                         http://your-plentystore.co.uk/plenty/ui-backend/start/hello-world. +
+*_Note:_* The URL key of the plugin may not contain any special characters except for hyphens.
+* `entryPoint`: The entry point of your plugin +
+* `icon`: The icon for the menu entry in the system tree. If no icon is specified, the standard plugin icon is displayed. To not display any icon, use `"icon": "none"`. Find a list of all icons on the xref:terra-icons.adoc[Terra icons] page.
+|===
+
+== Integrating plugins into the back end
+
+It is possible to seamlessly integrate your plugin into the plentymarkets back end. You can use entry points to add your plugin to the top navigation bar or routes to add it to the navigation tree of the *Setup* menu.
+
+=== Menu entry points
+
+Back end views can be integrated in the plentymarkets main menu. For a list of all menus that can be accessed by a plugin via entry points, refer to the xref:reference-menu-entry-points.adoc[Menu entry points] page.
+
+=== Routes in the system tree
+
+The Terra system tree offers plugin developers the opportunity to register their plugin behind a route. In doing so, the plugin becomes accessible in the system tree like a regular part of Terra. For a list of all available routes that can be accessed by plugins, refer to the  xref:reference-routes-system-tree.adoc[Routes in the system tree] page. For instructions on how to register your plugin, refer to the xref:how-to-back-end-ui.adoc#code-uijson[back end UI guide].
+
+[IMPORTANT]
+.Format for system tree path
+====
+Note that all routes need an introducing `system`. Older routes beginning with `settings` will be mapped to match the new format.
+Since the new menu item for the system tree was renamed to 'Setup', the new full system tree path also starts with 'Setup'.
+====
+
+=== Plugin positioning
+
+In addition to inserting plugins as desired in menus under *Setup*, it is also possible to determine their position depending on their route. If you use a route that's not mentioned in the xref:reference-routes-system-tree.adoc[routes reference], a parent node is created with the specified name. It appears underneath the actual entry. In case there are several entries whose last part of the route is identical, they are inserted underneath this part of the route. Thus, only the position of the first entry is considered.

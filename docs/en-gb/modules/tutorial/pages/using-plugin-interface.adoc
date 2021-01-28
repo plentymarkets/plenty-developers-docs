@@ -1,0 +1,211 @@
+= Using the plugin interface
+
+The plentymarkets plugin interface is a collection of interfaces.
+It represents all the modules and sub-modules available in plentymarkets.
+These modules contain all methods necessary for your plugin to communicate with plentymarkets.
+
+This page covers the following steps:
+
+* Integrating the plugin interface into an IDE
+// * Configuring top items in plentymarkets
+* Modifying the TopItems plugin to display top items
+
+== Integrating the interface into your IDE
+
+You can integrate the interface into your IDE.
+Integrating the interface allows you to use your IDE's auto-complete feature when developing plugins.
+Regardless of which IDE you use, start by carrying out the following steps:
+
+. Clone the link:https://github.com/plentymarkets/plugin-interface[plugin interface repository^].
+. Switch to the branch that corresponds to your system version.
+
+[NOTE]
+.System version
+====
+plentymarkets systems run on one of the following versions:
+
+* stable
+* early
+* beta
+
+By default, test systems use the stable version.
+To check or change your system version, proceed as follows:
+
+. Open your plentymarkets back end.
+. Go to *Setup » Client » Default client » Version*.
+. Check the version of your system.
+
+Note that the system versions stable and beta correspond to the branches stable7 and beta7 respectively in the plugin interface repository.
+====
+
+For the next step, you need link:https://www.jetbrains.com/phpstorm/download/[PhpStorm^].
+
+. Open PhpStorm.
+. Open the TopItemsPlugin project.
+. In the project tree area, click on *External Libraries*. +
+icon:arrow-right[] A new window opens.
+. As *Development environment*, select *PHP language level 7*.
+. In the *Include path area*, click on *Add*.
+. Select the plentymarkets plugin interface folder.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface is added as an external library.
+. Click on *Apply*.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface is now a source.
+
+////
+Select your IDE of choice to continue.
+
+[tabs]
+====
+Visual Studio Code::
++
+--
+. Open Visual Studio Code.
+. Open the TopItemsPlugin project.
+. Go to *File » Add Folder to Workspace...*.
+. Select the plentymarkets plugin interface folder.
+. Click on *Add*. +
+icon:arrow-right[] The plugin interface is added to the workspace.
+--
+PhpStorm::
++
+--
+. Open PhpStorm.
+. Open the TopItemsPlugin project.
+. In the project tree area, click on *External Libraries*. +
+icon:arrow-right[] A new window opens.
+. As *Development environment*, select *PHP language level 7*.
+. In the *Include path area*, click on *Add*.
+. Select the plentymarkets plugin interface folder.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface is added as an external library.
+. Click on *Apply*.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface is now a source.
+--
+====
+////
+
+You can now use the auto-complete feature of your IDE when developing plugins.
+
+////
+
+== Configuring top items in plentymarkets
+
+Add tags configuration when rewriting deprecated contracts.
+////
+
+== Filtering top items
+
+It's time to modify your base plugin, so that it displays your top items in your shop.
+You can set an item as top item when editing the item.
+Test systems come with some pre-configured top items by default.
+This means your plugin can display these items without any additional setup.
+This way, you can edit your plugin and see the results straight away.
+
+First, you need to filter your items for top items.
+
+. Open `src/Controllers/TopItemController`.
+. Add the following code snippet.
+
+.TopItemsController.php
+[source,php]
+----
+include::example$TopItemsController.php[]
+----
+
+<1> Extends `ItemDataLayerRepositoryContract` to access its `search` method.
+<2> Defines which database columns to include in the search.
+<3> Defines which values to search for.
+<4> Represents the top items option at the item level.
+<5> Searches for all top items.
+<6> Saves the search results in an array.
+<7> Renders the seach results in the TopItems template.
+
+With this, you've filtered all the items in your system for the top items.
+Next, you have to display them.
+
+== Displaying top items
+
+plentymarkets shops use TWIG templates to display content.
+Your plugin currently contains one template, `Index.twig`.
+This is the template you accessed when going to the `/hello-world` route in your shop.
+To display your top items, create two additional templates.
+One template provides the general design of the page, the other injects the item data.
+
+Start by creating the necessary files:
+
+. In the `resources/views` folder, create `PageDesign.twig`.
+. In the `resources/views` folder, create a new `content` folder.
+. In the `resources/views/content` folder, create `TopItems.twig`.
+
+Open `PageDesign.twig` and add the following code snippet:
+
+.PageDesign.twig
+[source,twig]
+----
+include::example$PageDesign.twig[]
+----
+
+<1> Inserts a bootstrap style sheet. This matches the styles used in the default plentyShop.
+<2> Provides space for injecting content from other templates.
+
+Next, open `TopItems.twig` and add the following code snippet:
+
+.TopItems.twig
+[source,twig]
+----
+include::example$TopItems.twig[]
+----
+
+<1> Specifies the template to use as basis.
+<2> Specifies where in the base template to inject the content.
+<3> Displays any top items found or a message if there aren't any.
+<4> Renders each item as a card. Each card contains the specified data, as long as the data is set on the item.
+
+Finally, to make the top items view accessible in your shop, you have to add a new route to your `RouteServiceProvider`.
+
+. Open `TopItemsRouteServiceProvider.php`.
+. Add a new router to the `map` function.
+
+.TopItemsRouteServiceProvider.php
+[source,php]
+----
+    public function map(Router $router)
+    {
+        $router->get('hello-world', 'HelloWorld\Controllers\ContentController@getHelloWorldPage');
+        $router->get('topitems', 'TopItems\Controllers\TopItemsController@showTopItems');
+    }
+----
+
+== Deploying the plugin
+
+It's time to upload your changes.
+You can upload the changes with plentyDevTool.
+
+. Open plentyDevTool.
+. Toggle TopItems active. +
+icon:arrow-right[] plentyDevTool displays the changed files.
+. Click on *Push*. +
+icon:arrow-right[] plentyDevTool uploads the TopItems plugin to your system.
+
+Like before, you now have to deploy your changes:
+
+. Open your plentymarkets back end.
+. Go to *Plugins » Plugin overview*.
+. Open the plugin set where you uploaded TopItems.
+. *Save* the plugin set. +
+icon:arrow-right[] The plugin set is deployed.
+
+Once the deployment process has finished, you can check the results.
+For this, open your shop in the browser.
+Then, append `/topitems` to the URL.
+Your browser now displays your system's top items.
+If you haven't configured any top items, it displays a message instead that the plugin couldn't find any top items.
+
+image::top-items.png[]
+
+This completes the tutorial.
+You can continue by learning more about the basics of plugin development.
+Alternatively, check out how to implement a specific type of plugin.

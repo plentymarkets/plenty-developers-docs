@@ -1,0 +1,45 @@
+= Adding style in Ceres
+
+Inline style of your plugin defined using the HTML `<style>` tag can be added to the style of the template plugin Ceres without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your style resource into Ceres.
+
+.Theme/src/Providers/ThemeServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace Theme\Providers;
+
+use IO\Helper\TemplateContainer;
+use IO\Helper\ResourceContainer;
+use Plenty\Plugin\Events\Dispatcher;
+use Plenty\Plugin\ServiceProvider;
+use Plenty\Plugin\Templates\Twig;
+
+class ThemeServiceProvider extends ServiceProvider
+{
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Boot a template for the basket that will be displayed in the template plugin instead of the original basket.
+     */
+    public function boot(Twig $twig, Dispatcher $eventDispatcher)
+    {
+        $eventDispatcher->listen('IO.Resources.Import', function (ResourceContainer $container)
+        {
+            // The style is imported in the <head> on the PageDesign.twig of Ceres
+            $container->addStyleTemplate('Theme::content.SingleItemStyle');
+        }, self::PRIORITY);
+    }
+}
+----
+
+Add the dependencies for the `ResourceContainer`, the `Dispatcher` and `Twig` classes.
+
+Add the `boot()` function and use the dispatcher for listening to the resource import event `IO.Resources.Import`. Use the `addStyleTemplate()` method and specify the location of your style resource, e.g. a twig template. In this template, use `<style>` tags to define the style information for your plugin.

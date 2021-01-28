@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 
 <script>
-    const acceptedLocalesByPriority = ['en-gb', 'de-de'];
+    const acceptedLocalesByPriority = ['en-gb'];
     const originalLocation = "index.html";
 
     function getLangLocale()
@@ -11,15 +11,15 @@
 
         if (navigator.languages !== undefined) {
             languageLoop:
-            for (let languageEntry of navigator.languages) {
-                for (let locale of acceptedLocalesByPriority) {
-                    let regexLang = new RegExp('^' + localeToLanguage(locale));
-                    if (languageEntry.match(regexLang)) {
-                        language = languageEntry;
-                        break languageLoop;
+                for (let languageEntry of navigator.languages) {
+                    for (let locale of acceptedLocalesByPriority) {
+                        let regexLang = new RegExp('^' + localeToLanguage(locale));
+                        if (languageEntry.match(regexLang)) {
+                            language = languageEntry;
+                            break languageLoop;
+                        }
                     }
                 }
-            }
         }
         else
             language = navigator.language;

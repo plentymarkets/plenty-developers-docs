@@ -1,0 +1,101 @@
+= User guide style guide
+
+The user guide describes the plugin’s functions in relation to the plentymarkets system and provides valuable tips for using the plugin. Take a practical approach and assume that the user has a clear objective. Provide all information necessary to fulfil this objective.
+
+Most importantly, keep your guide up-to-date when publishing a new version of your plugin.
+
+Try to pursue the following values when providing instructions:
+
+* *Cooperative*: only include information that is meaningful and creates value. Use specific navigation tools to enable readers to solve their questions as fast as possible, such as a table of contents or references to specific sections in the user guide.
+* *Clear*: use plain language consisting of short, active sentences and positive sentence constructions, if possible.
+* *Natural*: write as if you sat down with the user and talked to them. Address users directly and also use contractions now and again.
+
+For further information on how to realise these values, as well as some examples, see the corresponding section of this style guide.
+
+== Cooperate with your users
+
+The way you structure information in your guide impacts how easily users can find what they need at just the right time. There are several structural elements to make information more accessible:
+
+A good *document structure* allows users to find the information they're looking for through skimming. You can achieve this by using headings, lists and tables. Also, start with general information, requirements and setup information before becoming more specific.
+
+Adding sections to your user guide lets you employ a *table of contents*. A table of contents gives users an overview of everything covered in the guide at a glance. +
+While Markdown has no such feature by default, your IDE probably has an extension to generate a table of contents automatically, for example link:https://atom.io/packages/markdown-toc[markdown-toc (Atom)^] or link:https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc[Markdown-TOC (Visual Studio Code)^].
+
+Use *links* to provide readers with general additional information, which is not required for the instructions, or to give more context. It's possible to link to the plentymarkets manual or other external pages.
+
+Indicate links as keywords or a number of words which appropriately cover the link's content, but don't indicate links as menu paths, URLs, "here", and so on.
+
+With *admonition blocks*, you can highlight specific information. Use admonition blocks via link:https://getbootstrap.com/docs/4.0/components/alerts/[Bootstrap alerts^]. Use `info` for tips and tricks and `warning` in case users have to take special care with certain configurations.
+
+Warnings should always include a way to fix problems that may arise or, if the user cannot fix the problem themselves, a contact person.
+
+== Be clear
+
+Structuring your document and including navigation tools helps users find the content they need. But, beyond that it's important that descriptions and instructions are clear and easy to understand.
+
+*Structure* isn't only important at the document level, but also when writing paragraphs and individual sentences. Each paragraph should cover only one topic. Start a new paragraph to introduce a new topic. Some paragraphs may be very short as a result, but that's fine.
+
+At the sentence level, use a logical sentence structure. First, describe the objective, then tell the user how to accomplish this objective. For example, explain the function of a setting first and tell the user how to carry out the setting second.
+
+Use *link:https://plainlanguage.gov/resources/checklists/checklist/[plain language^]*. Plain language guidelines are designed to make texts accessible to as many readers as possible. Some basic examples include using the active voice and keeping sentences short. For a complete checklist, see the link above. +
+The German equivalent is the guide link:http://www.leichtesprache.com/dokumente/upload/21dba_regeln_fuer_leichte_sprache.pdf[Die Regeln für Leichte Sprache^].
+
+Finally, take special care to be consistent in how you call certain things. This includes both elements in your UIs, such as buttons and labels, and general terminology. Pick one name and stick to it. If possible, try to be consistent with plentymarkets terminology, too. For example, use "item" instead of "article".
+
+== Be natural
+
+There are a few methods you can use to make your text sound more natural, which helps to convey your message. One of them is to *use common words*. If you can use common words instead of domain specific terminology, you should almost always do so. An exception is when you're sure the user knows enough about the domain to understand the term.
+
+Other ways of sounding natural include *addressing the user directly* and *using contractions*.
+
+While sounding natural is important, there are some limits. For example, in speech it's common to add adjectives and other elements as filler words, or to use parantheses to add additional information. Avoid these types of elements and constructions in writing. They can interfere with the clarity of the text.
+
+== Example user guide
+
+Below, you can find an excerpt of the billiger.de user guide. This guide incorporates the principles discussed so far.
+
+=== ElasticExportBilligerDE plugin user guide
+
+billiger.de is a German price search engine certified by TÜV. The platform also offers test reports and customer reviews.
+
+By installing the billiger.de plugin you will receive the export format *BilligerDE-Plugin*. Use this format to exchange data between plentymarkets and billiger.de using the elastic export.
+
+==== Getting started
+
+In order to use the billiger.de format in plentymarkets, you have to meet the following requirements:
+
+* Register as seller with http://www.billiger.de/[billiger.de^].
+* Install the link:https://marketplace.plentymarkets.com/en/plugins/sales/marktplaetze/elasticexport_4763[Elastic Export^] plugin.
+* Install the link:http://https://marketplace.plentymarkets.com/en/plugins/channels/preisportale/elasticexportbilligerde_4901[ElasticExportBilligerDE^] plugin.
+
+For further information on how to install plugins, refer to the link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[Installing added plugins^] page of the plentymarkets manual.
+
+Install the plugins *Elastic Export* and *ElasticExportBilligerDE* in a plugin set that is linked to the default client. You will not be able to use the export format if you install the plugins in another plugin set.
+
+==== Setting up the data format BilligerDE-Plugin in plentymarkets
+
+Once the plugins *Elastic Export* and *ElasticExportBilligerDE* are installed in your plentymarkets system, you can create the export format *BilligerDE-Plugin*. For further information on export formats, see the link:http://https://knowledge.plentymarkets.com/en/data/exporting-data/elastic-export[Elastic export^] page of the plentymarkets manual.
+
+==== Creating a new export format
+
+. Go to *Data » Elastic export*.
+. Click on *New export*.
+. Carry out the desired settings. Pay attention to the explanations given in the table <<formatting-settings-billigerde, Format settings for BilligerDE>>.
+. *Save* the settings. +
+icon:arrow-right[] The export format *BilligerDE-Plugin* is given an ID and appears in the overview within the *Exports* tab.
+
+[#formatting-settings-billigerde]
+.Format settings for BilligerDE
+[cols="1,3"]
+|===
+|Setting |Explanation
+
+|*Name*
+|Enter a name. The export format is listed by this name in the overview within the *Exports* tab.
+
+|*Type*
+|Select the type *item* from the drop-down list.
+
+|*Format*
+|Select *BilligerDE-Plugin*.
+|===

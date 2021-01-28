@@ -1,0 +1,275 @@
+= Updating plugins to Ceres 5 compatibility
+
+On this page, you will find an overview of relevant information regarding the changes made to Ceres for the release of Ceres 5. For a complete list of all Ceres 5 changes, please use the link:https://github.com/plentymarkets/plugin-ceres/compare/4.6.0...5.0.0[GitHub compare function^]. This pages inludes information on the following
+aspects:
+
+* <<_single_file_components, Single file components>>
+* <<_code_splitting, Code splitting>>
+* <<_facet_container, Facet extension container in IO>>
+* <<_scss_changes, SCSS changes>>
+* <<_css_changes, CSS changes>>
+* <<_template_changes, Template changes>>
+
+== Single file components
+
+For the latest major version Ceres 5.0, we reworked the file structure of many components. In the past, components usually consisted of 2 files: a TWIG file and a Javascript file. In order to improve maintainability and performance, these files have mostly been combined into single Vue.js components, which we call single file components, or SFC for short. These changes necessitate adjustments on part of theme developers. In this chapter you will learn which changes have been made to the components and what you need to watch out for when developing themes.
+
+=== Structure of single file components
+
+The components have been redesigned to combine the Twig and JS files into one. Therefore, the single file components now consist of two sections, the *template* section, which contains the content that used to be in the Twig file, and the *script* section, which contains the Javascript part. There are slight changes to how the syntax works for these two sections:
+
+==== Template section of single file components
+
+The interpolation has been changed in the *template* section. Instead of using the dollar sign and curly brackets (e.g. `${ country.currLangName }`), you now need to use double curly brackets instead (e.g. `{% verbatim %}{{ country.currLangName }}{% endverbatim %}`).
+
+You can no longer use the instance variable `$this` in the component. You can no longer include Twig syntax in the component. If you want to include Twig content, you need to import it as a property. You can no longer access the window.app object like before. Instead, we added the variable `$ceres` which contains the content of what formerly was the window.app object.
+
+We also added the variable `$translate`, which serves to access multilingualism keys via the translation service.
+
+==== Script section of single file components
+
+In the script section, the syntax remains largely the same. There are, however, 2 exceptions:
+
+. In order to access the window.app object in the script section, you can use the variable `this.$ceres`.
+. In order to access the translation service in the script section, you can use `this.$translate`.
+
+=== Helper components: Intersect and Lazy Load
+
+We added 2 helper components that facilitate performance improvements: the intersect component and the lazy load component. Via these helper components, it is possible to equip individual components with lazy loading/lazy mounting.
+
+Using the lazy loading helper component, the embedded component is only loaded when the lazy loaded component enters the visible area in the online store. With the help of the intersect component, the embedded component is always loaded, but is only mounted and rendered when the intersect component enters the visible area in the online store.
+
+Both helper components (*Intersect.vue* and *LazyLoad.vue*) are located in the Ceres plugin in the `ressources/js/app/components/common` folder.
+
+Below you will find 2 code snippets, the first of which illustrates the use of the lazy-load component and the second of which illustrates how to use the intersect component.
+
+[source,twig]
+----
+<lazy-load component="component-to-load">
+    <component-to-load>
+    </component-to-load>
+</lazy-load>
+----
+
+[source,twig]
+----
+<intersect>
+    {# content to not load #}
+    <category-item></category-item>
+
+    {# display while not loaded / when to load #}
+    <template #loading>
+        <div class="category-item-placeholder w-100 invisible">
+            <a href="{{ Twig.print("item.data | itemURL(buildUrlWithVariationId | json_encode)") }}" class="small">
+                <i class="fa fa-image"></i>
+                <span>{{ Twig.print("item.data | itemName") }}</span>
+            </a>
+        </div>
+    </template>
+</intersect>
+----
+
+Here, the div in the template section includes a placeholder that is visible while the component is not yet visible.
+
+=== Overwriting single file components
+
+If you want to overwrite Ceres single file components, there are 2 ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every single instance of the component will be replaced by your content.
+
+Take a look at how individual components can be overridden:
+
+[source,twig]
+----
+<category-item template-override="#other-comp"></category-item>
+----
+
+Here, the `template-override` property determines that the current component `<category-item>` is overridden by another component, which here is indicated with the placeholder #other-comp.
+
+For overwriting components globally for the entire online store, you need to set the type of the script tag as "x/template", specify which component you want to overwrite in the `data-component` property, and include your content in the script tags. Take a look at the example below:
+
+[source,twig]
+----
+<script type="x/template" data-component="basket-preview">
+    <div>
+        ${  }
+    </div>
+</script>
+----
+
+== Code splitting in Ceres 5
+
+In the past, if you wanted to include additional Javascript or CSS styles in your plugin, one possibility was to add it via the existing `Script.AfterScriptsLoaded` and `Template.Style` xref:plentyshop-plugins:template-containers.adoc[template containers]. As a result, the added JS and CSS were loaded in the entire online store, negatively impacting its performance.
+
+As a consequence, we added 4 new template containers, which serve to only load scripts and styles where they are actually needed. You should make use of these whenever you want to add JS or CSS via your plugin, that is only needed in a particular area of the online store.
+
+The Ceres homepage still uses the aforementioned `Script.AfterScriptsLoaded` and `Template.Style` template containers. The two containers `SingleItem.AfterScriptsLoaded` and `SingleItem.Styles` have been exclusively added to incorporate scripts and styles in the single item view. The two containers `Checkout.AfterScriptsLoaded` and `Checkout.Styles` have been added to incorporate scripts and styles in the checkout as well as on other pages that are not SEO-relevant, such as content pages, the my account area, and the basket.
+
+For each script or style you want to add to Ceres, you should first evaluate in which areas of the online store it is needed and incorporate it accordingly.
+
+=== Adding a script to the SingleItem.AfterScriptsLoaded container
+
+In this example, our theme plugin wants to add a different image carousel to the single item view. The script for the image carousel will only be needed in one specific area of the online store and can therefore be integrated via the `SingleItem.AfterScriptsLoaded` template container.
+
+The plugin.json file of your plugin contains, among other things, the specified template container for your data providers. The code example below shows the data provider object that contains the path the MyCarousel PHP class and the designated default template container, also called a layout container. As you can see, we specified `SingleItem.AfterScriptsLoaded` as the default container, since we want our carousel script to be included in the single item view. If you want to include Javascript in the checkout, the process is analogous to the one described here.
+
+.MyCarousel/plugin.json
+[source,json]
+----
+"dataProviders": [
+    {
+    "key"           :"MyCarousel\\Providers\\MyCarouselCodeProvider",
+    "name"          :"My Carousel",
+    "description"   :"Includes the code for a different image carousel for the single item.",
+    "defaultLayoutContainer": "Ceres::SingleItem.AfterScriptsLoaded"
+    }
+]
+----
+
+In the MyCarousel code provider, we need to refer to the Twig file containing the script for the carousel we want to implement.
+
+.MyCarousel/src/Providers/MyCarouselCodeProvider.php
+[source,php]
+----
+<?php
+
+namespace MyCarousel\Providers;
+
+use Plenty\Plugin\Templates\Twig;
+
+class MyCarouselCodeProvider
+{
+    public function call( Twig $twig)
+    {
+        return $twig->render('MyCarousel::MyCarouselCode');
+    }
+}
+----
+
+Lastly, the Twig file `MyCarouselCode.twig`, to which the PHP class is referring for the render function, includes a single script, which contains the script we want to include in the specified template container.
+
+[source,twig]
+----
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+----
+
+// @TODO facet container in IO (see GoogleDoc)
+
+== IO facet extension container
+
+As per usual, a new IO version accompanies the release of Ceres 5. If you are an external developer and want to integrate an additional facet into the online store, the latest version of IO facilitates the process for you.
+
+We moved to `facetExtension` from IO to the plentymarkets core functionality, thereby eliminating the need to listen to a specific event, in order to load the added facet at the right moment. Take a look how the facet extension worked in the past:
+
+[source,php]
+----
+$dispatcher->listen(
+            'IO.initFacetExtensions',
+            function ($event) {
+$facetExtensionContainer = pluginApp(FacetExtensionContainer::class);
+        $facetExtensionContainer->addFacetExtension(pluginApp(CategoryFacet::class));
+
+        }
+    );
+----
+
+By moving the facet extension logic to the core functionality, there's no more need for the first part of the code snippet, in which you would have listened to the specific event of the facet extension. Take a look at the same process from above, but simplified for IO v5:
+
+[source,php]
+----
+$facetExtensionContainer = pluginApp(FacetExtensionContainer::class);
+        $facetExtensionContainer->addFacetExtension(pluginApp(CategoryFacet::class));
+----
+
+== Overwriting result fields
+
+Similar to the facet extension container detailed above, we relocated the logic for overwriting result fields to the plentymarkets core, thereby removing the need to listen to a specific event in order to overwrite the result fields.
+
+Take a look how overwriting result fields worked in the past:
+
+[source,php]
+----
+$dispatcher->listen( 'IO.ResultFields.*', function(ResultFieldTemplate $container) {
+    $container->setTemplates([
+                ResultFieldTemplate::TEMPLATE_BASKET_ITEM => 'MyPlugin::ResultFields.BasketItem'
+                ]);
+}, self::PRIORITY);
+----
+
+By moving the logic to the core, there's no more need for the first part of the code snippet, in which you would have listened to the specific event of the IO result fields. Take a look at the same process from above, but simplified for IO v5:
+
+[source,php]
+----
+$container = pluginApp(ResultFieldTemplate::class);
+$container->setTemplate(ResultFieldTemplate::TEMPLATE_BASKET_ITEM,'MyPlugin::ResultFields.BasketItem');
+----
+
+Be sure to include the following line in the service provider of your plugin, so that the *ResultFieldTemplate* helper is properly integrated:
+
+`use Plenty\Modules\Webshop\ItemSearch\Helpers:ResultFieldTemplate`
+
+== SCSS changes
+
+In the frame of performance optimisation, a number of obsolete SCSS
+variables have been replaced. The table below lists all replacements:
+
+[cols="2"]
+|===
+|Previous SCSS variable |New SCSS variable
+
+|$gray-lightest
+|$gray-100
+
+|$gray-lighter2
+|$gray-200
+
+|$gray-lighter
+|$gray-300
+
+|$gray-light
+|$gray-500
+
+|$gray
+|$gray-600
+
+|$gray-dark
+|$gray-700
+
+|$gray-darker
+|$gray-900
+
+|$brand-primary
+|$primary
+
+|$brand-secondary
+|$secondary
+
+|$brand-info
+|$info
+
+|$brand-success
+|$success
+
+|$brand-warning
+|$warning
+
+|$brand-danger
+|$danger
+|===
+
+== CSS changes
+
+For Ceres 5, a lot has changed in terms of CSS styles. We removed
+obsolete classes that hadn't been used for some time, we removed
+duplicate content, and integrated the existing Bootstrap classes to a
+larger degree. The changes are too extensive to list on this page.
+Below, you can find a link to the complete CSS changes for Ceres 5.
+
+xref:plentyshop-plugins:ceres-5-style-changes.adoc[See all changed CSS classes]
+
+== Template changes
+
+For Ceres 5, many templates received on overhaul to improve the
+performance of the online store. Since these changes are too extensive
+to be listed on this page, you can find a link to the template changes
+below.
+
+xref:plentyshop-plugins:reference-ceres-5-template-changes.adoc[See all changed templates]

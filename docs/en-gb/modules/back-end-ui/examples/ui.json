@@ -1,0 +1,24 @@
+{
+ "defaultEntryPoint": "index.html",
+ "namespace": "MyPlugin",
+ "menuEntries": [
+   {
+     "label": "Settings",
+     "menu": "settings/orders/myplugin",
+     "urlKey": "basic-settings",
+     "entryPoint": "index.html?action=basic-settings"
+   },
+   {
+     "label": "Address settings",
+     "menu": "settings/orders/myplugin",
+     "urlKey": "address-settings",
+     "entryPoint": "index.html?action=address-settings"
+   },
+   {
+     "label": "Shipping settings",
+     "menu": "settings/orders/myplugin",
+     "urlKey": "shipping-settings",
+     "entryPoint": "index.html?action=shipping-settings"
+   }
+ ]
+}

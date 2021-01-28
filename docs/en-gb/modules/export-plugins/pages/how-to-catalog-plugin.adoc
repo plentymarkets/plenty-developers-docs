@@ -1,0 +1,653 @@
+= Catalog
+
+This tutorial will introduce you to the catalog export. We will develop a small plugin that exports variations to a fictional marketplace. You will learn how to create and work with a catalog to allow your users to map their data to a predefined format. If you are just getting started developing plugins for plentymarkets it is recommended to start with establishing your IDE and xref:ROOT:tutorial.adoc[creating your first plugin].
+
+At the end of this tutorial you will have developed a plugin that exports variations in the format of a fictional marketplace. In the UI the result will look like this
+
+image::catalog-result.png[width=640, height=360]
+
+The complete source code for this tutorial is available link:https://github.com/plentymarkets/BasicCatalogExport[here.]
+
+== Creating the folders
+
+[source]
+----
+BasicCatalogExport/
+    ├── src/
+    │   ├── Controllers/
+    │   │   └── VariationExportController.php
+    │   │
+    │   ├── DataProviders/
+    │   │   ├── FirstBaseDataProvider.php
+    │   │   ├── FirstKeyDataProvider.php
+    │   │   └── FirstNestedKeyDataProvider.php
+    │   │
+    │   ├── Providers/
+    │   │    ├── BasicCatalogExportServiceProvider.php
+    │   │    ├── BasicCatalogExportRouteServiceProvider.php
+    │   │    ├── BasicCatalogExportTemplateProvider.php
+    │   │    └── CatalogBootServiceProvider.php
+    │   │
+    │   └── Services/
+    │       └── VariationExportService.php
+    │
+    └── plugin.json // plugin information
+----
+
+== What is a catalog?
+
+Before we can start to develop a plugin that uses the catalog, we first need to clarify what a catalog actually is and of which components it consists of. A catalog describes the relation between source data in plentymarkets and a specific export format. The format is predefined by a template. This template is created by the plugin developer and can be used to create a new catalog in the plentymarkets backend. The actual data can then be mapped individually by the user of the plugin. A plugin needs to define the following components to work with a catalog:
+
+* <<_data_providers, Data providers>>
+* <<_templates, Templates>>
+
+The structure of a catalog roughly looks like this:
+
+image::catalog-structure.png[width=640, height=360]
+
+=== Data providers
+
+Data providers define the available result fields that can be exported. A field in a data provider will be mappable in the catalog UI. Before it gets displayed it has to be registered in a template. There are different kinds of data providers and you will have to choose the right one for your use case. We will use each of them once in this tutorial so you will understand their different behaviors.
+
+=== Templates
+
+A template is the core of a catalog. It combines the data providers and there defines the export format. Every template will be available in the UI to create a new catalog from it. In the UI the template is responsible for all the fields visible on the left side. It also defines how to map the data.
+
+There are two different kinds of mappings: mappings and simple Mappings. A mapping is used to fill fields with predefined values. A good example would be categories. A marketplace provides categories and expects the merchants to link their articles to one or more of them. To accomplish this the merchant has to map their own categories to categories of the marketplace. In other words, a mapping in the context of the catalog is to map a predefined value dependent on a value in plentymarkets.
+
+A simple mapping is used to just write data out of plentymarkets into a key of the export format. An example could be a price. The marketplace probably doesn't provide a predefined list of possible prices and simply expects a value. To fill the price field the merchant needs to choose a source field, e.g. a sales price in plentymarkets. So a simple mapping defines a source field in plentymarkets that will be exported with a specified key.
+
+== Using catalogs in a plugin
+
+To make the concept of a catalog a bit more comprehensible we will develop the plugin with a simplified data format for a fictional marketplace. The marketplace expects the following format for its articles:
+
+[source,php]
+----
+{
+    "name": string
+    "description": string,
+    "sku": string
+    "price": float,
+    "stockNet": int,
+    "brand": enum(brand1, brand2, brand3),
+    "categories": array(int)
+}
+----
+
+The fields name, price, stock, sku and categories are required. The categories field expects ids. The full list of categories of the marketplace looks like the following:
+
+[source,php]
+----
+[
+    {
+        "id": 1,
+        "label": "Men"
+        "parentId": null
+        "children": [
+            3
+        ]
+    },
+    {
+        "id": 2,
+        "label": "Women"
+        "parentId": null
+        "children": [
+            4
+        ]
+    },
+    {
+        "id": 3,
+        "label": "Shoes"
+        "parentId": 1
+        "children": []
+    },
+    {
+        "id": 4,
+        "label": "Shoes"
+        "parentId": 2
+        "children": []
+    }
+]
+----
+
+Since the target format is known now we can start to design the data providers. To use the catalog correctly it is important to understand when to use which data provider. Currently there are 3 different types:
+
+* The BaseDataProvider, which is used for simple mappings
+* The KeyDataProvider, which is used for mappings with non encapsulated data (e.g. brands)
+* The NestedKeyDataProvider, which is used for mappings with encapsulated data (e.g. categories)
+
+=== Data providers
+
+Before we can export variations we need to define a schema which every result of the item will conform to. We will start building that schema at the foundation: the data providers. Since we know the article format of the marketplace we can now plan which data has to be represented by which data provider. Name, description, sku, price and stock have no predefined values and therefore belong into a BaseDataProvider. Brand is an enum of not encapsulated values and should therefore be filled with a KeyDataProvider. Categories have predfined encapsulated values, so a NestedKeyDataProvider should be the right choice.
+
+=== Base data provider
+
+We will now create a php class named FirstBaseDataProvider which will extend Plenty\Modules\Catalog\DataProviders\BaseDataProvider The class should look like this:
+
+[source,php]
+----
+<?php
+
+use Plenty\Modules\Catalog\DataProviders\BaseDataProvider;
+
+class FirstBaseDataProvider extends BaseDataProvider
+{
+    /**
+    * @return array
+    */
+    public function getRows(): array
+    {
+        // TODO: Implement getRows() method.
+    }
+}
+----
+
+The getRows() method returns an array of fields. Every field has to contain the following keys:
+
+* key => The name of the field in every export result
+* label => The name that will be displayed in the catalog UI
+* required => defines if this field has to be mapped
+
+The field of our price example would look like this:
+
+[source,php]
+----
+[
+    'key' => 'price',
+    'label' => 'Price', //In your plugin it would make sense to add translations for this field, since it will be displayed in the UI
+    'required' => true
+]
+----
+
+After adding the fields that should be mappable our getRows() method should now look similar to this:
+
+[source,php]
+----
+/**
+* @return array
+*/
+public function getRows(): array
+{
+    return [
+        [
+            'key' => 'name',
+            'label' => 'Name',
+            'required' => true
+        ],
+        [
+            'key' => 'description',
+            'label' => 'Description',
+            'required' => false
+        ],
+        [
+            'key' => 'sku',
+            'label' => 'SKU',
+            'required' => true
+        ],
+        [
+            'key' => 'price',
+            'label' => 'Price',
+            'required' => true
+        ],
+        [
+            'key' => 'stockNet',
+            'label' => 'Stock',
+            'required' => true
+        ]
+    ];
+}
+----
+
+=== Key data provider
+
+The KeyDataProvider behaves a bit different than the BaseDataProvider. It collects possible values under a single key. therefore the structure of the data provider class looks different. The new class extends Plenty\Modules\Catalog\DataProviders\BaseDataProvider It should look like this:
+
+[source,php]
+----
+<?php
+
+namespace BasicCatalogExport\DataProviders;
+
+use Plenty\Modules\Catalog\DataProviders\KeyDataProvider;
+
+/**
+ * Defines fields for a mapping
+ *
+ * Class FirstKeyDataProvider
+ * @package BasicCatalogExport\DataProviders
+ */
+class FirstKeyDataProvider extends KeyDataProvider
+{
+    /**
+     * @return array
+     */
+    public function getRows(): array
+    {
+        // TODO: Implement getRows() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey(): string
+    {
+        // TODO: Implement getKey() method.
+    }
+}
+----
+
+In our example the marketplace is expecting the key "brand" so that is what our getKey() method should return. The different values will be collected in an array with the following format:
+
+* value => The value that will be exported
+* label => The name that will be displayed in the catalog UI
+
+After filling the methods they should look like this:
+
+[source,php]
+----
+/**
+* @return string
+*/
+public function getKey(): string
+{
+    return 'brand';
+}
+
+/**
+* @return array
+*/
+public function getRows(): array
+{
+    return [
+        [
+            'value' => 'brand1',
+            'label' => 'A brand'
+        ],
+        [
+            'value' => 'brand2',
+            'label' => 'Another brand'
+        ],
+        [
+            'value' => 'brand3',
+            'label' => 'The third brand'
+        ],
+    ];
+}
+----
+
+=== Nested key data provider
+
+At this point the only missing field is "categories". The possible values are encapsulated (so they need to be displayed in a tree in the UI) and therefore belong into a NestedKeyDataProvider. Our new class should look like this:
+
+[source,php]
+----
+<?php
+
+namespace BasicCatalogExport\DataProviders;
+
+use Plenty\Modules\Catalog\DataProviders\NestedKeyDataProvider;
+
+/**
+ * Define fields for a mapping that will be displayed as a tree in the UI
+ *
+ * Class FirstNestedKeyDataProvider
+ * @package BasicCatalogExport\DataProviders
+ */
+class FirstNestedKeyDataProvider extends NestedKeyDataProvider
+{
+
+    /**
+     * @return array
+     */
+    public function getRows(): array
+    {
+        // TODO: Implement getRows() method.
+    }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function getDataByValue(string $id): array
+    {
+        // TODO: Implement getDataByValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey(): string
+    {
+        // TODO: Implement getKey() method.
+    }
+
+    /**
+     * @return array
+     */
+    public function getNestedRows($parentId): array
+    {
+        // TODO: Implement getNestedRows() method.
+    }
+}
+----
+
+The NestedKeyDataProvider behaves a lot like the KeyDataProvider, but it enables the catalog UI to work with encapsulated data. The getKey() method is identical to the method in the KeyDataProvider, so in our case it just returns "categories", however since we may sell our articles in multiple categories (e.g. unisex shoes will be sold in Men » Shoes and Women » Shoes) we can define the key as an array (this behavior is identical with keys in all types of data providers). To do that we just have to add [] at the end of the key. So we return "categories[]"
+
+A NestedKeyDataProvider needs to be able to do 3 things. It has to be able to show all values on the highest level, which in our case means it has to return all values that have no parentId, it has to be able to load all child values of a given parent and it has to be able to load values by the ID.
+
+Let's take a look at the code for our example:
+
+[source,php]
+----
+<?php
+
+namespace BasicCatalogExport\DataProviders;
+
+use Plenty\Modules\Catalog\DataProviders\NestedKeyDataProvider;
+
+/**
+ * Define fields for a mapping that will be displayed as a tree in the UI
+ *
+ * Class FirstNestedKeyDataProvider
+ * @package BasicCatalogExport\DataProviders
+ */
+class FirstNestedKeyDataProvider extends NestedKeyDataProvider
+{
+    protected $categories = [
+        1 => [
+            'id' => 1,
+            'label' => 'Men',
+            'hasChildren' => true,
+            'level' => 0,
+            'children' => [3]
+        ],
+        2 => [
+            'id' => 2,
+            'label' => 'Women',
+            'hasChildren' => true,
+            'level' => 0,
+            'children' => [4]
+        ],
+        3 => [
+            'id' => 3,
+            'label' => 'Shoes',
+            'level' => 1,
+            'hasChildren' => false
+        ],
+        4 => [
+            'id' => 4,
+            'label' => 'Shoes',
+            'level' => 1,
+            'hasChildren' => false
+        ],
+    ];
+
+    /**
+     * @return array
+     */
+    public function getRows(): array
+    {
+        $rows = [];
+        foreach ($this->categories as $row) {
+            if (isset($row['level']) && $row['level'] == 0) {
+                $rows[] = [
+                    'label' => $row['label'],
+                    'value' => $row['id'],
+                    'hasChildren' => $row['hasChildren']
+                ];
+            }
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function getDataByValue(string $id): array
+    {
+        if (!isset($this->categories[$id])) {
+            return [];
+        }
+
+        $category = [
+            'label' => $this->categories[$id]['label'],
+            'value' => $this->categories[$id]['id'],
+            'hasChildren' => $this->categories[$id]['hasChildren'],
+        ];
+
+        return $category;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey(): string
+    {
+        return 'categories[]';
+    }
+
+    /**
+     * @param $parentId
+     * @return array
+     */
+    public function getNestedRows($parentId): array
+    {
+        $rows = [];
+
+        if (isset($this->categories[$parentId]) && isset($this->categories[$parentId]['children'])){
+            foreach ($this->categories[$parentId]['children'] as $categoryId) {
+                $rows[] = [
+                    'label' => $this->categories[$categoryId]['label'],
+                    'value' => $this->categories[$categoryId]['id'],
+                    'hasChildren' => $this->categories[$categoryId]['hasChildren']
+                ];
+            }
+        }
+
+        return $rows;
+    }
+}
+----
+
+As you can see this one is certainly a bit more complex than the others, so let's look at all the methods independently to clarify what this class is doing. In this example we created a protected property that contains all categories hardcoded in an array. This works fine in this example but should be exchanged for better solutions if bigger amounts of data are provided (e.g. a database table).
+
+Let's go through in order. The first method is getRows(). This method is supposed to provide all entries that are found on the highest level of the nested data. In our case all categories the marketplace provided that have no parentId have to be returned. To do that a "level" key was added to the array so all necessary categories are easily identifiable.
+
+The next method is getDataByValue() and is responsible for loading already mapped values in the UI. This method expects an identifier (in most cases this will be an ID) and has to return the data entry that matches this identifier. In the example that is pretty easy to accomplish since the array key is always matching the ID.
+
+The getKey() method is serving the exact same purpose as in the KeyDataProvider and therefore just returns the key under which the mapped values will be exported.
+
+The last method we need to cover is the getNestedRows() method. It is used by the UI to load nested data in the tree by providing the parentId. So this method needs to return the children of that parent. In our example that is done by iterating over the "children" property of the parent entry.
+
+That covers all the basics of data providers and therefore we are now ready to link them to a template.
+
+=== Registering a template
+
+[[api-docs-basics]]
+In the following part you will learn how you can register templates. To do that we first need to define a a provider that will fill the template with data. Let's go through the class methods:
+
+getMappings(): This method defines the sections of the template and connects them to the data providers. The structure looks like this:
+
+* identifier: a string to identify the section
+* label: A short description that is displayed before the data fields
+* isMapping: A boolean => true = mapping, false = simple mapping
+* provider: The classname of the provider class that fills this section of the template
+
+getFilter(): Defines the filters that are used to load the data.
+
+getPreMutators(): Defines the callback functions that are run on the data before the mapping.
+
+getPreMutators(): Defines the callback functions that are run on the data after the mapping.
+
+getSkuCallback(): Defines the callback function that is run if an sku is mapped
+
+getSettings(): Defines the settings (settings are not implemented yet)
+
+getMetaInfo(): Defines general information e.g. data you need in your plugin when exporting
+
+After implementing our required class it will look like this:
+
+[source,php]
+----
+<?php
+
+namespace BasicCatalogExport\Providers;
+
+use BasicCatalogExport\DataProviders\FirstBaseDataProvider;
+use BasicCatalogExport\DataProviders\FirstKeyDataProvider;
+use BasicCatalogExport\DataProviders\FirstNestedKeyDataProvider;
+use Plenty\Modules\Catalog\Templates\BaseTemplateProvider;
+
+/**
+ * Class BasicCatalogExportTemplateProvider
+ * @package BasicCatalogExport\Providers
+ */
+class BasicCatalogExportTemplateProvider extends BaseTemplateProvider
+{
+    /**
+     * @return array
+     */
+    public function getMappings(): array
+    {
+        return [
+            [
+                'identifier' => 'simpleMapping',
+                'label' => 'Base data',
+                'isMapping' => false, // simple mapping
+                'provider' => FirstBaseDataProvider::class,
+            ],
+            [
+                'identifier' => 'complexMapping',
+                'label' => 'Key data',
+                'isMapping' => true, // complex mapping
+                'provider' => FirstKeyDataProvider::class,
+            ],
+            [
+                'identifier' => 'complexNestedMapping',
+                'label' => 'Nested key data',
+                'isMapping' => true, // complex mapping
+                'provider' => FirstNestedKeyDataProvider::class,
+            ]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilter(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return callable[]
+     */
+    public function getPreMutators(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return callable[]
+     */
+    public function getPostMutators(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return callable
+     */
+    public function getSkuCallback(): callable
+    {
+        return function ($value, $item) {
+            return $value;
+        };
+    }
+
+    /**
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetaInfo(): array
+    {
+        return [];
+    }
+}
+----
+
+The template can now be registered. To do that we need an instance of the TemplateContainerContract and call register() method. It expects 4 parameters:
+
+* name: The name of the template
+* type: The type of the template (e.g. the marketplace)
+* provider: The provider class that will fill the template with data
+* exportType: The specific type of the export. Default value is "variation" (currently the only type)
+
+Let's go ahead and implement this in the CatalogBootServiceProvider. The source code should look like this:
+
+[source,php]
+----
+<?php
+
+namespace BasicCatalogExport\Providers;
+
+use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
+use Plenty\Plugin\ServiceProvider;
+
+class CatalogBootServiceProvider extends ServiceProvider
+{
+    /**
+     * @param TemplateContainerContract $container
+     */
+    public function boot(TemplateContainerContract $container) {
+        // Creating a new template, The provider class is responsible for the booting process
+        $container->register(BasicCatalogExportServiceProvider::PLUGIN_NAME, 'exampleType', BasicCatalogExportTemplateProvider::class);
+    }
+}
+----
+
+The template is now available and can be used to create a catalog in the UI.
+
+=== Exporting variations through a catalog
+
+The following code example shows how to export variations:
+
+[source,php]
+----
+    public function export(
+        CatalogRepositoryContract $catalogRepository,
+        CatalogExportRepositoryContract $catalogExportRepository,
+        TemplateContainerContract $templateContainer
+    )
+    {
+        $catalogs = $catalogRepository->all();
+
+        foreach ($catalogs->getResult() as $catalog) {
+            $template = $templateContainer->getTemplate($catalog['template']);
+
+            if ($template->getName() != BasicCatalogExportServiceProvider::PLUGIN_NAME) {
+                continue;
+            }
+
+            $exportService = $catalogExportRepository->exportById($catalog['id']);
+            // Here you can define filters etc. if needed
+            $result = $exportService->getResult();
+            foreach ($result as $page) {
+                //$page now contains the data of the export
+                return $page;
+            }
+        }
+        return null;
+    }
+----
+
+In this example we first load all catalogs and check which of them are created through our plugin. Every catalog that was created through our plugin will then be exported through the CatalogExportRepository. As a Result we get an instance of the CatalogExportService class which can be used to provide filters and other settings. As soon as we are done defining the settings we can run the getResult() method which will return an instance of CatalogExportResult. This class implements the iterator interface and can therefore be used in a foreach to retrieve all result pages.

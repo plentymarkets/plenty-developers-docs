@@ -1,59 +1,94 @@
 .Getting started
-* xref:setting-up-dev-environment.adoc[Setting up the environment]
-* Creating the plugin structure
-* Using the plugin interface
-* Writing to the data log
-
-.Hello World Tutorials
-* xref:hello-world-simple.adoc[Hello World Simple]
-* xref:hello-world-sdk.adoc[Hello World SDK]
-* xref:hello-world-backend.adoc[Hello World Backend]
+include::tutorial:partial$nav.adoc[]
 
 .Plugin basics
-* xref:architecture.adoc[Architecture]
-* xref:plugin-def.adoc[Plugin definition]
+* xref:plugin-architecture.adoc[Architecture]
+* xref:plugin-definition.adoc[Plugin definition]
+* xref:development-workflow.adoc[Development workflow]
 * Plugin interface
-** xref:plugin-interface.adoc[How to use the interface]
-** xref:plugin-interface-execute.adoc[How to execute code without authentication]
-** xref:plugin-interface-extend.adoc[How to extend the interface]
-** xref:plugin-interface-paginate.adoc[How to paginate interface results]
-** xref:plugin-interface-reference.adoc[Plugin interface reference]
-* Configuring plugins
-** xref:plugins-config-overview.adoc[Overview]
-** xref:plugins-config-create.adoc[How to create a plugin configuration]
-** xref:plugins-config-options.adoc[Configuration options reference]
-** xref:plugins-config-assistant.adoc[How to create an assistant]
-** xref:plugins-config-assistant-ref.adoc[Assistant reference]
-** xref:plugins-config-assistant-style.adoc[Assistant style guide]
-* xref:crons.adoc[How to use crons]
+** xref:plugin-interface:interface-introduction.adoc[Plugin interface introduction]
+** xref:plugin-interface:interface-results-pagination.adoc[Paginating inteface results]
+* xref:hello-world-sdk.adoc[How to integrate an SDK]
+* Plugin configuration
+** Overview
+** How to create a plugin configuration
+** Configuration options reference
+** How to create an assistant
+** Assistant reference
+** Assistant style guide
+* Back end UI
++
+--
+include::back-end-ui:partial$nav.adoc[]
+--
++
 * Data storage
-** xref:data-store-overview.adoc[Overview]
-** xref:data-store-db.adoc[How to store data in a database]
-** xref:data-store-mem.adoc[How to store data in memory]
+** xref:data-storage:database-storage.adoc[Database storage]
+** xref:data-storage:memory-storage.adoc[Memory storage]
+** xref:data-storage:how-to-store-data.adoc[How to store data in a database]
 * Data log
 ** xref:data-log-overview.adoc[Overview]
-** xref:data-log-error.adoc[How to log errors]
-** xref:data-log-events.adoc[How to report events]
-* xref:automated-tests.adoc[How to write automated tests]
-
-.plentyShop plugins
-* Templates
-* ShopBuilder
-
-.Payment plugins
-* Overview
-
-.Shipping plugins
-* Overview
-
-.Catalogue plugins
-* Overview
+** xref:how-to-event-logging.adoc[How to log events]
+* xref:event-procedures.adoc[Event procedures]
 
 .REST API
-* Overview
-* How to use the REST API
-* xref:master@rest-api:ROOT:index.adoc[REST API reference]
+* xref:rest-api-guides:getting-started.adoc[REST API overview]
+* xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
+* xref:rest-api-guides:contact-data.adoc[How to query contact data]
+* xref:rest-api-guides:item-data.adoc[How to query item data]
+* xref:rest-api-guides:order-data.adoc[How to query order data]
+* xref:rest-api-guides:purchase-orders.adoc[How to query purchase order data]
+* xref:rest-api-guides:bulk-routes.adoc[How to use bulk routes]
+
+.plentyShop plugins
+* xref:plentyshop-plugins:template-setup.adoc[Template setup]
+* xref:plentyshop-plugins:template-overview.adoc[Template overview]
+* xref:plentyshop-plugins:template-containers.adoc[Template containers]
+* xref:plentyshop-plugins:how-to-template-containers.adoc[How to add template containers]
+* xref:plentyshop-plugins:default-layout-containers.adoc[Default layout containers]
+* xref:plentyshop-plugins:theme-plugins.adoc[Themes]
+* xref:plentyshop-plugins:how-to-plentyshop-multilingualism.adoc[Multilingualism]
+* xref:plentyshop-plugins:how-to-register-cookies.adoc[How to register cookies]
+* xref:plentyshop-plugins:content-caching.adoc[Content caching]
+* xref:plentyshop-plugins:cookbook.adoc[plentyShop cookbook]
+* Ceres 5
+** xref:plentyshop-plugins:ceres-5-update.adoc[Ceres 5 overview]
+** xref:plentyshop-plugins:reference-ceres-5-style-changes.adoc[CSS changes]
+
+.ShopBuilder plugins
+* xref:shopbuilder-plugins:shopbuilder-widgets.adoc[ShopBuilder widgets]
+* xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[How to build a ShopBuilder widget]
+* xref:shopbuilder-plugins:how-to-shopbuilder-presets.adoc[How to create ShopBuilder presets]
+* xref:shopbuilder-plugins:shopbuilder-dropzones.adoc[How to define dropzones]
+* xref:shopbuilder-plugins:theme-compatibility.adoc[How to make a theme ShopBuilder compatible]
+
+.Payment plugins
+* xref:payment-plugins:overview.adoc[Payment plugin overview]
+
+.Shipping plugins
+* xref:shipping-plugins:how-to-shipping-plugin.adoc[Shipping plugin overview]
+
+.Export format plugins
+* xref:export-plugins:how-to-elastic-export-plugin.adoc[Elastic export plugin]
+* xref:export-plugins:how-to-catalog-plugin.adoc[Catalog plugin]
+
+.plentyBase plugins
+* xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
+* xref:plentybase:plentybase-tutorial.adoc[plentyBase plugin tutorial]
 
 .Tools
-* plentyDevTool
-* Git
+* xref:plentydevtool:plentydevtool-introduction.adoc[plentyDevTool introduction]
+* xref:plentydevtool:plentydevtool-guide.adoc[plentyDevTool guide]
+* xref:plentydevtool:plentydevtool-version-control.adoc[How to use plentyDevTool with version control]
+* xref:github-webhooks.adoc[How to set up GitHub webhooks]
+* xref:browsersync.adoc[How to deploy local JS/CSS resources]
+
+.plentyMarketplace offers
+* link:https://www.plentymarkets.eu/service/partner-werden/[Become a plentyMarketplace partner^]
+* xref:plentymarketplace:plugin-upload-requirements.adoc[Plugin upload requirements]
+* xref:plentymarketplace:pricing-models.adoc[Pricing models]
+* xref:plentymarketplace:how-to-subscription.adoc[How to create a subscription offer]
+* xref:plentymarketplace:plugin-upload.adoc[How to upload a plugin offer]
+* xref:plentymarketplace:plugin-review.adoc[Plugin review]
+* xref:plentymarketplace:service-tool-offers.adoc[How to offer services and tools]
+* xref:plentymarketplace:user-guide-style-guide.adoc[User guide style guide]

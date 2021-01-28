@@ -1,0 +1,603 @@
+= Introducing template plugins
+
+On this page, you will find an overview of relevant information about template plugins. In the first chapter, we will help you set up an IDE with all bits and bobs required to develop template plugins. In the second chapter, you will find a short description for each plugin feature that you can use to create your own template plugins. We will differentiate between features that define the core structure of the plugin usually found in the *src* folder and features for the design found in the *resources* folder. The programming language PHP 7 is mainly used for creating the files in the *src* folder. Technologies used in context with the *resources* folder are:
+
+* http://twig.sensiolabs.org/documentation[Twig]
+* https://vuejs.org/v2/guide/index.html[Vue.js]
+* http://sass-lang.com/guide[SASS]
+* https://v4-alpha.getbootstrap.com/getting-started/introduction/[Bootstrap4]
+* http://learn.jquery.com/about-jquery/how-jquery-works/[jQuery]
+
+Get the complete code of the Ceres plugin developed by plentymarkets by link:https://github.com/plentymarkets/plugin-ceres[downloading the GitHub repository.^]
+
+== Setting up an IDE for template plugins
+
+We recommend using https://www.jetbrains.com/phpstorm/[PhpStorm] for developing Ceres. PhpStorm is a comprehensive IDE which supports all PHP language features. PhpStorm also includes a wide range of leading edge front-end technologies, such as CSS, Sass, Javascript, as well as Twig syntax highlighting. PhpStorm supports http://eslint.org/[ESLint], a linting utility plugin for JavaScript.
+
+=== Installing Node.js
+
+For JavaScript packages, such as http://gulpjs.com/[Gulp], we recommend installing https://nodejs.org/en/about/[Node.js] with its package manager https://www.npmjs.com/[npm].
+
+. Download and install https://nodejs.org/en/download/[Node.js]. +
+icon:arrow-right[] We recommend using Node.js v6.9.1 LTS.
+. To use Node.js properly, a command line tool is required. PhpStorm comes with a built-in terminal, but you can use any other command line tool.
+
+=== Installing PhpStorm
+
+Next, install PhpStorm and the Twig language plugin.
+
+. Download and install https://www.jetbrains.com/phpstorm/download/[PhpStorm]. +
+icon:arrow-right[] We recommend using PhpStorm v2016.2.2.
+. Open PhpStorm. +
+icon:arrow-right[] The *Welcome to PhpStorm* window will open.
+. Click on *Configure » Plugins*. +
+icon:arrow-right[] The *Plugins* window will open.
+. Click on *Install JetBrains plugin...*. +
+icon:arrow-right[] The *Browse JetBrains Plugins* will open.
+. Install the *Twig Support* plugin.
+
+=== Configuring PhpStorm for Ceres
+
+Clone or download the https://github.com/plentymarkets/plugin-ceres[Ceres] and https://github.com/plentymarkets/plugin-io[IO] plugins, e.g. with https://desktop.github.com/[GitHub Desktop] or https://www.sourcetreeapp.com/[SourceTree].
+
+. Open PhpStorm. +
+icon:arrow-right[] The *Welcome to PhpStorm* window will open.
+. Click on *Open*. +
+icon:arrow-right[] The *Open File or Project* window will open.
+. Select your *Ceres* folder and click *OK*.
+. Open the terminal and go to the Ceres project folder. +
+icon:arrow-right[] When using the built-in terminal of PhpStorm, you are already in the right project folder.
+. Run `npm install` in the terminal. +
+icon:arrow-right[] All dependencies that are defined in the `package.json` file are installed.
+. Click on *PhpStorm » Preferences...* in the menu bar.
+. Go to *Languages & Frameworks » JavaScript » Code Quality Tools » ESLint*.
+. *Enable* ESLint for the Ceres project.
+
+=== Integrating the plugin interface into PhpStorm
+
+Learn how to integrate the plentymarkets plugin interface into your IDE to support auto-completion.
+
+. Clone or download the https://github.com/plentymarkets/plugin-interface[plentymarkets plugin interface].
+. Select the *stable7* branch of the repository if you have a stable plentymarkets 7 system. +
+icon:arrow-right[] If you work with a beta system, select the *beta7* branch.
+. Open PhpStorm. +
+icon:arrow-right[] The *Welcome to PhpStorm* window will open.
+. Open the *Ceres* project.
+. In the project tree area on the left, click on *External Libraries*. +
+icon:arrow-right[] A new window will open.
+. Under *Development environment*, select the *PHP language level* *7*.
+. Click on *Add* in the *Include path* area.
+. Select the *plentymarkets plugin interface* folder.
+. Click on *OK*. +
+icon:arrow-right[] The plugin interface will be added as an external library.
+. Click on *Apply* and then on *OK*. +
+icon:arrow-right[] The plugin interface is now a new source under *External Libraries » PHP*.
+
+=== Webpack commands for Ceres
+
+Webpack is a module bundler for Javascript and other frontend assets, such as SCSS. It serves to locally build the plugin via node commands after you have implemented changes. The following Wepback commands are available in the Ceres plugin project.
+
+[cols="1,3"]
+|===
+|Command |Description
+
+|*start*
+|The start command runs "webpack --watch", which builds Javascript and SCSS once in Ceres' development mode. It monitors the changes you implemented locally and builds the plugin accordingly.
+
+|*build*
+|Runs the command "npm run build:dev && npm run build:prod". This command builds Javascript and SCSS files in both development and live mode, as well as the files in pre- and postbuild detailed below.
+
+|*build:dev*
+|Runs the "webpack" command. It builds Javascript and SCSS in development mode.
+
+|*build:prod*
+|Runs the "webpack --env.prod" command. It builds Javascript and SCSS in live mode.
+
+|*build:js*
+|Runs the command "npm run build:js:dev && npm run build:js:prod". This builds Javascript files in both development and live mode.
+
+|*build:js:dev*
+|Runs the command "webpack --config-name scripts". This builds Javascript files in development mode.
+
+|*build:js:prod*
+|Runs the command "webpack --config-name scripts --env.prod". This builds Javascript files in live mode.
+
+|*build:sass*
+|Runs the command "npm build:sass:dev && npm run build:sass:prod", which builds SCSS files in both development and live mode.
+
+|*build:sass:dev*
+|Runs the command "webpack --config-name styles", which builds SCSS files in development mode.
+
+|*build:sass:prod*
+|Runs the command "webpack --config-name styles --env.prod", which builds SCSS files in live mode.
+
+|*build:sass-vendor*
+|Runs the command "node tools/bundleSass.js", which collects all SCSS files into one and compiles them.
+
+|*build:widgets*
+|Runs the command "node tools/collectWidgets.js", which collects all widget settings into one file and builds the widgets.
+
+|*prebuild*
+|Runs the command "npm run build:sass-vendor" described above. The prebuild command is part of the build command and may, in the future, include additional processes.
+
+|*postbuild*
+|Runs the command "npm run build:widgets" described above. The postbuild command is part of the build command and may, in the future, include additional processes.
+
+|*compareTranslations*
+|Runs the command "node tools/compareTranslations.js", which returns a list of differences between language keys from .properties files in German and English.
+|===
+
+== Core features
+
+Let's discuss the core structure of a plugin based on the *src* folder of the plentymarkets IO plugin and the sub-folders and files contained in this folder.
+
+=== API
+
+The *Api* folder contains resources similar to controllers. The `ApiResource.php` is a class that extends a controller and enables self-defined REST calls with the related PHP methods. A list of response codes and functions for event registration are saved in `ApiResponse.php`. Specific REST calls, such as the `update ( string $shippingProfileId )` function in the example below, are defined in files in the *Resources* sub-folder.
+
+.IO/src/Api/Resources/ShippingResource.php
+[source,php]
+----
+<?php
+
+namespace IO\Api\Resources;
+
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
+use Plenty\Plugin\Http\Response;
+use Plenty\Plugin\Http\Request;
+use IO\Api\ApiResource;
+use IO\Api\ApiResponse;
+use IO\Api\ResponseCode;
+use IO\Services\ShippingService;
+
+/**
+ * Class ShippingResource
+ * @package IO\Api\Resources
+ */
+class ShippingResource extends ApiResource
+{
+
+    /**
+     * @var ShippingService
+     */
+    private $shippingService;
+
+    /**
+     * ShippingResource constructor.
+     * @param Request $request
+     * @param ApiResponse $response
+     * @param ShippingService $shippingService
+     */
+    public function __construct(Request $request, ApiResponse $response, ShippingService $shippingService)
+    {
+        parent::__construct($request, $response);
+        $this->shippingService = $shippingService;
+    }
+
+    // Put/Patch
+    /**
+     * Set the shipping profile
+     * @param string $shippingProfileId
+     * @return BaseResponse
+     */
+    public function update(string $shippingProfileId):BaseResponse
+    {
+        $this->shippingService->setShippingProfileId((int)$shippingProfileId);
+        return $this->response->create(ResponseCode::OK);
+    }
+
+}
+----
+
+=== Builder
+
+The builder class helps you work with interfaces. `ItemColumnBuilder.php`, for example, builds an array of
+xref:interface:Item#datalayer_item[ItemDataLayer] columns that can be requested with the `search` method. The fields for this array are defined in the related files in the *Fields* folder.
+
+.IO/src/Builder/Item/ItemColumnBuilder.php
+[source,php]
+----
+<?php
+
+namespace IO\Builder\Item;
+
+use IO\Builder\Item\Fields\ItemBaseFields;
+
+...
+
+/**
+ * Build array of ItemDataLayer columns to request from ItemDataLayerRepository::search
+ */
+class ItemColumnBuilder
+{
+    /**
+     * @var array>
+     */
+    private $columnFields = [];
+    /**
+     * @var array>
+     */
+    private $columnParams = [];
+
+    public function defaults():ItemColumnBuilder
+    {
+        return $this
+            ->withItemBase([
+                               ItemBaseFields::ID,
+                               ItemBaseFields::RATING,
+                               ItemBaseFields::RATING_COUNT,
+                               ItemBaseFields::STORE_SPECIAL,
+                               ItemBaseFields::PRODUCER,
+                               ItemBaseFields::PRODUCING_COUNTRY_ID,
+                               ItemBaseFields::CONDITION,
+                               ItemBaseFields::AGE_RESTRICTION,
+                               ItemBaseFields::CUSTOMS_TARIFF_NUMBER
+                           ])
+}
+
+...
+----
+
+This array can be included in services, such as `ItemService.php`. Builders also help you validate your code through auto-completion.
+
+.IO/src/Services/ItemService.php
+[source,php]
+----
+<?php
+
+namespace IO\Services;
+
+...
+
+    public function getItems(array $itemIds):RecordList
+    {
+        $columns = $this->columnBuilder
+            ->defaults()
+            ->build();
+
+            ...
+
+    }
+----
+
+=== Constants
+
+Constants, e.g. available languages or category types, are organised in the *Constants* folder.
+
+=== Controllers
+
+Controllers are the interface between the core and the design. The sub-folder *Controllers* contains the different controllers necessary to render Ceres. The file `LoginController.php`, for example, contains the `showLogin` function for rendering the `login.twig` template.
+
+.IO/src/Controllers/LoginController.php
+[source,php]
+----
+<?php
+
+namespace IO\Controllers;
+
+use IO\Helper\TemplateContainer;
+
+class LoginController extends LayoutController
+{
+    public function showLogin(): string
+    {
+        return $this->renderTemplate(
+            "tpl.login",
+            [
+                "login" => ""
+            ]
+        );
+    }
+}
+----
+
+=== Extensions
+
+The *Extensions* folder stores components that extend the functionality of Twig. http://twig.sensiolabs.org/doc/advanced_legacy.html[Extensions] can be operators, global variables, functions, etc. Twig also allows you to http://twig.sensiolabs.org/doc/advanced.html#filters[create your own filters]. `TwigIOExtension.php`, for example, uses filters stored in the *Filters* sub-folder. `NumberFormatFilter.php` provides methods for formatting numbers and currencies that can be included in twig templates.
+
+.IO/src/Extensions/Filters/NumberFormatFilter.php
+[source,php]
+----
+...
+
+public function formatCurrency(float $value, string $currencyISO):string
+{
+    $locale            = 'de_DE';
+    $useCurrencySymbol = true;
+
+    $formatter = numfmt_create($locale, \NumberFormatter::CURRENCY);
+    if(!$useCurrencySymbol)
+    {
+        $formatter->setTextAttribute(\NumberFormatter::CURRENCY_CODE, $currencyISO);
+        $formatter->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $currencyISO);
+    }
+
+    if($this->config->get('IO.format.use_locale_currency_format') === "0")
+    {
+        $decimal_separator   = $this->config->get('IO.format.separator_decimal');
+        $thousands_separator = $this->config->get('IO.format.separator_thousands');
+        $formatter->setSymbol(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, $decimal_separator);
+        $formatter->setSymbol(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, $thousands_separator);
+    }
+    return $formatter->format($value);
+}
+----
+
+In your template, add this method using the pipe within the twig variable. In the example below, the item price will be formatted by adding the ISO code *EUR* to the price.
+
+[source,twig]
+----
+{{item.price | formatCurrency ("EUR")}}
+----
+
+=== Guards
+
+The *Guards* folder contains guard classes. `AuthGuard.php`, for example, extends the `AbstractGuard` class and controls if the online store user is logged in. Guards are used for redirecting.
+
+=== Helper
+
+The *Helper* folder contains helper classes. `TemplateContainer.php`, for example, is a class that controls the data exchange between the Ceres plugin and the IO plugin.
+
+=== Middlewares
+
+Middlewares have multiple usages. On the one hand, they are used to obtain the current HTTP request via the `before()` method. This instance of the request is obtained before being processed by controllers.
+
+On the other hand, the `after()` method allows you, for example, to replace the HTTP response with your own response. In this way, we can integrate the method `showPageNotFound` from the *StaticPagesController* to render the 404 page after all routes of all plugins are registered.
+
+.IO/src/Middlewares/Middleware.php
+[source,php]
+----
+<?php
+
+namespace IO\Middlewares;
+
+use IO\Controllers\StaticPagesController;
+use Plenty\Plugin\Http\Request;
+use Plenty\Plugin\Http\Response;
+
+class Middleware extends \Plenty\Plugin\Middleware
+{
+
+    public function before(Request $request)
+    {
+
+    }
+
+    public function after(Request $request, Response $response):Response
+    {
+        if ($response->content() == '') {
+            /** @var StaticPagesController $controller */
+            $controller = pluginApp(StaticPagesController::class);
+
+            return $response->make(
+                $controller->showPageNotFound()
+            );
+        }
+
+        return $response;
+    }
+}
+----
+
+=== Providers
+
+Two types of providers are used in plentymarkets plugins: service providers and route service providers.
+
+==== Service Providers
+
+Figuratively speaking, the service provider is the starting point of the plugin. Every plugin must have a service provider, which is needed to register the route service provider. All service providers extend the `Plenty\Plugin\ServiceProvider` class. In the case of Ceres, the service provider is also used to boot the design and add various extensions.
+
+==== Route Service Providers
+
+Routes are used to point URLs to controllers or anonymous functions that should be executed when a user accesses a given page. In line 20 of the example below, the function `showLogin` is executed when a user opens the `/login` page. This function is defined in *LoginController.php*.
+
+.IO/src/Providers/IORouteServiceProvider.php
+[source,php]
+----
+<?php
+
+namespace IO\Providers;
+
+
+use Plenty\Plugin\RouteServiceProvider;
+use Plenty\Plugin\Routing\Router;
+use Plenty\Plugin\Routing\ApiRouter;
+use Plenty\Plugin\Templates\Twig;
+
+class IORouteServiceProvider extends RouteServiceProvider
+
+...
+
+{
+    public function map(Router $router, ApiRouter $api)
+    {
+      ...
+
+      $router->get('login', 'IO\Controllers\LoginController@showLogin');
+
+      ...
+
+    }
+}
+----
+
+=== Services
+
+Services contain the methods for processing data between the user and plentymarkets that can be used by controllers, REST and Twig templates. In the example below, `BasketService.php` contains the `getBasket()` method, which is used in `BasketResource.php`.
+
+.IO/src/Services/BasketService.php
+[source,php]
+----
+...
+
+/**
+ * Return basket as array
+ * @return Basket
+ */
+public function getBasket():Basket
+{
+    return $this->basketRepository->load();
+}
+
+...
+----
+
+The example below shows how the `getBasket()` method is used in a REST call. An array of basket items and a response code are returned.
+
+.IO/src/Api/Resources/BasketResource.php
+[source,php]
+----
+<?php
+
+namespace IO\Api\Resources;
+
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
+use Plenty\Plugin\Http\Response;
+use Plenty\Plugin\Http\Request;
+use IO\Api\ApiResource;
+use IO\Api\ApiResponse;
+use IO\Api\ResponseCode;
+use IO\Services\BasketService;
+
+/**
+ * Class BasketResource
+ * @package IO\Api\Resources
+ */
+class BasketResource extends ApiResource
+{
+    /**
+     * @var BasketService
+     */
+    private $basketService;
+
+    /**
+     * BasketResource constructor.
+     * @param Request $request
+     * @param ApiResponse $response
+     * @param BasketService $basketService
+     */
+    public function __construct(Request $request, ApiResponse $response, BasketService $basketService)
+    {
+        parent::__construct($request, $response);
+        $this->basketService = $basketService;
+    }
+
+    /**
+     * Get the basket
+     * @return BaseResponse
+     */
+    public function index():BaseResponse
+    {
+        $basket = $this->basketService->getBasket();
+        return $this->response->create($basket, ResponseCode::OK);
+    }
+}
+----
+
+== Design features
+
+We will explain the design structure of a plugin based on the *resources* folder of the plentymarkets Ceres plugin and its sub-folders.
+
+=== CSS
+
+The *css* folder contains the CSS files based on http://v4-alpha.getbootstrap.com/getting-started/introduction/[Bootstrap 4].
+
+=== Documents
+
+The *documents* folder contains fonts, pdf-files and other document resources.
+
+=== Images
+
+Images, such as the company logo, are stored in the *images* folder.
+
+=== JS
+
+This is the folder for JavaScript files. The *js* folder contains the *dist* and *src* sub-folders. The source files are organised in the *src* folder. These source files are required for building `plugin-ceres-app.js` - the main JavaScript file, which is included in `PageDesign.twig`.
+
+.Ceres/resources/views/PageDesign.twig
+[source,twig]
+----
+<script src="{{ plugin_path('Ceres') }}/js/dist/plugin-ceres-app.js"></script>
+----
+
+The sub-folders *app* and *libraries* are located in *src*. All Vue.js components are saved in *app/components*. Related Twig templates can be found in the *resources/views/templates* folder. https://vuejs.org/guide/custom-directive.html[Custom Vue.js directives], e.g. the `Logout.js`, can be found in the *app/directives* folders.
+
+.Ceres/resources/js/src/app/directives/Logout.js
+[source,js]
+----
+var ApiService          = require('services/ApiService');
+var NotificationService = require('services/NotificationService');
+
+    Vue.directive('logout', function ()
+    {
+
+      $(this.el).click(
+        function (e)
+        {
+          ApiService.post("/rest/account/logout")
+          .done(
+            function(response)
+            {
+              NotificationService.success('Sie wurden erfolgreich ausgeloggt.').closeAfter(3000);
+            }
+          );
+
+          e.preventDefault();
+
+        }.bind(this));
+
+    });
+----
+
+Services are saved in the *app/services* folder, e.g. the `ApiService.js` service for sending REST calls.
+
+.Ceres/resources/js/src/app/services/ApiService.js
+[source,js]
+----
+include::example$ApiService.js[]
+----
+
+=== Lang
+
+The *lang* folder contains sub-folders for translations in different languages. Translated strings for the Ceres design are saved in key-value pairs in the `Template.properties` file. Keys have prefixes that help you associating the keys with the respective templates:
+
+[cols="1,3"]
+|===
+|Prefix |Description
+
+|*basket*
+|Template texts for templates in the *resources/views/Basket* folder and sub-folders
+
+|*acc*
+|Template texts for templates in the *resources/views/MyAccount* and *resources/views/Customer* folders and sub-folders
+
+|*itemCategory*
+|Template texts for templates in the *resources/views/Category* folder and sub-folders
+
+|*item*
+|Template texts for templates in the *resources/views/Item* folder and sub-folders
+
+|*variation*
+|Template texts for templates in the *resources/views/Item* folder and sub-folders
+
+|*general*
+|Overall template texts used in multiple templates
+
+|*address*
+|Template texts for templates in the *resources/views/Customer* folder and sub-folders
+
+|*order*
+|Template texts for templates in the *resources/views/MyAccount* and *resources/views/Checkout* folders and
+sub-folders
+|===
+
+In addition to the *resources/lang* folder, another *lang* folder can be found under *resources/js/lang* containing sub-folders with `.js` files in the respective languages. These files are built with the `build:lang` gulp task.
+
+=== SCSS
+
+In this folder, the `Ceres.scss` file imports all the other SCSS files stored in sub-folders. A grunt task generates the `plugin-ceres.css` file that can be found in the *resources/css* folder.
+
+=== Views
+
+The *views* folder contains the `PageDesign.twig` file - the basic framework for your online store. Static content pages, such as the login page, are organised in sub-folders with the related `twig` files. Vue.js related template files are organised into multiple sub-folders within the *Templates* folder. These files are necessary for rendering
+dynamic content of the Vue.js components stored in the folder *resources/js/src/app/components*.
