@@ -4,6 +4,8 @@ The plugin cookbook is a collection of recipes for plentymarkets plugin scenario
 
 *Info*: The cookbook is just getting started. New recipes are already on the way. If you can't find an answer to your question, post your requests and feedback in our link:https://forum.plentymarkets.com/c/plugin-entwicklung[forum^].
 
+:leveloffset: +1
+
 include::partial$content-categories.adoc[]
 
 include::partial$ceres-scripts.adoc[]
@@ -21,3 +23,5 @@ include::partial$disabling-lazy-loading.adoc[]
 include::partial$item-sorting.adoc[]
 
 include::partial$cache-busting.adoc[]
+
+:leveloffset: -1
