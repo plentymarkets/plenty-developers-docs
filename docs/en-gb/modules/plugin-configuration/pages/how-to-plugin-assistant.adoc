@@ -1,0 +1,853 @@
+= How to work with assistants
+
+The following documentation provides all necessary information to set up your own assistant and will guide you through its creation step by step.
+
+// * Further reading:
+//xref:https://assistant-style-guide.adoc[Assistant style guide]
+
+== Assistant registration
+
+=== Assistant structure
+
+To set up the assistant structure, carry out the following two steps.
+
+. Create a class that extends *WizardProvider* (*use* Plenty\Modules\Wizard\Services\WizardProvider).
+. Your class must contain a method named “structure” (*protected function* structure()) that returns an array.
+
+Working example: *namespace* Plenty\Modules\Wizard\Wizards\TestWizard\TestWizard
+
+=== Assistant registration
+
+* In a module, in its Module**ServiceProvider** *use* Plenty\Modules\Wizard\Contracts\WizardContainerContract; *use* <namespace>\YourWizard;
+
+* In *boot()* method:
+boot(WizardContainerContract $wizardContainerContract)
+wizardContainerContract->register(‘wizardKey', YourWizard::class);
+
+* In a plugin, in its Plugin**ServiceProvider** *use* Plenty\Modules\Wizard\Contracts\WizardContainerContract; *use* <namespace>\YourWizard;
+
+ * In *boot()* method:
+pluginApp(WizardContainerContract::class)->register('wizardKey', PluginWizard::class);
+
+=== How to check if your assistant was registered
+
+GET on “/rest/wizards” will return a list of all registered wizard classes.
+GET on “/rest/wizards/wizardKey” will return the wizard registered with that key.
+
+== Assistant translations
+
+=== Purpose
+
+Texts which are displayed in the assistant UI must be provided in different languages (at least German and English). Depending on the selected language of the back end user, the corresponding translations of the texts are shown.
+
+=== Architecture
+
+Translation is done on the server side. When the UI requests the structure of a specific assistant represented by its WizardProvider, the file is parsed and all the keys stated under <<#properties, translatable properties>> will be replaced by their actual translation.
+
+==== Files
+
+The translations for each language will be stored in a separate file.
+In modules/packages and plugins, the files are stored in `/resources/lang/{lang}/filename.{extension}`.
+
+Extension is
+
+* `.php` in modules
+* `.properties` in plugins
+
+Assistants should be provided only by modules/packages and plugins.
+The WizardProvider *must not* include any plain texts. Texts are replaced by translation keys which refer to the actual translated texts in the translation files.
+
+==== Properties
+
+Properties of the wizard model which are translated:
+
+* title (assistant, step, section)
+* shortDescription (assistant)
+* description (step, section)
+* createOptionIdTitle
+* createOptionIdCardLabel
+
+In addition to that, the following properties of the DynamicFormElements need to be translated:
+
+* label
+* caption
+* tooltip
+* name
+* placeholder
+
+==== Keys
+
+Structure of a key: `FILENAME.KEY`, e.g Assistant.text1;
+NAMESPACE is mandatory.
+
+=== Step-by-step
+
+. Create your translation files (`/resources/lang/{lang}/FileName.{extension}``).
+The extension is `.php` in modules and `.properties` in plugins.
+. Make sure your translations are loaded.
+a. In plugins they are loaded automatically.
+b. In modules you need to load them in `boot()` method of your *ServiceProvider*. +
+*_Example:_* $this->loadTranslationsFrom</b>(__<i>DIR</i>__.'/../resources/lang','module_wizard');
+. In order for translations to work, the assistant’s structure must have the key `translationNamespace`. +
+*_Example:_* `translationNamespace` => `module_wizard`
+. Assign the translatable properties to keys that are set in your translation files. +
+*_Example:_* `title` => `fileName.wizardTitle`
+
+Check out the *TestWizard’s* structure inside the wizards module for a working example.
+The step *stepTranslationExample* is translated as well. +
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\TestWizard
+
+== Assistant structure
+
+=== Overall structure
+
+The overall structure contains basic information about the assistant, options and form elements.
+
+Basic information and classes
+
+[cols="1,3"]
+|===
+
+|*Property* |*Description*
+
+|title:string/key
+|required; overall title of the assistant
+
+|key:string
+|required and unique; The naming should follow the rules for link:https://developer.mozilla.org/en-US/docs/Glossary/Identifier[JavaScript identifiers^].
+
+|iconPath:string
+|optional; an icon that will be displayed alongside with the title of the assistant
+
+|shortDescription:string/key
+|Describes the purpose of the assistant. It is displayed as info on the assistant card.
+
+|reloadStructure:boolean
+|optional; Default false; If set to true, the assistant’s structure will be reloaded whenever a user enters the assistant.
+
+|<<#how-to-use-a-settings-handler, settingsHandlerClass>>:string
+|required; refers to the server-side class which executes all necessary functionality for transferring dedicated data from DynamoDB to the plentymarkets DB and for configuring the plentymarkets user system.
+
+|actionHandlerClass:class
+|
+
+|<<#how-to-use-a-dynamic-loader-in-a-form-field, dependencyClass>>:string
+|
+
+|topics:string[] // [‘multichannel.amazon’, ‘Amazon Vendor’]
+|required; must contain one topic which describes the domain of the settings in plentymarkets system; can contain additional topics
+
+|<<#assistant-options, options>>:key => DynamicFormElement
+|optional; contains a list of form elements to enable the user to compose an optionId (unique identifier for a combination of options). The naming for the key should also follow the rules for link:https://developer.mozilla.org/en-US/docs/Glossary/Identifier[JavaScript identifiers^]; states whether an assistant can be run multiple times
+
+|relatedWizards:string[]
+|optional; A list of related assistants identified by their key. These related assistants will be presented after the assistant has been finalised - in the order determined by the developer.
+
+|<<#priority-and-order-of-assistants-in-overview, priority>>:number
+|defines the position of the assistant in the sorted assistants overview; number between 0 (low priority) and 499 (high priority)
+
+|steps:key => Step
+|required and unique for the assistant
+
+|relevance:string
+|optional; Default optional; If set to essential, the assistant will be marked as such and shown in the recommended assistants overlay.
+
+|tableColumns:string[]
+|optional; Default options (if set); If set, the according options or form elements will be shown as table columns.
+
+|cardRows:string[]
+|optional; Default options (if set); If set, the according options or form elements will be shown on the cards of the assistant option browser’s view.
+
+|keywords:string[]
+|optional; A list of keywords describing the assistant. They will be considered when searching for assistants.
+
+|===
+
+=== Priority and order of assistants in overview
+
+Depending on its priority, you can position your assistant between *0* (low priority) and *499* (high priority). The higher the priority, the further up it is displayed in the assistants overview.
+
+=== Assistant options
+
+Options can be used to run an assistant multiple times with different configurations. Just like the form elements in the steps, options are displayed via form fields. These fields are rendered in the overlay and users have to select beforehand, for which configuration they want to run the assistant. If no form elements are specified (such as the *id* in the example), no overlay is displayed.
+
+You can generate the *optionId* after specific form elements from the steps that have been filled by the user. To do so, add them on the same level as an array with the keys. The *optionId* is automatically generated from those specified elements. We recommend to designate the array as “data” and it has to be unique. In the example below, the *optionId* would consist of *iban*, *mambo*, *phoneNumber* and *id*.
+
+.generate-optionid.ts
+[source,ts]
+----
+include::example$generate-optionid.ts[]
+----
+
+It is now possible to show a maximum of 3 options on each assistant’s card. The order of the options in the table determines which ones will actually be shown. Thus, the first 3 options from the table are displayed on the respective card and will be listed below each other. All other options can be found in the table view.
+
+=== General step properties
+
+[cols="1,3"]
+|===
+
+|*Property* |*Description*
+|title:string;
+|Is displayed on top of every step and in the step navigation.
+
+|description:string;
+|required; Describes a step. It is displayed underneath the title of a step.
+
+|condition:string
+|Determines whether the step is visible and accessible in the step navigation. A boolean value or a JSCondition as string is accepted.
+
+|<<#general-section-properties, sections>>: {[ key:string ]}
+|Sections of a step.
+
+|===
+
+=== General section properties
+
+[cols="1,3"]
+|===
+
+|*Property* |*Description*
+|title:string;
+|Is displayed on top of a section.
+
+|description:string;
+|required; Describes a section. It is displayed underneath the title of a section.
+
+|condition:string
+|Determines whether the section is visible. A boolean value or a JSCondition as string is accepted.
+
+|<<#form-elements, form>>: {[ key:string ]};
+|Form elements of a section.
+
+|===
+
+=== Form elements
+
+==== General properties and form elements
+
+...of any form element
+
+key:string => TerraFormFieldInterface {
+
+[cols="1,3"]
+|===
+
+|*Element* |*Description*
+|type:string;
+|Type of the form element. See the section <<#type-dependent-options, Type dependent options>> for a list of all available types.
+
+|defaultValue?:any;
+|If no value is set, this is the default value of the element.
+
+|isVisible?:boolean / string;
+|Determines whether the form element is visible. A *boolean value* or a *JSCondition* as string are accepted. Remember that the naming for keys should follow the rules for link:https://developer.mozilla.org/en-US/docs/Glossary/Identifier[JavaScript identifiers^].
+
+|isList?:boolean / string;
+|Determines whether the declaration is used to render a list of the specified form field. If a string is given, it has to match the regular expression /^\[(\d*),(\d*)]$/ to be interpreted as min and max limits of the list.
+
+|children?:{ [key:string]:TerraFormFieldInterface }
+|A list of children (also form fields) to the form field. This is used for form fields of type horizontal or vertical. For more information see the section about <<#groups, groups>>.
+
+|width?:string;
+|Modifies the width of a form element using the bootstrap grid system. For more information see the link:https://getbootstrap.com/docs/4.3/layout/grid/[official documentation^]. The default value for each form element is ‘col-sm-12 col-md-8 col-lg-6 col-xl-5’.
+
+2+^|*options?:{ [key:string]:any }*
+
+|name:string
+|Name of the form element (not the key).
+
+|required:boolean
+|Validator. If true, any value must be entered into this form element.
+
+|minLength:number
+|Validator. The entered text must equal or exceed the given number of chars.
+
+|maxLength:number
+|Validator. The entered text must not exceed the given number of chars.
+
+|minValue:number
+|Validator. The entered value must equal or exceed the given value.
+
+|maxValue:number
+|Validator. The entered value must not exceed the given value.
+
+|email:boolean
+|Validator. If true, the entered value is checked to be a valid email address.
+
+|pattern:RegExp / string
+|Validator. If given, the entered value will be checked to match the given pattern.
+
+|uniqueValues:boolean / string[]
+|Validator. If given, the entered values in a list are checked to be unique. If a vertical or horizontal group is used as a list, an array of child keys can be specified. Use only in combination with the isList property.
+
+|===
+
+=== Type dependent options
+
+==== checkbox
+
+* icon:string +
+→ Set an icon (e.g. icon-save).
+
+==== date
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|openCalendarTop:boolean
+|If true, the calendar will be opened on top. Default false.
+
+|displayDateFormat:string
+|Set the date format. Default 'dd.mm.yyyy'.
+
+|===
+
+==== file
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|showPreview:boolean
+|If true, a preview for image files is shown.
+
+|allowedExtensions:string[]
+|List of allowed file extensions
+
+|allowFolders:boolean
+|If true, a group can be selected.
+
+|===
+
+==== text
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|isPassword:boolean
+|If true, the type of input will be 'password'.
+
+|isIban:boolean
+|If true, the input will check whether the input is a valid iban.
+
+|isReadonly:boolean
+|If true, the value cannot be changed.
+
+|===
+
+==== textarea
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|hasFixedHeight:boolean
+|If true, the text area is not resizable. Default false.
+
+|maxRows:number
+|Sets the initial number of rows. Default is 4.
+
+|===
+
+==== number
+
+This form element has no special options.
+
+==== double
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|isPriceInput:boolean
+|If true, the value will be right-aligned.
+
+|decimalCount:number
+|Set the decimal count. Default is 2. (0.01)
+
+|===
+
+==== select
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|openOnTop:boolean
+|If true, the dropdown with options opens on top of the window.
+
+|listBoxValues:TerraSelectBoxValueInterface[]
+|List of possible options.
+
+|===
+
+.select-option.ts
+[source,ts]
+----
+include::example$select-option.ts[]
+----
+
+==== suggestion
+
+* listBoxValues:TerraSelectBoxValueInterface[] +
+→ List of possible options.
+
+==== button
+
+If an action is given, state a class containing the requested method at the assistant structure’s actionHandlerClass property. The *actionHandlerClass* must implement the *WizardActionHandler* interface.
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|icon:string
+|Set an icon (e.g. icon-save).
+
+|name:string
+|Set the caption of the button where the link will be opened.
+
+|action:string
+|The name of the method of the corresponding actionHandlerClass that should be executed when the button is clicked.
+
+|link:object
+|Specify the link.
+
+|fromAction:boolean
+|States whether the given action returns a URL that should be used as a link.
+
+|newWindow:boolean
+|Specify whether the link should be opened in a new window or in the current browser tab.
+
+|url:string
+|A static URL which will serve as a link.
+
+|===
+
+==== valueGenerator
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|action:string
+|The name of the method of the corresponding actionHandlerClass that should be executed when clicking the *valueGenerator button*. Is similar to the button's action.
+
+|responseType:'string' / 'number'
+|The type of the response’s value that can be ‘string’ or ‘number’.
+
+|===
+
+==== category
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|displayResetButton:boolean
+|If true, the reset button is shown.
+
+|displaySearch:boolean
+|If true, an input to search for any category is shown.
+
+|showFullSelectionPath:boolean
+|...
+
+|===
+
+==== source
+
+* exportType:string +
+→ Determines which data points can be exported (currently, only 'variation' is possible).
+
+==== color
+
+This form element has no special options.
+
+==== slider
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|min:number
+|lower limit of the slider
+
+|max:number
+|upper limit of the slider
+
+|interval:number
+|step size of the slider
+
+|precision:number
+|amount of digits that will be shown when displaying any values (current value, lower limit, upper limit, ticks) in the slider.
+
+|showMinMax:boolean
+|If set to true, the upper and lower limits will be displayed.
+
+|showTicks:boolean
+|If set to true, the ticks' label will be displayed.
+
+|===
+
+==== checkboxGroup
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|collapsed:boolean
+|Set the initial collapsed state. Default false
+
+|checkboxValues:{caption:string, value:any}[]
+|List of possible options
+
+|===
+
+.checkbox-group.ts
+[source,ts]
+----
+include::example$checkbox-group.ts[]
+----
+
+==== radioGroup
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|radioValues:{caption:string, value:any}[]
+|List of radio buttons that may be selected.
+
+|inline:boolean
+|Default: true; if set to false, the radio buttons will be aligned vertically.
+
+|===
+
+==== toggle
+
+This form element has no special options.
+
+==== noteEditor & codeEditor
+
+[cols="1,3"]
+|===
+
+|*Option* |*Description*
+|placeholder:string
+|Text which is shown until anything is entered.
+
+|fixedHeight:string
+|Height of the area where content can be added.
+
+|minHeight:string
+|Minimum height of the text area where content can be added.
+
+|===
+
+=== Groups
+
+It is possible to group form fields using one of the following form field types. However, this transforms the value of your form field to an object that contains the values of all children form fields.
+
+==== vertical
+
+When using a vertical group, all children form fields are positioned one below the other.
+
+==== horizontal
+
+When using a horizontal group, all children form fields are positioned next to each other.
+
+.vertical-group.ts
+[source,ts]
+----
+include::example$vertical-group.ts[]
+----
+
+== Assistant dynamic form fields
+
+Dynamic form fields are optional for any assistant. Using dynamic form fields, you can dynamically create a form field structure in the UI.
+The dynamic form field structure is built when a dependency key has a value set. Its purpose is to provide dynamically built form fields while a step is in progress.
+
+We distinguish between the following types of dependencies: +
+
+* If there is a dependency in the current step, the dependent form field is updated when the dependency’s value changes.
+* If there is a dependency in another step, the dependent form field is updated while loading this step.
+
+=== How to create a dynamic loader
+
+. Create a class that implements *WizardDynamicLoader*.
+< *use* Plenty\Modules\Wizard\Contracts\WizardDynamicLoader; >
+. Create a *public function* methodName(array $parameters) and add your functionality to it. This method should return the form field structure.
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\DynamicLoaders\TestDynamicLoader;
+
+=== How to use a dynamic loader in a form field
+
+In your assistant's structure, add the following:
+
+In a *module*: "dependencyClass" => YourDynamicLoader::class, +
+Make sure you *use* <namespace>\YourDynamicLoader; +
+
+In a *plugin*: "dependencyClass" => "<namespace>\YourDynamicLoader", +
+
+In your assistant's structure, add the following to the corresponding form field. +
+
+* "dependencies" => [‘anotherFormKey/optionKey’],
+* "dependencyMethod" => "methodName",
+
+If you want to overwrite a value you can use the following attribute in your dependency:
+`preserveValue:boolean`. If your `defaultValue` shall only overwrite the value, preserveValue must be false. `preserveValue` is false by default.
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\TestWizard
+
+== Assistant data modifiers
+
+Modifiers are optional for any assistant. Using modifiers, you can change or add any property to the data object. The data modification is performed when a step is saved, before validation. Its purpose is to provide additional PHP functionality.
+
+=== How to create a modifier
+
+. Create a class that implements *WizardDataModifier*.
+< *use* Plenty\Modules\Wizard\Contracts\WizardDataModifier; >
+. Create a *public function* modify(array $data) and add your functionality to it.
+. Make sure you return the $data once you modified it.
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\Modifiers\TestWizardStepDataModifier;
+
+=== How to use a modifier
+
+In your assistant’s structure, add the following to the corresponding step. The configuration is slightly different depending if your assistant is in a module or in a plugin.
+
+* In a *module*: "modifierClass" => YourWizardStepDataModifier::class
+Make sure you *use* <namespace>\YourWizardStepDataModifier;
+* In a *plugin*: "modifierClass" => "<namespace>\YourWizardStepDataModifier"
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\TestWizard;
+
+== Assistant data validation
+
+Validation is optional for any assistant. Its purpose is to prevent faulty setup and guarantee that only valid values are stored in DynamoDB. Provided that any validator is registered before data is actually written to the DB, validation will be performed when a step is saved.
+
+=== Client side
+
+For simple validations, client side validation should be preferred over server side validation since it gives immediate feedback. Client side validators can be registered using the following options on any form field in the assistant’s structure:
+
+* required:boolean
+* minLength:number
+* maxLength:number
+* minValue:number
+* maxValue:number
+* isIban:boolean
+* pattern:RegExp|string
+* uniqueValues:boolean | string[]
+
+=== Server side
+
+More complex validations – exceeding the possibilities of client side validation – must be performed on the server side. You can either use existing validators of the PL repo or create your own validation class. All these classes must extend *Plenty\Validation\Validator*.
+
+==== How to create a validator
+
+. Create a new PHP class.
+. Use *Plenty\Validation\Validator* and extend it.
+. Define validation options using *Plenty\Validation\Contracts\AttributeHelperContract* functionality.
+
+==== How to register the validator for a step
+
+. In your assistant’s structure, add the following to the corresponding step: +
+
+* "validationClass" => "YourValidatorClass"::class if your assistant is placed in a module. +
+* "validationClass" => "NamespaceOfYourValidatorClass" if your assistant is placed in a plugin.
+
+Working example:
+
+*Plenty\Modules\Wizard\Wizards\TestWizard\Validators\TestWizardDataValidator* used in *Plenty\Modules\Wizard\Wizards\TestWizard\TestWizard*’s first step
+
+== Assistant settings handler
+
+The assistant settings handler is required for any assistant. Using the settings handler, you can save all data created during the assistant process.
+The settings handler is called after the last step is mutated and validated. Its purpose is to provide PHP functionality for saving the entered data on the system’s database.
+
+=== How to create a settings handler
+
+. Create a class that implements “WizardSettingsHandler”.
+< *use* Plenty\Modules\Wizard\Contracts\WizardSettingsHandler; >
+. Create a *public function* handle(array $data) and add your functionality to it.
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\SettingsHandlers\TestWizardSettingsHandler;
+
+=== How to use a settings handler
+
+In your assistant’s structure, add the following. The configuration is slightly different depending if your assistant is in a module or in a plugin.
+
+* In a *module*: "settingsHandlerClass" => YourWizardSettingsHandler::class
+Make sure you *use* <namespace>\YourWizardSettingsHandler;
+* In a *plugin*: "settingsHandlerClass" => "<namespace>\YourWizardSettingsHandler"
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\TestWizard\TestWizard;
+
+== Assistant data source
+
+Data sources are optional for any assistant. Using data sources you can load data from any source (mySQL tables for example) and store data back on that source. Its purpose is to provide the ability to create, edit or delete data from SQL tables, but it's not limited to SQL.
+
+=== How to create a data source
+
+. Create a class that extends “BaseWizardDataSource”.
+< *use* Plenty\Modules\Wizard\Services\DataSources\BaseWizardDataSource;
+. Create a *public function* getIdentifiers() and add your functionality to it. +
+→ This method should return an array of option identifiers.
+
+=== How to use a data source
+
+In your assistant's structure use the following:
+
+In a *plugin*: *"dataSource"* => “<namespace>\YourDataSource”,
+
+=== Getting started with data sources
+
+In a *plugin*: updateDataOption() method's $data parameter must be of the type array even though it's not enforced in BaseWizardDataSource. This will be fixed in a future release.
+Before you start developing your own data source please make sure you have a look at the example and understand what is the purpose of each method.
+
+To see the example assistant in the UI you need to register it.
+Uncomment the registration of *custom-data-source* in *WizardServiceProvider.php*.
+
+=== What happens in the background
+
+Before you start developing your data source, there are some features already developed to ease your work.
+
+The data source will already have: +
+
+* A string property *$wizardKey* which will have the value set to your assistant’s key.
+* An array property *$dataStructure* which will have the ‘wizardKey’ and ‘data’ keys predefined.
+
+*wizardKey*: your assistant’s key
+*data*: the data object which you will build. By default it’s empty.
+
+On *updateDataOption()* the data is already modified and validated according to your step settings.
+
+=== How data should be built before returning it
+
+The $dataStructure’s data property is built differently depending on what you need to display.
+You can use the class property $dataStructure in order to prefill. Keep in mind that *[‘data’] must be an object*, because the UI handles it this way.
+
+.data-structure-optionid.ts
+[source,ts]
+----
+include::example$data-structure-optionid.ts[]
+----
+
+Or because in plugins you can’t use dynamic variables.
+
+.data-structure-object.ts
+[source,ts]
+----
+include::example$data-structure-object.ts[]
+----
+
+With the methods *create*, *get*, *update* and *delete* you manipulate the entire data for all options. *delete* should not return anything. For this reason, the returned $dataStructure should look like this:
+
+.manipulate-data-all-options.ts
+[source,ts]
+----
+include::example$manipulate-data-all-options.ts[]
+----
+
+An assistant without options will still have a default option with the key "default".
+
+.data-structure-default-key.ts
+[source,ts]
+----
+include::data-structure-default-key.ts[]
+----
+
+<1> Is added automatically.
+
+With the methods *createDataOption*, *getByOptionId*, *updateDataOption* and *deleteDataOption* you manipulate the data for a single option.
+*deleteDataOption* should not return anything. This is why the returned $dataStructure should look like this:
+
+.manipulate-data-single-option.ts
+[source,ts]
+----
+include::example$manipulate-data-single-option.ts[]
+----
+
+The method `getIdentifiers` should return an array of optionIds [‘optionId’, ‘optionId2’, ‘optionId3’,... ].
+The method `finalize` should not return anything. It’s called right before the settings handler.
+
+=== Screen by screen guide
+
+For more information about what each method should return, see above.
+
+* When you access *System → Assistants* `getIdentifiers` is called.
+* When you enter an assistant to see its options `get` is called.
+* When you click on the menu of an option and delete it, `deleteDataOption` is called.
+* When you enter an option or an assistant without options to access the form, `getByOptionId` is called.
+* When you click on “Next”, the data is modified and validated according to the step settings.
+`updateDataOption` is called.
+* When you click on “Finalise”, the data is modified and validated according to the step settings. `updateDataOption` is called. `finalize` is called. The data is then passed to the assistant’s *settings handler*.
+
+== Assistant groups
+
+Groups are optional for assistants. The purpose of groups is to group assistants by topic.
+
+=== How to create groups
+
+. Create a class that extends “WizardFolderProvider”.
+< *use* Plenty\Modules\Wizard\Services\WizardFolderProvider; >
+. Create a *protected function* folders() and add your functionality to it. +
+→ This method should return an associative array.
+
+.protected-function-folders.ts
+[source,ts]
+----
+include::protected-function-folders.ts[]
+----
+
+Explanation:
+
+* ‘Egg #1’ and ‘Egg #2’ are children to ‘Hen’.
+* ‘Hen’ is a child to ‘Chicken coup’.
+
+This will create a hierarchy that looks like this:
+    Chicken coup
+    => Hen
+        => Egg #1
+        => Egg #2
+
+Working example:
+*namespace* Plenty\Modules\Wizard\Wizards\CustomDataSourceExample\Folders\CustomDataSourceFolders
+
+=== How to register groups
+
+* In a module, in its Module**ServiceProvider**: +
+*use* Plenty\Modules\Wizard\Contracts\WizardContainerContract;
+*use* <namespace>\YourFolderClass;
+
+* In `boot()` method: boot(WizardContainerContract $wizardContainerContract)
+$wizardContainerContract->registerFolders(YourFolderClass::class);
+
+* In a plugin, in its Plugin**ServiceProvider**: +
+*use* Plenty\Modules\Wizard\Contracts\WizardContainerContract;
+*use* <namespace>\YourFolderClass;
+
+* In `boot()` method: pluginApp(WizardContainerContract::class)->registerFolders(YourFolderClass::class);
+
+=== How to translate groups
+
+In order for translations to work, the group must have the key “translationNamespace”.
+
+Example:
+"*translationNamespace*" => "*module_wizard*”
+
+Assign the translatable properties to keys that are set in your translation files.
+
+Example:
+"*name*" => "*FileName.folderName*",
+"*shortDescription*" => "*FileName.folderDescription*",
+
+For more details on how translations work have a look at the <<#assistant-translations, Assistant translations>> section.
