@@ -4,8 +4,7 @@ This page provides an overview of all style changes in the transition from Ceres
 
 [cols="2"]
 |===
-|Ceres 4
-|Ceres 5
+|Ceres 4 |Ceres 5
 
 |.accordion-content
 |Class has been removed.
