@@ -2,6 +2,8 @@
 
 If your plugin fulfils the xref:marketplace:plugin-upload-requirements.adoc[requirements], you can upload your plugin to link:https://marketplace.plentymarkets.com[plentyMarketplace^].
 
+video::317992170[vimeo]
+
 First, link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[add your plugin^] to the plentymarkets inbox and link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy the plugin^]. Then, proceed as follows to upload your plugin:
 
 . Open the plentymarkets back end.
