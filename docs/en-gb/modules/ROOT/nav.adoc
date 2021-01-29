@@ -31,7 +31,7 @@ include::back-end-ui:partial$nav.adoc[]
 ** xref:how-to-event-logging.adoc[How to log events]
 * xref:event-procedures.adoc[Event procedures]
 
-.REST API
+.REST API guides
 * xref:rest-api-guides:getting-started.adoc[REST API overview]
 * xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
 * xref:rest-api-guides:contact-data.adoc[How to query contact data]
