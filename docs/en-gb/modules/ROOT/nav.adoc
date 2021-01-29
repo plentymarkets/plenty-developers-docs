@@ -51,6 +51,7 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:plentyshop-plugins:how-to-register-cookies.adoc[How to register cookies]
 * xref:plentyshop-plugins:content-caching.adoc[Content caching]
 * xref:plentyshop-plugins:cookbook.adoc[plentyShop cookbook]
+* xref:plentyshop-plugins:reference-results-fields.adoc[ElasticSearch results fields]
 * Ceres 5
 ** xref:plentyshop-plugins:ceres-5-update.adoc[Ceres 5 overview]
 ** xref:plentyshop-plugins:reference-ceres-5-style-changes.adoc[CSS changes]
