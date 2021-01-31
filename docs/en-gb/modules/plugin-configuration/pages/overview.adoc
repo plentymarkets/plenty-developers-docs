@@ -1,0 +1,47 @@
+= Overview
+
+There are times when a plugin isn't ready to use right away, but requires some amount of setup from the user.
+The setup required can range from something simple, like providing an email address, to a complex interaction of different parts of the system.
+Depending on the circumstances, different solutions are appropriate.
+When providing settings in your plugin, you have the following options:
+
+* Assistant
+* Configuration
+* Custom UI
+
+== Assistant
+
+An assistant is a helper that guides the user through a complex multi-step process.
+plentymarkets displays all plugin assistants in the *Setup » Assistants » Plugins* menu.
+
+Assistants are an appropriate tool if your plugin would otherwise require the user to configure settings in various parts of the system.
+Payment plugins are a good example.
+Here, the user has to both authorise their account with the payment provider and make the payment method visible to customers in the webshop.
+Furthermore, the user may have to configure the payment method for different countries and currencies.
+
+Assistants also allow you inform the user of choices and consequences without relying on external instructions.
+
+If your plugin doesn't meet any of the conditions outlined above, you should consider an alternative to assistants.
+Especially options that the user has to change frequently may be better placed elsewhere.
+
+== Configuration
+
+A plugin configuration describes a set of settings that the user can access in the plugin details.
+They offer a number of simple form elements, for example text fields or checkboxes.
+There's no room for more elaborate explanation.
+
+You should use a configuration to provide the user with straight-forward options that are specific to each plugin set.
+Because configurations are always link:https://knowledge.plentymarkets.com/en/plugins/configuring-installed-plugins#local-vs-global-configuration[plugin set specific^], an assistant or custom UI is more appropriate if your plugin contains any settings that apply to the system as a whole.
+This may, for example, include account details for communicating with external systems.
+
+== Custom UI
+
+If your plugin provides a xref:back-end-ui:overview.adoc[custom UI], you can also use this UI for settings.
+In this case, you have to store the settings in a xref:data-storage:database-storage.adoc[data table].
+This means that, unlike the plugin configuration, the settings aren't plugin set specific.
+They apply to all plugin sets that contain the plugin.
+
+Custom UIs are otherwise used for displaying information or triggering actions.
+If your plugin has its own UI anyway, you can consider including the settings as well.
+It's not suited for plugin set specific settings or a complex setup.
+In these cases, you should prefer a plugin configuration or assistant respectively.

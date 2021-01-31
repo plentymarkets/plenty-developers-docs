@@ -1,0 +1,107 @@
+= Multilingual configuration
+
+When creating a plugin configuration, you have to supply the properties `label`, `caption` and `tooltip` in multiple languages. German and English are required.
+
+*_Note:_* Every translation key must feature the prefix `Config.`.
+
+[source,json]
+----
+{
+   "tab"       : "Config.globalTab",
+   "key"       : "header.company_name",
+   "label"     : "Config.globalHeaderCompanyName",
+   "type"      : "text",
+   "default"   : "Ceres Webshop"
+}
+----
+
+== Using separate translation files
+
+To use the multiligualism functionality to its full extent, you have to use separate translation files for each language you want to provide. In addition, the files have to be stored in the correct folder structure. For example, use `resources/lang/de` for German and `resources/lang/en` for English. The translation file in each folder has to be named `Config.properties`.
+
+.PluginXY/resources/lang/de/Config.properties
+[source,properties]
+----
+globalTab=Global
+globalHeaderCompanyName=Name Ihres Geschäfts
+globalHeaderCompanyLogo=URL des Firmenlogos
+globalShippingCostsCategoryId=Kategorie für die Versandinformationen
+globalDefaultContactClassB2b=Standard Kundenklasse für B2B
+globalEnableOldUrlPattern=Callisto Routen für Artikel aktivieren
+contactShopMail=Kontakt E-Mail-Adresse
+contactOpeningTimes=Öffnungszeiten (DE)
+contactEnOpeningTimes=Öffnungszeiten (EN)
+contactShowData=Kontaktdaten anzeigen
+contactShowDataValuesName=Firma
+contactShowDataValuesCeo=CEO
+contactShowDataValuesCity=Stadt
+contactShowDataValuesCountry=Land
+contactShowDataValuesEmail=E-Mail
+contactShowDataValuesFax=Fax
+contactShowDataValuesFon=Telefon
+contactShowDataValuesHotline=Hotline
+contactShowDataValuesStreet=Straße
+contactShowDataValuesVatNumber=Steuernummer
+contactShowDataValuesZip=PLZ
+contactShowDataValuesTimezone=Zeitzone
+contactShowDataValuesOpeningTimes=Öffnungszeiten
+----
+
+.PluginXY/resources/lang/en/Config.properties
+[source,properties]
+----
+globalTab=Global
+globalHeaderCompanyName=Name of your store
+globalHeaderCompanyLogo=URL to your company logo
+globalShippingCostsCategoryId=Category to display shipping information
+globalDefaultContactClassB2b=Default customer class B2B
+globalEnableOldUrlPattern=Enable Callisto route pattern for items
+contactShopMail=Contact form email address
+contactOpeningTimes=Opening hours (DE)
+contactEnOpeningTimes=Opening hours (EN)
+contactShowData=Show contact data
+contactShowDataValuesName=Company
+contactShowDataValuesCeo=CEO
+contactShowDataValuesCity=City
+contactShowDataValuesCountry=Country
+contactShowDataValuesEmail=Email
+contactShowDataValuesFax=Fax
+contactShowDataValuesFon=Phone
+contactShowDataValuesHotline=Hotline
+contactShowDataValuesStreet=Street
+contactShowDataValuesVatNumber=VAT number
+contactShowDataValuesZip=ZIP
+contactShowDataValuesTimezone=Time zone
+contactShowDataValuesOpeningTimes=Opening hours
+----
+
+=== Example of the use of the translation keys
+
+*_Note:_* Every translation key must feature the prefix `Config.`.
+
+.PluginXY/config.json
+[source,json]
+----
+{
+    "tab"                         : "Config.globalTab",
+    "key"                         : "contact.show_data",
+    "label"                       : "Config.contactShowData",
+    "type"                        : "multi_select",
+    "possibleValues"              :
+    {
+        "name"                      : "Config.contactShowDataValuesName",
+        "ceo"                       : "Config.contactShowDataValuesCeo",
+        "city"                      : "Config.contactShowDataValuesCity",
+        "country"                   : "Config.contactShowDataValuesCountry",
+        "email"                     : "Config.contactShowDataValuesEmail",
+        "fax"                       : "Config.contactShowDataValuesFax",
+        "hotline"                   : "Config.contactShowDataValuesHotline",
+        "street"                    : "Config.contactShowDataValuesStreet",
+        "vatNumber"                 : "Config.contactShowDataValuesVatNumber",
+        "zip"                       : "Config.contactShowDataValuesZip",
+        "timezone"                  : "Config.contactShowDataValuesTimezone",
+        "opening_times"             : "Config.contactShowDataValuesOpeningTimes"
+    },
+    "default"                     : "street, zip, city, hotline, email, opening_times"
+}
+----
