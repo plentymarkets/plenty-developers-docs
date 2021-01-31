@@ -26,7 +26,7 @@ wizardContainerContract->register(‘wizardKey', YourWizard::class);
 
 * In a plugin, in its Plugin**ServiceProvider** *use* Plenty\Modules\Wizard\Contracts\WizardContainerContract; *use* <namespace>\YourWizard;
 
- * In *boot()* method:
+* In *boot()* method:
 pluginApp(WizardContainerContract::class)->register('wizardKey', PluginWizard::class);
 
 === How to check if your assistant was registered
@@ -82,11 +82,11 @@ NAMESPACE is mandatory.
 
 === Step-by-step
 
-. Create your translation files (`/resources/lang/{lang}/FileName.{extension}``).
+. Create your translation files (`/resources/lang/{lang}/FileName.{extension}`).
 The extension is `.php` in modules and `.properties` in plugins.
 . Make sure your translations are loaded.
-a. In plugins they are loaded automatically.
-b. In modules you need to load them in `boot()` method of your *ServiceProvider*. +
+** In plugins they are loaded automatically.
+** In modules you need to load them in the `boot()` method of your *ServiceProvider*. +
 *_Example:_* $this->loadTranslationsFrom</b>(__<i>DIR</i>__.'/../resources/lang','module_wizard');
 . In order for translations to work, the assistant’s structure must have the key `translationNamespace`. +
 *_Example:_* `translationNamespace` => `module_wizard`
@@ -107,58 +107,57 @@ Basic information and classes
 
 [cols="1,3"]
 |===
+|Property |Description
 
-|*Property* |*Description*
-
-|title:string/key
+|`title`:`string` \| `key`
 |required; overall title of the assistant
 
-|key:string
+|`key`:`string`
 |required and unique; The naming should follow the rules for link:https://developer.mozilla.org/en-US/docs/Glossary/Identifier[JavaScript identifiers^].
 
-|iconPath:string
+|`iconPath`:`string`
 |optional; an icon that will be displayed alongside with the title of the assistant
 
-|shortDescription:string/key
+|`shortDescription`:`string` \| `key`
 |Describes the purpose of the assistant. It is displayed as info on the assistant card.
 
-|reloadStructure:boolean
+|`reloadStructure`:`boolean`
 |optional; Default false; If set to true, the assistant’s structure will be reloaded whenever a user enters the assistant.
 
-|<<#how-to-use-a-settings-handler, settingsHandlerClass>>:string
+|<<#how-to-use-a-settings-handler, `settingsHandlerClass`>>:`string`
 |required; refers to the server-side class which executes all necessary functionality for transferring dedicated data from DynamoDB to the plentymarkets DB and for configuring the plentymarkets user system.
 
-|actionHandlerClass:class
+|`actionHandlerClass`:`class`
 |
 
-|<<#how-to-use-a-dynamic-loader-in-a-form-field, dependencyClass>>:string
+|<<#how-to-use-a-dynamic-loader-in-a-form-field, `dependencyClass`>>:`string`
 |
 
-|topics:string[] // [‘multichannel.amazon’, ‘Amazon Vendor’]
-|required; must contain one topic which describes the domain of the settings in plentymarkets system; can contain additional topics
+|`topics`:`string[]``
+|required; must contain one topic which describes the domain of the settings in plentymarkets system; can contain additional topics; for example [‘multichannel.amazon’, ‘Amazon Vendor’]
 
-|<<#assistant-options, options>>:key => DynamicFormElement
+|<<#assistant-options, `options`>>:`key` => `DynamicFormElement`
 |optional; contains a list of form elements to enable the user to compose an optionId (unique identifier for a combination of options). The naming for the key should also follow the rules for link:https://developer.mozilla.org/en-US/docs/Glossary/Identifier[JavaScript identifiers^]; states whether an assistant can be run multiple times
 
-|relatedWizards:string[]
+|`relatedWizards`:`string[]`
 |optional; A list of related assistants identified by their key. These related assistants will be presented after the assistant has been finalised - in the order determined by the developer.
 
-|<<#priority-and-order-of-assistants-in-overview, priority>>:number
+|<<#priority-and-order-of-assistants-in-overview, `priority`>>:`number`
 |defines the position of the assistant in the sorted assistants overview; number between 0 (low priority) and 499 (high priority)
 
-|steps:key => Step
+|`steps`:`key` => `Step`
 |required and unique for the assistant
 
-|relevance:string
+|`relevance`:`string`
 |optional; Default optional; If set to essential, the assistant will be marked as such and shown in the recommended assistants overlay.
 
-|tableColumns:string[]
+|`tableColumns`:`string[]`
 |optional; Default options (if set); If set, the according options or form elements will be shown as table columns.
 
-|cardRows:string[]
+|`cardRows`:`string[]`
 |optional; Default options (if set); If set, the according options or form elements will be shown on the cards of the assistant option browser’s view.
 
-|keywords:string[]
+|`keywords`:`string[]`
 |optional; A list of keywords describing the assistant. They will be considered when searching for assistants.
 
 |===
@@ -179,24 +178,24 @@ You can generate the *optionId* after specific form elements from the steps that
 include::example$generate-optionid.ts[]
 ----
 
-It is now possible to show a maximum of 3 options on each assistant’s card. The order of the options in the table determines which ones will actually be shown. Thus, the first 3 options from the table are displayed on the respective card and will be listed below each other. All other options can be found in the table view.
+It's possible to show up to 3 options on each assistant’s card. The order of the options in the table determines which ones will actually be shown. Thus, the first 3 options from the table are displayed on the respective card and will be listed below each other. All other options can be found in the table view.
 
 === General step properties
 
 [cols="1,3"]
 |===
+|Property |Description
 
-|*Property* |*Description*
-|title:string;
+|`title`:`string`
 |Is displayed on top of every step and in the step navigation.
 
-|description:string;
+|`description`:`string`
 |required; Describes a step. It is displayed underneath the title of a step.
 
-|condition:string
+|`condition`:`string`
 |Determines whether the step is visible and accessible in the step navigation. A boolean value or a JSCondition as string is accepted.
 
-|<<#general-section-properties, sections>>: {[ key:string ]}
+|<<#general-section-properties, `sections`>>: `{[ key:string ]}`
 |Sections of a step.
 
 |===
@@ -205,18 +204,18 @@ It is now possible to show a maximum of 3 options on each assistant’s card. Th
 
 [cols="1,3"]
 |===
+|Property |Description
 
-|*Property* |*Description*
-|title:string;
+|`title`:`string`
 |Is displayed on top of a section.
 
-|description:string;
+|`description`:`string`
 |required; Describes a section. It is displayed underneath the title of a section.
 
-|condition:string
+|`condition`:`string`
 |Determines whether the section is visible. A boolean value or a JSCondition as string is accepted.
 
-|<<#form-elements, form>>: {[ key:string ]};
+|<<#form-elements, `form`>>: `{[ key:string ]};`
 |Form elements of a section.
 
 |===
@@ -231,53 +230,53 @@ key:string => TerraFormFieldInterface {
 
 [cols="1,3"]
 |===
+|Element |Description
 
-|*Element* |*Description*
-|type:string;
+|`type`:`string`
 |Type of the form element. See the section <<#type-dependent-options, Type dependent options>> for a list of all available types.
 
-|defaultValue?:any;
+|`defaultValue?`:any
 |If no value is set, this is the default value of the element.
 
-|isVisible?:boolean / string;
+|`isVisible?`:`boolean` \| `string`
 |Determines whether the form element is visible. A *boolean value* or a *JSCondition* as string are accepted. Remember that the naming for keys should follow the rules for link:https://developer.mozilla.org/en-US/docs/Glossary/Identifier[JavaScript identifiers^].
 
-|isList?:boolean / string;
+|`isList?`:`boolean` \| `string`
 |Determines whether the declaration is used to render a list of the specified form field. If a string is given, it has to match the regular expression /^\[(\d*),(\d*)]$/ to be interpreted as min and max limits of the list.
 
-|children?:{ [key:string]:TerraFormFieldInterface }
+|`children?`:`{ [key:string]:TerraFormFieldInterface }`
 |A list of children (also form fields) to the form field. This is used for form fields of type horizontal or vertical. For more information see the section about <<#groups, groups>>.
 
-|width?:string;
+|`width?`:`string`
 |Modifies the width of a form element using the bootstrap grid system. For more information see the link:https://getbootstrap.com/docs/4.3/layout/grid/[official documentation^]. The default value for each form element is ‘col-sm-12 col-md-8 col-lg-6 col-xl-5’.
 
 2+^|*options?:{ [key:string]:any }*
 
-|name:string
+|`name`:`string`
 |Name of the form element (not the key).
 
-|required:boolean
+|`required`:`boolean`
 |Validator. If true, any value must be entered into this form element.
 
-|minLength:number
+|`minLength`:`int`
 |Validator. The entered text must equal or exceed the given number of chars.
 
-|maxLength:number
+|`maxLength`:`int`
 |Validator. The entered text must not exceed the given number of chars.
 
-|minValue:number
+|`minValue`:`int`
 |Validator. The entered value must equal or exceed the given value.
 
-|maxValue:number
+|`maxValue`:`int`
 |Validator. The entered value must not exceed the given value.
 
-|email:boolean
+|`email`:`boolean`
 |Validator. If true, the entered value is checked to be a valid email address.
 
-|pattern:RegExp / string
+|`pattern`:RegExp \| `string`
 |Validator. If given, the entered value will be checked to match the given pattern.
 
-|uniqueValues:boolean / string[]
+|`uniqueValues`:`boolean` \| `string[]`
 |Validator. If given, the entered values in a list are checked to be unique. If a vertical or horizontal group is used as a list, an array of child keys can be specified. Use only in combination with the isList property.
 
 |===
@@ -294,11 +293,11 @@ key:string => TerraFormFieldInterface {
 [cols="1,3"]
 |===
 
-|*Option* |*Description*
-|openCalendarTop:boolean
+|Option |Description
+|`openCalendarTop`:`boolean`
 |If true, the calendar will be opened on top. Default false.
 
-|displayDateFormat:string
+|`displayDateFormat`:`string`
 |Set the date format. Default 'dd.mm.yyyy'.
 
 |===
@@ -307,15 +306,15 @@ key:string => TerraFormFieldInterface {
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|showPreview:boolean
+|`showPreview`:`boolean`
 |If true, a preview for image files is shown.
 
-|allowedExtensions:string[]
+|`allowedExtensions`:`string[]`
 |List of allowed file extensions
 
-|allowFolders:boolean
+|`allowFolders`:`boolean`
 |If true, a group can be selected.
 
 |===
@@ -324,15 +323,15 @@ key:string => TerraFormFieldInterface {
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|isPassword:boolean
+|`isPassword`:`boolean`
 |If true, the type of input will be 'password'.
 
-|isIban:boolean
+|`isIban`:`boolean`
 |If true, the input will check whether the input is a valid iban.
 
-|isReadonly:boolean
+|`isReadonly`:`boolean`
 |If true, the value cannot be changed.
 
 |===
@@ -341,12 +340,12 @@ key:string => TerraFormFieldInterface {
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|hasFixedHeight:boolean
+|`hasFixedHeight`:`boolean`
 |If true, the text area is not resizable. Default false.
 
-|maxRows:number
+|`maxRows`:`number`
 |Sets the initial number of rows. Default is 4.
 
 |===
@@ -359,12 +358,12 @@ This form element has no special options.
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|isPriceInput:boolean
+|`isPriceInput`:`boolean`
 |If true, the value will be right-aligned.
 
-|decimalCount:number
+|`decimalCount`:`int`
 |Set the decimal count. Default is 2. (0.01)
 
 |===
@@ -373,12 +372,12 @@ This form element has no special options.
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|openOnTop:boolean
+|`openOnTop`:`boolean`
 |If true, the dropdown with options opens on top of the window.
 
-|listBoxValues:TerraSelectBoxValueInterface[]
+|`listBoxValues`:`TerraSelectBoxValueInterface[]`
 |List of possible options.
 
 |===
@@ -400,27 +399,27 @@ If an action is given, state a class containing the requested method at the assi
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|icon:string
+|`icon`:`string`
 |Set an icon (e.g. icon-save).
 
-|name:string
+|`name`:`string`
 |Set the caption of the button where the link will be opened.
 
-|action:string
+|`action`:`string`
 |The name of the method of the corresponding actionHandlerClass that should be executed when the button is clicked.
 
-|link:object
+|`link`:`object`
 |Specify the link.
 
-|fromAction:boolean
+|`fromAction`:`boolean`
 |States whether the given action returns a URL that should be used as a link.
 
-|newWindow:boolean
+|`newWindow`:`boolean`
 |Specify whether the link should be opened in a new window or in the current browser tab.
 
-|url:string
+|`url`:`string`
 |A static URL which will serve as a link.
 
 |===
@@ -429,13 +428,13 @@ If an action is given, state a class containing the requested method at the assi
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|action:string
+|`action`:`string`
 |The name of the method of the corresponding actionHandlerClass that should be executed when clicking the *valueGenerator button*. Is similar to the button's action.
 
-|responseType:'string' / 'number'
-|The type of the response’s value that can be ‘string’ or ‘number’.
+|`responseType`:`string` / `int`
+|The type of the response’s value that can be string or number.
 
 |===
 
@@ -443,22 +442,22 @@ If an action is given, state a class containing the requested method at the assi
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|displayResetButton:boolean
+|`displayResetButton`:`boolean`
 |If true, the reset button is shown.
 
-|displaySearch:boolean
+|`displaySearch`:`boolean`
 |If true, an input to search for any category is shown.
 
-|showFullSelectionPath:boolean
+|`showFullSelectionPath`:`boolean`
 |...
 
 |===
 
 ==== source
 
-* exportType:string +
+* `exportType`:`string` +
 → Determines which data points can be exported (currently, only 'variation' is possible).
 
 ==== color
@@ -469,24 +468,24 @@ This form element has no special options.
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|min:number
+|`min`:`int`
 |lower limit of the slider
 
-|max:number
+|`max`:`int`
 |upper limit of the slider
 
-|interval:number
+|`interval`:`int`
 |step size of the slider
 
-|precision:number
+|`precision`:`int`
 |amount of digits that will be shown when displaying any values (current value, lower limit, upper limit, ticks) in the slider.
 
-|showMinMax:boolean
+|`showMinMax`:`boolean`
 |If set to true, the upper and lower limits will be displayed.
 
-|showTicks:boolean
+|`showTicks`:`boolean`
 |If set to true, the ticks' label will be displayed.
 
 |===
@@ -495,12 +494,12 @@ This form element has no special options.
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|collapsed:boolean
+|`collapsed`:`boolean`
 |Set the initial collapsed state. Default false
 
-|checkboxValues:{caption:string, value:any}[]
+|`checkboxValues`:`{caption:string, value:any}[]`
 |List of possible options
 
 |===
@@ -515,12 +514,12 @@ include::example$checkbox-group.ts[]
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|radioValues:{caption:string, value:any}[]
+|`radioValues`:`{caption:string, value:any}[]`
 |List of radio buttons that may be selected.
 
-|inline:boolean
+|`inline`:`boolean`
 |Default: true; if set to false, the radio buttons will be aligned vertically.
 
 |===
@@ -533,15 +532,15 @@ This form element has no special options.
 
 [cols="1,3"]
 |===
+|Option |Description
 
-|*Option* |*Description*
-|placeholder:string
+|`placeholder`:`string`
 |Text which is shown until anything is entered.
 
-|fixedHeight:string
+|`fixedHeight`:`string`
 |Height of the area where content can be added.
 
-|minHeight:string
+|`minHeight`:`string`
 |Minimum height of the text area where content can be added.
 
 |===
@@ -588,11 +587,11 @@ Working example:
 In your assistant's structure, add the following:
 
 In a *module*: "dependencyClass" => YourDynamicLoader::class, +
-Make sure you *use* <namespace>\YourDynamicLoader; +
+Make sure you *use* <namespace>\YourDynamicLoader;
 
 In a *plugin*: "dependencyClass" => "<namespace>\YourDynamicLoader", +
 
-In your assistant's structure, add the following to the corresponding form field. +
+In your assistant's structure, add the following to the corresponding form field.
 
 * "dependencies" => [‘anotherFormKey/optionKey’],
 * "dependencyMethod" => "methodName",
@@ -636,14 +635,14 @@ Validation is optional for any assistant. Its purpose is to prevent faulty setup
 
 For simple validations, client side validation should be preferred over server side validation since it gives immediate feedback. Client side validators can be registered using the following options on any form field in the assistant’s structure:
 
-* required:boolean
-* minLength:number
-* maxLength:number
-* minValue:number
-* maxValue:number
-* isIban:boolean
-* pattern:RegExp|string
-* uniqueValues:boolean | string[]
+* `required`:`boolean`
+* `minLength`:`int`
+* `maxLength`:`int`
+* `minValue`:`int`
+* `maxValue`:`int`
+* `isIban`:`boolean`
+* `pattern`:RegExp | `string`
+* `uniqueValues`:`boolean` | `string[]`
 
 === Server side
 
@@ -657,9 +656,9 @@ More complex validations – exceeding the possibilities of client side validati
 
 ==== How to register the validator for a step
 
-. In your assistant’s structure, add the following to the corresponding step: +
+. In your assistant’s structure, add the following to the corresponding step:
 
-* "validationClass" => "YourValidatorClass"::class if your assistant is placed in a module. +
+* "validationClass" => "YourValidatorClass"::class if your assistant is placed in a module.
 * "validationClass" => "NamespaceOfYourValidatorClass" if your assistant is placed in a plugin.
 
 Working example:
@@ -720,7 +719,7 @@ Uncomment the registration of *custom-data-source* in *WizardServiceProvider.php
 
 Before you start developing your data source, there are some features already developed to ease your work.
 
-The data source will already have: +
+The data source will already have:
 
 * A string property *$wizardKey* which will have the value set to your assistant’s key.
 * An array property *$dataStructure* which will have the ‘wizardKey’ and ‘data’ keys predefined.
@@ -783,7 +782,7 @@ The method `finalize` should not return anything. It’s called right before the
 
 For more information about what each method should return, see above.
 
-* When you access *System → Assistants* `getIdentifiers` is called.
+* When you access *Setup » Assistants* `getIdentifiers` is called.
 * When you enter an assistant to see its options `get` is called.
 * When you click on the menu of an option and delete it, `deleteDataOption` is called.
 * When you enter an option or an assistant without options to access the form, `getByOptionId` is called.

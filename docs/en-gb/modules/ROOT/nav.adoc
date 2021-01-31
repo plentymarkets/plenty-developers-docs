@@ -14,8 +14,7 @@ include::tutorial:partial$nav.adoc[]
 ** xref:plugin-configuration:how-to-plugin-configuration.adoc[How to create a plugin configuration]
 ** xref:plugin-configuration:how-to-multilingual-configuration.adoc[How to make a configuration multilingual]
 // ** Configuration options reference
-** How to create an assistant
-** Assistant reference
+** xref:plugin-configuration:how-to-plugin-assistant.adoc[How to create a plugin assistant]
 * Back end UI
 +
 --
