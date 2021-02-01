@@ -1,5 +1,5 @@
 site:
-  title: Plentymarkets Developers site 2.0 [EN]
+  title: Developers documentation
   start_page: developers::homepage.adoc
   url: https://developers2.plentymarkets.com/en-gb
 content:
