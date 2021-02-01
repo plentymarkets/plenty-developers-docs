@@ -971,18 +971,6 @@ a| The template for the single item view of your online store. It can be found i
 |The general terms and conditions of your online store. It can be found in the *StaticPages* sub-folder.
 |===
 
-===== The PageDesign template of Ceres
-
-image::Ceres_PageDesign.png[width=640, height=360]
-
-===== The Basket template of Ceres
-
-image::Ceres_Basket.png[width=640, height=360]
-
-===== The BasketList template of Ceres
-
-image::Ceres_BasketList.png[width=640, height=360]
-
 == Updating themes to Ceres 4.0
 
 The major release of Ceres 4.0 in April 2019 includes several changes to the code that are of particular importance for theme developers, since they necessitate adjustments to the themes.

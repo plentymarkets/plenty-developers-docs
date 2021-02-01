@@ -821,11 +821,3 @@ The third script is executed when a user clicks on the *Delete from list* button
 After creating the plugin, we have to link:https://knowledge.plentymarkets.com/en/plugins/adding-plugins-system#git-plugins[add our new plugin] to the plentymarkets inbox and link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins#installing-plugins[deploy the plugin]. Finally, to display the To Do list, open a new browser tab and type in your domain adding `/todo` at the end. Have fun with your new plugin!
 
 image::todolist-with-tasks.png[width=640, height=360]
-
-=== The To Do list plugin
-
-image::todolist-without-tasks.png[width=640, height=360]
-
-=== Adding tasks to the To Do list
-
-image::todolist-with-tasks.png[width=640, height=360]

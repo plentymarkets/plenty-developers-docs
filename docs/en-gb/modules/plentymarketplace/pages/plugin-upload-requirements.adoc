@@ -61,7 +61,10 @@ image::marketplace-category-view.png[width=640, height=360]
 
 The `marketplace.json` file is the essential part for plugin for the plentyMarketplace. It must contain certain information for plentyMarketplace, such as the marketplace name, the price etc. Find an example of a valid `marketplace.json` below.
 
+[source,json]
+----
 include::example$marketplace.json[]
+----
 
 [cols="1,3"]
 |===
@@ -295,18 +298,3 @@ For rectangular images, the width should be the same as for the respective squar
 |The preview images of the plugin to be displayed in plentyMarketplace. The valid file format is PNG. The maximum file size for preview images is 1 MB. One image is required for plentyMarketplace. Upload up to 7 preview images, e.g. `preview_0.png`, `preview_1.png` etc. icon:warning[role=red] [red]#Required#
 |===
 
-===== Example of a changelog
-
-image::marketplace-changelog.png[width=640, height=360]
-
-===== Example of a user guide
-
-image::marketplace-userguide.png[width=640, height=360]
-
-===== The item view on plentyMarketplace
-
-image::marketplace-item-view.png[width=640, height=360]
-
-===== The category view on plentyMarketplace
-
-image::marketplace-category-view.png[width=640, height=360]

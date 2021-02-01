@@ -415,7 +415,3 @@ In this table, find all the available log levels and explanations of the individ
 |`emergency`
 |System is unusable
 |===
-
-=== The logging back end view
-
-image::logging-backend.png[width=640, height=360]

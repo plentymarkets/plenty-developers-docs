@@ -15,7 +15,7 @@ Approximately 70 containers are available on the different pages and views of th
 
 Find a detailed list of all containers in the table below:
 
-include::partial$ceres-containers.adoc[leveloffset=+1]
+include::partial$template-containers.adoc[leveloffset=+1]
 
 == Containers on the homepage
 
@@ -165,6 +165,3 @@ Our tab is a `li` element with the class `nav-item`. If more tabs are required, 
 
 In a second `Twig` file, we enter the content for our tab. Our container has the same ID, that is referenced in the previous code example, e.g. `id="my-custom-tab"`.
 
-=== A schematic overview of containers on the Ceres homepage
-
-image::ceres-homepage-containers.png[]

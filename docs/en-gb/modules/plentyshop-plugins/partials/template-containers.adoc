@@ -176,7 +176,3 @@ Our tab is a `li` element with the class `nav-item`. If more tabs are required, 
 ====
 In a second `Twig` file, we enter the content for our tab. Our container has the same ID, that is referenced in the previous code example, e.g. `id="my-custom-tab"`.
 ====
-
-=== A schematic overview of containers on the Ceres homepage
-
-image::ceres-homepage-containers.png[]

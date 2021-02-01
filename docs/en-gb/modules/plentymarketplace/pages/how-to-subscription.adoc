@@ -39,7 +39,7 @@ TopItems/
 .plugin-hello-subscription-world/marketplace.json
 [source,json]
 ----
-include::example$marketplace-subscription.js[]
+include::example$marketplace-subscription.json[]
 ----
 
 The `marketplace.json` provides the core functionality for your subscription plugin. Using the `interval` properties, you can decide for how long customers can use your plugin at a time. As shown in the above example, you can offer subscriptions on a monthly, quarterly, half-yearly, and yearly basis. While you may want to provide all of these options, it is also possible to only allow monthly subscriptions for example. To do this, remove the other options from your code. Each `interval` has a `price` property associated with it. Here, you can enter how much you want to charge in Euro for the respective interval. Only values higher than 10.00 are valid.

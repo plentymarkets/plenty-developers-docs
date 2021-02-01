@@ -173,11 +173,3 @@ image::template-container-backend.png[width=640, height=360]
 After link:https://knowledge.plentymarkets.com/en/plugins/installing-added-plugins[deploying^] the plugins, the content of our *Placeholder* plugin is displayed in the footer of our online store.
 
 image::footer-template-container.png[width=640, height=360]
-
-=== Placeholder in the *Certified by* container in the footer
-
-image::footer-template-container.png[width=640, height=360]
-
-=== The *CMS » Container links* menu in the plentymarkets back end
-
-image::template-container-backend.png[width=640, height=360]
