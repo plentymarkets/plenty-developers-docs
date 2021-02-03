@@ -1,4 +1,5 @@
 = Introducing the plentymarkets plugin interface
+:keywords: authhelper
 
 The plentymarkets plugin interface is a collection of interfaces representing the modules and sub-modules available in plentymarkets. The plugin interface defines the core services for plentymarkets plugins and contains all necessary methods for your plugin to communicate with plentymarkets. For each module of plentymarkets, individual interfaces are available. The documentation for these interfaces can be accessed via the *Interface* drop-down menu in the navigation bar.
 
