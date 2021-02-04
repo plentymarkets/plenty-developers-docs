@@ -8,8 +8,8 @@ Please make sure to pay attention to the test cases explained in the final chapt
 
 If you have not developed or worked with plugins before this point, refer to the general information first.
 
-xref:plugin-architecture.adoc[Introducing plentymarkets plugins]
-xref:plugin-definition.adoc[Plugin definition]
+* xref:ROOT:plugin-architecture.adoc[Introducing plentymarkets plugins]
+* xref:ROOT:plugin-definition.adoc[Plugin definition]
 
 == First steps
 
@@ -383,7 +383,7 @@ class PaymentMethodServiceProvider extends ServiceProvider
 
 == Configurations
 
-Configurations and settings of the plugin need to be integrated into an assistant. This way, the plugin is incorporated seamlessly into the plentymarktes user experience and the functionality of the plugin to work with different clients is ensured. The assistant needs to contain the option to disable the payment method for certain delivery countries and, as mentioned, the function to work with different clients. To get a deeper knowledge of assistants we recommend to read the xref:plugin-configuration:reference-plugin-assistant.adoc[Assistant documentation].
+Configurations and settings of the plugin need to be integrated into an assistant. This way, the plugin is incorporated seamlessly into the plentymarktes user experience and the functionality of the plugin to work with different clients is ensured. The assistant needs to contain the option to disable the payment method for certain delivery countries and, as mentioned, the function to work with different clients. To get a deeper knowledge of assistants we recommend to read the xref:plugin-configuration:how-to-plugin-assistant.adoc[Assistant documentation].
 
 === Example for an assistant
 
@@ -567,7 +567,7 @@ class PaymentMethodAssistantSettingsHandler implements WizardSettingsHandler
 
 === Multilingualism configurations
 
-The plugin needs to contain the functionality to display texts, such as names, labels or configurations, in different languages. For more information on the multilingualism of a plugin refer to xref:plugin-configuration:how-to-plugin-configuration.adoc#_multilingualism[Plugin multilingualism].
+The plugin needs to contain the functionality to display texts, such as names, labels or configurations, in different languages. For more information on the multilingualism of a plugin refer to xref:plugin-configuration:how-to-multilingual-configuration.adoc[Plugin multilingualism].
 
 == Payment plugin workflow
 
@@ -679,7 +679,7 @@ The next part describes necessary steps to ensure the correct workflow concernin
 
 === Creating payments
 
-Payments are an important component in the order processing. They are needed to mark orders as paid and thus to notify sellers of the order status and that the order can be shipped. An order should only be further processed in the plentymarkets system if a payment is assigned to the order. Therefore, the plugin must ensure that a payment is created and assigned. Depending on the payment method, assigning a payment can be done right after placing an order, e.g. by responding to the respective event. Another possibility to create a payment is by calling a specific route. The payment must be structured according to the xref:beta7@interface:Payment.adoc[Payment model].
+Payments are an important component in the order processing. They are needed to mark orders as paid and thus to notify sellers of the order status and that the order can be shipped. An order should only be further processed in the plentymarkets system if a payment is assigned to the order. Therefore, the plugin must ensure that a payment is created and assigned. Depending on the payment method, assigning a payment can be done right after placing an order, e.g. by responding to the respective event. Another possibility to create a payment is by calling a specific route. The payment must be structured according to the xref:beta7@interface:ROOT:Payment.adoc[Payment model].
 
 [source,php]
 ----
@@ -728,7 +728,7 @@ As an example, here a payment is created in the `createPlentyPayment` method of 
 
 === Assigning payments to orders
 
-After creating a payment, the payment can be assigned to an order. This is done with the `createOrderRelation` function within the PaymentOrderRelationRepositoryContract repository. Note that the order can be loaded with the xref:beta7@interface:Order.adoc[OrderRepositoryContract].
+After creating a payment, the payment can be assigned to an order. This is done with the `createOrderRelation` function within the PaymentOrderRelationRepositoryContract repository. Note that the order can be loaded with the xref:beta7@interface:ROOT:Order.adoc[OrderRepositoryContract].
 
 [source,php]
 ----
@@ -763,7 +763,7 @@ After creating a payment, the payment can be assigned to an order. This is done 
 
 === Rejecting payments
 
-When a payment provider rejects a payment, this information must be saved in the payment. This is done with the help of the payment status. The payment status can be changed. The plugin can change the status of a payment via a predefined route. For this purpose, the xref:beta7@interface:Payment.adoc[PaymentRepositoryContract] with the `updatePayment` method must be used.
+When a payment provider rejects a payment, this information must be saved in the payment. This is done with the help of the payment status. The payment status can be changed. The plugin can change the status of a payment via a predefined route. For this purpose, the xref:beta7@interface:ROOT:Payment.adoc[PaymentRepositoryContract] with the `updatePayment` method must be used.
 
 The following IDs are used for payment statuses:
 
@@ -1352,7 +1352,7 @@ image::paypal-express-button-preview.png[width=640, height=360]
 
 === Retreiving addresses from the payment provider
 
-If the customer selects an address from the payment provider, this address has to be imported into the plentymarkets system and then linked to the current checkout. To do so, the xref:beta7@interface:Payment.adoc[AddressRepositoryContract] must be used in the `ContactService.php` file.
+If the customer selects an address from the payment provider, this address has to be imported into the plentymarkets system and then linked to the current checkout. To do so, the xref:beta7@interface:ROOT:Payment.adoc[AddressRepositoryContract] must be used in the `ContactService.php` file.
 
 [source,php]
 ----
@@ -1434,7 +1434,7 @@ class ContactService
 }
 ----
 
-The address transmitted by the payment provider has to be mapped with the structure of the address model. Depending on whether the customer is logged in or not, the address is either assigned to this customer or created as a guest address. An *address* must be structured according to the xref:beta7@interface:Account.adoc#address_address_account[Address] model. Addresses are divided into two types, delivery addresses and invoice addresses.
+The address transmitted by the payment provider has to be mapped with the structure of the address model. Depending on whether the customer is logged in or not, the address is either assigned to this customer or created as a guest address. An *address* must be structured according to the xref:beta7@interface:ROOT:Account.adoc#address_address_account[Address] model. Addresses are divided into two types, delivery addresses and invoice addresses.
 
 == Test cases
 
