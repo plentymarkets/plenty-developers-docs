@@ -1,0 +1,1466 @@
+= Ceres 4 to Ceres 5 Style changes
+
+This page provides an overview of all style changes in the transition from Ceres 4.6 to Ceres 5.
+
+[cols="2"]
+|===
+|Ceres 4 |Ceres 5
+
+|.accordion-content
+|Class has been removed.
+
+|.accordion-control
+|Class has been removed.
+
+|.accordion-header
+|Class has been removed.
+
+|.account-menu
+|.mw-100
+
+|.active-lg-down
+|Class has been removed.
+
+|.active-lg-up
+|Class has been removed.
+
+|.active-md-down
+|Class has been removed.
+
+|.active-md-up
+|Class has been removed.
+
+|.active-sm-down
+|Class has been removed.
+
+|.active-sm-up
+|Class has been removed.
+
+|.active-xl-down
+|Class has been removed.
+
+|.active-xl-up
+|Class has been removed.
+
+|.active-xs-down
+|Class has been removed.
+
+|.active-xs-up
+|Class has been removed.
+
+|.alert-dynamic
+|Class has been removed.
+
+|.animate-inFromLeft
+|.animate-in-from-left
+
+|.animate-inFromRight
+|.animate-in-from-right
+
+|.animate-outToLeft
+|.animate-out-to-left
+
+|.animate-outToRight
+|.animate-out-to-right
+
+|.autocomplete-image
+|Class has been removed.
+
+|.autocomplete-image-container
+|Class has been removed.
+
+|.autocomplete-item-name
+|Class has been removed.
+
+|.autocomplete-selected
+|Class has been removed.
+
+|.availability_1
+|.availability-1
+
+|.availability_2
+|.availability-2
+
+|.availability_3
+|.availability-3
+
+|.availability_4
+|.availability-4
+
+|.availability_5
+|.availability-5
+
+|.availability_6
+|.availability-6
+
+|.availability_7
+|.availability-7
+
+|.availability_8
+|.availability-8
+
+|.availability_9
+|.availability-9
+
+|.availability_10
+|.availability-10
+
+|.badge-right
+|Class has been removed.
+
+|.basket
+|.pt-3
+
+|.basket-header
+|Class has been removed.
+
+|.basket-header-caption
+|Class has been removed.
+
+|.basket-item-container
+|.basket-list-item
+
+|.basket-loading-frame
+|.d-table .w-100
+
+|.basket-preview-hover
+|.basket-preview .d-flex .flex-column .flex-nowrap .bg-white .shadow .w-100
+
+|.basket-preview-hover-wrapper
+|Class has been removed.
+
+|.basket-preview-hover-wrapper-inner
+|Class has been removed.
+
+|.basket-seperator
+|Class has been removed.
+
+|.basket-totals
+|Class has been removed.
+
+|.bg-faded
+|.bg-light
+
+|.brand-wrapper
+|.px-lg-3
+
+|.btn-mail
+|Class has been removed.
+
+|.btnClose
+|.btn-close
+
+|.cancel-reset-pwd-btn
+|Class has been removed.
+
+|.card-block
+|.card-body
+
+|.checkout-rightside
+|Class has been removed.
+
+|.cmp-accordion
+|Class has been removed.
+
+|.cmp-basket-item
+|Class has been removed.
+
+|.cmp-contact
+|Class has been removed.
+
+|.cmp-filters
+|Class has been removed.
+
+|.cmp-hero
+|Class has been removed.
+
+|.cmp-paginator
+|Class has been removed.
+
+|.cmp-ratings-roll
+|Class has been removed.
+
+|.col-xs-1
+|.col-1
+
+|.col-xs-2
+|.col-2
+
+|.col-xs-3
+|.col-3
+
+|.col-xs-4
+|.col-4
+
+|.col-xs-5
+|.col-5
+
+|.col-xs-6
+|.col-6
+
+|.col-xs-7
+|.col-7
+
+|.col-xs-8
+|.col-8
+
+|.col-xs-9
+|.col-9
+
+|.col-xs-10
+|.col-10
+
+|.col-xs-11
+|.col-11
+
+|.col-xs-12
+|.col-12
+
+|.color
+|Class has been removed.
+
+|.contact-address
+|Class has been removed.
+
+|.contact-vat-number
+|Class has been removed.
+
+|.contain
+|Class has been removed.
+
+|.content-center
+|Class has been removed.
+
+|.current-payment-width
+|.w-100
+
+|.default-not-found
+|.bg-transparent
+
+|.expand_nav
+|.expand-nav
+
+|.fadeOut
+|.fade-out
+
+|.featured-categories
+|Class has been removed.
+
+|.featured-category
+|Class has been removed.
+
+|.featured-category-cta
+|Class has been removed.
+
+|.featured-category-headline
+|Class has been removed.
+
+|.featured-category-inner
+|Class has been removed.
+
+|.featured-image
+|Class has been removed.
+
+|.featured-sale-new
+|Class has been removed.
+
+|.filter-content
+|Class has been removed.
+
+|.filter-group
+|Class has been removed.
+
+|.filters-colors
+|Class has been removed.
+
+|.filters-header
+|Class has been removed.
+
+|.filters-section
+|Class has been removed.
+
+|.flex-center
+|Class has been removed.
+
+|.flex-style
+|.d-flex
+
+|.footer-column
+|Class has been removed.
+
+|.footer-content
+|Class has been removed.
+
+|.header
+|Class has been removed.
+
+|.hero-category
+|Class has been removed.
+
+|.hero-category-cta
+|Class has been removed.
+
+|.hero-category-headline
+|Class has been removed.
+
+|.hero-category-inner
+|Class has been removed.
+
+|.hero-image
+|Class has been removed.
+
+|.hero-main
+|Class has been removed.
+
+|.hero-xtras
+|Class has been removed.
+
+|.hidden
+|.d-none
+
+|.hidden-lg-down
+|.d-none .d-xl-block
+
+|.hidden-lg-up
+|.d-lg-none
+
+|.hidden-md-down
+|.d-none .d-lg-block
+
+|.hidden-md-up
+|.d-md-none
+
+|.hidden-sm
+|.d-block .d-sm-none .d-md-block
+
+|.hidden-sm-down
+|.d-none .d-md-block
+
+|.hidden-sm-up
+|.d-sm-none
+
+|.hidden-xl-down
+|.d-none
+
+|.hidden-xl-up
+|.d-xl-none
+
+|.hidden-xs-down
+|.d-none .d-sm-block
+
+|.hidden-xs-up
+|.d-none
+
+|.history-pagination
+|.mt-3
+
+|.home
+|Class has been removed.
+
+|.homepage-title
+|Class has been removed.
+
+|.icon-next
+|Class has been removed.
+
+|.icon-prev
+|Class has been removed.
+
+|.img-basket-small
+|.d-block .mw-100 .mh-100
+
+|.img-contain-container
+|Class has been removed.
+
+|.img-cover-container
+|Class has been removed.
+
+|.inline-select
+|Class has been removed.
+
+|.input-group-v
+|Class has been removed.
+
+|.input-unit-v1
+|Class has been removed.
+
+|.is_stuck
+|Class has been removed.
+
+|.item-additional-information-container
+|Class has been removed.
+
+|.item-properties
+|.small
+
+|.item-properties-header
+|.font-weight-bold .my-1
+
+|.item-property-value
+|.d-block .text-truncate
+
+|.item-remove-button
+|.text-danger .p-0
+
+|.item-remove-container
+|.text-right
+
+|.jumbotron-sm
+|Class has been removed.
+
+|.live-shopping
+|Class has been removed.
+
+|.login
+|Class has been removed.
+
+|.login-container
+|Class has been removed.
+
+|.m-b-0
+|.mb-0
+
+|.m-b-1
+|.mb-3
+
+|.m-b-2
+|.mb-4
+
+|.m-b-3
+|.mb-5
+
+|.m-b-5
+|Class has been removed.
+
+|.m-l-0
+|.ml-0
+
+|.m-l-1
+|.ml-3
+
+|.m-l-2
+|.ml-4
+
+|.m-l-3
+|.ml-5
+
+|.m-l-5
+|Class has been removed.
+
+|.m-r-0
+|.mr-0
+
+|.m-r-1
+|.mr-3
+
+|.m-r-2
+|.mr-4
+
+|.m-r-3
+|.mr-5
+
+|.m-r-5
+|Class has been removed.
+
+|.m-t-0
+|.mt-0
+
+|.m-t-1
+|.mt-3
+
+|.m-t-2
+|.mt-4
+
+|.m-t-3
+|.mt-5
+
+|.m-t-5
+|Class has been removed.
+
+|.m-x-0
+|.mx-0
+
+|.m-x-1
+|.mx-3
+
+|.m-x-2
+|.mx-4
+
+|.m-x-3
+|.mx-5
+
+|.m-x-5
+|Class has been removed.
+
+|.m-x-auto
+|.mx-auto
+
+|.m-y-0
+|.my-0
+
+|.m-y-1
+|.my-3
+
+|.m-y-2
+|.my-4
+
+|.m-y-3
+|.my-5
+
+|.m-y-5
+|Class has been removed.
+
+|.m-y-auto
+|.my-auto
+
+|.mainmenu-
+|Class has been removed.
+
+|.mobile-icon-right
+|Class has been removed.
+
+|.mobile-text-only
+|Class has been removed.
+
+|.mobile-width-button
+|Class has been removed.
+
+|.mt-xs-0_5
+|Class has been removed.
+
+|.nav-dropdown-inner
+|.collapse-inner
+
+|.no-items
+|.py-3
+
+|.no-padding
+|.px-0
+
+|.no-print
+|.d-print-none
+
+|.open-bottom
+|Class has been removed.
+
+|.open-left
+|Class has been removed.
+
+|.open-top
+|Class has been removed.
+
+|.overlay
+|Class has been removed.
+
+|.p-b-0
+|.pb-0
+
+|.p-b-1
+|.pb-3
+
+|.p-b-2
+|.pb-4
+
+|.p-b-3
+|.pb-5
+
+|.p-b-5
+|Class has been removed.
+
+|.p-l-0
+|.pl-0
+
+|.p-l-1
+|.pl-3
+
+|.p-l-2
+|.pl-4
+
+|.p-l-3
+|.pl-5
+
+|.p-l-5
+|Class has been removed.
+
+|.p-r-0
+|.pr-0
+
+|.p-r-1
+|.pr-3
+
+|.p-r-2
+|.pr-4
+
+|.p-r-3
+|.pr-5
+
+|.p-r-5
+|Class has been removed.
+
+|.p-t-0
+|.pt-0
+
+|.p-t-1
+|.pt-3
+
+|.p-t-2
+|.pt-4
+
+|.p-t-3
+|.pt-5
+
+|.p-t-5
+|Class has been removed.
+
+|.p-x-0
+|.px-0
+
+|.p-x-1
+|.px-3
+
+|.p-x-2
+|.px-4
+
+|.p-x-3
+|.px-5
+
+|.p-x-5
+|Class has been removed.
+
+|.p-y-0
+|.py-0
+
+|.p-y-1
+|.py-3
+
+|.p-y-2
+|.py-4
+
+|.p-y-3
+|.py-5
+
+|.p-y-5
+|Class has been removed.
+
+|.page-header
+|Class has been removed.
+
+|.password-info
+|Class has been removed.
+
+|.pipe
+|Class has been removed.
+
+|.pos-f-t
+|.position-fixed
+
+|.print-header
+|Class has been removed.
+
+|.prop-inner
+|Class has been removed.
+
+|.prop-lg-1-4
+|Class has been removed.
+
+|.prop-lg-1-5
+|Class has been removed.
+
+|.prop-lg-1-6
+|Class has been removed.
+
+|.prop-lg-2-4
+|.prop-lg-1-2
+
+|.prop-lg-2-5
+|Class has been removed.
+
+|.prop-lg-2-6
+|.prop-lg-1-3
+
+|.prop-lg-3-4
+|Class has been removed.
+
+|.prop-lg-3-5
+|Class has been removed.
+
+|.prop-lg-3-6
+|.prop-lg-1-2
+
+|.prop-lg-4-1
+|Class has been removed.
+
+|.prop-lg-4-2
+|.prop-lg-2-1
+
+|.prop-lg-4-3
+|Class has been removed.
+
+|.prop-lg-4-4
+|.prop-lg-1-1
+
+|.prop-lg-4-5
+|Class has been removed.
+
+|.prop-lg-4-6
+|.prop-lg-2-3
+
+|.prop-lg-5-1
+|Class has been removed.
+
+|.prop-lg-5-2
+|Class has been removed.
+
+|.prop-lg-5-3
+|Class has been removed.
+
+|.prop-lg-5-4
+|Class has been removed.
+
+|.prop-lg-5-5
+|.prop-lg-1-1
+
+|.prop-lg-5-6
+|Class has been removed.
+
+|.prop-lg-6-1
+|Class has been removed.
+
+|.prop-lg-6-2
+|.prop-lg-3-1
+
+|.prop-lg-6-3
+|.prop-lg-2-1
+
+|.prop-lg-6-4
+|.prop-lg-3-2
+
+|.prop-lg-6-5
+|Class has been removed.
+
+|.prop-lg-6-6
+|.prop-lg-1-1
+
+|.prop-md-1-4
+|Class has been removed.
+
+|.prop-md-1-5
+|Class has been removed.
+
+|.prop-md-1-6
+|Class has been removed.
+
+|.prop-md-2-4
+|.prop-md-1-2
+
+|.prop-md-2-5
+|Class has been removed.
+
+|.prop-md-2-6
+|.prop-md-1-3
+
+|.prop-md-3-4
+|Class has been removed.
+
+|.prop-md-3-5
+|Class has been removed.
+
+|.prop-md-3-6
+|.prop-md-1-3
+
+|.prop-md-4-1
+|Class has been removed.
+
+|.prop-md-4-2
+|.prop-md-2-1
+
+|.prop-md-4-3
+|Class has been removed.
+
+|.prop-md-4-4
+|.prop-md-1-1
+
+|.prop-md-4-5
+|Class has been removed.
+
+|.prop-md-4-6
+|.prop-md-2-3
+
+|.prop-md-5-1
+|Class has been removed.
+
+|.prop-md-5-2
+|Class has been removed.
+
+|.prop-md-5-3
+|Class has been removed.
+
+|.prop-md-5-4
+|Class has been removed.
+
+|.prop-md-5-5
+|.prop-md-1-1
+
+|.prop-md-5-6
+|Class has been removed.
+
+|.prop-md-6-1
+|Class has been removed.
+
+|.prop-md-6-2
+|.prop-md-3-1
+
+|.prop-md-6-3
+|.prop-md-2-1
+
+|.prop-md-6-4
+|.prop-md-3-2
+
+|.prop-md-6-5
+|Class has been removed.
+
+|.prop-md-6-6
+|.prop-md-1-1
+
+|.prop-row
+|Class has been removed.
+
+|.prop-sm-1-4
+|Class has been removed.
+
+|.prop-sm-1-5
+|Class has been removed.
+
+|.prop-sm-1-6
+|Class has been removed.
+
+|.prop-sm-2-4
+|.prop-sm-1-2
+
+|.prop-sm-2-5
+|Class has been removed.
+
+|.prop-sm-2-6
+|.prop-sm-1-3
+
+|.prop-sm-3-4
+|Class has been removed.
+
+|.prop-sm-3-5
+|Class has been removed.
+
+|.prop-sm-3-6
+|.prop-sm-1-2
+
+|.prop-sm-4-1
+|Class has been removed.
+
+|.prop-sm-4-2
+|.prop-sm-2-1
+
+|.prop-sm-4-3
+|Class has been removed.
+
+|.prop-sm-4-4
+|.prop-sm-1-1
+
+|.prop-sm-4-5
+|Class has been removed.
+
+|.prop-sm-4-6
+|.prop-sm-2-3
+
+|.prop-sm-5-1
+|Class has been removed.
+
+|.prop-sm-5-2
+|Class has been removed.
+
+|.prop-sm-5-3
+|Class has been removed.
+
+|.prop-sm-5-4
+|Class has been removed.
+
+|.prop-sm-5-5
+|.prop-sm-1-1
+
+|.prop-sm-5-6
+|Class has been removed.
+
+|.prop-sm-6-1
+|Class has been removed.
+
+|.prop-sm-6-2
+|.prop-sm-3-1
+
+|.prop-sm-6-3
+|.prop-sm-2-1
+
+|.prop-sm-6-4
+|.prop-sm-3-2
+
+|.prop-sm-6-5
+|Class has been removed.
+
+|.prop-sm-6-6
+|.prop-sm-1-1
+
+|.prop-xl-1-4
+|Class has been removed.
+
+|.prop-xl-1-5
+|Class has been removed.
+
+|.prop-xl-1-6
+|Class has been removed.
+
+|.prop-xl-2-4
+|.prop-xl-1-2
+
+|.prop-xl-2-5
+|Class has been removed.
+
+|.prop-xl-2-6
+|.prop-xl-1-3
+
+|.prop-xl-3-4
+|Class has been removed.
+
+|.prop-xl-3-5
+|Class has been removed.
+
+|.prop-xl-3-6
+|.prop-xl-1-2
+
+|.prop-xl-4-1
+|Class has been removed.
+
+|.prop-xl-4-2
+|.prop-xl-2-1
+
+|.prop-xl-4-3
+|Class has been removed.
+
+|.prop-xl-4-4
+|.prop-xl-1-1
+
+|.prop-xl-4-5
+|Class has been removed.
+
+|.prop-xl-4-6
+|.prop-xl-2-3
+
+|.prop-xl-5-1
+|Class has been removed.
+
+|.prop-xl-5-2
+|Class has been removed.
+
+|.prop-xl-5-3
+|Class has been removed.
+
+|.prop-xl-5-4
+|Class has been removed.
+
+|.prop-xl-5-5
+|.prop-xl-1-1
+
+|.prop-xl-5-6
+|Class has been removed.
+
+|.prop-xl-6-1
+|Class has been removed.
+
+|.prop-xl-6-2
+|.prop-xl-3-1
+
+|.prop-xl-6-3
+|.prop-xl-2-1
+
+|.prop-xl-6-4
+|.prop-xl-3-2
+
+|.prop-xl-6-5
+|Class has been removed.
+
+|.prop-xl-6-6
+|.prop-xl-1-1
+
+|.prop-xs-1-1
+|.prop-1-1
+
+|.prop-xs-1-2
+|.prop-1-2
+
+|.prop-xs-1-3
+|.prop-1-3
+
+|.prop-xs-1-4
+|Class has been removed.
+
+|.prop-xs-1-5
+|Class has been removed.
+
+|.prop-xs-1-6
+|Class has been removed.
+
+|.prop-xs-2-1
+|.prop-2-1
+
+|.prop-xs-2-2
+|.prop-1-1
+
+|.prop-xs-2-3
+|.prop-2-3
+
+|.prop-xs-2-4
+|.prop-1-2
+
+|.prop-xs-2-5
+|Class has been removed.
+
+|.prop-xs-2-6
+|.prop-1-3
+
+|.prop-xs-3-1
+|.prop-3-1
+
+|.prop-xs-3-2
+|.prop-3-2
+
+|.prop-xs-3-3
+|.prop-1-1
+
+|.prop-xs-3-4
+|Class has been removed.
+
+|.prop-xs-3-5
+|Class has been removed.
+
+|.prop-xs-3-6
+|.prop-1-2
+
+|.prop-xs-4-1
+|Class has been removed.
+
+|.prop-xs-4-2
+|.prop-2-1
+
+|.prop-xs-4-3
+|Class has been removed.
+
+|.prop-xs-4-4
+|.prop-1-1
+
+|.prop-xs-4-5
+|Class has been removed.
+
+|.prop-xs-4-6
+|.prop-2-3
+
+|.prop-xs-5-1
+|Class has been removed.
+
+|.prop-xs-5-2
+|Class has been removed.
+
+|.prop-xs-5-3
+|Class has been removed.
+
+|.prop-xs-5-4
+|Class has been removed.
+
+|.prop-xs-5-5
+|.prop-1-1
+
+|.prop-xs-5-6
+|Class has been removed.
+
+|.prop-xs-6-1
+|Class has been removed.
+
+|.prop-xs-6-2
+|.prop-3-1
+
+|.prop-xs-6-3
+|.prop-2-1
+
+|.prop-xs-6-4
+|.prop-3-2
+
+|.prop-xs-6-5
+|Class has been removed.
+
+|.prop-xs-6-6
+|.prop-1-1
+
+|.pull-left
+|.float-left
+
+|.pull-lg-left
+|Class has been removed.
+
+|.pull-lg-right
+|Class has been removed.
+
+|.pull-md-left
+|Class has been removed.
+
+|.pull-md-right
+|Class has been removed.
+
+|.pull-right
+|.float-right
+
+|.pull-sm-left
+|Class has been removed.
+
+|.pull-sm-right
+|Class has been removed.
+
+|.pull-xl-left
+|Class has been removed.
+
+|.pull-xl-right
+|Class has been removed.
+
+|.pull-xs-left
+|Class has been removed.
+
+|.pull-xs-right
+|Class has been removed.
+
+|.qty-btn-seperator
+|Class has been removed.
+
+|.qty-sign
+|Class has been removed.
+
+|.rate-link
+|Class has been removed.
+
+|.rating-form
+|.float-right .ml-1
+
+|.re-captcha-container
+|Class has been removed.
+
+|.sale-new
+|Class has been removed.
+
+|.search-box-inner
+|.position-relative .d-flex .container-max
+
+|.search-box-shadow-frame
+|.d-flex
+
+|.search-shown
+|.d-flex
+
+|.section-link-all
+|Class has been removed.
+
+|.send-login-btn
+|Class has been removed.
+
+|.send-mail
+|Class has been removed.
+
+|.send-reset-pwd-btn
+|Class has been removed.
+
+|.services-certificate
+|Class has been removed.
+
+|.services-payment
+|Class has been removed.
+
+|.services-shipping
+|Class has been removed.
+
+|.services-title
+|.w-100
+
+|#short-description
+|Class has been removed.
+
+|.sk-circle10
+|Class has been removed.
+
+|.sk-circle11
+|Class has been removed.
+
+|.sk-circle12
+|Class has been removed.
+
+|.sk-circle2
+|Class has been removed.
+
+|.sk-circle3
+|Class has been removed.
+
+|.sk-circle4
+|Class has been removed.
+
+|.sk-circle5
+|Class has been removed.
+
+|.sk-circle6
+|Class has been removed.
+
+|.sk-circle7
+|Class has been removed.
+
+|.sk-circle8
+|Class has been removed.
+
+|.sk-circle9
+|Class has been removed.
+
+|.special-tag
+|.badge
+
+|.sqr-lg-reset
+|Class has been removed.
+
+|.sqr-md-reset
+|Class has been removed.
+
+|.sqr-sm-reset
+|Class has been removed.
+
+|.sqr-xl-reset
+|Class has been removed.
+
+|.sqr-xs-reset
+|.h-auto .pb-0
+
+|.square-container
+|Class has been removed.
+
+|.square-inner
+|Class has been removed.
+
+|.star-rating
+|.border-0
+
+|.static-link-list
+|Class has been removed.
+
+|.static-page-plain-text
+|Class has been removed.
+
+|.tag-danger
+|.badge-danger
+
+|.tag-info
+|.badge-info
+
+|.tag-list
+|Class has been removed.
+
+|.tag-primary
+|.badge-primary
+
+|.tag-secondary
+|.badge-secondary
+
+|.tag-success
+|.badge-success
+
+|.tag-warning
+|Class has been removed.
+
+|.text-context-dark
+|Class has been removed.
+
+|.text-context-light
+|Class has been removed.
+
+|.thumb-background
+|Class has been removed.
+
+|.thumb-btn-buy
+|Class has been removed.
+
+|.thumb-buy
+|.d-block
+
+|.thumb-inner
+|Class has been removed.
+
+|.thumb-scroll-cmd
+|Class has been removed.
+
+|.to-top
+|.btn-secondary .d-block .text-center .p-2
+
+|.toggle-list-view
+|Class has been removed.
+
+|.vat-number-field
+|.font-weight-bold
+
+|.vat-porto-info
+|Class has been removed.
+
+|.widget-prop-1-4
+|Class has been removed.
+
+|.widget-prop-2-4
+|.widget-prop-1-2
+
+|.widget-prop-3-4
+|Class has been removed.
+
+|.widget-prop-4-1
+|Class has been removed.
+
+|.widget-prop-4-2
+|.widget-prop-2-1
+
+|.widget-prop-4-3
+|Class has been removed.
+
+|.widget-prop-4-4
+|.widget-prop-1-1
+
+|.widget-prop-lg-1-4
+|Class has been removed.
+
+|.widget-prop-lg-2-4
+|.widget-prop-1-2
+
+|.widget-prop-lg-3-4
+|Class has been removed.
+
+|.widget-prop-lg-4-1
+|Class has been removed.
+
+|.widget-prop-lg-4-2
+|.widget-prop-lg-2-1
+
+|.widget-prop-lg-4-3
+|Class has been removed.
+
+|.widget-prop-lg-4-4
+|.widget-prop-lg-1-1
+
+|.widget-prop-md-1-4
+|Class has been removed.
+
+|.widget-prop-md-2-4
+|.widget-prop-lg-1-2
+
+|.widget-prop-md-3-4
+|Class has been removed.
+
+|.widget-prop-md-4-1
+|Class has been removed.
+
+|.widget-prop-md-4-2
+|.widget-prop-lg-2-1
+
+|.widget-prop-md-4-3
+|Class has been removed.
+
+|.widget-prop-md-4-4
+|.widget-prop-lg-1-1
+
+|.widget-prop-sm-1-4
+|Class has been removed.
+
+|.widget-prop-sm-2-4
+|.widget-prop-lg-1-2
+
+|.widget-prop-sm-3-4
+|Class has been removed.
+
+|.widget-prop-sm-4-1
+|Class has been removed.
+
+|.widget-prop-sm-4-2
+|.widget-prop-sm-2-1
+
+|.widget-prop-sm-4-3
+|Class has been removed.
+
+|.widget-prop-sm-4-4
+|.widget-prop-sm-1-1
+
+|.widget-prop-xl-1-4
+|Class has been removed.
+
+|.widget-prop-xl-2-4
+|.widget-prop-sm-1-2
+
+|.widget-prop-xl-3-4
+|Class has been removed.
+
+|.widget-prop-xl-4-1
+|Class has been removed.
+
+|.widget-prop-xl-4-2
+|.widget-prop-xl-2-1
+
+|.widget-prop-xl-4-3
+|Class has been removed.
+
+|.widget-prop-xl-4-4
+|.widget-prop-xl-1-1
+
+|.wish-list-no-items-label
+|.text-center .my-5
+
+|.wish-list-no-items-transition-enter
+|.list-transition-enter
+
+|.wish-list-no-items-transition-enter-active
+|.list-transition-enter-active
+
+|.wish-list-no-items-transition-leave-active
+|.list-transition-leave-active
+
+|.wish-list-no-items-transition-leave-to
+|.list-transition-leave-to
+
+|.wrapper-bottom
+|Class has been removed.
+
+|.wrapper-inner
+|.w-100 .h-100
+
+|.wrapper-left
+|Class has been removed.
+
+|.wrapper-main
+|Class has been removed.
+
+|.wrapper-right
+|Class has been removed.
+
+|.wrapper-top
+|Class has been removed.
+
+|.xs-center
+|.float-none .text-center
+
+|#contact-map
+|Class has been removed.
+
+|#login-change
+|.position-relative
+
+|#mainNavbarCollapsable
+|.main-navbar-collapsable
+
+|#ratingText
+|Class has been removed.
+
+|#recommend-text
+|.text-center
+
+|#vue-error
+|Class has been removed.
+|===

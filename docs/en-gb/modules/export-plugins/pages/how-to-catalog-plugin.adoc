@@ -4,7 +4,7 @@ This tutorial will introduce you to the catalog export. We will develop a small 
 
 At the end of this tutorial you will have developed a plugin that exports variations in the format of a fictional marketplace. In the UI the result will look like this
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/catalog-result.png[image]
+image::catalog-result.png[width=640, height=360]
 
 The complete source code for this tutorial is available link:https://github.com/plentymarkets/BasicCatalogExport[here.]
 
@@ -43,7 +43,7 @@ Before we can start to develop a plugin that uses the catalog, we first need to 
 
 The structure of a catalog roughly looks like this:
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/catalog-structure.png[image]
+image::catalog-structure.png[width=640, height=360]
 
 === Data providers
 

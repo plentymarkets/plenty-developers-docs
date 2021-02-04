@@ -1,8 +1,5 @@
 .Getting started
-* xref:setting-up-dev-environment.adoc[Setting up the environment]
-* Creating the plugin structure
-* Using the plugin interface
-* Writing to the data log
+include::tutorial:partial$nav.adoc[]
 
 .Plugin basics
 * xref:plugin-architecture.adoc[Architecture]
@@ -13,12 +10,17 @@
 ** xref:plugin-interface:interface-results-pagination.adoc[Paginating inteface results]
 * xref:hello-world-sdk.adoc[How to integrate an SDK]
 * Plugin configuration
-** Overview
-** How to create a plugin configuration
-** Configuration options reference
-** How to create an assistant
-** Assistant reference
-** Assistant style guide
+** xref:plugin-configuration:overview.adoc[Overview]
+** xref:plugin-configuration:how-to-plugin-configuration.adoc[How to create a plugin configuration]
+** xref:plugin-configuration:how-to-multilingual-configuration.adoc[How to make a configuration multilingual]
+// ** Configuration options reference
+** xref:plugin-configuration:how-to-plugin-assistant.adoc[How to create a plugin assistant]
+* Back end UI
++
+--
+include::back-end-ui:partial$nav.adoc[]
+--
++
 * Data storage
 ** xref:data-storage:database-storage.adoc[Database storage]
 ** xref:data-storage:memory-storage.adoc[Memory storage]
@@ -28,7 +30,7 @@
 ** xref:how-to-event-logging.adoc[How to log events]
 * xref:event-procedures.adoc[Event procedures]
 
-.REST API
+.REST API guides
 * xref:rest-api-guides:getting-started.adoc[REST API overview]
 * xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
 * xref:rest-api-guides:contact-data.adoc[How to query contact data]
@@ -43,10 +45,15 @@
 * xref:plentyshop-plugins:template-containers.adoc[Template containers]
 * xref:plentyshop-plugins:how-to-template-containers.adoc[How to add template containers]
 * xref:plentyshop-plugins:default-layout-containers.adoc[Default layout containers]
+* xref:plentyshop-plugins:theme-plugins.adoc[Themes]
 * xref:plentyshop-plugins:how-to-plentyshop-multilingualism.adoc[Multilingualism]
 * xref:plentyshop-plugins:how-to-register-cookies.adoc[How to register cookies]
 * xref:plentyshop-plugins:content-caching.adoc[Content caching]
 * xref:plentyshop-plugins:cookbook.adoc[plentyShop cookbook]
+* xref:plentyshop-plugins:reference-results-fields.adoc[ElasticSearch results fields]
+* Ceres 5
+** xref:plentyshop-plugins:ceres-5-update.adoc[Ceres 5 overview]
+** xref:plentyshop-plugins:reference-ceres-5-style-changes.adoc[CSS changes]
 
 .ShopBuilder plugins
 * xref:shopbuilder-plugins:shopbuilder-widgets.adoc[ShopBuilder widgets]

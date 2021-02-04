@@ -1,26 +1,3 @@
 = plentymarkets developers
 :page-layout: homepage
-
-// This paragraph has the preamble class by default.
-Welcome to plentymarkets developers. +
-Get started with one of the links below, or press (kbd:[CMD+K]) to open the site search.
-
-[.tile]
-xref:setting-up-dev-environment.adoc[Entwicklungsumgebung einrichten]
-
-[.tile]
-xref:plugin-architecture.adoc[Plugin basics]
-
-[.tile]
-xref:plentyshop-plugins:template-setup.adoc[plentyShop]
-
-[.tile]
-xref:plugin-interface:interface-introduction.adoc[Plugin interface]
-
-[.tile]
-xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API]
-
-[.tile]
-plentyBase REST API
-
-plentymarkets plugins are powered by:
+:page-aliases: index.adoc

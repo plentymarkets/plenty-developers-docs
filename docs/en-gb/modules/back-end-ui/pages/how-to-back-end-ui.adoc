@@ -5,7 +5,7 @@ In the first part, you will be shown how to start an Angular UI project for your
 
 The instructions given on this page require that you have
 //ADD new links
-xref:https://developers.plentymarkets.com/dev-doc/basics#ide-support[established your IDE] and have xref:https://developers.plentymarkets.com/tutorials/helloworld#introduction[created your first plugins].
+established your IDE and xref:tutorial:getting-started.adoc[created your first plugins].
 
 If you're new to Angular, check out the link:https://angular.io/tutorial[angular.io tutorial: Tour of Heroes^].
 
@@ -112,6 +112,7 @@ To do so, proceed as follows:
 → This command generates all necessary files in `plugin-terra-basic/src/app/views/my-new-view` and adds the component to the closest module - in this case `PluginTerraBasicModule`.
 
 The following files will be generated:
+
 * my-new-view.component.html -> Template file for your html Code
 * my-new-view.component.scss -> Styles for your template. Supports scss Format. Delete this and the `styleUrls` entry in the .ts file if you have no custom styles.
 * my-new-view.component.spec.ts -> File for unit testing

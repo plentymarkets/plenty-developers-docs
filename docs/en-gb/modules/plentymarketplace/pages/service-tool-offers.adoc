@@ -47,7 +47,7 @@ Once you've installed the plugin, proceed as follows:
 ======
 To determine a user ID, go to the *Setup » Settings » User » Accounts*
 menu and click on the name of the user. +
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/marketplace/back-end-user-id.png[image]
+image::back-end-user-id.png[width=640, height=360]
 ======
 
 [discrete]

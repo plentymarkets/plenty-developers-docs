@@ -387,7 +387,7 @@ Configurations and settings of the plugin need to be integrated into an assistan
 
 === Example for an assistant
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/payuponpickupconfig.png[image]
+image::payuponpickupconfig.png[width=640, height=360]
 
 ==== Basic structure
 
@@ -573,7 +573,7 @@ The plugin needs to contain the functionality to display texts, such as names, l
 
 The flowchart below describes the general workflow of payment plugins and the interaction of payment and template plugins.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/payment-plugin-flowchart.png[image]
+image::payment-plugin-flowchart.png[width=640, height=360]
 
 === Getting the payment method content
 
@@ -1324,7 +1324,7 @@ The `PaymentMethodExpressButtonDataProvider` class renders a twig file that retu
 
 In the plentymarkets back end, you can link the content to one or multiple containers. This is done in the plugin which provides the content. Go to *Plugins » Plugin set overview*, open the required plugin and go to *Container-Links*. Select the data provider and the containers you want to link. As an example, the PayPal Express button is linked to the `Single item: After "Add to shopping cart" button` container in the image below.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/payment-content-container-gui.png[]
+image::payment-content-container-gui.png[width=640, height=360]
 
 ===== Displaying the content in the webshop
 
@@ -1348,7 +1348,7 @@ In line 9, you can see the Twig function `LayoutContainer.show()`. The PayPal Ex
 
 In the plentyShop template, the PayPal Express button will be displayed on the single item page below the shopping cart.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/devguide/paypal-express-button-preview.png[]
+image::paypal-express-button-preview.png[width=640, height=360]
 
 === Retreiving addresses from the payment provider
 

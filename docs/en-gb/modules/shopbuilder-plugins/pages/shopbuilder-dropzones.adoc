@@ -40,7 +40,7 @@ The layout of the dropzones is controlled by the arrangement of the divs: The ro
 
 It is thereby possible to include content around and in between the specified dropzones, for instance by adding another div with the column class between the left and right dropzone. That way, it is possible to construct ShopBuilder pages, in which certain parts can be edited, while other parts remain the same.
 
-[source,php]
+[source,twig]
 ----
 {% extends getPartial('page-design') %}
 
@@ -66,6 +66,83 @@ It is thereby possible to include content around and in between the specified dr
 {% endblock %}
 ----
 
-The image below shows the resulting arrangement of the dropzones in the ShopBuilder:
+The image below shows the resulting arrangement of the dropzones in ShopBuilder:
 
-image::shopbuider_dropzones.png[]
+image::shopbuilder-dropzones.png[]
+
+
+== Implementing dropzones in the single item view
+
+In plentyShop, the single item page is one single Vue component. 
+In order to make item data accessible from within item widgets, ShopBuilder contents need to be injected into this component using link:https://vuejs.org/v2/guide/components-slots.html[slots^] instead of inserting them in the component template directly.
+
+In the link:https://github.com/plentymarkets/plugin-ceres/blob/stable/resources/views/Item/SingleItemWrapper.twig#L105-L118[default Ceres template for single item views^], the ShopBuilder content is injected as one default slot:
+
+[source,twig]
+----
+<single-item
+	...
+	v-slot="slotProps">
+	
+	{% set currentCategory = services.category.getCurrentCategory() %}
+	{{ shop_builder_category_template(currentCategory.id, "singleitem") | raw }}
+	
+</single-item>
+----
+
+If you want to provide multiple dropzones, you need to inclue link:https://vuejs.org/v2/guide/components-slots.html#Named-Slots[named slots^], inside the single item component. In the example below, the named slots are `default-dropzone` and `second-dropzone`:
+
+[source,twig]
+----
+<single-item ...>
+
+	{% set currentCategory = services.category.getCurrentCategory() %}
+	
+	<template #default-dropzone v-slot="slotProps">
+		{{ shop_builder_category_template(currentCategory.id, "singleitem") | raw }}
+	</template>
+	
+	<template #second-dropzone v-slot="slotProps">
+		{{ shop_builder_category_template(currentCategory.id, "singleitem", "second-dropzone") | raw }}
+	</template>
+	
+</single-item>
+----
+
+[IMPORTANT]
+====
+The `slot-prop` attribute was moved from the `<single-item>` tag to every `<template>` tag!
+====
+
+The provided slots can be used anywhere in the template of the Vue component, but needs to be wrapped in any block element:
+
+[source,twig]
+----
+<script type="x/template" data-component="single-item">
+<div>
+	<slot :getDataField="getDataField" :getFilteredDataField="getFilteredDataField">
+		<div class="single container-max page-content">
+			...	
+			<div>
+				<slot name="default-dropzone"></slot>
+			</div>
+			
+			...
+			<article>
+				<!-- DON'T: Slots providing a dropzone cannot have any sibling elements! -->
+				<p>This is not allowed!</p>
+				<slot name="second-dropzone"></slot>
+			</article>
+			
+			...
+			<span class="d-block">
+				<!-- DON'T: This will cause errors on item widgets since they cannot access item data even if it might work with static widgets. -->
+				{% set currentCategory = services.category.getCurrentCategory() %}
+				{{ shop_builder_category_template(currentCategory.id, "singleitem", "third-dropzone") | raw }}
+		</div>
+	</slot>
+</div>
+</script>
+----
+
+The example above includes two erroneous injections: The `<p>` tag embedded in the `<article>` tag will lead to errors because it is included as a sibling element to the slot that includes a dropzone. In the `<span>` tag below, the dropzone has been injected without using a slot. While this is possible for static widget data, it will lead to errors where dynamic item data is concernerd. You should refrain from using either of these ways of injecting your dropzones!

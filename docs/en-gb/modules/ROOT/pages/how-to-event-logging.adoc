@@ -334,7 +334,7 @@ Finally, you can log your newly created tasks in your back end.
 . Go to *Data exchange » Log*. +
 → Find the logs to the tasks you just created.
 
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/logging-backend.png[image]
+image::logging-backend.png[width=640, height=360]
 
 == Log structure
 
@@ -415,7 +415,3 @@ In this table, find all the available log levels and explanations of the individ
 |`emergency`
 |System is unusable
 |===
-
-=== The logging back end view
-
-image:%7B%7B%20plugin_path('PlentyPluginShowcase')%20%7D%7D/images/tutorials/logging-backend.png[image]

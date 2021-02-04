@@ -1,5 +1,5 @@
 * Overview
-* How to create a plugin configuration
+* How to create a plugin configeration
 * How to create an assistant
 * Configuration options reference
 * Assistant options reference
