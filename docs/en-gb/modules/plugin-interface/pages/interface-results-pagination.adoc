@@ -75,7 +75,7 @@ this manipulated data.
 .MyQuery.php
 [source,php]
 ----
-include::MyQuery.php[]
+include::example$MyQuery.php[]
 ----
 
 <4> Manipulates the data.
