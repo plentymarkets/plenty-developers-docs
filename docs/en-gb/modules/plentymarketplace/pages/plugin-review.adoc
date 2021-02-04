@@ -70,7 +70,7 @@ Any routes for use within the plugin itself must be secured by the middleware.
 
 *Fulfillment:*
 
-Saving delivery and export documents must use xref:beta7@interface:Document.adoc[DocumentRepository].
+Saving delivery and export documents must use xref:beta7@interface:ROOT:Document.adoc[DocumentRepository].
 
 *Marketplaces, price comparison websites, ElasticExport formats:*
 
