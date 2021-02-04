@@ -48,7 +48,7 @@ jobs:
           # Create REST directory
           mkdir ./build/rest-api/
           # Move REST docs to build directory
-          mv ./api-doc/plentymarkets/openApiV2/openApiV2WithExamples.min.json ./build/rest-api/
+          mv ./api-doc/plentymarkets/openApiV3/openApiV3WithExamples.min.json ./build/rest-api/
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
           
       - name: Upload site to S3
