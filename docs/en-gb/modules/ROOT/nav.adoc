@@ -28,7 +28,7 @@ include::back-end-ui:partial$nav.adoc[]
 * Data log
 ** xref:data-log-overview.adoc[Overview]
 ** xref:how-to-event-logging.adoc[How to log events]
-* xref:event-procedures.adoc[Event procedures]
+* xref:how-to-event-procedures.adoc[Event procedures]
 
 .REST API guides
 * xref:rest-api-guides:getting-started.adoc[REST API overview]
