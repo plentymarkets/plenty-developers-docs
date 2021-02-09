@@ -61,7 +61,7 @@ In order to integrate the external SDK, we have to make changes to the following
 ....
 HelloWorld/
   resources/
-    libs/
+    lib/
       guzzle_connector.php <1>
     views/
       content/
@@ -256,7 +256,7 @@ HelloWorld/
       fancy.css
     js/ <2>
       buttonlistener.js
-    libs/
+    lib/
       guzzle_connector.php <1>
     views/
       content/
