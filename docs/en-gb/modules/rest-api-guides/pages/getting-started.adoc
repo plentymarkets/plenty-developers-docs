@@ -89,7 +89,7 @@ To prevent misuse of the REST API and ensure a system's performance and stabilit
 
 In addition to these limits, specific routes may be fitted with an individual limit, only applying to this route. For these routes, the limit will be visible in the REST documentation here on the plentymarkets developers website. The route will be labeled with a "THROTTLING" badge, the exact limit can be seen in the "Errors" section of that call.
 
-Bulk REST routes help you to work efficiently within the throttling limits when handling large amounts of data. Check out the https://developers.plentymarkets.com/tutorials/bulk-routes[tutorial on bulk routes] to find out which bulk routes are currently available.
+Bulk REST routes help you to work efficiently within the throttling limits when handling large amounts of data. Check out the xref:rest-api-guides:bulk-routes.adoc[tutorial on bulk routes] to find out which bulk routes are currently available.
 
 === Handling
 
