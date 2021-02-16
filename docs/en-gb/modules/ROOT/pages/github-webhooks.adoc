@@ -9,7 +9,7 @@ Go to https://github.com/settings/tokens[Github] and create a new personal acces
 . Go to https://github.com/settings/tokens.
 . Click on *Generate new token*.
 . Enter a *Note*, e.g. the plugin name.
-. Under *Select scopes*, activate *repo:status* to access the commit
+. Under *Select scopes*, activate *repo* to access the commit
 status. +
 → The status is required to inform you about successful or failed
 deployment of plugins.
@@ -37,17 +37,17 @@ Open your plentymarkets back end and add your Git plugin to your system.
 
 Go to your Github repository and set up a new webhook for the repository.
 
-. Go to https://github.com[Github].
+. Go to link:https://github.com[Github^].
 . Under *Your repositories*, click on the plugin repository. +
 → The *Code* tab will open.
 . Click on the *Settings* tab.
 . Click on *Webhooks*.
 . Click on *Add webhook*.
-. Enter the *Payload URL*. +
-→ The payload URL consists of your online store URL and `+/rest/plugins/hook+`, e.g. `+https://www.your-plentystore.co.uk/rest/plugins/hook+`.
+. Enter the *Payload URL*. The payload URL consists of the online store URL of your standard client and `+/rest/plugins/hook+`, e.g. `+https://www.your-plentystore.co.uk/rest/plugins/hook+`.
 . Select *application/json* from the *Content type* drop-down menu.
 . Paste the webhook token from the plentymarkets back end into the *Secret* field. +
 → This token is used for securing the communication between Github and plentymarkets.
+. *Disable* SSL verification.
 . For *Which events would you like to trigger this webhook?*, select *Just the push event.*
 . Click on *Add webhook*. +
 → The webhook will be displayed under *Webhooks*.
