@@ -1,3 +1,3 @@
 = UI/UX Style guide
 
-For information about the latest plentymarkets UI/UX guidelines refer to the link:ux.plentymarkets.com[Terra UI/UX Style guide^].
+For information about the latest plentymarkets UI/UX guidelines refer to the link:https://sites.google.com/plentymarkets.com/terraux?pli=1[Terra UI/UX Style guide^].
