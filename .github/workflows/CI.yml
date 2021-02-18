@@ -41,6 +41,14 @@ jobs:
           # Clone API repository
           git clone https://github.com/plentymarkets/api-doc.git ./api-doc
           
+      - name: Get Archive
+        run: |
+          # Setup git details
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          # Clone API repository
+          git clone https://github.com/plentymarkets/plenty-developers-redirects.git ./archive
+          
       - name: Assemble site
         run: |
           # Move index to build directory
@@ -50,6 +58,8 @@ jobs:
           # Move REST docs to build directory
           mv ./api-doc/plentymarkets/openApiV2/openApiV2WithExamples.min.json ./build/rest-api/
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
+          # Move archive to build directory
+          mv -v ./archive/* ./build/
           
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master
