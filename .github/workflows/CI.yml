@@ -47,7 +47,7 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           # Clone API repository
-          git clone https://github.com/plentymarkets/plenty-developers-redirects.git ./archive
+          git clone https://github.com/plentymarkets/plenty-developers-redirects.git ./redirect-archive
           
       - name: Assemble site
         run: |
@@ -58,8 +58,6 @@ jobs:
           # Move REST docs to build directory
           mv ./api-doc/plentymarkets/openApiV2/openApiV2WithExamples.min.json ./build/rest-api/
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
-          # Move archive to build directory
-          mv ./archive/* ./build/
           
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master
@@ -70,6 +68,17 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           SOURCE_DIR: './build'
+          AWS_REGION: 'eu-central-1'
+          
+      - name: Upload redirect archive S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --content-type text/html
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          SOURCE_DIR: './redirect-archive'
           AWS_REGION: 'eu-central-1'
       
       - name: Invalidate CloudFront cache
