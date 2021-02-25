@@ -69,7 +69,8 @@ jobs:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           SOURCE_DIR: './build'
           AWS_REGION: 'eu-central-1'
-          
+      
+      - run: rm ./redirect-archive/README.md
       - name: Upload redirect archive S3
         uses: jakejarvis/s3-sync-action@master
         with:
