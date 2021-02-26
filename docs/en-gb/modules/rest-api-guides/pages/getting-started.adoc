@@ -1283,6 +1283,10 @@ The following country IDs are used in the plentymarkets REST API.
 |IT
 |264
 
+|Northern Ireland
+|XI
+|265
+
 |Unknown
 |--
 |0
