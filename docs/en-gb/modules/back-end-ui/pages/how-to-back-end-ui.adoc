@@ -256,6 +256,6 @@ A red label in the bottom left corner indicates that the cache is disabled. To e
 
 If you want to find out more, refer to the information listed below.
 
-Download or clone the complete plugin guide at link:https://github.com/plentymarkets/plugin-terra-basic[Github^].
+* Download or clone the complete plugin guide at link:https://github.com/plentymarkets/plugin-terra-basic[Github^].
 
-Find a public repository with a link:https://github.com/plentymarkets/plugin-etsy-ui[plugin written in Angular^]. You can find the corresponding `ui.json` in the main link:https://github.com/plentymarkets/plugin-etsy[Etsy plugin^].
+* Find a public repository with a link:https://github.com/plentymarkets/plugin-etsy-ui[plugin written in Angular^]. You can find the corresponding `ui.json` in the main link:https://github.com/plentymarkets/plugin-etsy[Etsy plugin^].
