@@ -108,7 +108,7 @@ If you have globally installed the CLI, you can use it with `ng [command] [param
 Next, create a new component and add it to the routing file and the menu. This lets you access the plugin UI.
 To do so, proceed as follows:
 
-. Run the command `ng generate component view/my-new-view`. +
+. Run the command `ng generate component views/my-new-view`. +
 → This command generates all necessary files in `plugin-terra-basic/src/app/views/my-new-view` and adds the component to the closest module - in this case `PluginTerraBasicModule`.
 
 The following files will be generated:
@@ -118,7 +118,7 @@ The following files will be generated:
 * my-new-view.component.spec.ts -> File for unit testing
 * my-new-view.component.ts -> Here goes your view logic
 
-The generated `code.ts` file looks like the following:
+The generated `my-new-view.component.ts` file looks like the following:
 
 .my-new-view.component.ts
 [source,ts]
