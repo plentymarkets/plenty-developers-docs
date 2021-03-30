@@ -1,6 +1,6 @@
 = Introducing the plentymarkets REST API
 
-The plentymarkets REST API expands the functionality of the plentymarkets CMS and allows access to resources, i.e. data records, via unique URI paths. To use the REST API, you need to run an HTTP request and analyse the result. The REST API uses JSON as the communication format combined with the default HTTP methods GET, PUT, POST and DELETE:
+The plentymarkets REST API expands the functionality of and allows you to access resources, so data records, via unique URI paths. To use the REST API, you need to run an HTTP request and analyse the result. The REST API uses JSON as the communication format combined with the default HTTP methods GET, PUT, POST and DELETE:
 
 * *GET* returns data. This method does not modify data saved on the server.
 * *PUT* modifies an existing data record.
