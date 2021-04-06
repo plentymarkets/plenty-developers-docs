@@ -1,0 +1,44 @@
+# Either clone the content repositories listed under sources or delete the respective blocks.
+# Clone the UI repository from plenty-docs-ui.
+# Change USER in the url paths to your user name.
+# To use the api-doc repository, update the page-specurl paths in /api-doc/plentymarkets/docs/modules/ROOT/pages/index.adoc and /api-doc/plentyBase/docs/modules/ROOT/pages/index.adoc, so that they point to valid files.
+site:
+  title: Developers documentation
+  start_page: developers::homepage.adoc
+  url: https://developers.plentymarkets.com/en-gb
+content:
+  sources:
+  - url: /Users/USER/workspace/plenty-developers-docs
+    branches: HEAD
+    start_path: docs/en-gb
+  - url: /Users/USER/workspace/module-version-doc
+    branches:
+      - HEAD
+  - url: /Users/USER/workspace/docs-raw
+    branches:
+      - HEAD
+  - url: /Users/USER/workspace/api-doc
+    branches:
+      - HEAD
+    start_path: plentymarkets/docs
+  - url: /Users/USER/workspace/api-doc
+    branches:
+      - HEAD
+    start_path: plentyBase/docs
+  - url: /Users/USER/workspace/Ceres_docs-raw
+    branches:
+      - HEAD
+  - url: /Users/USER/workspace/IO_docs-raw
+    branches:
+      - HEAD
+asciidoc:
+  attributes:
+    tabs: tabs
+  extensions:
+  - ./lib/tabs-block.js
+output:
+    dir: ./build/en-gb
+ui:
+  bundle:
+    url: /Users/USER/workspace/plenty-docs-ui/build/ui-bundle.zip
+    snapshot: true
