@@ -1,6 +1,6 @@
 * xref:back-end-ui:overview.adoc[Overview]
 * xref:back-end-ui:ui-ux-style-guide.adoc[UI/UX Style guide]
-* xref:back-end-ui:reference-menu-entry-poinst.adoc[Menu entry points]
+* xref:back-end-ui:reference-menu-entry-points.adoc[Menu entry points]
 * xref:back-end-ui:reference-routes-system-tree.adoc[Routes in the system tree]
 * xref:back-end-ui:how-to-back-end-ui.adoc[How to create a back end UI]
 * xref:back-end-ui:how-to-migrate-split-view.adoc[How to migrate from the splitView]
