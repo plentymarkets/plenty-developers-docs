@@ -203,6 +203,13 @@ We mentioned above that we want to search Packagist packages by name. So when se
 }
 ----
 
+If there's an error, you will receive the following response instead:
+
+[source,PHP]
+----
+include::example$sdk-error-response.php[]
+----
+
 === Extending the TWIG template
 
 In our TWIG template we don't need all the information of the JSON response. We only want to display the total number of packages, the package name and the package repository. If no packages were found, we want to display the text No entries.
