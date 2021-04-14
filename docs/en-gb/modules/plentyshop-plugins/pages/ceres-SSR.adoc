@@ -68,7 +68,7 @@ Within server-side rendered components, the example above enables, for instance,
 
 === SSR:entry($path) directive
 This directive specifies the path to a JavaScript module that should be loaded during server-side rendering.
-This directive is *not* closed by a comment of the form `<!-- /SSR -->`!
+This directive is *not* closed by a comment of the form `<!-- /SSR -\->`!
 
 To determine the correct path, the Twig function `ssr_entry()` should be used here:
 
@@ -108,7 +108,7 @@ To overwrite the template of a Vue component, the script tag with the correspond
 // Änderungen vom Zwoten einpflegen
 == Providing JavaScript modules for SSR
 
-The directive `<!-- SSR:entry() -->` can be used to load arbitrary JavaScript modules during server-side rendering, e.g. to register own Vue components or to change the initial state of the VueX state.
+The directive `<!-- SSR:entry() -\->` can be used to load arbitrary JavaScript modules during server-side rendering, e.g. to register own Vue components or to change the initial state of the VueX state.
 
 Provided modules should be bundled as **commonjs2** modules (see link:https://webpack.js.org/configuration/output/#librarytarget-commonjs2[Webpack: output.libraryTarget]).
 The following fields can be exported per module:
