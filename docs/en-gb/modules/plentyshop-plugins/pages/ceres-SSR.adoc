@@ -1,0 +1,143 @@
+= Vue Server-Side Rendering in Ceres
+
+// Infos zur Versionsnummer ergänzen
+With the next version of the Ceres plugin, we will introduce Vue Server-Side Rendering (SSR) to Ceres. 
+This update serves to prepare Ceres online shops for the changes brought by the Google core update.
+
+With SSR, Vue.js components, whose markup was previously generated in the browser, are now already processed on the web server.
+Therefore, the HTML, that has already been generated, is sent to the browser and can directly be displayed there.
+Consequently, the page can already be displayed before the necessary JavaScript has been loaded and interpreted.
+Nevertheless, Vue.js applications that are rendered on the server side are also initialised and rendered again in the browser in order to subsequently equip the static markup delivered by the server with dynamic parts of a web application, such as click listeners, data bindings, etc.
+The process of adding dynamic application parts to the static markup is called *hydration*.
+For this, it is important that the markup provided by the server and the markup generated in the browser do not differ.
+
+== Basics
+
+The basis of the implementation of SSR in Ceres is the link:https://ssr.vuejs.org/[official SSR guide of Vue.js].
+
+The section link:https://ssr.vuejs.org/guide/universal.html#data-reactivity-on-the-server[Writing Universal Code] defines some basic requirements that must be fulfilled by Vue components so they can be processed on the server side.
+The implementation in Ceres also has the following requirements:
+
+* Currently, only so-called Single-File-Components (SFCs) are rendered on the server side. In Ceres, this covers all components on static pages, category and item views. At this time, MyAccount, Checkout and associated pages, such as order confirmation, return form etc., can not be rendered on the server side.
+* Individual templates that are referenced via the `override-template` property on a Vue component cannot be taken into account on the server side and therefore lead to hydration errors (see above). However, it is possible to explicitly exclude individual components from server-side rendering (see below).
+
+The global overwriting of component templates through the `data-component` attribute on the corresponding script tag is still possible (see link:https://developers.plentymarkets.com/en-gb/developers/main/plentyshop-plugins/theme-plugins.html#_changing_the_template_of_a_vue_component[Changing the template of a Vue component]).
+
+== Preparing a template for SSR
+
+During server-side rendering, the browser-specific objects `window` and `document` and thus all common functions for browsing or manipulating the DOM are not available.
+For this reason, the template must be provided with markers (so-called "directives") in some relevant places, on the basis of which the HTML document can be analysed and interpreted.
+These are specified in the form of HTML comments in order to obtain valid HTML even without further processing. 
+However, during processing by server-side rendering, these comments are removed and not delivered to the browser.
+
+All directives start with an HTML template of the form `<!-- SSR:xyz() -->` and end with another comment of the form `<!-- /SSR -->`. Directives cannot be nested.
+
+The following directives are available:
+
+=== `<!-- SSR:app() -->`
+
+This directive marks the element that should be used as the template for the main component. In Ceres, for example, this element is marked with the ID “vue-app”.
+
+[source,twig]
+----
+<!-- SSR:app() -->
+<div id="vue-app">
+...
+</div>
+<!-- /SSR -->
+----
+
+This directive should only be used *once per page*.
+
+=== `<!-- SSR:global($identifier) -->`
+This directive marks a script tag with JSON-formatted data that needs to be globally available during server-side rendering under the specified identifier.
+
+[source,twig]
+----
+<!-- SSR:global(App) -->
+<script id="app-data" type="application/json">
+    {
+        "config": {{ ceresConfig | json_encode | raw }},
+        "urls": {{ urls | json_encode | raw }}
+    }
+</script>
+<!-- /SSR -->
+----
+
+Within server-side rendered components, the example above enables, for instance, the access to `App.config`.
+
+=== `<!-- SSR:entry($path) -->`
+This directive specifies the path to a JavaScript module that should be loaded during server-side rendering.
+This directive is *not* closed by a comment of the form `<!-- /SSR -->`!
+
+To determine the correct path, the Twig function `ssr_entry()` should be used here:
+
+[source,twig]
+----
+<!-- SSR:entry({{ ssr_entry('Ceres', 'path/to/bundle.js') }}) -->
+----
+
+See the section "Providing JavaScript modules for SSR" for more details and requirements for server-side loaded modules.
+
+=== `<!-- SSR:on() -->` and `<!-- SSR:off() -->`
+The content of the directive is only output when the SSR is active/inactive and removed otherwise.
+
+[source,twig]
+----
+<!-- SSR:on() -->
+<p>This page was rendered on the server-side!</p>
+<!-- /SSR -->
+
+<!-- SSR:off() -->
+<p>This page was not rendered on the server-side!</p>
+<!-- /SSR -->
+----
+
+=== `<!-- SSR:template($componentTag) -->`
+To overwrite the template of a Vue component, the script tag with the corresponding `data-component` attribute must be marked by the directive `SSR:template`.
+
+[source,twig]
+----
+<!-- SSR:template(add-to-basket) -->
+<script type="x/template" data-component="add-to-basket">
+...
+</script>
+<!-- /SSR -->
+----
+
+// Änderungen vom Zwoten einpflegen
+== Providing JavaScript modules for SSR
+
+The directive `<!-- SSR:entry() -->` can be used to load arbitrary JavaScript modules during server-side rendering, e.g. to register own Vue components or to change the initial state of the VueX state.
+
+Provided modules should be bundled as **commonjs2** modules (see link:https://webpack.js.org/configuration/output/#librarytarget-commonjs2[Webpack: output.libraryTarget]).
+The following fields can be exported per module:
+
+- **`beforeRender: (context) => void`**: Function that is executed before server-side rendering and is passed to the renderer context as an argument.
+- **`afterRender: (vueApp) => void`**: Function that is executed after server-side rendering. It receives the created instance of the Vue application as an argument.
+- **`globals: { [key: string]: any }`**: Object whose values are made globally available with the corresponding key as variable name.
+- **`createApp: (context) => Promise<Vue>`**: Method that creates the actual Vue instance for the corresponding context. The implementation by previously loaded modules is overwritten.
+
+[source,twig]
+----
+import Vue from "vue";
+const globals = { Vue };
+
+function beforeRender(context) {
+    ...
+}
+
+function afterRender(vueApp) {
+    ...
+}
+
+export { globals, beforeRender, afterRender };
+----
+
+## Switching Ceres to server-side rendering
+
+The necessary changes to Ceres are currently available on GitHub on the branch "**feature/ssr**".
+No adjustments are necessary for IO, meaning that the IO stable branch or the version from the Marketplace can be used.
+To be able to use the SSR feature, test systems must currently be activated by us or moved to an appropriate test environment. 
+Alternatively, you can order your own test systems with activated server-side rendering for the duration of the hackathon (until 30 April).
+For more information see link:https://forum.plentymarkets.com/t/umstellung-von-entwicklersystemen-auf-ssr/630603[this post in the forum].
