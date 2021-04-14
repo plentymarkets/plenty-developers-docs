@@ -30,11 +30,11 @@ For this reason, the template must be provided with markers (so-called "directiv
 These are specified in the form of HTML comments in order to obtain valid HTML even without further processing. 
 However, during processing by server-side rendering, these comments are removed and not delivered to the browser.
 
-All directives start with an HTML template of the form `<!-- SSR:xyz() -->` and end with another comment of the form `<!-- /SSR -->`. Directives cannot be nested.
+All directives start with an HTML template of the form `<!-- SSR:xyz() -\->` and end with another comment of the form `<!-- /SSR -\->`. Directives cannot be nested.
 
 The following directives are available:
 
-=== `<!-- SSR:app() -->`
+=== SSR:app() directive
 
 This directive marks the element that should be used as the template for the main component. In Ceres, for example, this element is marked with the ID “vue-app”.
 
@@ -49,7 +49,7 @@ This directive marks the element that should be used as the template for the mai
 
 This directive should only be used *once per page*.
 
-=== `<!-- SSR:global($identifier) -->`
+=== SSR:global($identifier) directive
 This directive marks a script tag with JSON-formatted data that needs to be globally available during server-side rendering under the specified identifier.
 
 [source,twig]
@@ -66,7 +66,7 @@ This directive marks a script tag with JSON-formatted data that needs to be glob
 
 Within server-side rendered components, the example above enables, for instance, the access to `App.config`.
 
-=== `<!-- SSR:entry($path) -->`
+=== SSR:entry($path) directive
 This directive specifies the path to a JavaScript module that should be loaded during server-side rendering.
 This directive is *not* closed by a comment of the form `<!-- /SSR -->`!
 
@@ -79,7 +79,7 @@ To determine the correct path, the Twig function `ssr_entry()` should be used he
 
 See the section "Providing JavaScript modules for SSR" for more details and requirements for server-side loaded modules.
 
-=== `<!-- SSR:on() -->` and `<!-- SSR:off() -->`
+=== SSR:on() and SSR:off() directives
 The content of the directive is only output when the SSR is active/inactive and removed otherwise.
 
 [source,twig]
@@ -93,7 +93,7 @@ The content of the directive is only output when the SSR is active/inactive and 
 <!-- /SSR -->
 ----
 
-=== `<!-- SSR:template($componentTag) -->`
+=== SSR:template($componentTag) directive
 To overwrite the template of a Vue component, the script tag with the corresponding `data-component` attribute must be marked by the directive `SSR:template`.
 
 [source,twig]
