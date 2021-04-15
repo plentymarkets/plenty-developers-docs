@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   repository_dispatch:
     types: [ ContentSourceUpdate, UIBundleUpdate ]
+  workflow_dispatch:
 
 jobs:
   build:
