@@ -337,7 +337,16 @@ The order item `properties` and `dates` relations work the same way the the orde
 
 === References
 
-The order item `references` relation is similar to `orderReferences` relation. Order items can reference other order items. Let's take a bundle as example. A bundle has components and these bundle component items reference the bundle item. The `references` relation of a component item is shown below. The bundle component item has the id 501. The bundle that the component is part of has the id 500.
+The order item `references` relation is similar to `orderReferences` relation. Order items can reference other order items. 
+The available reference types are:
+
+* `parent`: references an order item in the parent order
+* `bundle`: references an order item with `typeId == 2` in the same order (only for order items with bundle components, `typeId == 3`)
+* `set`: references an order item with `typeId == 13` in the same order  (only for order items with set components, `typeId == 14`)
+* `order_property`: references an order item with `typeId == 1` in the same order (only for order item with `typeId == 15`)
+* `reorder`: references an order item in a reorder (order with `typeId == 12`) with stock for the current order
+
+Let's take a bundle as example. A bundle has components and these bundle component items reference the bundle item. The `references` relation of a component item is shown below. The bundle component item has the id 501. The bundle that the component is part of has the id 500.
 
 [source,json]
 ----
