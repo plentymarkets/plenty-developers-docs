@@ -508,7 +508,7 @@ Code example for creating a new order with new order item orderProperties:
             ],
             "metaData": {
             	"internalReferences": {
-            		"`order_property`": "12ab34cd"
+            		"order_property": "12ab34cd"
             	}
             }
         },
