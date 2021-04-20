@@ -352,3 +352,182 @@ The order item `references` relation is similar to `orderReferences` relation. O
 ----
 
 == Creating an order with the new order item orderPtoperties
+
+The new order item orderProperties are realized as order items with `typeId` 15. The can have own prices and tax rates, depending of the property definition. Also they should have one of the new order property types:
+* order property ID = 81 (mandatory)
+* order property value = 82
+* order property group ID = 83 (mandatory for property groups with `groupOptionIdentifier == groupType` and `value IN ('select', 'multiselect')`)
+
+As an order item orderProperty belongs to a variation order item (`typeId == 1`), a reference between the orderProperty and the variation has to be created. For this, `metaData` have to be added in the variation and the orderProperty order item.
+The `metaData` of the variation order item must contain a random but unique `externalHash`, so the order item cann be references correctly. The `metaData` of the orderProperty order item must have an `internalReferences` entry with `internalReferences` as key and the corresponding `externalHash` value.
+
+Code example for creating a new order with new order item orderProperties:
+
+[source,json]
+----
+{
+    "typeId": 1,
+    "statusId": 3.0,
+    "referrerId": 1.0,
+    "plentyId": 136,
+    "relations": [
+        {
+            "referenceType": "warehouse",
+            "referenceId": 103,
+            "relation": "sender"
+        },
+        {
+            "referenceType": "contact",
+            "referenceId": 801,
+            "relation": "receiver"
+        }
+    ],
+    "addressRelations": [
+        {
+            "typeId": 1,
+            "addressId": 1521
+        },
+        {
+            "typeId": 2,
+            "addressId": 1521
+        }
+    ],
+    "orderItems": [
+        {
+            "typeId": 1,
+            "quantity": 1.0,
+            "orderItemName": "Fesches Armband mit Glasperlen",
+            "itemVariationId": 1266,
+            "countryVatId": 12,
+            "vatField": 0,
+            "vatRate": 19.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 1,
+                    "value": "105"
+                },
+                {
+                    "typeId": 2,
+                    "value": "6"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 49.99
+                }
+            ],
+            "metaData": {
+            	"externalHash": "12ab34cd"
+            }
+        },
+        {
+            "typeId": 15,
+            "quantity": 1.0,
+            "orderItemName": "Glasperlen",
+            "countryVatId": 12,
+            "vatField": 1,
+            "vatRate": 7.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 81,
+                    "value": "136"
+                },
+                {
+                    "typeId": 82,
+                    "value": "Rot"
+                },
+                {
+                    "typeId": 83,
+                    "value": "26"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 10.00
+                }
+            ],
+            "metaData": {
+            	"internalReferences": {
+            		"order_property": "12ab34cd"
+            	}
+            }
+        },
+        {
+            "typeId": 15,
+            "quantity": 1.0,
+            "orderItemName": "Glasperlen",
+            "countryVatId": 12,
+            "vatField": 1,
+            "vatRate": 7.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 81,
+                    "value": "138"
+                },
+                {
+                    "typeId": 82,
+                    "value": "Blau"
+                },
+                {
+                    "typeId": 83,
+                    "value": "26"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 5.00
+                }
+            ],
+            "metaData": {
+            	"internalReferences": {
+            		"`order_property`": "12ab34cd"
+            	}
+            }
+        },
+        {
+            "typeId": 15,
+            "quantity": 1.0,
+            "orderItemName": "Gravur",
+            "countryVatId": 12,
+            "vatField": 0,
+            "vatRate": 19.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 81,
+                    "value": "140"
+                },
+                {
+                    "typeId": 82,
+                    "value": "Für meine Liebste ♥"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 25.00
+                }
+            ],
+            "metaData": {
+            	"internalReferences": {
+            		"order_property": "12ab34cd"
+            	}
+            }
+        }
+    ]
+}
+----
