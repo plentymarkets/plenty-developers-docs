@@ -337,7 +337,7 @@ The order item `properties` and `dates` relations work the same way the the orde
 
 === References
 
-The order item `references` relation is similar to `orderReferences` relation. Order items can reference other order items. 
+The order item `references` relation is similar to the `orderReferences` relation. Order items can reference other order items. 
 The available reference types are:
 
 * `parent`: references an order item in the parent order
@@ -346,7 +346,7 @@ The available reference types are:
 * `order_property`: references an order item with `typeId == 1` in the same order (only for order item with `typeId == 15`)
 * `reorder`: references an order item in a reorder (order with `typeId == 12`) with stock for the current order
 
-Let's take a bundle as example. A bundle has components and these bundle component items reference the bundle item. The `references` relation of a component item is shown below. The bundle component item has the id 501. The bundle that the component is part of has the id 500.
+Let's take a bundle as example. A bundle has components and these bundle component items reference the bundle item. The `references` relation of a component item is shown below. The bundle component item has the ID 501. The bundle that the component is part of has the ID 500.
 
 [source,json]
 ----
@@ -360,22 +360,22 @@ Let's take a bundle as example. A bundle has components and these bundle compone
 }]
 ----
 
-== Creating an order with the new order item orderPtoperties
+== Creating an order with the new order item orderProperties
 
-The new order item orderProperties are realized as order items with `typeId` 15. The can have own prices and tax rates, depending of the property definition. Also they should have one of the new order property types:
+The new order item orderProperties are realised as order items with the `typeId` 15. They can have own prices and tax rates, depending on the property definition. They also should have one of the new order property types:
 
 * order property ID = 81 (mandatory)
 * order property value = 82
 * order property group ID = 83 (mandatory for property groups with `groupOptionIdentifier == `groupType` and `value IN ('select', 'multiselect')`)
 
-As an order item orderProperty belongs to a variation order item (`typeId == 1`), a reference between the orderProperty and the variation has to be created. For this, `metaData` have to be added in the variation and the orderProperty order item.
+As an order item, orderProperty belongs to a variation order item (`typeId == 1`). Therefore, a reference between the orderProperty and the variation has to be created. For this, `metaData` have to be added in the variation and the orderProperty order item.
 
-The `metaData` of the variation order item must contain a random but unique `externalHash`, so the order item can be references correctly. The `metaData` of the orderProperty order item must have an `internalReferences` entry with `internalReferences` as key and the corresponding `externalHash` value.
+The `metaData` of the variation order item has to contain a random but unique `externalHash`, so the order item can be referenced correctly. The `metaData` of the orderProperty order item has to have an `internalReferences` entry with `internalReferences` as key and the corresponding `externalHash` value.
 
 The `orderItemName` should contain:
 
-* the property name, if the property does not belong to a group with `select` oder `multiselect` as `groupType`.
-* the property group name, if the property belongs to a group with `select` oder `multiselect` as `groupType`. In the case of `select` the order item property with `typeId == 82` contains the selected value(s) as a JSON string.
+* the property name if the property does not belong to a group with `select` or `multiselect` as `groupType`.
+* the property group name if the property belongs to a group with `select` or `multiselect` as `groupType`. In the case of `select`, the order item property with `typeId == 82` contains the selected value(s) as a JSON string.
 
 Code example for creating a new order with new order item orderProperties:
 
