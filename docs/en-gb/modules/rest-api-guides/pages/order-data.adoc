@@ -304,6 +304,10 @@ The `typeId` specifies the type of the order item. The most common type is a var
 * Unassigned variation = 9
 * Deposit = 10
 * Order = 11
+* Dunning charge = 12
+* Set = 13
+* Set component = 14
+* Order property = 15
 
 The `referrerId` describes where an order item comes from. Use xref:plentymarkets-rest-api:ROOT:index.adoc#tag/Order/paths/~1rest~1orders~1referrers/get[this route] the get a list of the referrers available in the system.
 
@@ -346,3 +350,5 @@ The order item `references` relation is similar to `orderReferences` relation. O
     "updatedAt": "2017-12-13T16:32:53+01:00"
 }]
 ----
+
+== Creating an order with the new order item orderPtoperties
