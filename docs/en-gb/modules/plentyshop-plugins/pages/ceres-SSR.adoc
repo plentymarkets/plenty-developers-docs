@@ -105,25 +105,28 @@ To overwrite the template of a Vue component, the script tag with the correspond
 <!-- /SSR -->
 ----
 
-// Änderungen vom Zwoten einpflegen
 == Providing JavaScript modules for SSR
 
-The directive `<!-- SSR:entry() -\->` can be used to load arbitrary JavaScript modules during server-side rendering, e.g. to register own Vue components or to change the initial state of the VueX state.
+The directive  `<!-- SSR:entry() -->`  can be used to load arbitrary JavaScript modules during server-side rendering, e.g. to register own Vue components or to change the initial state of the VueX state.
 
-Provided modules should be bundled as **commonjs2** modules (see link:https://webpack.js.org/configuration/output/#librarytarget-commonjs2[Webpack: output.libraryTarget]).
-The following fields can be exported per module:
+Provided modules should be bundled as  **commonjs2**  modules (see [Webpack: output.libraryTarget ](https://webpack.js.org/configuration/output/#librarytarget-commonjs2) for further information). The following fields can be exported per module:
 
-- **`beforeRender: (context) => void`**: Function that is executed before server-side rendering and is passed to the renderer context as an argument.
-- **`afterRender: (vueApp) => void`**: Function that is executed after server-side rendering. It receives the created instance of the Vue application as an argument.
-- **`globals: { [key: string]: any }`**: Object whose values are made globally available with the corresponding key as variable name.
-- **`createApp: (context) => Promise<Vue>`**: Method that creates the actual Vue instance for the corresponding context. The implementation by previously loaded modules is overwritten.
+* **`beforeCreate: (context) => void`**  : Function that is executed before server-side creation of the Vue application and is passed the renderer context as an argument.
+* **`beforeRender: (context) => void`**  : Function that is executed before server-side rendering and is passed the created instance of the Vue application as an argument.
+* **`afterRender: (vueApp) => void`**  : Function that is executed after server-side rendering. It receives the created instance of the Vue application as an argument.
+* **`globals: { [key: string]: any }`**  : Object whose values are made globally available with the respective key as variable name.
+* **`createApp: (context) => Promise<Vue>`**  : Method that creates the actual Vue instance for the respective context. The implementation by previously loaded modules is overwritten.
 
 [source,twig]
 ----
 import Vue from "vue";
 const globals = { Vue };
 
-function beforeRender(context) {
+function beforeCreate(context) {
+    ...
+}
+
+function beforeRender(vueApp) {
     ...
 }
 
@@ -131,7 +134,7 @@ function afterRender(vueApp) {
     ...
 }
 
-export { globals, beforeRender, afterRender };
+export { globals, beforeCreate, beforeRender, afterRender };
 ----
 
 ## Switching Ceres to server-side rendering
