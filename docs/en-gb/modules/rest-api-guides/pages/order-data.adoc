@@ -304,6 +304,10 @@ The `typeId` specifies the type of the order item. The most common type is a var
 * Unassigned variation = 9
 * Deposit = 10
 * Order = 11
+* Dunning charge = 12
+* Set = 13
+* Set component = 14
+* Order property = 15
 
 The `referrerId` describes where an order item comes from. Use xref:plentymarkets-rest-api:ROOT:index.adoc#tag/Order/paths/~1rest~1orders~1referrers/get[this route] the get a list of the referrers available in the system.
 
@@ -333,7 +337,16 @@ The order item `properties` and `dates` relations work the same way the the orde
 
 === References
 
-The order item `references` relation is similar to `orderReferences` relation. Order items can reference other order items. Let's take a bundle as example. A bundle has components and these bundle component items reference the bundle item. The `references` relation of a component item is shown below. The bundle component item has the id 501. The bundle that the component is part of has the id 500.
+The order item `references` relation is similar to the `orderReferences` relation. Order items can reference other order items. 
+The available reference types are:
+
+* `parent`: references an order item in the parent order
+* `bundle`: references an order item with `typeId == 2` in the same order (only for order items with bundle components, `typeId == 3`)
+* `set`: references an order item with `typeId == 13` in the same order  (only for order items with set components, `typeId == 14`)
+* `order_property`: references an order item with `typeId == 1` in the same order (only for order item with `typeId == 15`)
+* `reorder`: references an order item in a reorder (order with `typeId == 12`) with stock for the current order
+
+Let's take a bundle as example. A bundle has components and these bundle component items reference the bundle item. The `references` relation of a component item is shown below. The bundle component item has the ID 501. The bundle that the component is part of has the ID 500.
 
 [source,json]
 ----
@@ -345,4 +358,192 @@ The order item `references` relation is similar to `orderReferences` relation. O
     "createdAt": "2017-12-13T16:32:53+01:00",
     "updatedAt": "2017-12-13T16:32:53+01:00"
 }]
+----
+
+== Creating an order with the new order item orderProperties
+
+The new order item orderProperties are realised as order items with the `typeId` 15. They can have own prices and tax rates, depending on the property definition. They also should have one of the new order property types:
+
+* order property ID = 81 (mandatory)
+* order property value = 82
+* order property group ID = 83 (mandatory for property groups with `groupOptionIdentifier == `groupType` and `value IN ('select', 'multiselect')`)
+
+As an order item, orderProperty belongs to a variation order item (`typeId == 1`). Therefore, a reference between the orderProperty and the variation has to be created. For this, `metaData` have to be added in the variation and the orderProperty order item.
+
+The `metaData` of the variation order item has to contain a random but unique `externalHash`, so the order item can be referenced correctly. The `metaData` of the orderProperty order item has to have an `internalReferences` entry with `internalReferences` as key and the corresponding `externalHash` value.
+
+The `orderItemName` should contain:
+
+* the property name if the property does not belong to a group with `select` or `multiselect` as `groupType`.
+* the property group name if the property belongs to a group with `select` or `multiselect` as `groupType`. In the case of `select`, the order item property with `typeId == 82` contains the selected value(s) as a JSON string.
+
+Code example for creating a new order with new order item orderProperties:
+
+[source,json]
+----
+{
+    "typeId": 1,
+    "statusId": 3.0,
+    "referrerId": 1.0,
+    "plentyId": 1000,
+    "relations": [
+        {
+            "referenceType": "warehouse",
+            "referenceId": 103,
+            "relation": "sender"
+        },
+        {
+            "referenceType": "contact",
+            "referenceId": 801,
+            "relation": "receiver"
+        }
+    ],
+    "addressRelations": [
+        {
+            "typeId": 1,
+            "addressId": 1521
+        },
+        {
+            "typeId": 2,
+            "addressId": 1521
+        }
+    ],
+    "orderItems": [
+        {
+            "typeId": 1,
+            "quantity": 1.0,
+            "orderItemName": "Smart bracelet with glass beads",
+            "itemVariationId": 1266,
+            "countryVatId": 12,
+            "vatField": 0,
+            "vatRate": 19.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 1,
+                    "value": "105"
+                },
+                {
+                    "typeId": 2,
+                    "value": "6"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 49.99
+                }
+            ],
+            "metaData": {
+            	"externalHash": "12ab34cd"
+            }
+        },
+        {
+            "typeId": 15,
+            "quantity": 1.0,
+            "orderItemName": "Glass beads",
+            "countryVatId": 12,
+            "vatField": 1,
+            "vatRate": 7.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 81,
+                    "value": "136"
+                },
+                {
+                    "typeId": 82,
+                    "value": "Red"
+                },
+                {
+                    "typeId": 83,
+                    "value": "26"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 10.00
+                }
+            ],
+            "metaData": {
+            	"internalReferences": {
+            		"order_property": "12ab34cd"
+            	}
+            }
+        },
+        {
+            "typeId": 15,
+            "quantity": 1.0,
+            "orderItemName": "Glass beads",
+            "countryVatId": 12,
+            "vatField": 1,
+            "vatRate": 7.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 81,
+                    "value": "138"
+                },
+                {
+                    "typeId": 82,
+                    "value": "Blue"
+                },
+                {
+                    "typeId": 83,
+                    "value": "26"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 5.00
+                }
+            ],
+            "metaData": {
+            	"internalReferences": {
+            		"order_property": "12ab34cd"
+            	}
+            }
+        },
+        {
+            "typeId": 15,
+            "quantity": 1.0,
+            "orderItemName": "Engraving",
+            "countryVatId": 12,
+            "vatField": 0,
+            "vatRate": 19.0,
+            "referrerId": 1.0,
+            "properties": [
+                {
+                    "typeId": 81,
+                    "value": "140"
+                },
+                {
+                    "typeId": 82,
+                    "value": "For my Love ♥"
+                }
+            ],
+            "amounts": [
+                {
+                    "isSystemCurrency": true,
+                    "currency": "EUR",
+                    "exchangeRate": 1.0,
+                    "priceOriginalGross": 25.00
+                }
+            ],
+            "metaData": {
+            	"internalReferences": {
+            		"order_property": "12ab34cd"
+            	}
+            }
+        }
+    ]
+}
 ----
