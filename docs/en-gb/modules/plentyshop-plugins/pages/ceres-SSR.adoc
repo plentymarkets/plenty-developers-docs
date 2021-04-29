@@ -144,3 +144,57 @@ No adjustments are necessary for IO, meaning that the IO stable branch or the ve
 To be able to use the SSR feature, test systems must currently be activated by us or moved to an appropriate test environment. 
 Alternatively, you can order your own test systems with activated server-side rendering for the duration of the hackathon (until 30 April).
 For more information see link:https://forum.plentymarkets.com/t/umstellung-von-entwicklersystemen-auf-ssr/630603[this post in the forum].
+
+## Adding preloading to your widgets
+
+In the context of Server-Side Rendering, we added the setting **Preload image** to our image widgets.
+This setting allows that the images used in the widgets image box, image carousel, background image, and item image are already processed on the server's side, so that the shop's performance can be increased. You can find further information on how to best use preloading in our link:https://knowledge.plentymarkets.com/en/online-store/best-practices#psi[PageSpeed Insights best practice].
+
+If you are creating your own widgets that use images, this section will help you learn how to include preloading in your widgets.
+
+### Creating a setting in the widget PHP class
+
+First, you should extend the PHP class of your widget with a setting that the user can activate and deactivate. Our image 
+box widget uses a common checkbox for this:
+
+[source,PHP]
+----
+$settings->createCheckbox('preloadImage')
+            ->withName('Widget.preloadImageLabel')
+            ->withTooltip('Widget.preloadImageTooltip')
+            ->withCondition("!lazyLoading");
+            
+----
+
+Note that the image box widget can only be preloaded if lazy loading is not active. 
+The setting includes all the usual suspects: the interactive element, the title, and the tooltip.
+
+### Implementing Twig code
+
+After you've added the setting to the PHP class, it is time to add the relevant Twig code to the widget.
+First, make sure to access the settings you just added:
+
+[source,twig]
+----
+{% set preloadImage     = widget.settings.preloadImage.mobile %}
+----
+
+In a next step, it is important that you set the URL of the image with `Twig.set` in the Twig builder because you will need the image URL in the subsequent step.
+
+[source,twig]
+----
+{{ Twig.set("imageUrl", "" | json_encode) }}
+----
+
+Finally, add a conditional if construction and use `Twig.print` to hand over the image URL you set before.
+While most image formats are automatically recognized as the **image type** (namely PNG, JPG, JPEG, WEBP, and GIF), you should still include `'image'` in case another format is used.
+
+[source,twig]
+----
+{% if preloadImage %}
+    {{ Twig.print("add_asset(imageUrl,'image')") }}
+{% endif %}
+----
+
+And that's it. 
+If you would like to take a look at how team plentyShop implemented preloading in their widgets, feel free to check out the open source code of the link:https://github.com/plentymarkets/plugin-ceres/pull/2802/files#diff-bd9967b42e5604fbd1cc0034b2ed9fbc4bb18113880fe371167076f046aee956[background image widget], link:https://github.com/plentymarkets/plugin-ceres/pull/2802/files#diff-9f438954b9f177761379a8b382eea014077ec743060583796ac4f9aaed3d3003[image box widget] (which was used as the basis of this guide), or the link:https://github.com/plentymarkets/plugin-ceres/pull/2802/files#diff-43b0576fe9cb61d0343a4aa220f562347c237717821f276ab632973e3970ec96[image carousel widget].
