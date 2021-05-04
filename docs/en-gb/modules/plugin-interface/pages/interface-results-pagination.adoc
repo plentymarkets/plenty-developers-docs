@@ -111,7 +111,7 @@ The following example uses the `query` method defined above and assumes the asso
 .MyQueryController.php
 [source,php]
 ----
-include::MyQuery.php[]
+include::example$MyQueryController.php.php[]
 ----
 
 <4> Manipulates the data.
