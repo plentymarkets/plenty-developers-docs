@@ -99,7 +99,8 @@ If you are a plugin developer that wants to register cookies with the consent in
 
 == Registering the GoogleAnalytics cookie in your theme
 
-If you are using Ceres in combination with a theme plugin and have integrated the functionality for the GoogleAnalytics cookie plugin within your own theme, you will have to make a few adjustments, so that you can continue using your theme in combination with the consent interface provided by Ceres. The easiest way is to register a GoogleAnalytics cookie in the service provider of your plugin:
+(This section was updated on 6 May 2021 to account for the added callback function. However, the former way of registering cookies is still functional.)
+If you are using Ceres in combination with a theme plugin and have integrated the functionality for the GoogleAnalytics cookie plugin within your own theme, you will have to make a few adjustments, so that you can continue using your theme in combination with the consent interface provided by Ceres. The easiest way is to register a GoogleAnalytics cookie in the service provider of your plugin, which you can see in the example below. Note that the all of the values are required.
 
 [source,php]
 ----
@@ -111,16 +112,20 @@ public function register()
         $consentRepository->registerConsent(
             'googleAnalytics',
             'GoogleAnalytics::MyThemePlugin.consentLabel',
-            [
-                'description' => 'MyThemePlugin::MyThemePlugin.consentDescription',
-                'provider' => 'MyThemePlugin::MyThemePlugin.consentProvider',
-                'lifespan' => 'MyThemePlugin::MyThemePlugin.consentLifespan',
-                'policyUrl' => 'MyThemePlugin::MyThemePlugin.consentPolicyUrl',
-                'group' => 'tracking',
-                'necessary' => true,
-                'isOptOut' => true,
-                'cookieNames' => ['_ga', '_gid', '_gat']
-            ]
+            function() {
+                /** @var ConfigRepository $config */
+                $config = pluginApp(ConfigRepository::class);
+                return  [
+                    'description' => 'GoogleAnalytics::GoogleAnalytics.consentDescription',
+                    'provider' => 'GoogleAnalytics::GoogleAnalytics.consentProvider',
+                    'lifespan' => 'GoogleAnalytics::GoogleAnalytics.consentLifespan',
+                    'policyUrl' => 'GoogleAnalytics::GoogleAnalytics.consentPolicyUrl',
+                    'group' => $config->get('GoogleAnalytics.consentGroup', 'tracking'),
+                    'necessary' => $config->get('GoogleAnalytics.consentNecessary') === 'true',
+                    'isOptOut' => $config->get('GoogleAnalytics.consentOptOut') === 'true',
+                    'cookieNames' => ['_ga', '_gid', '_gat']
+                ];
+            }
         );
     }
 ----
