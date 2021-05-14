@@ -4,7 +4,7 @@ This page serves to give you an overview about the new content caching functiona
 
 == Preliminary information about content caching
 
-Content caching is only available from Ceres and IO versions 2.12 onwards. Purchase the current versions of the plugins on the plentymarkets https://marketplace.plentymarkets.com/plugins/templates[marketplace] or update the plugins in the *Plugins » Plugin overview*.
+Content caching is only available from Ceres and IO versions 2.12 onwards. Download the current versions of the plugins on the plentymarkets https://marketplace.plentymarkets.com/plugins/templates[marketplace] or update the plugins in the *Plugins » Plugin overview*.
 
 == Information about caching and invalidation
 
@@ -67,3 +67,71 @@ $contentCacheRepo->linkVariationsToResponse($variationIds); // $variationIds = [
 ----
 
 In this case, the page is automatically invalidated whenever changes are being made to the variations with the IDs 1, 2 or 3.
+
+== Caching pages that include query parameters
+
+Beginning with Ceres v5.0.29, ShopBooster is able to cache pages that include query parameters.
+Paginated pages, sorted item pages, pages accessed via referrer: These pages are now also written into the cache, which significantly reduces access times for these pages. +
+Per default, ShopBooster caches pages that include the following query parameters: +
+
+* ReferrerID
+* ShipToCountry
+* Currency
+* currency
+* page
+* items
+* sorting
+* facets
+* category
+
+In addition, we've made it possible for external developers to register additional query parameters that are to be written into the cache as well as to register query parameters that should be explicitely excluded and are thereby never cached by ShopBooster. For this purpose, we added 2 methods to the plugin interface: `registerIncluded` and `registerExcluded`. +
+
+Note that if a query parameter is neither included by default (as per the list above) nor registered as an additional query parameter via `registerIncluded` nor excluded via the `registerExcluded` method, the ShopBooster cache will ignore this parameter completely. In this case, the page is not loaded from the cache and the user will face increased TTFB. +
+
+If a conflict arises because a single query parameters is included by one plugin but excluded by another, the include function will take precedence, i.e. pages with this query parameter will be cached by ShopBooster. +
+
+=== Registering additional query params
+
+As a plugin developer, you may want to register additional query parameters to write them into the ShopBooster cache.
+This is advisable if your plugin uses query parameters that influence the content of the page in any way. This includes parameters that change the prices of items, which items can be purchased, external search functions that influence search results, or customer class-dependent changes to the shop design. +
+
+To register additional parameters, you need to use the `Plenty\Modules\ContentCache\Contracts\ContentCacheQueryParamsRepositoryContract` in your plugin. +
+
+You can then implement the `registerIncluded()` method at any point in the **boot function** of your service provider. The `registerIncluded()` takes an array of the names of the query parameters you want to register as parameter. +
+
+The example below shows how the method is implemented with an array of two additional query parameters, "springEvent" and "returnCustomer":
+
+[source,php]
+---- 
+/** @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository */
+        $contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
+        $contentCacheQueryParamsRepository->registerIncluded([
+            'springEvent',
+            'returnCustomer'
+        ]);
+    
+----
+
+If a page that includes either one of these query parameters is accessed, a new cache entry is created on S3. This new entry differs from the basic index entry, which is the cache entry for pages without additional query parameters. Therefore, both the page with and without the registered query parameters can be loaded from the ShopBooster cache.
+
+=== registerExcluded method
+
+You may also want to explicitely exclude certain query parameters from being written into the cache. This is particularly useful if you want to exlude tracking parameters that are then processed by the Javascript, thereby negatively impacting shop performance. +
+
+If you exclude query paramters via the `registerExcluded` method, and a corresponding page is accessed, ShopBooster will instead load the index cache entry of this page, i.e. the version of the page that does not include any query parameters. As a consequence, the user can still benefit from reduced TTFB, because the page that is loaded is loaded from the cache. +
+
+The implementation of the function works analogously to the `registerIncluded` method described above. To register parameters that should be excluded, you need to use the `Plenty\Modules\ContentCache\Contracts\ContentCacheQueryParamsRepositoryContract` in your plugin. +
+
+You can then implement the `registerExcluded()` method at any point in the **boot function** of your service provider. The `registerExcluded()` takes an array of the names of the query parameters you want to exclude as its parameter. Here, only the query parameter "source" is excluded from caching: +
+
+[source,php]
+---- 
+/** @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository */
+        $contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
+        $contentCacheQueryParamsRepository->registerExcluded([
+            'source'
+        ]);
+----
+
+
+
