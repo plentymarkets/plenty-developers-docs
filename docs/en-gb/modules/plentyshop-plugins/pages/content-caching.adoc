@@ -104,21 +104,21 @@ The example below shows how the method is implemented with an array of two addit
 [source,php]
 ---- 
 /** @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository */
-        $contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
-        $contentCacheQueryParamsRepository->registerIncluded([
-            'springEvent',
-            'returnCustomer'
-        ]);
+$contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
+$contentCacheQueryParamsRepository->registerIncluded([
+    'springEvent',
+    'returnCustomer'
+]);
     
 ----
 
-If a page that includes either one of these query parameters is accessed, a new cache entry is created on S3. This new entry differs from the basic index entry, which is the cache entry for pages without additional query parameters. Therefore, both the page with and without the registered query parameters can be loaded from the ShopBooster cache.
+If a page that includes either one of these query parameters is accessed, a new cache entry is created on S3. This new entry differs from the basic entry, which is the cache entry for pages without additional query parameters. Therefore, both the page with and without the registered query parameters can be loaded from the ShopBooster cache.
 
 === registerExcluded method
 
 You may also want to explicitely exclude certain query parameters from being written into the cache. This is particularly useful if you want to exlude tracking parameters that are then processed by the Javascript, thereby negatively impacting shop performance. +
 
-If you exclude query paramters via the `registerExcluded` method, and a corresponding page is accessed, ShopBooster will instead load the index cache entry of this page, i.e. the version of the page that does not include any query parameters. As a consequence, the user can still benefit from reduced TTFB, because the page that is loaded is loaded from the cache. +
+If you exclude query paramters via the `registerExcluded` method, and a corresponding page is accessed, ShopBooster will instead load the basic cache entry of this page, i.e. the version of the page that does not include any query parameters. As a consequence, the user can still benefit from reduced TTFB, because the page that is loaded is loaded from the cache. +
 
 The implementation of the function works analogously to the `registerIncluded` method described above. To register parameters that should be excluded, you need to use the `Plenty\Modules\ContentCache\Contracts\ContentCacheQueryParamsRepositoryContract` in your plugin. +
 
@@ -127,10 +127,10 @@ You can then implement the `registerExcluded()` method at any point in the **boo
 [source,php]
 ---- 
 /** @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository */
-        $contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
-        $contentCacheQueryParamsRepository->registerExcluded([
-            'source'
-        ]);
+$contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
+$contentCacheQueryParamsRepository->registerExcluded([
+    'source'
+]);
 ----
 
 
