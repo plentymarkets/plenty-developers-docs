@@ -198,3 +198,116 @@ While most image formats are automatically recognized as the **image type** (nam
 
 And that's it. 
 If you would like to take a look at how team plentyShop implemented preloading in their widgets, feel free to check out the open source code of the link:https://github.com/plentymarkets/plugin-ceres/pull/2802/files#diff-bd9967b42e5604fbd1cc0034b2ed9fbc4bb18113880fe371167076f046aee956[background image widget], link:https://github.com/plentymarkets/plugin-ceres/pull/2802/files#diff-9f438954b9f177761379a8b382eea014077ec743060583796ac4f9aaed3d3003[image box widget] (which was used as the basis of this guide), or the link:https://github.com/plentymarkets/plugin-ceres/pull/2802/files#diff-43b0576fe9cb61d0343a4aa220f562347c237717821f276ab632973e3970ec96[image carousel widget].
+
+== SSR Troubleshooting
+
+In this section, we will look at a number of common problems, which can appear in combination with Server-side Rendering, and how to solve them.
+
+=== How can I check if a page was successfully rendered on the server?
+
+For this, you should inspect the source code of the page before it is processed by Javascript. To do that, open the source code of the page in the browser or disable the execution of Javascript. Now the structure of the document should look like this:
+
+[source,twig]
+----
+<html>
+  <head>...</head>
+  <body>
+    <div id="vue-app">
+      Serverside rendered markup
+    </div>
+    <script id="ssr-script-container">
+      <div id="vue-app">
+        Raw markup before rendering
+      </div>
+    </script>
+  </body>
+</html>
+----
+
+Make sure to inspect the markup above the `ssr-script-container` and not its contents because it contains the markup of your app before it is rendered. This content is used by the browser to render the app again and apply dynamic functions to the server-side rendered markup. This process is called *hydration*.
+
+=== Server-side errors
+
+These errors may occur while rendering your Vue.js application on the server. In preview mode they will be forwarded to the browser; in productive mode, they are only written to the log and the frontend will fall back to client-side rendering.
+
+==== No app factory provided
+
+There is no Javascript that exports a `createApp()` function. By default, this is done by the ceres-server.js from the Ceres plugin.
+
+You should check if:
+
+`<!-- SSR:entry(...) -->` is included anywhere in your template (by default, this is placed in PageDesign.twig).
+
+If you provide your own Javascript bundles, make sure it exports a `createApp()` function in the „commonjs2“ 3 format.
+
+==== Directive not closed correctly: Found ‚SSR:abc()‘ before closing ‚SSR:xyz()‘.
+
+The SSR directives could not be parsed correctly. The parser detects a directive before the previous one was closed with `<!-- /SSR -->`.
+
+You should check if:
+
+- All directives are closed correctly.
+- Directives are not nested. Consider imported Twig templates here as well.
+
+==== Cannot load module: path/to/script.js
+
+Your Javascript is trying to import an external script that doesn’t exist on the server.
+
+You should check if:
+
+- The imported file is located in your plugin directory.
+- The importedf file is not excluded for the upload to your plentymarkets system, e.g. in the node_modules directory.
+
+==== TypeError: Cannot read property ‚globals‘ of undefined
+
+The rendering process cannot read a registered entry module correctly.
+
+You should check if:
+
+- All modules registered via `<!-- SSR:entry() -->` exist and do not contain any syntax errors.
+- All registered modules are using the format commonjs2 1.
+
+==== Error creating app
+
+An error occured while importing all registered scripts. This happens before the rendering of your components (see „Error compiling template“). See appended error message and the logs for details.
+
+==== Error compiling template
+
+An error occured while compiling the contents of the vue-app element. See appended error message and the logs for details.
+
+==== Vue SSR is not available
+
+The required resources are not available on your server. Please contact us in the forum.
+
+=== Client-side errors
+
+These errors occur in the client after rendering the Vue.js application on the server successfully. They are logged to the Javascript console in the developer tools of your browser.
+
+==== The client-side rendered virtual DOM tree is not matching server-rendered content.
+
+When providing server-side rendered markup, Vue.js renders the app again in the client/browser and tries to inject interactive parts of the application into the server-side rendered markup. To do this, the markup that is provided by the server needs to match to the rendered markup of the client. Otherwise, Vue has to do a full client-side render so the application is still usable, but there is no benefit in the performance anymore.
+Normally this error appears together with a warning that includes the list of DOM elements provided by the server and the list of virtual nodes created by Vue.js while rendering the application in the client.
+
+You should check if:
+
+- You have conditional elements with `v-if` or `v-for` that are handled in different ways on the server or on the client.
+- You are injecting asynchronous components into a slot. There is a bug in Vue.js that leads to asynchronous components (not loaded by the main Javascript bundle but in separate chunks) producing hydration errors when the are placed into slots. The recommended workaround is to wrap the component in any HTML tag:
+
+Instead of using this:
+
+[source,twig]
+----
+<template #before-price>
+  <my-async-component></my-async-component>
+</template>
+
+----
+
+you can try wrapping it like this:
+
+[source,twig]
+----
+<template #before-price>
+  <div><my-async-component></my-async-component></div>
+</template>
+----
