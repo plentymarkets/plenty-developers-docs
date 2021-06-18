@@ -1,0 +1,97 @@
+= DynamicConfig classes (add "catalogue" to title?)
+
+This tutorial will introduce you to the topic of DynamicConfig classes in the catalogue. In the following explanations, we will assume that all the knowledge from the basic usage tutorial -INSERT LINK- is already known to the reader, so work through this first if you haven’t already done so.
+
+The complete source code for this tutorial is available here -INSERT LINK-.
+
+== Creating the folders
+
+The final folder structure will look like this.
+
+INSERT SCREENSHOT
+
+== What is a DynamicConfig class?
+
+A DynamicConfig -INSERT LINK- class should be used to provide necessary logic for the export, which cannot be defined in the template scope. This can have multiple reasons. They might depend on the specifics of a given catalogue or on other settings inside the system. The need for the specific location for this logic comes from the fact that the catalogue itself can trigger exports (e.g. through the UI). This means that any logic outside the catalogue’s scope would not be applicable in exports that are triggered directly by the catalogue.
+
+This would cause different export results depending on the trigger which will cause more problems down the line. So the DynamicConfig -INSERT LINK- provides a spot to inject your logic directly before the export process is triggered.
+
+If you have any additional logic outside of the DynamicConfig class, make sure that the isPreviewable method of your template provider returns false, since this blocks all export triggers in the specific catalogue scope.
+
+== Using DynamicConfig in your template
+
+To implement DynamicConfig in your template, just overwrite the method getDynamicConfig() in your template provider and create an instance of your own class that implements the CatalogDynamicConfigContract.
+
+In this class you need to create two methods, applyDynamicConfig() -INSERT LINK- and applyDynamicPreviewConfig() -INSERT LINK-. These methods receive identical parameters -> the catalog -INSERT LINK-, the template -INSERT LINK- and an instance of CatalogExportService -INSERT LINK-.
+
+With these you can add additional filters to the template, or allow or forbid specific keys in the export service. In case you need a logic which is not maintainable on a template level before the export gets triggered, put the logic into the dynamic config.
+
+The difference between the two methods is that applyDynamicConfig() -INSERT LINK- is called in a general export, while applyDynamicPreviewConfig() -INSERT LINK- is only called if a user requests a preview. If you do not need specific logic in a preview you can just call applyDynamicConfig() -INSERT LINK-  from there.
+
+As an example, we will reduce the exported keys to stock and sku, which could be very helpful if we want to write a stock export. The class could look like this:
+
+<?php
+
+namespace BasicCatalogExport\DynamicConfig;
+
+use Plenty\Modules\Catalog\Contracts\CatalogDynamicConfigContract;
+use Plenty\Modules\Catalog\Contracts\CatalogExportServiceContract;
+use Plenty\Modules\Catalog\Contracts\TemplateContract;
+use Plenty\Modules\Catalog\Models\Catalog;
+
+/**
+* Class ExampleDynamicConfig
+* @package BasicCatalogExport\DynamicConfig
+*/
+class ExampleDynamicConfig implements CatalogDynamicConfigContract
+{
+   /**
+    * @param TemplateContract $template
+    * @param Catalog $catalog
+    * @param CatalogExportServiceContract $catalogExportService
+    */
+   public function applyDynamicConfig(
+       TemplateContract $template,
+       Catalog $catalog,
+       CatalogExportServiceContract $catalogExportService
+   ) {
+
+       // We could add new filters
+       //$filterContainer = $template->getFilterContainer();
+       //$filterContainer->addFilterBuilder();
+
+       // In a real scenario we will probably have some conditions here
+
+       // This will remove all keys from the export that are not specifically stated in here
+       $catalogExportService->allowExportKeys('sku', 'stock');
+   }
+
+   /**
+    * @param TemplateContract $template
+    * @param Catalog $catalog
+    * @param CatalogExportServiceContract $catalogExportService
+    */
+   public function applyDynamicPreviewConfig(
+       TemplateContract $template,
+       Catalog $catalog,
+       CatalogExportServiceContract $catalogExportService
+   ) {
+       $this->applyDynamicConfig($template, $catalog, $catalogExportService);
+   }
+}
+
+
+As mentioned above, we now also need to overwrite the getDynamicConfig() -INSERT LINK- method in our template provider. This method will look like this:
+
+public function getDynamicConfig(): CatalogDynamicConfigContract
+{
+   return pluginApp(ExampleDynamicConfig::class);
+}
+
+If we now create a catalogue and fill some fields with sources, we will see in the preview that we still only receive stock and sku.
+
+As you can see, the behaviour of our data manipulation will not be influenced by the restriction of specific keys.
+
+== Conclusion
+
+You are now able to provide your conditional export configuration in your template. This enables your users to benefit from all the possible catalogue export triggers. Another topic that might be interesting for you now are ResultConverters -INSERT LINK- to manipulate your result’s file type, e.g. to CSV.
