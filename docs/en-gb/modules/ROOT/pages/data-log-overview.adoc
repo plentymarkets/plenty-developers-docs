@@ -85,7 +85,7 @@ Each log has the following properties:
 |Property |Description
 
 |Log level
-|The level associated with the log. The following levels are available, in order of severity from highest to lowest:
+a|The level associated with the log. The following levels are available, in order of severity from highest to lowest:
 
 * `emergency`: The system is unusable.
 * `alert`: Requires immediate action.
