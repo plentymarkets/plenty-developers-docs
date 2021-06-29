@@ -30,7 +30,7 @@ The API uses the "Bearer" authentication scheme to transmit the access token. To
 
     {
         "username": "myUsername",
-        "password": "myPassword",
+        "password": "myPassword"
     }
 ----
 
