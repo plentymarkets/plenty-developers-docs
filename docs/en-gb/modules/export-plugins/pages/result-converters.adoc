@@ -1,6 +1,6 @@
 = How to work with result converters
 
-This how-to guide will introduce you to the usage of result converters in your catalogue.
+This how-to guide will introduce you to the usage of *result converters* in your catalogue.
 
 == What are result converters?
 
@@ -10,15 +10,15 @@ You can also use these converters to send the data to the marketplace, combining
 
 == Creating result converters
 
-To create a result converter from scratch, all you need to do is to extend the BaseResultConverter class and to define your own:
+To create a result converter from scratch, all you need to do is to extend the *BaseResultConverter* class and to define your own:
 
-- method: convertToDownload
-- method: convertToMarketplace
-- const: CHUNK_SIZE, defaults to 50
-- const: MIME_TYPE, defaults to “text/plain”
-- const: FILE_EXTENSION, defaults to “txt"
+* method: `convertToDownload`
+* method: `convertToMarketplace`
+* const: *CHUNK_SIZE*, defaults to _50_
+* const: *MIME_TYPE*, defaults to _text/plain_
+* const: *FILE_EXTENSION*, defaults to _txt_
 
-Example:
+_Example_:
 We will partially use the default CSV converter as an example.
 
 .result-converters.php
@@ -34,25 +34,25 @@ If you need to customise the defaults you can override the `convertToDownload` m
 
 `namespace Plenty\Modules\Catalog\Services\Converter\ResultConverters\Defaults`
 
-- CSV: CSVResultConverter
-- JSON: JSONResultConverter
-- TXT: TXTResultConverter
-- XML: XMLResultConverter
+* CSV: CSVResultConverter
+* JSON: JSONResultConverter
+* TXT: TXTResultConverter
+* XML: XMLResultConverter
 
 == Using result converters
 
-We set up the converter in order to store the export for the customer or to send it to the marketplace. However, we also need to provide it with the information, which data we need to export.
+We set up the converter in order to store the export for the customer or to send it to the marketplace. However, we also need to provide it with the information which data we need to export.
 
 To do that you can feed the converter with any of the following source types:
 
-- CatalogExportResult - returned by CatalogExportService's `getResult` method
-- JSONL resource - returned by a cached result [ link to this documentation soon ]
-- Collection
-- LazyCollection [not available in plugins]
-- CatalogLazyCollection - wrapper for LazyCollection with limited capabilities
+* CatalogExportResult: returned by CatalogExportService's `getResult` method
+* JSONL resource: returned by a cached result
+* Collection
+* LazyCollection (not available in plugins)
+- CatalogLazyCollection: wrapper for LazyCollection with limited capabilities
 - array
 
-Example:
+_Example_:
 .source-types.php
 [source,php]
 ----
@@ -75,8 +75,6 @@ You can also use a cached result to feed data to your converter:
 include::example$cached-result.php[]
 ----
 
-Internally, we have a very similar approach for exports that have been converted to a user's download.
-
 == Registering your result converter in your template
 
 In your template, you can register result converters as shown below:
@@ -86,3 +84,5 @@ In your template, you can register result converters as shown below:
 ----
 include::example$register-converter.php[]
 ----
+
+Once you have registered your result converter, the user can select the *Template* format in the catalogue settings and the Catalogue module will be able to build the file for the user using your specifications in the `convertToDownload` method.

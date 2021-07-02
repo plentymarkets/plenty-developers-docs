@@ -1,5 +1,12 @@
 = Catalog
 
+[WARNING]
+====
+This tutorial is only for existing implementations that are used with the old catalog logic.
+The structure will be removed in the future and some of the new features will not be supported anymore.
+If you want to start developing something new for the catalog, use xref:basic-usage.adoc[this tutorial].
+====
+
 This tutorial will introduce you to the catalog export. We will develop a small plugin that exports variations to a fictional marketplace. You will learn how to create and work with a catalog to allow your users to map their data to a predefined format. If you are just getting started developing plugins for plentymarkets it is recommended to start with establishing your IDE and xref:ROOT:tutorial.adoc[creating your first plugin].
 
 At the end of this tutorial you will have developed a plugin that exports variations in the format of a fictional marketplace. In the UI the result will look like this
