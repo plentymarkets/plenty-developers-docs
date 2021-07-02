@@ -311,3 +311,15 @@ you can try wrapping it like this:
   <div><my-async-component></my-async-component></div>
 </template>
 ----
+
+== Checklist
+
+If you are a developer implementing SSR in a theme or plugin, you should go through the checklist below and make sure your code checks all the boxes. The most common SSR errors arise if one of the following guidelines is not adhered to:
+
+[%interactive]
+
+* [ ] Have you added the corresponding SSR directives outlined above?
+* [ ] Did you make sure you did not include any logic in the `created()` hook, as specified in the link:https://ssr.vuejs.org/guide/universal.html#component-lifecycle-hooks[Vue documentation]?
+* [ ] Are all HTML tags closed properly?
+* [ ] Did you make sure that your HTML code is valid?
+* [ ] Does the code run without any SSR errors in the log?
