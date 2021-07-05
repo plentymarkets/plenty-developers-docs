@@ -5,12 +5,11 @@ Welcome to the developers documentation for the plentyShop plugins https://githu
 On here, you will find ressources that help you customise your online shop template.
 If you find anything we can improve, make sure to leave a feedback comment at the bottom of the respective page or by clicking the speech bubble in the upper right corner.
 
-
 == Ceres & IO
 
-Our xref:plentyshop-plugins:template-overview.adoc[Template guide^] is your entry point for developing for plentyShop.
+Our xref:plentyshop-plugins:template-overview.adoc[Template guide] is your entry point for developing for plentyShop.
 
-If you're looking for changes between older Ceres versions and Ceres 5.0, the xref:plentyshop-plugins:ceres-5-update.adoc[Update guide^] will prove useful.
+If you're looking for changes between older Ceres versions and Ceres 5.0, the xref:plentyshop-plugins:ceres-5-update.adoc[Update guide] will prove useful.
 
 We've also expanded the reference documentation on properties and methods used in https://developers.plentymarkets.com/en-gb/plugin-ceres/5.0.0/index.html[Ceres'^] and https://developers.plentymarkets.com/en-gb/plugin-io/5.0.0/index.html[IO's^] PHP classes.
 
