@@ -1,8 +1,7 @@
 = Vue Server-Side Rendering in Ceres
 
-// Infos zur Versionsnummer ergänzen
-With the next version of the Ceres plugin, we will introduce Vue Server-Side Rendering (SSR) to Ceres. 
-This update serves to prepare Ceres online shops for the changes brought by the Google core update.
+With the version 5.0.30 of the Ceres plugin, we introduced Vue Server-Side Rendering (SSR) to Ceres. 
+This update serves to prepare Ceres online shops for the changes brought by the Google core update and to generally improve online shop performance.
 
 With SSR, Vue.js components, whose markup was previously generated in the browser, are now already processed on the web server.
 Therefore, the HTML, that has already been generated, is sent to the browser and can directly be displayed there.
@@ -23,6 +22,7 @@ The implementation in Ceres also has the following requirements:
 
 The global overwriting of component templates through the `data-component` attribute on the corresponding script tag is still possible (see link:https://developers.plentymarkets.com/en-gb/developers/main/plentyshop-plugins/theme-plugins.html#_changing_the_template_of_a_vue_component[Changing the template of a Vue component]).
 
+[#ssr-directives]
 == Preparing a template for SSR
 
 During server-side rendering, the browser-specific objects `window` and `document` and thus all common functions for browsing or manipulating the DOM are not available.
@@ -311,3 +311,15 @@ you can try wrapping it like this:
   <div><my-async-component></my-async-component></div>
 </template>
 ----
+
+== Checklist
+
+If you are a developer implementing SSR in a theme or plugin, you should go through the checklist below and make sure your code checks all the boxes. The most common SSR errors arise if one of the following guidelines is not adhered to:
+
+[%interactive]
+
+* [ ] Have you added the necessary SSR directives outlined <<#ssr-directives, above>>?
+* [ ] Did you make sure you only included markup and no logic in the `created()` hook, as specified in the link:https://ssr.vuejs.org/guide/universal.html#component-lifecycle-hooks[Vue documentation]?
+* [ ] Are all of your HTML tags closed properly?
+* [ ] Did you make sure that your HTML code is valid?
+* [ ] Does the code run without any SSR errors in the log?

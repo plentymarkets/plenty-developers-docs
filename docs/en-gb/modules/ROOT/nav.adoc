@@ -40,6 +40,7 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:rest-api-guides:bulk-routes.adoc[How to use bulk routes]
 
 .plentyShop plugins
+* xref:plentyshop-plugins:overview.adoc[Overview]
 * xref:plentyshop-plugins:template-setup.adoc[Template setup]
 * xref:plentyshop-plugins:template-overview.adoc[Template overview]
 * xref:plentyshop-plugins:template-containers.adoc[Template containers]

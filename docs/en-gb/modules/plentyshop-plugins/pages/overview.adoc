@@ -1,0 +1,42 @@
+= plentyShop plugins 
+
+Welcome to the developers documentation for the plentyShop plugins https://github.com/plentymarkets/plugin-ceres[Ceres^] and https://github.com/plentymarkets/plugin-io[IO^].
+
+On here, you will find ressources that help you customise your online shop template.
+If you find anything we can improve, make sure to leave a feedback comment at the bottom of the respective page or by clicking the speech bubble in the upper right corner.
+
+== Ceres & IO
+
+Our xref:plentyshop-plugins:template-overview.adoc[Template guide] is your entry point for developing for plentyShop.
+
+If you're looking for changes between older Ceres versions and Ceres 5.0, the xref:plentyshop-plugins:ceres-5-update.adoc[Update guide] will prove useful.
+
+We've also expanded the reference documentation on properties and methods used in https://developers.plentymarkets.com/en-gb/plugin-ceres/5.0.0/index.html[Ceres'^] and https://developers.plentymarkets.com/en-gb/plugin-io/5.0.0/index.html[IO's^] PHP classes.
+
+== ShopBuilder 
+
+If you want to customise widgets or work on your own, you should begin with the xref:shopbuilder-plugins:shopbuilder-widgets.adoc[ShopBuilder tutorial^].
+
+== Developer Talk
+Every monday at 3 p.m. (CEST), we're offering office hours with one or two of our plentyShop developers.
+If you can make time, come join us in https://meet.google.com/mdn-zrma-vwn[this Google Meets call^]. Our developers will do their best to help you out with any issues or questions you might have regarding the development for plentyShop.
+If you want to give the team more time to prepare, you can post any concrete questions in https://forum.plentymarkets.com/t/regelmaessige-entwicklersprechstunden-regular-developers-talks/637295[the corresponding forum thread^].
+
+== Visit our forum
+
+If there are issues that cannot be solved in the Developer Talk, you can always open a new thread in our forum.
+Dependinn on its compelxity, tt might take a few days before our developers can have a look at your issue.
+Either open a new topic in our https://forum.plentymarkets.com/c/ceres-webshop/125[Ceres category^] or in the category for https://forum.plentymarkets.com/c/plugin-entwicklung[plugin development^].
+
+== You want to contribute?
+
+The plugins Ceres and IO are open source. If you want to contribute to our projects, you'll find a handy https://github.com/plentymarkets/plugin-ceres/blob/stable/contributionGuide.md[contribution guide^] in the Ceres plugin repository. 
+
+== plentyManual
+
+If you're looking for user documentation instead of dev-docs, you will find it in our https://knowledge.plentymarkets.com/[plentyManual^].
+The pages on https://knowledge.plentymarkets.com/en/slp/webshop/ceres-einrichten[setting up Ceres^] and https://knowledge.plentymarkets.com/en/online-store/shop-builder[working with ShopBuilder^] are great entry points. 
+
+
+
+
