@@ -39,10 +39,10 @@ include::example$dynamic-config-class.php[]
 
 As mentioned above, we now also need to overwrite the `getDynamicConfig()` method in our template provider. This method will look like this:
 
-.dynamic-config-class.php
+.overwrite-method.php
 [source,php]
 ----
-include::example$dynamic-config-class.php[]
+include::example$overwrite-method.php[]
 ----
 
 If we now create a catalogue and fill some fields with sources, we will see in the preview that we still only receive *stock* and *sku*.
