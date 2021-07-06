@@ -73,6 +73,9 @@ include::back-end-ui:partial$nav.adoc[]
 .Export format plugins
 * xref:export-plugins:how-to-elastic-export-plugin.adoc[Elastic export plugin]
 * xref:export-plugins:how-to-catalog-plugin.adoc[Catalog plugin]
+* xref:export-plugins:basic-usage.adoc[Basic catalogue usage]
+* xref:export-plugins:dynamic-config-classes.adoc[DynamicConfig classes]
+* xref:export-plugins:result-converters.adoc[Result converters]
 
 .plentyBase plugins
 * xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
