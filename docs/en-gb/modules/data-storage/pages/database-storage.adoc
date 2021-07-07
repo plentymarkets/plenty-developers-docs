@@ -183,7 +183,7 @@ A better way of accounting for missing values is to declare an attribute as null
 
 You can declare an attribute as nullable by using the `@Nullable` declaration like in the example above. This declaration accepts an array, so you can list any number of attributes in one go.
 
-For further information on how to query data in a datatable, see our xref:stable7@docs-raw::Plugin.adoc[Plugin interface documentation].
+For further information on how to query data in a datatable, see our xref:stable7@interface::Plugin.adoc[Plugin interface documentation].
 
 === Non-table attributes
 
