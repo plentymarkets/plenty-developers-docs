@@ -13,7 +13,7 @@ image::folder-structure.png[Folder structure,640,360]
 
 == What is a DynamicConfig class?
 
-A xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogdynamicconfigcontract[DynamicConfig] class should be used to provide necessary logic for the export, which cannot be defined in the template scope. This can have multiple reasons. They might depend on the specifics of a given catalogue or on other settings inside the system. The need for the specific location for this logic comes from the fact that the catalogue itself can trigger exports (e.g. through the UI). This means that any logic outside the catalogue’s scope would not be applicable in exports that are triggered directly by the catalogue.
+A xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogdynamicconfigcontract[DynamicConfig] class should be used to provide necessary logic for the export, which cannot be defined in the template scope. This can have multiple reasons. They might depend on the specifics of a given catalogue or on other settings inside the system. The need for the specific location for this logic comes from the fact that the catalogue itself can trigger exports (e.g. through the UI). This means that any logic outside the catalogue’s scope would not be applicable in exports that are triggered directly by the catalogue.
 
 This would cause different export results depending on the trigger which will lead to more problems down the line. Thus, the *DynamicConfig* provides a spot to inject your logic directly before the export process is triggered.
 
@@ -21,9 +21,9 @@ If you have any additional logic outside of the *DynamicConfig* class, make sure
 
 == Using DynamicConfig in your template
 
-To implement *DynamicConfig* in your template, just overwrite the `getDynamicConfig()` method in your template provider and create an instance of your own class that implements the xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogdynamicconfigcontract[CatalogDynamicConfigContract].
+To implement *DynamicConfig* in your template, just overwrite the `getDynamicConfig()` method in your template provider and create an instance of your own class that implements the xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogdynamicconfigcontract[CatalogDynamicConfigContract].
 
-In this class you need to create two methods, `applyDynamicConfig()` and `applyDynamicPreviewConfig()`. These methods receive identical parameters: the xref:stable7@interface::Catalog.adoc#_catalog_models_catalog[catalog], the xref:stable7@interface::Catalog.adoc#_catalog_contracts_templatecontract[template] and an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogexportservicecontract[CatalogExportService].
+In this class you need to create two methods, `applyDynamicConfig()` and `applyDynamicPreviewConfig()`. These methods receive identical parameters: the xref:stable7@interface::Catalog.adoc#catalog_models_catalog[catalog], the xref:stable7@interface::Catalog.adoc#catalog_contracts_templatecontract[template] and an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogexportservicecontract[CatalogExportService].
 
 With these you can add additional filters to the template, or allow or forbid specific keys in the export service. In case you need a logic which is not maintainable on a template level before the export gets triggered, put the logic into the *DynamicConfig*.
 
