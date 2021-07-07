@@ -486,7 +486,7 @@ getFilter(): Defines the filters that are used to load the data.
 
 getPreMutators(): Defines the callback functions that are run on the data before the mapping.
 
-getPreMutators(): Defines the callback functions that are run on the data after the mapping.
+getPostMutators(): Defines the callback functions that are run on the data after the mapping.
 
 getSkuCallback(): Defines the callback function that is run if an sku is mapped
 
