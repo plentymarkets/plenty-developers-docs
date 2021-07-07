@@ -62,7 +62,7 @@ The collection includes as many models as specified in $itemsPerPage or all mode
 Can be used to navigate the paginated response.
 As long as isLastPage() returns false, `getResult()` can be called again in a loop.
 
-Besides `isLastPage()`, there are xref:stable7@docs-raw::Miscellaneous.adoc[several more methods] available to make navigating the result pages easier.
+Besides `isLastPage()`, there are xref:stable7@interface::Miscellaneous.adoc[several more methods] available to make navigating the result pages easier.
 
 == Manipulating the results
 
