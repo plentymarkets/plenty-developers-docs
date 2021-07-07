@@ -95,9 +95,9 @@ include::example$template-fields.php[]
 
 As we can see here, we first define our container, then we define a group and at last a field. In general, this process will always be the same. That means we will always define groups, and we will always add fields to them. What will change depending on the use case is the type of the field. As we can see in the example, we define an instance of the xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField] class. Depending on the specific use case, we would have to use a different one.
 
-Currently available are:
-* xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField]: Defines a result field that can be filled through a source field out of the plentymarkets system or a custom value.
-* xref:stable7@interface::Catalog.adoc#catalog_models_complextemplatefield[ComplexTemplateField]: Defines a result field that will be filled by a value out of a predefined list depending on a condition (e.g. a specific category name depending on a linked category in plentymarkets).
+Currently available are: +
+* xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField]: Defines a result field that can be filled through a source field out of the plentymarkets system or a custom value. +
+* xref:stable7@interface::Catalog.adoc#catalog_models_complextemplatefield[ComplexTemplateField]: Defines a result field that will be filled by a value out of a predefined list depending on a condition (e.g. a specific category name depending on a linked category in plentymarkets). +
 * xref:stable7@interface::Catalog.adoc#catalog_models_combinedtemplatefield[CombinedTemplateField]: Defines two result fields - a complex one and a simple one. The complex field will be filled depending on which source fields were used to fill the simple field (e.g. filling a barcode type depends on which source field was used to fill the barcode field).
 
 In general, you want to use a simple field if you expect a non-predefinable value, e.g. an identifier like the name of a variation.
@@ -122,13 +122,13 @@ Before we start adding fields, we remove the example field we had until now. So 
 
 Now we can have a look at all parameters in a simple template field. The following parameters are available:
 
-*exportKey*: The key that will be present in the export result.
-*key*: A unique identifier, which will be used to work with the field. Therefore, the *exportKey* can be changed if necessary without users having to redo all the mappings.
-*label*: The string that will be displayed in the UI.
-*isRequired*: Will mark fields with an asterisk (*) in the UI and display a warning message if the catalogue is saved, but a required field is not filled.
-*isLocked*: If this is set to true, the user won’t be able to configure this field. This is useful to define some non-flexible default values which are always necessary in the export.
-*isArray*: Defines which behaviour is applied in the export for this field. If set to `true`, all mapped sources will be used to fill an array for this field at the end. If set to `false`, only the first non-null value will be written into the field and all following sources will be skipped.
-*meta*: Not actually used by the export logic. This is useful, if you have any additional information your plugin needs when working with a field directly.
+*exportKey*: The key that will be present in the export result. +
+*key*: A unique identifier, which will be used to work with the field. Therefore, the *exportKey* can be changed if necessary without users having to redo all the mappings. +
+*label*: The string that will be displayed in the UI. +
+*isRequired*: Will mark fields with an asterisk (*) in the UI and display a warning message if the catalogue is saved, but a required field is not filled. +
+*isLocked*: If this is set to true, the user won’t be able to configure this field. This is useful to define some non-flexible default values which are always necessary in the export. +
+*isArray*: Defines which behaviour is applied in the export for this field. If set to `true`, all mapped sources will be used to fill an array for this field at the end. If set to `false`, only the first non-null value will be written into the field and all following sources will be skipped. +
+*meta*: Not actually used by the export logic. This is useful, if you have any additional information your plugin needs when working with a field directly. +
 *defaultSources*: Defines which sources are mapped by default. These might get overwritten by the user if `isLocked` is `false`.
 
 Now that we have covered all aspects of a `SimpleTemplateField`, we can implement some fields into our template.
