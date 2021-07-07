@@ -18,7 +18,7 @@ image::creating-folders.png[Folder structure,640,360]
 
 == What is a catalogue?
 
-Before we can start to develop a plugin that uses the catalogue, we first need to clarify what a catalogue actually is and of which components it consists. A catalogue describes the relation between source data in plentymarkets and a specific export format. The export format is defined by a <<#what-is-a-template,template>>. The user will be able to link data sources or static values to each value of the export format. Thus, it provides the foundational configuration for the export.
+Before we can start to develop a plugin that uses the catalogue, we first need to clarify what a catalogue actually is and of which components it consists. A catalogue describes the relation between source data in plentymarkets and a specific export format. The export format is defined by a template. The user will be able to link data sources or static values to each value of the export format. Thus, it provides the foundational configuration for the export.
 
 == What is a template?
 
@@ -96,9 +96,9 @@ include::example$template-fields.php[]
 As we can see here, we first define our container, then we define a group and at last a field. In general, this process will always be the same. That means we will always define groups, and we will always add fields to them. What will change depending on the use case is the type of the field. As we can see in the example, we define an instance of the xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField] class. Depending on the specific use case, we would have to use a different one.
 
 Currently available are:
-* *xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField]*: Defines a result field that can be filled through a source field out of the plentymarkets system or a custom value.
-* *xref:stable7@interface::Catalog.adoc#catalog_models_complextemplatefield[ComplexTemplateField]*: Defines a result field that will be filled by a value out of a predefined list depending on a condition (e.g. a specific category name depending on a linked category in plentymarkets).
-* *xref:stable7@interface::Catalog.adoc#catalog_models_combinedtemplatefield[CombinedTemplateField]*: Defines two result fields - a complex one and a simple one. The complex field will be filled depending on which source fields were used to fill the simple field (e.g. filling a barcode type depends on which source field was used to fill the barcode field).
+* xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField]: Defines a result field that can be filled through a source field out of the plentymarkets system or a custom value.
+* xref:stable7@interface::Catalog.adoc#catalog_models_complextemplatefield[ComplexTemplateField]: Defines a result field that will be filled by a value out of a predefined list depending on a condition (e.g. a specific category name depending on a linked category in plentymarkets).
+* xref:stable7@interface::Catalog.adoc#catalog_models_combinedtemplatefield[CombinedTemplateField]: Defines two result fields - a complex one and a simple one. The complex field will be filled depending on which source fields were used to fill the simple field (e.g. filling a barcode type depends on which source field was used to fill the barcode field).
 
 In general, you want to use a simple field if you expect a non-predefinable value, e.g. an identifier like the name of a variation.
 
