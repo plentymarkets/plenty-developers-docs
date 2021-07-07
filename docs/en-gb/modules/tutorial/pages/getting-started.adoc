@@ -9,7 +9,7 @@ The tutorial covers the following topics:
 * Deploying the plugin in a plentymarkets system
 
 The tutorial assumes you have a plentymarkets system.
-If you don't have a system yet, link:https://www.plentymarkets.co.uk/#request-a-demo[order a test system^] before you begin.
+If you don't have a system yet, link:https://www.plentymarkets.com/[order a test system from plentymarkets.com^] before you begin.
 Also, you need to have basic knowledge of Git and the command line.
 
 Once you're all set, xref:setting-up-environment.adoc[you're ready to get started].
