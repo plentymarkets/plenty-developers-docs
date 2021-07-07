@@ -18,7 +18,7 @@ image::creating-folders.png[Folder structure,640,360]
 
 == What is a catalogue?
 
-Before we can start to develop a plugin that uses the catalogue, we first need to clarify what a catalogue actually is and of which components it consists. A catalogue describes the relation between source data in plentymarkets and a specific export format. The export format is defined by a <<#_what-is-a-template,template>>. The user will be able to link data sources or static values to each value of the export format. Thus, it provides the foundational configuration for the export.
+Before we can start to develop a plugin that uses the catalogue, we first need to clarify what a catalogue actually is and of which components it consists. A catalogue describes the relation between source data in plentymarkets and a specific export format. The export format is defined by a <<#what-is-a-template,template>>. The user will be able to link data sources or static values to each value of the export format. Thus, it provides the foundational configuration for the export.
 
 == What is a template?
 
@@ -39,7 +39,7 @@ In the following section, we will create a template and extend its functionality
 
 === Basics
 
-To get started, we will create a very simple template with just a single result field and no additional logic like filtering or data manipulation. To do so, we need to create a template provider class. This class needs to extend the abstract base class xref:stable7@interface::Catalog.adoc#_catalog_providers_abstractgroupedtemplateprovider[AbstractGroupedTemplateProvider]. It will be used to fill a template with data when it gets booted. A template provider can be used for the booting process of multiple templates, so you don’t need to create multiple classes for similar templates (e.g. you create templates for different product categories of the same marketplace).
+To get started, we will create a very simple template with just a single result field and no additional logic like filtering or data manipulation. To do so, we need to create a template provider class. This class needs to extend the abstract base class xref:stable7@interface::Catalog.adoc#catalog_providers_abstractgroupedtemplateprovider[AbstractGroupedTemplateProvider]. It will be used to fill a template with data when it gets booted. A template provider can be used for the booting process of multiple templates, so you don’t need to create multiple classes for similar templates (e.g. you create templates for different product categories of the same marketplace).
 
 For simplicity reasons, we will first provide the example code and afterwards look into what each method does. The example code can be copied from here:
 
@@ -93,12 +93,12 @@ We will look at the usage by means of our earlier defined example.
 include::example$template-fields.php[]
 ----
 
-As we can see here, we first define our container, then we define a group and at last a field. In general, this process will always be the same. That means we will always define groups, and we will always add fields to them. What will change depending on the use case is the type of the field. As we can see in the example, we define an instance of the xref:stable7@interface::Catalog.adoc#_catalog_models_simpletemplatefield[SimpleTemplateField] class. Depending on the specific use case, we would have to use a different one.
+As we can see here, we first define our container, then we define a group and at last a field. In general, this process will always be the same. That means we will always define groups, and we will always add fields to them. What will change depending on the use case is the type of the field. As we can see in the example, we define an instance of the xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField] class. Depending on the specific use case, we would have to use a different one.
 
 Currently available are:
-* *xref:stable7@interface::Catalog.adoc#_catalog_models_simpletemplatefield[SimpleTemplateField]*: Defines a result field that can be filled through a source field out of the plentymarkets system or a custom value.
-* *xref:stable7@interface::Catalog.adoc#_catalog_models_complextemplatefield[ComplexTemplateField]*: Defines a result field that will be filled by a value out of a predefined list depending on a condition (e.g. a specific category name depending on a linked category in plentymarkets).
-* *xref:stable7@interface::Catalog.adoc#_catalog_models_combinedtemplatefield[CombinedTemplateField]*: Defines two result fields - a complex one and a simple one. The complex field will be filled depending on which source fields were used to fill the simple field (e.g. filling a barcode type depends on which source field was used to fill the barcode field).
+* *xref:stable7@interface::Catalog.adoc#catalog_models_simpletemplatefield[SimpleTemplateField]*: Defines a result field that can be filled through a source field out of the plentymarkets system or a custom value.
+* *xref:stable7@interface::Catalog.adoc#catalog_models_complextemplatefield[ComplexTemplateField]*: Defines a result field that will be filled by a value out of a predefined list depending on a condition (e.g. a specific category name depending on a linked category in plentymarkets).
+* *xref:stable7@interface::Catalog.adoc#catalog_models_combinedtemplatefield[CombinedTemplateField]*: Defines two result fields - a complex one and a simple one. The complex field will be filled depending on which source fields were used to fill the simple field (e.g. filling a barcode type depends on which source field was used to fill the barcode field).
 
 In general, you want to use a simple field if you expect a non-predefinable value, e.g. an identifier like the name of a variation.
 
@@ -148,7 +148,7 @@ A catalogue that is created with this template would now look like this:
 .New catalogue
 image::new-catalogue.png[New catalogue,640,360]
 
-To make the usage of this catalogue more convenient to the user, we can add the *net stock* of the variation as default source for the *stock* field. The source can either be loaded through the xref:stable7@interface::Catalog.adoc#_catalog_contracts_fieldgrouprepositorycontract[FieldGroupRepository] or you can just go to the catalogue UI, open the dev tools and map the source yourself.
+To make the usage of this catalogue more convenient to the user, we can add the *net stock* of the variation as default source for the *stock* field. The source can either be loaded through the xref:stable7@interface::Catalog.adoc#catalog_contracts_fieldgrouprepositorycontract[FieldGroupRepository] or you can just go to the catalogue UI, open the dev tools and map the source yourself.
 
 .Mapping sources
 image::mapping-sources.png[Mapping sources,640,360]
@@ -169,7 +169,7 @@ image::catalogue-view.png[Catalogue view,640,360]
 
 ==== Complex fields
 
-A complex template field is mostly similar to the definition of a simple template field. The most important difference is that a complex template field needs an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogmappingvalueprovidercontract[CatalogMappingValueProviderContract] to define the list of mappable values. Another difference is that complex fields do not support default sources. The mapping value provider defines the possible valid values, which are the core of a complex mapping.
+A complex template field is mostly similar to the definition of a simple template field. The most important difference is that a complex template field needs an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogmappingvalueprovidercontract[CatalogMappingValueProviderContract] to define the list of mappable values. Another difference is that complex fields do not support default sources. The mapping value provider defines the possible valid values, which are the core of a complex mapping.
 
 Since we only provide you with an interface, you can determine the values in the way that best matches your needs. If it is a short static list of values, you can just return them from a hard-coded array. If it is bigger, you can store and load it from a database. It does not matter where the data comes from.
 
@@ -185,9 +185,9 @@ include::example$complex-fields.php[]
 
 We will now look into what each method does.
 
-The first method `getValueById()` should be self-explanatory. It will receive an identifier and should return the value that matches the identifier. The value has to be wrapped in an instance of xref:stable7@interface::Catalog.adoc#_catalog_models_catalogmappingvalue[CatalogMappingValue].
+The first method `getValueById()` should be self-explanatory. It will receive an identifier and should return the value that matches the identifier. The value has to be wrapped in an instance of xref:stable7@interface::Catalog.adoc#catalog_models_catalogmappingvalue[CatalogMappingValue].
 
-The next method `getValuesByParentId` is called to load a single level of values. If the UI of a catalogue is opened, an initial request is sent that requests all values with *parentId* = `null`. If our provider has nested values, it can happen that a user clicks on a parent value in the UI, which triggers a call to this method that includes the clicked value’s ID. In this case, we should return the nested values for that value in an instance of xref:stable7@interface::Catalog.adoc#_catalog_containers_catalogmappingvaluecontainer[CatalogMappingValueContainer].
+The next method `getValuesByParentId` is called to load a single level of values. If the UI of a catalogue is opened, an initial request is sent that requests all values with *parentId* = `null`. If our provider has nested values, it can happen that a user clicks on a parent value in the UI, which triggers a call to this method that includes the clicked value’s ID. In this case, we should return the nested values for that value in an instance of xref:stable7@interface::Catalog.adoc#catalog_containers_catalogmappingvaluecontainer[CatalogMappingValueContainer].
 
 The third method can be used to provide filter functionality. Currently, we do not send any search requests. Therefore, this can just return an empty container for now.
 
@@ -206,7 +206,7 @@ image::mapping-categories.png[Mapping categories,640,360]
 
 ==== Combined fields
 
-Since we’ve already covered the other two types, this one should be straightforward. It is actually a combination of the previous two types. Just as in the last step, we need an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogmappingvalueprovidercontract[CatalogMappingValueProviderContract]. This time, it will provide different types of barcodes. To keep it simple, let’s only use *GTIN* and *ISBN* for now. The provider class could look like this:
+Since we’ve already covered the other two types, this one should be straightforward. It is actually a combination of the previous two types. Just as in the last step, we need an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogmappingvalueprovidercontract[CatalogMappingValueProviderContract]. This time, it will provide different types of barcodes. To keep it simple, let’s only use *GTIN* and *ISBN* for now. The provider class could look like this:
 
 .combined-fields-provider-class.php
 [source,php]
@@ -214,7 +214,7 @@ Since we’ve already covered the other two types, this one should be straightfo
 include::example$combined-fields-provider-class.php[]
 ----
 
-Additionally, we need an instance of xref:stable7@interface::Catalog.adoc#_catalog_containers_catalogtemplatefieldcontainer[CatalogTemplateFieldContainer] which will contain all simple fields of our combined field. The logic is the following:
+Additionally, we need an instance of xref:stable7@interface::Catalog.adoc#catalog_containers_catalogtemplatefieldcontainer[CatalogTemplateFieldContainer] which will contain all simple fields of our combined field. The logic is the following:
 The user can select a value of our value provider, e.g. *GTIN*. Then, he/she will have the opportunity to map all simple fields that are linked to our combined field. In our case, this will only be the *barcode* field. If the catalogue can fill the *barcode* field with the source that was provided by the user, we will also export the value *GTIN* for the *barcode type* field.
 
 *_Note:_* The behaviour of `isArray` in the context of `CombinedFields` is not strictly defined yet. We suggest using `false` for now until this will have changed.
@@ -239,9 +239,9 @@ The first type are the static ones. In the scope of the project, we will simply 
 The second type are the custom filters. These are already provided, but the customer decides if and how he/she wants to use them.
 
 Let’s begin with a simple example. We might only want active variations, so we want to add the filter for that. To do so, we need to change our `getFilterContainer()` method.
-All we have to do is add a filter to the container before we return it. Each export type can potentially use different kinds of filters. In our case, we are exporting variations. For convenience, there is the xref:stable7@interface::Item.adoc#_item_builders_variationfilterbuilderfactory[VariationFilterBuilderFactory] class that has a method for each available variation filter.
+All we have to do is add a filter to the container before we return it. Each export type can potentially use different kinds of filters. In our case, we are exporting variations. For convenience, there is the xref:stable7@interface::Item.adoc#item_builders_variationfilterbuilderfactory[VariationFilterBuilderFactory] class that has a method for each available variation filter.
 
-So let us create an instance of `VariationFilterBuilderFactory` and request a xref:stable7@interface::Item.adoc#_item_variationbase_variationisactive[VariationIsActive] object. In this object, we need to specify whether we want active or inactive variations.
+So let us create an instance of `VariationFilterBuilderFactory` and request a xref:stable7@interface::Item.adoc#item_variationbase_variationisactive[VariationIsActive] object. In this object, we need to specify whether we want active or inactive variations.
 
 In our case, we want to export active variations, so we call the `setShouldBeActive()` method with the `shouldBeActive` param set to true.
 
@@ -255,7 +255,7 @@ include::example$filter-method.php[]
 
 Overall, the `getCustomFilter()` method is handled identically. The only difference in the definition is that filters do not necessarily need default values in order to work, since they can be manipulated by the user. Apart from that the available filters are identical.
 
-Just to have it covered, let’s also add a custom filter. A good example is the filter xref:stable7@interface::Item.adoc#_item_item_itemhasids[ItemHasIds]. With this one, the user will be able to provide specific IDs through the UI. Since we provide a custom filter, this time we do not have to provide a default value. However, we can do so if the use case benefits from this.
+Just to have it covered, let’s also add a custom filter. A good example is the filter xref:stable7@interface::Item.adoc#item_item_itemhasids[ItemHasIds]. With this one, the user will be able to provide specific IDs through the UI. Since we provide a custom filter, this time we do not have to provide a default value. However, we can do so if the use case benefits from this.
 Our `getCustomFilterContainer()` method should now look like this:
 
 .custom-filter.php
@@ -273,14 +273,14 @@ image::adding-filters.png[Adding filters,640,360]
 
 To enable the catalogue to handle all aspects of your export logic, you should try to avoid manipulating data outside the catalogue's scope. Since you might still need to change some details here and there, we provide multiple tools to manipulate data inside the catalogue.
 
-The first way would be a field-specific callback. You may have noticed that the three types of fields contain the method `setCallable()`. Via this method, you can inject an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogtemplatefieldcallablecontract[CatalogTemplateFieldCallableContract].
+The first way would be a field-specific callback. You may have noticed that the three types of fields contain the method `setCallable()`. Via this method, you can inject an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogtemplatefieldcallablecontract[CatalogTemplateFieldCallableContract].
 This interface only provides the method `call()`. This method will be called each time this field is filled with a non-null value. In the method, you receive the raw item, so all the raw data that was loaded for a specific item in this export. In the variation export, this would be all required data for a specific variation.
 You also receive the value that was mapped to the field and the type of that value. Whatever you return in this method will then fill the field.
 
 Therefore, you can conditionally manipulate the field's data directly in the mapping process. A common scenario for this is the generation of an *sku*. Typically, the customer maps a source from which the *sku* should be generated, and an actual *sku* as fallback.
 So our callback could check for the source type, and if it is not of the type *sku*, a new *sku* can be created on the fly at this point. If you want to validate the whole result before generating an *sku*, you can also store the information about the type somewhere else and handle the generation at a later point.
 
-So let’s add this example to our *sku* field. First, we need our own implementation of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogtemplatefieldcallablecontract[CatalogTemplateFieldCallableContract]. For this example, we won’t actually generate an *sku* but rather set up the basics which would allow us to do this in a productive use case. The class could look like this:
+So let’s add this example to our *sku* field. First, we need our own implementation of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogtemplatefieldcallablecontract[CatalogTemplateFieldCallableContract]. For this example, we won’t actually generate an *sku* but rather set up the basics which would allow us to do this in a productive use case. The class could look like this:
 
 .manipulate-data-class.php
 [source,php]
@@ -296,7 +296,7 @@ Obviously, we still need to register this callback on our *sku* field. To do thi
 include::example$definition-sku.php[]
 ----
 
-Another way to manipulate the data are *post mutators*. You can add post mutators on the template level through your template provider. To do that, all you have to do is overwrite the `getPostMutator()` method and return your own implementation of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogmutatorcontract[CatalogMutatorContract].
+Another way to manipulate the data are *post mutators*. You can add post mutators on the template level through your template provider. To do that, all you have to do is overwrite the `getPostMutator()` method and return your own implementation of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogmutatorcontract[CatalogMutatorContract].
 
 Again, this contains only a single method - in this case it is named `mutate()`. This method is called once per item after the mapping logic is done. This means you receive a fully mapped item and you can change it however you want.
 
@@ -304,7 +304,7 @@ Whatever you return in this method will overwrite the item provided by the catal
 
 However, this is not meant to convert the result into a CSV, XML or another file format. If you need to do so, have a look at xref:export-plugins:result-converters.adoc[ResultConverters].
 
-To understand how this works, let’s add a key to the result at the end. This will just be a string that says _“We manipulated our result”_. Again, we have to create our own implementation - this time of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogmutatorcontract[CatalogMutatorContract]. Our implementation should look like this:
+To understand how this works, let’s add a key to the result at the end. This will just be a string that says _“We manipulated our result”_. Again, we have to create our own implementation - this time of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogmutatorcontract[CatalogMutatorContract]. Our implementation should look like this:
 
 .post-mutators.php
 [source,php]
@@ -350,7 +350,7 @@ include::example$route-service-provider.php[]
 
 Now we can trigger our method via a REST call to the route _GET::/rest/example/export_.
 
-In our function, we can now write the logic to export a catalogue. First, we need to retrieve the relevant catalogues. In most cases, this will be all active catalogues that are created through templates of our type. So we request an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogrepositorycontract[CatalogRepositoryContract], define the filters in it and load the catalogues. Thus, our method now looks like this:
+In our function, we can now write the logic to export a catalogue. First, we need to retrieve the relevant catalogues. In most cases, this will be all active catalogues that are created through templates of our type. So we request an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogrepositorycontract[CatalogRepositoryContract], define the filters in it and load the catalogues. Thus, our method now looks like this:
 
 .export-catalogue.php
 [source,php]
@@ -358,7 +358,7 @@ In our function, we can now write the logic to export a catalogue. First, we nee
 include::example$export-catalogue.php[]
 ----
 
-Inside of the foreach, we will always have a catalogue that is matching our filters. Since we just want to have an example, we can add a return statement at the end of the foreach, so that we only export a single one for now. Additionally, we now need an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogexportrepositorycontract[CatalogExportRepositoryContract] which we can request before we enter our do while loop.
+Inside of the foreach, we will always have a catalogue that is matching our filters. Since we just want to have an example, we can add a return statement at the end of the foreach, so that we only export a single one for now. Additionally, we now need an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogexportrepositorycontract[CatalogExportRepositoryContract] which we can request before we enter our do while loop.
 With this repository we can trigger the export for a specific catalogue. A basic export can look like this:
 
 .basic-export.php
@@ -367,12 +367,12 @@ With this repository we can trigger the export for a specific catalogue. A basic
 include::example$basic-export.php[]
 ----
 
-Let’s go through what happens here line by line. At the beginning of the do while, we load all our catalogues. We then iterate through them and request an instance of xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogexportservicecontract[CatalogExportServiceContract] through the `exportById()` method of our xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogexportrepositorycontract[CatalogExportRepositoryContract].
-The comments show some examples of working with this service before triggering the actual export. What is important is that all the logic that is applied at this point and has to be done to get a valid export should be moved into the xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogdynamicconfigcontract[DynamicConfig].
-This is necessary to enable exports directly out of the catalogue scope (e.g. preview or download through the UI). If you don’t provide all that logic in the xref:stable7@interface::Catalog.adoc#_catalog_contracts_catalogdynamicconfigcontract[DynamicConfig], you should set the `isPreviewable` attribute of your template to `false`.
+Let’s go through what happens here line by line. At the beginning of the do while, we load all our catalogues. We then iterate through them and request an instance of xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogexportservicecontract[CatalogExportServiceContract] through the `exportById()` method of our xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogexportrepositorycontract[CatalogExportRepositoryContract].
+The comments show some examples of working with this service before triggering the actual export. What is important is that all the logic that is applied at this point and has to be done to get a valid export should be moved into the xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogdynamicconfigcontract[DynamicConfig].
+This is necessary to enable exports directly out of the catalogue scope (e.g. preview or download through the UI). If you don’t provide all that logic in the xref:stable7@interface::Catalog.adoc#catalog_contracts_catalogdynamicconfigcontract[DynamicConfig], you should set the `isPreviewable` attribute of your template to `false`.
 An in-depth explanation of `DynamicConfig` can be found xref:export-plugins:dynamic-config-classes.adoc[here].
 
-Through the `getResult()` method, we receive an instance of xref:stable7@interface::Catalog.adoc#_catalog_models_catalogexportresult[CatalogExportResult]. This will actually run the mapping logic and return our results in an array. You can receive the result in chunks by iterating over the xref:stable7@interface::Catalog.adoc#_catalog_models_catalogexportresult[CatalogExportResult], since it implements the iterable interface.
+Through the `getResult()` method, we receive an instance of xref:stable7@interface::Catalog.adoc#catalog_models_catalogexportresult[CatalogExportResult]. This will actually run the mapping logic and return our results in an array. You can receive the result in chunks by iterating over the xref:stable7@interface::Catalog.adoc#catalog_models_catalogexportresult[CatalogExportResult], since it implements the iterable interface.
 
 We then append each chunk to a result array. Keep in mind that this is done here to provide a simple example. In your application, you should try to work with chunks whenever possible to keep memory consumption low.
 
