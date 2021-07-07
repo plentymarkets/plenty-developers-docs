@@ -1,6 +1,6 @@
 = How to use DynamicConfig classes in the catalogue
 
-This how-to guide will introduce you to *DynamicConfig* classes in the catalogue. In the following explanations, we assume that you're already familiar with the knowledge from the xref:export-bbasic-usage.adoc[basic usage tutorial]. So work through this first if you haven’t already done so.
+This how-to guide will introduce you to *DynamicConfig* classes in the catalogue. In the following explanations, we assume that you're already familiar with the knowledge from the xref:export-plugins:basic-usage.adoc[basic usage tutorial]. So work through this first if you haven’t already done so.
 
 The complete source code for this tutorial is available link:https://github.com/plentymarkets/BasicCatalogExport/tree/dynamic_config[here^].
 
