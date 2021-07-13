@@ -1,0 +1,42 @@
+= How to extend mappings
+
+In this how-to guide you will learn how to extend mappings in your catalogue.
+
+== What are extended mappings?
+
+In some cases, a user might need to transfer a field which is not defined in our template.
+Since we cannot update the template every time this is the case and handle all possible edge cases, you can extend the mappings yourself.
+By enabling extended mappings in your template, users will be provided with the possibility to add their own data fields to the catalogue. These will receive a key and a source by the user and create a new mapping that can be transferred although it is not explicitly defined in the template. Extended mappings work like mappings in a custom template. +
+*_Note:_* At the moment, all *own data* fields will be logically identical to simple template fields.
+
+== Enabling extended mappings
+
+In order to enable extended mappings in your data provider, extend the `AbstractGroupTemplateProvider` class and overwrite the `hasExtendedMappings` function to your template provider class.
+
+Example:
+.extend-mappings.php
+[source,php]
+----
+include::example$extend-mappings.php[]
+----
+
+This method will be added to your already existing data provider.
+
+== Where can I find extended mappings in the UI?
+
+Once you have created a catalogue, you will find the extended mappings’ interface in the catalogue’s side navigation. It’s called *Own data fields*.
+The customer can then select fields from the data picker. Moreover, there is the possibility to change the *export key* and the *fallback data field* in any of the fields or additional sources.
+
+.Extended mappings
+image::extended-mappings.png[Extended mappings,640,360]
+
+When you start an export, the extended mappings will be added to the template mappings.
+
+== Deactivating extended mappings
+
+If you change your mind and decide that you no longer want to use extended mappings in your template, you can always turn them off. The catalogue will then ignore the own data fields that are already stored in the catalogue and the submenu interface will be disabled.
+
+[NOTE]
+====
+The own data fields will still be stored in the catalogue. So if you enable them again, the previous configuration of the user’s own data fields will be used again.
+====
