@@ -3,8 +3,17 @@ class MarketplaceTemplateDataProvider extends AbstractGroupedTemplateProvider
 {
     ...
 
-    public function getResultConverterClass(): string
+    /**
+     * @return ResultConverterContainer
+     */
+    public function getResultConverterContainer(): ResultConverterContainer
     {
-        return YourResultConverter::class;
+        /** @var ResultConverterContainer $container */
+        $container = pluginApp(ResultConverterContainer::class);
+        /** @var CSVResultConverter $csvConverter */
+        $csvConverter = pluginApp(CSVResultConverter::class);
+        $container->addResultConverter($csvConverter);
+
+        return $container;
     }
 }

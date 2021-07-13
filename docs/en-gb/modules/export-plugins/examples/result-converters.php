@@ -48,5 +48,25 @@ class CSVResultConverter extends BaseResultConverter
 
        return true;
    }
+
+   /**
+     * Will be used to identify the requested converter. Therefore it has to be unique in a specific template.
+     *
+     * @return string
+     */
+    public function getKey(): string
+    {
+        return 'csv';
+    }
+
+    /**
+     * The string that will be visible to the user.
+     *
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return 'CSV';
+    }
 }
 ```

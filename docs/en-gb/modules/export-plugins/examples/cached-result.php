@@ -1,6 +1,6 @@
 ```
 $exportRepository = pluginApp(CatalogExportRepositoryContract::class);
-$converter = new YourResultConverter();
+$converter = pluginApp(YourResultConverter::class);
 
 $collection = $exportRepository->getDevCachedResult($id);
 
