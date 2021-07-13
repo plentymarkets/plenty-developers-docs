@@ -76,6 +76,7 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:export-plugins:basic-usage.adoc[Basic catalogue usage]
 * xref:export-plugins:dynamic-config-classes.adoc[DynamicConfig classes]
 * xref:export-plugins:result-converters.adoc[Result converters]
+* xref:export-plugins:how-to-extend-mappings.adoc[Extending mappings]
 
 .plentyBase plugins
 * xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
