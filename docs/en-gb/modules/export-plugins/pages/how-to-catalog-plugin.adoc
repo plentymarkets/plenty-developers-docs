@@ -473,7 +473,7 @@ That covers all the basics of data providers and therefore we are now ready to l
 === Registering a template
 
 [[api-docs-basics]]
-In the following part you will learn how you can register templates. To do that we first need to define a a provider that will fill the template with data. Let's go through the class methods:
+In the following part you will learn how you can register templates. To do that we first need to define a provider that will fill the template with data. Let's go through the class methods:
 
 getMappings(): This method defines the sections of the template and connects them to the data providers. The structure looks like this:
 
