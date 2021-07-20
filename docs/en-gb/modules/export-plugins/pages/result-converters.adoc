@@ -20,7 +20,7 @@ To create a result converter from scratch, all you need to do is to extend the x
 * const: *MIME_TYPE*, defaults to _text/plain_
 * const: *FILE_EXTENSION*, defaults to _txt_
 
-_Example_:
+_Example_: +
 We will partially use the default CSV converter as an example.
 
 .result-converters.php
@@ -47,22 +47,22 @@ We set up the converter in order to store the export for the customer or to send
 
 To do that you can feed the converter with any of the following source types:
 
-* CatalogExportResult: returned by CatalogExportService's `getResult` method
-* JSONL resource: returned by a cached result
-* Collection
+* *CatalogExportResult*: returned by CatalogExportService's `getResult` method
+* *JSONL resource*: returned by a cached result
+* *Collection*
 
 You can get your result converter directly from the template.
 
-_Example_:
+_Example_: +
 .source-types.php
 [source,php]
 ----
 include::example$source-types.php[]
 ----
 
-If for some reason you can't access your template from the current scope just instantiate your converter manually.
+If, for some reason you can't access your template from the current scope, just instantiate your converter manually.
 
-_Example_:
+_Example_: +
 .source-types-without-template.php
 [source,php]
 ----
@@ -87,7 +87,7 @@ include::example$cached-result.php[]
 
 == Registering your result converters in your template
 
-In your template, you can register result converters as shown below. Note that you could exchange ResultConverterContainer for DefaultResultConverterContainer to enable all predefined converters in your template.:
+In your template, you can register result converters as shown below. Note that you can exchange `ResultConverterContainer` for `DefaultResultConverterContainer` to enable all predefined converters in your template.
 
 .register-converter.php
 [source,php]
@@ -95,4 +95,4 @@ In your template, you can register result converters as shown below. Note that y
 include::example$register-converter.php[]
 ----
 
-Once you have registered your result converters, the user can select them in the format drop down in the catalogue settings and the Catalogue module will be able to build the file for the user using your specifications in the `convertToDownload` method.
+Once you have registered your result converters, the user can select them in the *Format* drop-down list in the catalogue settings and the catalogue module will be able to build the file for the user using your specifications in the `convertToDownload` method.
