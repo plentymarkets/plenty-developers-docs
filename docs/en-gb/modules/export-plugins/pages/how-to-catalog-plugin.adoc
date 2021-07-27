@@ -1,13 +1,13 @@
-= Catalog
+= Catalogue
 
 [WARNING]
 ====
-This tutorial is only for existing implementations that are used with the old catalog logic.
+This tutorial is only for existing implementations that are used with the old catalogue logic.
 The structure will be removed in the future and some of the new features will not be supported anymore.
-If you want to start developing something new for the catalog, use xref:basic-usage.adoc[this tutorial].
+If you want to start developing something new for the catalogue, use xref:basic-usage.adoc[this tutorial].
 ====
 
-This tutorial will introduce you to the catalog export. We will develop a small plugin that exports variations to a fictional marketplace. You will learn how to create and work with a catalog to allow your users to map their data to a predefined format. If you are just getting started developing plugins for plentymarkets it is recommended to start with establishing your IDE and xref:ROOT:tutorial.adoc[creating your first plugin].
+This tutorial will introduce you to the catalogue export. We will develop a small plugin that exports variations to a fictional marketplace. You will learn how to create and work with a catalogue to allow your users to map their data to a predefined format. If you are just getting started developing plugins for plentymarkets it is recommended to start with establishing your IDE and xref:ROOT:tutorial.adoc[creating your first plugin].
 
 At the end of this tutorial you will have developed a plugin that exports variations in the format of a fictional marketplace. In the UI the result will look like this
 
@@ -41,32 +41,32 @@ BasicCatalogExport/
     └── plugin.json // plugin information
 ----
 
-== What is a catalog?
+== What is a catalogue?
 
-Before we can start to develop a plugin that uses the catalog, we first need to clarify what a catalog actually is and of which components it consists of. A catalog describes the relation between source data in plentymarkets and a specific export format. The format is predefined by a template. This template is created by the plugin developer and can be used to create a new catalog in the plentymarkets backend. The actual data can then be mapped individually by the user of the plugin. A plugin needs to define the following components to work with a catalog:
+Before we can start to develop a plugin that uses the catalogue, we first need to clarify what a catalogue actually is and of which components it consists of. A catalogue describes the relation between source data in plentymarkets and a specific export format. The format is predefined by a template. This template is created by the plugin developer and can be used to create a new catalogue in the plentymarkets backend. The actual data can then be mapped individually by the user of the plugin. A plugin needs to define the following components to work with a catalogue:
 
 * <<_data_providers, Data providers>>
 * <<_templates, Templates>>
 
-The structure of a catalog roughly looks like this:
+The structure of a catalogue roughly looks like this:
 
 image::catalog-structure.png[width=640, height=360]
 
 === Data providers
 
-Data providers define the available result fields that can be exported. A field in a data provider will be mappable in the catalog UI. Before it gets displayed it has to be registered in a template. There are different kinds of data providers and you will have to choose the right one for your use case. We will use each of them once in this tutorial so you will understand their different behaviors.
+Data providers define the available result fields that can be exported. A field in a data provider will be mappable in the catalogue UI. Before it gets displayed it has to be registered in a template. There are different kinds of data providers and you will have to choose the right one for your use case. We will use each of them once in this tutorial so you will understand their different behaviors.
 
 === Templates
 
-A template is the core of a catalog. It combines the data providers and there defines the export format. Every template will be available in the UI to create a new catalog from it. In the UI the template is responsible for all the fields visible on the left side. It also defines how to map the data.
+A template is the core of a catalogue. It combines the data providers and there defines the export format. Every template will be available in the UI to create a new catalogue from it. In the UI the template is responsible for all the fields visible on the left side. It also defines how to map the data.
 
-There are two different kinds of mappings: mappings and simple Mappings. A mapping is used to fill fields with predefined values. A good example would be categories. A marketplace provides categories and expects the merchants to link their articles to one or more of them. To accomplish this the merchant has to map their own categories to categories of the marketplace. In other words, a mapping in the context of the catalog is to map a predefined value dependent on a value in plentymarkets.
+There are two different kinds of mappings: mappings and simple Mappings. A mapping is used to fill fields with predefined values. A good example would be categories. A marketplace provides categories and expects the merchants to link their articles to one or more of them. To accomplish this the merchant has to map their own categories to categories of the marketplace. In other words, a mapping in the context of the catalogue is to map a predefined value dependent on a value in plentymarkets.
 
 A simple mapping is used to just write data out of plentymarkets into a key of the export format. An example could be a price. The marketplace probably doesn't provide a predefined list of possible prices and simply expects a value. To fill the price field the merchant needs to choose a source field, e.g. a sales price in plentymarkets. So a simple mapping defines a source field in plentymarkets that will be exported with a specified key.
 
-== Using catalogs in a plugin
+== Using catalogues in a plugin
 
-To make the concept of a catalog a bit more comprehensible we will develop the plugin with a simplified data format for a fictional marketplace. The marketplace expects the following format for its articles:
+To make the concept of a catalogue a bit more comprehensible we will develop the plugin with a simplified data format for a fictional marketplace. The marketplace expects the following format for its articles:
 
 [source,php]
 ----
@@ -117,7 +117,7 @@ The fields name, price, stock, sku and categories are required. The categories f
 ]
 ----
 
-Since the target format is known now we can start to design the data providers. To use the catalog correctly it is important to understand when to use which data provider. Currently there are 3 different types:
+Since the target format is known now we can start to design the data providers. To use the catalogue correctly it is important to understand when to use which data provider. Currently there are 3 different types:
 
 * The BaseDataProvider, which is used for simple mappings
 * The KeyDataProvider, which is used for mappings with non encapsulated data (e.g. brands)
@@ -152,7 +152,7 @@ class FirstBaseDataProvider extends BaseDataProvider
 The getRows() method returns an array of fields. Every field has to contain the following keys:
 
 * key => The name of the field in every export result
-* label => The name that will be displayed in the catalog UI
+* label => The name that will be displayed in the catalogue UI
 * required => defines if this field has to be mapped
 
 The field of our price example would look like this:
@@ -246,7 +246,7 @@ class FirstKeyDataProvider extends KeyDataProvider
 In our example the marketplace is expecting the key "brand" so that is what our getKey() method should return. The different values will be collected in an array with the following format:
 
 * value => The value that will be exported
-* label => The name that will be displayed in the catalog UI
+* label => The name that will be displayed in the catalogue UI
 
 After filling the methods they should look like this:
 
@@ -338,7 +338,7 @@ class FirstNestedKeyDataProvider extends NestedKeyDataProvider
 }
 ----
 
-The NestedKeyDataProvider behaves a lot like the KeyDataProvider, but it enables the catalog UI to work with encapsulated data. The getKey() method is identical to the method in the KeyDataProvider, so in our case it just returns "categories", however since we may sell our articles in multiple categories (e.g. unisex shoes will be sold in Men » Shoes and Women » Shoes) we can define the key as an array (this behavior is identical with keys in all types of data providers). To do that we just have to add [] at the end of the key. So we return "categories[]"
+The NestedKeyDataProvider behaves a lot like the KeyDataProvider, but it enables the catalogue UI to work with encapsulated data. The getKey() method is identical to the method in the KeyDataProvider, so in our case it just returns "categories", however since we may sell our articles in multiple categories (e.g. unisex shoes will be sold in Men » Shoes and Women » Shoes) we can define the key as an array (this behavior is identical with keys in all types of data providers). To do that we just have to add [] at the end of the key. So we return "categories[]"
 
 A NestedKeyDataProvider needs to be able to do 3 things. It has to be able to show all values on the highest level, which in our case means it has to return all values that have no parentId, it has to be able to load all child values of a given parent and it has to be able to load values by the ID.
 
@@ -622,9 +622,9 @@ class CatalogBootServiceProvider extends ServiceProvider
 }
 ----
 
-The template is now available and can be used to create a catalog in the UI.
+The template is now available and can be used to create a catalogue in the UI.
 
-=== Exporting variations through a catalog
+=== Exporting variations through a catalogue
 
 The following code example shows how to export variations:
 
@@ -657,4 +657,4 @@ The following code example shows how to export variations:
     }
 ----
 
-In this example we first load all catalogs and check which of them are created through our plugin. Every catalog that was created through our plugin will then be exported through the CatalogExportRepository. As a Result we get an instance of the CatalogExportService class which can be used to provide filters and other settings. As soon as we are done defining the settings we can run the getResult() method which will return an instance of CatalogExportResult. This class implements the iterator interface and can therefore be used in a foreach to retrieve all result pages.
+In this example we first load all catalogues and check which of them are created through our plugin. Every catalogue that was created through our plugin will then be exported through the CatalogExportRepository. As a Result we get an instance of the CatalogExportService class which can be used to provide filters and other settings. As soon as we are done defining the settings we can run the getResult() method which will return an instance of CatalogExportResult. This class implements the iterator interface and can therefore be used in a foreach to retrieve all result pages.
