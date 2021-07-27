@@ -1,0 +1,85 @@
+= Dev cache
+
+The dev cache is a catalogue feature that allows to cache the raw result of a catalogue export in order to easily reuse it.
+
+In fact, it is a solution for exports that take too long to finish. By using the dev cache, it is now possible to build the catalogue export data in advance while automatically keeping it up-to-date. Whenever you want to perform an export, you just need to fetch the stored data, process it in batches and send it to a marketplace.
+
+Without the dev cache, the raw export has to be built every time data is sent to a marketplace.
+
+== Advantages
+
+* The dev cache raw file building process is triggered every 20 minutes, keeping the file up-to-date. If an export is already building, it will wait for it to finish before starting a new one.
+* The raw export is built asynchronously, so there is no need to wait for it to be built
+* The raw export is fetched instantly, in some cases cutting hours off the cron that handles the export to the marketplace
+* The result can easily be reused to send data multiple times using the same raw export
+* The dev cache is returned as a `CatalogLazyCollection`, eliminating memory issues
+* The feature is already supported in xref:export-plugins:result-converters.adoc[converters]
+
+== Disadvantages
+
+- The raw export's data might be slightly outdated if no dev cache export has been started recently. You can specify the `maximum age` of the export when you retrieve the dev cache in order to mitigate the effect of this limitation.
+
+== Generating the dev cache
+
+The dev cache generation process can be triggered automatically in one of our crons or you can do this manually.
+
+=== Automatically triggering the process
+
+To trigger the generation process automatically, the catalogue needs to have the setting `devcache` set to `true` (data.settings.devcache).
+
+You can easily turn this setting on or off by calling the appropriate methods in `CatalogRepository`:
+
+* `enableDevcache(string $catalogUUID)`
+* `disableDevcache(string $catalogUUID)`
+
+Example
+
+.automatic-generation.php
+[source,php]
+----
+include::example$automatic-generation.php[]
+----
+
+=== Manually triggering the process
+
+It is also possible to trigger the dev cache generation manually without the need of any catalogue setting.
+
+To trigger the generation manually, you need to call the method in `CatalogExportRepository`:
+
+- `initiateDevQueue(string $catalogUUID)`
+  * returns `true` if it was able to start a new generation process
+  * returns `false` if it was not able to start a new generation process or one is already running
+
+== Retrieving the dev cache
+
+To get the dev cache, all you need to do is call the method in `CatalogExportRepository`:
+
+- `getDevCachedResult(string $catalogUUID, int $maximumAgeInSeconds = 14400)`
+  * returns a `CatalogLazyCollection` if a raw result was found in the cache and it is younger than the age in seconds
+  * returns `null` if a raw result that is younger than the age in seconds was not found
+
+== Using the dev cache
+
+You can use the dev cache outside of a converter, but we highly recommend to use the converter approach as it keeps the code clean.
+
+=== Using result converters
+
+If you encapsulate the export logic in a xref:export-plugins:result-converters.adoc[converter] that exports to a marketplace, you can set it up like in the following example:
+
+.set-up-converter.php
+[source,php]
+----
+include::example$set-up-converter.php[]
+----
+
+Follow the xref:export-plugins:result-converters.adoc[Result converters documentation] to set one up.
+
+=== Using the collection outside a converter
+
+To use the dev cache outside a converter you can use it like in this example:
+
+.dev-cache-outside-converter.php
+[source,php]
+----
+include::example$dev-cache-outside-converter.php[]
+----
