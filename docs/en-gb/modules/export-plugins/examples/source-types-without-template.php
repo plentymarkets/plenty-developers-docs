@@ -1,6 +1,6 @@
 ```
 $exportRepository = pluginApp(CatalogExportRepositoryContract::class);
-$converter = $template->getResultConverterContainer()->getResultConverter(YourResultConverter::KEY);
+$converter = pluginApp(YourResultConverter::class);
 
 $result = $exportRepository->exportById($id)->getResult($id);
 
