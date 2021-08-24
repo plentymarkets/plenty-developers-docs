@@ -5,7 +5,7 @@ This page gives an introduction to back end UIs and its components.
 First of all, some basics about Angular and its usage in plentymarkets: +
 
 * All plentymarkets UIs are Angular UIs.
-* At the moment, we are using version 9.
+* At the moment, we are using version 12.
 * Angular is a Javascript framework for creating web, desktop and mobile applications.
 * To develop Angular applications, you have to know Typescript, HTML and CSS.
 * Angular applications use components.
