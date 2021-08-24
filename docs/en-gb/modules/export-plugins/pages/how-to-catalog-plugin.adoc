@@ -125,7 +125,7 @@ Since the target format is known now we can start to design the data providers. 
 
 === Data providers
 
-Before we can export variations we need to define a schema which every result of the item will conform to. We will start building that schema at the foundation: the data providers. Since we know the article format of the marketplace we can now plan which data has to be represented by which data provider. Name, description, sku, price and stock have no predefined values and therefore belong into a BaseDataProvider. Brand is an enum of not encapsulated values and should therefore be filled with a KeyDataProvider. Categories have predifined encapsulated values, so a NestedKeyDataProvider should be the right choice.
+Before we can export variations we need to define a schema which every result of the item will conform to. We will start building that schema at the foundation: the data providers. Since we know the article format of the marketplace we can now plan which data has to be represented by which data provider. Name, description, sku, price and stock have no predefined values and therefore belong into a BaseDataProvider. Brand is an enum of not encapsulated values and should therefore be filled with a KeyDataProvider. Categories have predefined encapsulated values, so a NestedKeyDataProvider should be the right choice.
 
 === Base data provider
 
