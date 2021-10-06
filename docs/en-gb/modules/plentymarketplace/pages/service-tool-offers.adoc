@@ -46,8 +46,9 @@ Once you've installed the plugin, proceed as follows:
 [TIP]
 ======
 To determine a user ID, go to the *Setup » Settings » User » Accounts*
-menu and click on the name of the user. +
-image::back-end-user-id.png[width=640, height=360]
+menu and click on the name of the user.
++
+image:back-end-user-id.png[width=640]
 ======
 
 [discrete]
