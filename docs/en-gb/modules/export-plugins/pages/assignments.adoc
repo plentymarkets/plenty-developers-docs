@@ -6,13 +6,7 @@ An example are _names_, which can exist in multiple languages and where the fiel
 
 == Structure
 
-Every assignment needs to implement `UIOptionContract`.
-
-* namespace: `\Plenty\Modules\Catalog\Contracts\UI`
-
-For more details about the option structure, see this page.
-
-We suggest to extend the base assignment `BaseAssignment`.
+Every assignment needs to extend the base assignment `BaseAssignment`.
 
 * namespace: `Plenty\Modules\Catalog\Services\UI\Assignments\Elements\Base;`
 
