@@ -1,5 +1,5 @@
-use Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
-...
+use
+Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
 
 [
     'fieldId' => 'firstName',
@@ -12,4 +12,3 @@ use Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
       pluginApp(MyLanguageAssignment::class)//<-- import class
     )
 ]
-...

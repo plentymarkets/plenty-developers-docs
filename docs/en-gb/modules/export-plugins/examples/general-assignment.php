@@ -21,4 +21,3 @@
     'key' => 'lastName',
     'label' => 'Last Name'               this one has no assignments
 ],
-...

@@ -1,5 +1,6 @@
-use Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
-...
+use
+Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
+
 [
     'fieldId' => 'firstName',
     'fieldType' => 'string',
@@ -11,4 +12,3 @@ use Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
         pluginApp(GenderAssignments::class) //<-- import class
     )
 ]
-...

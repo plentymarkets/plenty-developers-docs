@@ -1,6 +1,6 @@
-...
-use Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
-...
+use
+Plenty\Modules\Catalog\Services\UI\Assignments\Assignments;
+
 /**
  * @return Assignments
  */
