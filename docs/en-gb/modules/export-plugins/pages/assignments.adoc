@@ -2,7 +2,7 @@
 
 Assignments are options you can give to a source field. They are interpreted by the export and return a different result depending on the settings.
 
-An example are _names_, which can exist in multiple languages and where the field will contain a drop-down list where the customer can select the language.
+An example are _names_, which can exist in multiple languages and where the field will contain a select where the customer can choose a language.
 
 == Structure
 
@@ -62,7 +62,7 @@ include::example$general-assignment.php[]
 
 ==== Export assignments
 
-Export assignments are custom assignments that can be used by the export builder. The `getAssignments` function can be added in the Export type (e.g. SingersExportType) with the details about your assignment. Note however that this will be overwritten by the template assignment if the key is the same. Thus, if a template developer defined a "gender" key on another assignment, that template assignment has priority.
+Export assignments are custom assignments that can be used by the export builder. The `getAssignments` function can be added in the Export type (e.g. SingersExportType) with the details about your assignment. Note however that, if the key is the same, this will be overwritten by the template assignment. Thus, if a template developer defined a "gender" key on another assignment, that template assignment has priority.
 
 .export-assignment.php
 [source,php]
