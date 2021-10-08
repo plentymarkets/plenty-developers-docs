@@ -1,0 +1,94 @@
+= How to work with assignments
+
+Assignments are options you can give to a source field. They are interpreted by the export and return a different result depending on the settings.
+
+An example are _names_, which can exist in multiple languages and where the field will contain a select where the customer can choose a language.
+
+== Structure
+
+Every assignment needs to extend the base assignment `BaseAssignment`.
+
+* namespace: `Plenty\Modules\Catalog\Services\UI\Assignments\Elements\Base;`
+
+When extending the base assignment, all you need to do is define the properties you actually need.
+
+== Types
+
+The types that are currently supported are available via constants if you extend the base assignment class:
+
+const TYPE_CHECKBOX = 'checkbox'; +
+const TYPE_DATE = 'date'; +
+const TYPE_NUMBER = 'number'; +
+const TYPE_OPERATOR = 'operator'; +
+const TYPE_SELECT = 'select'; +
+const TYPE_TEXT = 'text'; +
+const TYPE_TOGGLE = 'toggle';
+
+== Example assignment
+
+For our example, we will build a language assignment of the type `select`.
+This assignment can be added to a field and it will be represented in the UI as a select, allowing you to choose between 3 languages.
+By default, each `getter` method returns the appropriate property. If you need to have an expression in one of the properties you just need to define the method that returns that property instead - like in the `getLabel()` example.
+The values default to an empty Values container. If you need values, just instantiate your own container and add the values in the order you want them to be displayed.
+
+.language-assignment.php
+[source,php]
+----
+include::example$language-assignment.php[]
+----
+
+== Registration in an export field
+
+There are the following two types of assignments:
+
+* general
+* specific
+
+=== General assignments
+
+Some assignments are already pre-defined, such as the language selection.
+Instead of building an entire assignment, you can register its key in the `settings` property and the catalogue will pre-fill the assignment for you.
+
+==== Example
+
+In a FieldGroup that you previously registered to your ExportType's `getFieldGroupClasses` you should already have your fields.
+To register the assignment on a field, define a new key called "settings" whose value is an array of strings, where the strings are the keys of the general assignments.
+
+.general-assignment.php
+[source,php]
+----
+include::example$general-assignment.php[]
+----
+
+==== Export assignments
+
+Export assignments are custom assignments that can be used by the export builder. The `getAssignments` function can be added in the Export type (e.g. SingersExportType) with the details about your assignment. Note however that, if the key is the same, this will be overwritten by the template assignment. Thus, if a template developer defined a "gender" key on another assignment, that template assignment has priority.
+
+.export-assignment.php
+[source,php]
+----
+include::example$export-assignment.php[]
+----
+
+If you want to modify an assignment that you previously registered in the settings, you can do so in the `customSettings` key.
+
+.modify-registered-assignment.php
+[source,php]
+----
+include::example$modify-registered-assignment.php[]
+----
+
+=== Specific assignments
+
+Registering a specific assignment is just as easy as modifying a general assignment.
+All you need to do is register its key in the settings and then define it in the `customSettings`.
+
+==== Example
+
+.specific-assignment.php
+[source,php]
+----
+include::example$specific-assignment.php[]
+----
+
+We are currently in the process of changing the assignments to build them as objects. Consequently, the registration will change in the future.
