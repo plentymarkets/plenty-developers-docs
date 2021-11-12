@@ -1671,3 +1671,280 @@ REST API.
 |10
 |Partially refunded
 |===
+
+== Reason IDs
+The following Reason IDs are used for Stock management.
+
+[cols="1,3"]
+
+|===
+|ID |Reason
+
+|0
+|Undefined
+
+|1
+|Undefined log
+
+|2
+|Initial value (new log)
+
+|100
+|Incoming items
+
+|101
+|Incoming items (WE)
+
+|102
+|Recognition stocktaking
+
+|104
+|Derecognition cancelled manufacturer error
+
+|106
+|Maculation cancelled
+
+|107
+|Packing error cancelled
+
+|108
+|Dispensation claim cancelled
+
+|110
+|Incoming items (import)
+
+|112
+|Incoming items (reorder)
+
+|113
+|Outgoing items cancelled
+
+|114
+|Stock rotation inventory rise
+
+|115
+|Incoming items (second choice)
+
+|116
+|Recognition correction
+
+|150
+|Return booked in
+
+|171
+|Incoming items picking
+
+|180
+|Incoming items (purchase order)
+
+|181
+|Incoming items warehousing
+
+|182
+|Incoming items found source
+
+|200
+|Outgoing items
+
+|201
+|Outgoing items (WA)
+
+|202
+|Derecognition stocktaking
+
+|203
+|Return to producer
+
+|204
+|Derecognition manufacturer error
+
+|205
+|Derecognition maculation
+
+|206
+|Derecognition packing error
+
+|207
+|Derecognition damage
+
+|208
+|Derecognition dispensation claim
+
+|209
+|Outgoing items (logistics)
+
+|210
+|Outgoing items (import)
+
+|214
+|Stock rotation inventory reduction
+
+|215
+|Outgoing items (second choice)
+
+|216
+|Derecognition correction
+
+|226
+|Derecognition defect (without return)
+
+|280
+|Outgoing items (purchase order)
+
+|281
+|Outbound loss
+
+|300
+|Stock correction
+
+|301
+|Stock correction (WK)
+
+|302
+|Stock correction stocktaking
+
+|304
+|Stock correction manufacturer error
+
+|305
+|Stock correction maculation
+
+|306
+|Stock correction packing error
+
+|307
+|Stock correction damage
+
+|309
+|Stock correction (internal offset)
+
+|310
+|Stock correction (import)
+
+|315
+|Stock correction (attributes deleted)
+
+|316
+|Stock correction change FBA availability
+
+|317
+|Stock correction BBD
+
+|318
+|Stock correction shipping items to FBA
+
+|319
+|Stock correction shipping items to fulfilment service provider
+
+|320
+|Stock correction sample interested parties
+
+|321
+|Stock correction sample customers
+
+|322
+|Stock correction sample
+
+|323
+|Stock correction quality models booked in
+
+|324
+|Stock correction quality models booked out
+
+|325
+|Stock correction gift
+
+|326
+|Stock correction malfunction (without return)
+
+|327
+|Stock correction loss
+
+|328
+|Balancing entry
+
+|329
+|Year-end close
+
+|330
+|Stock correction own use
+
+|401
+|Rebooking stock
+
+|402
+|Stock correction stocktaking
+
+|403
+|Rebooking stock repair demand
+
+|404
+|Rebooking stock finding
+
+|405
+|Rebooking stock new return A
+
+|406
+|Rebooking stock new return C
+
+|407
+|Rebooking stock inventory lock
+
+|408
+|Rebooking stock remove lock
+
+|409
+|Rebooking warehousing return
+
+|410
+|Rebooking stock quality change
+
+|411
+|Rebooking stock via plentyWarehouse
+
+|412
+|Reversal via plentyWarehouse
+
+|500
+|Flow of stock deleted
+
+|600
+|Item registered
+
+|601
+|Purchase price changed
+
+|602
+|Quantity changed
+
+|603
+|Item booked in
+
+|604
+|Item removed from incoming items
+
+|605
+|Storage location changed
+
+|606
+|RRP changed
+
+|607
+|Quantity and purchase price changed
+
+|608
+|Quantity and RRP changed
+
+|609
+|Purchase price and RRP changed
+
+|610
+|Quantity, purchase price and RRP changed
+
+|611
+|Quantity corrected
+
+|612
+|Item registration cancelled
+
+|===
