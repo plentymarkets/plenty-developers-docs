@@ -1,10 +1,10 @@
-= Ceres 4 to Ceres 5 Style changes
+= Ceres 4 to plentyShop LTS Style changes
 
-This page provides an overview of all style changes in the transition from Ceres 4.6 to Ceres 5.
+This page provides an overview of all style changes in the transition from Ceres 4.6 to plentyShop LTS.
 
 [cols="2"]
 |===
-|Ceres 4 |Ceres 5
+|Ceres 4 |plentyShop LTS
 
 |.accordion-content
 |Class has been removed.

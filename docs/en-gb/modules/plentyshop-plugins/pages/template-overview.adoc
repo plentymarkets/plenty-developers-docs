@@ -8,11 +8,11 @@ On this page, you will find an overview of relevant information about template p
 * https://v4-alpha.getbootstrap.com/getting-started/introduction/[Bootstrap4]
 * http://learn.jquery.com/about-jquery/how-jquery-works/[jQuery]
 
-Get the complete code of the Ceres plugin developed by plentymarkets by link:https://github.com/plentymarkets/plugin-ceres[downloading the GitHub repository.^]
+Get the complete code of the plentyShop LTS plugin developed by plentymarkets by link:https://github.com/plentymarkets/plugin-ceres[downloading the GitHub repository.^]
 
 == Setting up an IDE for template plugins
 
-We recommend using https://www.jetbrains.com/phpstorm/[PhpStorm] for developing Ceres. PhpStorm is a comprehensive IDE which supports all PHP language features. PhpStorm also includes a wide range of leading edge front-end technologies, such as CSS, Sass, Javascript, as well as Twig syntax highlighting. PhpStorm supports http://eslint.org/[ESLint], a linting utility plugin for JavaScript.
+We recommend using https://www.jetbrains.com/phpstorm/[PhpStorm] for developing plentyShop LTS. PhpStorm is a comprehensive IDE which supports all PHP language features. PhpStorm also includes a wide range of leading edge front-end technologies, such as CSS, Sass, Javascript, as well as Twig syntax highlighting. PhpStorm supports http://eslint.org/[ESLint], a linting utility plugin for JavaScript.
 
 === Installing Node.js
 
@@ -36,22 +36,22 @@ icon:arrow-right[] The *Plugins* window will open.
 icon:arrow-right[] The *Browse JetBrains Plugins* will open.
 . Install the *Twig Support* plugin.
 
-=== Configuring PhpStorm for Ceres
+=== Configuring PhpStorm for plentyShop LTS
 
-Clone or download the https://github.com/plentymarkets/plugin-ceres[Ceres] and https://github.com/plentymarkets/plugin-io[IO] plugins, e.g. with https://desktop.github.com/[GitHub Desktop] or https://www.sourcetreeapp.com/[SourceTree].
+Clone or download the https://github.com/plentymarkets/plugin-ceres[plentyShop LTS] and https://github.com/plentymarkets/plugin-io[IO] plugins, e.g. with https://desktop.github.com/[GitHub Desktop] or https://www.sourcetreeapp.com/[SourceTree].
 
 . Open PhpStorm. +
 icon:arrow-right[] The *Welcome to PhpStorm* window will open.
 . Click on *Open*. +
 icon:arrow-right[] The *Open File or Project* window will open.
-. Select your *Ceres* folder and click *OK*.
-. Open the terminal and go to the Ceres project folder. +
+. Select your *plentyShop LTS* folder and click *OK*.
+. Open the terminal and go to the plentyShop LTS project folder. +
 icon:arrow-right[] When using the built-in terminal of PhpStorm, you are already in the right project folder.
 . Run `npm install` in the terminal. +
 icon:arrow-right[] All dependencies that are defined in the `package.json` file are installed.
 . Click on *PhpStorm » Preferences...* in the menu bar.
 . Go to *Languages & Frameworks » JavaScript » Code Quality Tools » ESLint*.
-. *Enable* ESLint for the Ceres project.
+. *Enable* ESLint for the plentyShop LTS project.
 
 === Integrating the plugin interface into PhpStorm
 
@@ -62,7 +62,7 @@ Learn how to integrate the plentymarkets plugin interface into your IDE to suppo
 icon:arrow-right[] If you work with a beta system, select the *beta7* branch.
 . Open PhpStorm. +
 icon:arrow-right[] The *Welcome to PhpStorm* window will open.
-. Open the *Ceres* project.
+. Open the *plentyShop LTS* project.
 . In the project tree area on the left, click on *External Libraries*. +
 icon:arrow-right[] A new window will open.
 . Under *Development environment*, select the *PHP language level* *7*.
@@ -73,16 +73,16 @@ icon:arrow-right[] The plugin interface will be added as an external library.
 . Click on *Apply* and then on *OK*. +
 icon:arrow-right[] The plugin interface is now a new source under *External Libraries » PHP*.
 
-=== Webpack commands for Ceres
+=== Webpack commands for plentyShop LTS
 
-Webpack is a module bundler for Javascript and other frontend assets, such as SCSS. It serves to locally build the plugin via node commands after you have implemented changes. The following Wepback commands are available in the Ceres plugin project.
+Webpack is a module bundler for Javascript and other frontend assets, such as SCSS. It serves to locally build the plugin via node commands after you have implemented changes. The following Wepback commands are available in the plentyShop LTS plugin project.
 
 [cols="1,3"]
 |===
 |Command |Description
 
 |*start*
-|The start command runs "webpack --watch", which builds Javascript and SCSS once in Ceres' development mode. It monitors the changes you implemented locally and builds the plugin accordingly.
+|The start command runs "webpack --watch", which builds Javascript and SCSS once in plentyShop LTS' development mode. It monitors the changes you implemented locally and builds the plugin accordingly.
 
 |*build*
 |Runs the command "npm run build:dev && npm run build:prod". This command builds Javascript and SCSS files in both development and live mode, as well as the files in pre- and postbuild detailed below.
@@ -266,7 +266,7 @@ Constants, e.g. available languages or category types, are organised in the *Con
 
 === Controllers
 
-Controllers are the interface between the core and the design. The sub-folder *Controllers* contains the different controllers necessary to render Ceres. The file `LoginController.php`, for example, contains the `showLogin` function for rendering the `login.twig` template.
+Controllers are the interface between the core and the design. The sub-folder *Controllers* contains the different controllers necessary to render plentyShop LTS. The file `LoginController.php`, for example, contains the `showLogin` function for rendering the `login.twig` template.
 
 .IO/src/Controllers/LoginController.php
 [source,php]
@@ -336,7 +336,7 @@ The *Guards* folder contains guard classes. `AuthGuard.php`, for example, extend
 
 === Helper
 
-The *Helper* folder contains helper classes. `TemplateContainer.php`, for example, is a class that controls the data exchange between the Ceres plugin and the IO plugin.
+The *Helper* folder contains helper classes. `TemplateContainer.php`, for example, is a class that controls the data exchange between the plentyShop LTS plugin and the IO plugin.
 
 === Middlewares
 
@@ -385,7 +385,7 @@ Two types of providers are used in plentymarkets plugins: service providers and 
 
 ==== Service Providers
 
-Figuratively speaking, the service provider is the starting point of the plugin. Every plugin must have a service provider, which is needed to register the route service provider. All service providers extend the `Plenty\Plugin\ServiceProvider` class. In the case of Ceres, the service provider is also used to boot the design and add various extensions.
+Figuratively speaking, the service provider is the starting point of the plugin. Every plugin must have a service provider, which is needed to register the route service provider. All service providers extend the `Plenty\Plugin\ServiceProvider` class. In the case of plentyShop LTS, the service provider is also used to boot the design and add various extensions.
 
 ==== Route Service Providers
 
@@ -496,7 +496,7 @@ class BasketResource extends ApiResource
 
 == Design features
 
-We will explain the design structure of a plugin based on the *resources* folder of the plentymarkets Ceres plugin and its sub-folders.
+We will explain the design structure of a plugin based on the *resources* folder of the plentymarkets plentyShop LTS plugin and its sub-folders.
 
 === CSS
 
@@ -559,7 +559,7 @@ include::example$ApiService.js[]
 
 === Lang
 
-The *lang* folder contains sub-folders for translations in different languages. Translated strings for the Ceres design are saved in key-value pairs in the `Template.properties` file. Keys have prefixes that help you associating the keys with the respective templates:
+The *lang* folder contains sub-folders for translations in different languages. Translated strings for the plentyShop LTS design are saved in key-value pairs in the `Template.properties` file. Keys have prefixes that help you associating the keys with the respective templates:
 
 [cols="1,3"]
 |===

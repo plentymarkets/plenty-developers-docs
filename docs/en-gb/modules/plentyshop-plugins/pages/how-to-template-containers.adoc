@@ -1,6 +1,6 @@
 = How to add template containers
 
-This tutorial will introduce you to template containers. We will develop a small plugin that provides the data for displaying a placeholder image and text in a container of the template plugin. You will also learn about the plugin containers in Ceres and all options to integrate your own content in the template.
+This tutorial will introduce you to template containers. We will develop a small plugin that provides the data for displaying a placeholder image and text in a container of the template plugin. You will also learn about the plugin containers in plentyShop LTS and all options to integrate your own content in the template.
 
 link:https://github.com/plentymarkets/plugin-tutorial-template-container[Download the example plugin on GitHub.^]
 
@@ -10,7 +10,7 @@ If you haven't already xref:plentyshop-plugins:template-setup.adoc[set up a temp
 
 == Step 2: Creating the plugin files
 
-Our plugin is of the *template* type and integrates with the Ceres template, i.e. our plugin consists of xref:plentyshop-plugins:template-overview#_core_features[core features] saved in the *src* folder and xref:plentyshop-plugins:template-overview#_design_features[design features] saved in the *resources* folder. Our plugin also requires a xref:ROOT:plugin-definition.adoc[plugin.json] file and a xref:plugin-configuration:how-to-plugin-configuration.adoc[config.json] file.
+Our plugin is of the *template* type and integrates with the plentyShop LTS template, i.e. our plugin consists of xref:plentyshop-plugins:template-overview#_core_features[core features] saved in the *src* folder and xref:plentyshop-plugins:template-overview#_design_features[design features] saved in the *resources* folder. Our plugin also requires a xref:ROOT:plugin-definition.adoc[plugin.json] file and a xref:plugin-configuration:how-to-plugin-configuration.adoc[config.json] file.
 
 [source]
 ----
@@ -159,7 +159,7 @@ After creating the plugin, we have to link:https://knowledge.plentymarkets.com/e
 
 == Looking at the big picture
 
-Now you simply have to link the content from our *Placeholder* plugin to one or multiple containers of the *Ceres* template plugin. This can be done in the plentymarkets back end.
+Now you simply have to link the content from our *Placeholder* plugin to one or multiple containers of the *plentyShop LTS* template plugin. This can be done in the plentymarkets back end.
 
 . Go to *Plugins » Plugin set overview*.
 . Open the plugin set you want to edit.

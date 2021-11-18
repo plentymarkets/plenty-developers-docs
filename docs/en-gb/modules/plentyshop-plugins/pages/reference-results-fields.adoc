@@ -1,6 +1,6 @@
-= Overview of Elasticsearch result fields in Ceres
+= Overview of Elasticsearch result fields in plentyShop LTS
 
-This page serves to document the available Elasticsearch result fields you can use to access additional item information in Ceres.
+This page serves to document the available Elasticsearch result fields you can use to access additional item information in plentyShop LTS.
 
 *Note:* This page is a work in progress and will be updated continually. At this point in time the list is not fully comprehensive.
 
@@ -1211,6 +1211,6 @@ property groups.
 |Contains the position of the property group.
 |===
 
-=== A schematic overview of containers on the Ceres homepage
+=== A schematic overview of containers on the plentyShop LTS homepage
 
 image::ceres-homepage-containers.png[]

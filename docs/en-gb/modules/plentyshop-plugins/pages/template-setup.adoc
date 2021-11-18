@@ -2,18 +2,18 @@
 
 When developing your own plugin to extend your online store, you may want to use the default plentymarkets design as a starting point. It is comprised of two plugins:
 
-* https://github.com/plentymarkets/plugin-ceres[Ceres]
+* https://github.com/plentymarkets/plugin-ceres[plentyShop LTS]
 * https://github.com/plentymarkets/plugin-io[IO]
 
-By including them via Git, you can modify them according to your needs. This page describes how to add Ceres and IO from GitHub to your plentymarkets system and the existing branches.
+By including them via Git, you can modify them according to your needs. This page describes how to add plentyShop LTS and IO from GitHub to your plentymarkets system and the existing branches.
 
-== Adding Ceres and IO to your system
+== Adding plentyShop LTS and IO to your system
 
 . Open the back end of your plentymarkets system.
 . Go to *Plugins » Git*.
 . Click on Add new Repository. +
 icon:arrow-right[] The repository settings are displayed.
-. Enter the https://github.com/plentymarkets/plugin-ceres[Ceres repository URL] as well as _any_ user name and token into the respective fields.
+. Enter the https://github.com/plentymarkets/plugin-ceres[plentyShop LTS repository URL] as well as _any_ user name and token into the respective fields.
 . Change the branch you want to check our during installation to either *stable* or *beta*. See below for more information on the various branches.
 . *Save* the settings. +
 icon:arrow-right[] plentymarkets checks and establishes the connection to the Git repository.
@@ -22,21 +22,18 @@ Repeat the above steps for the https://github.com/plentymarkets/plugin-io[IO plu
 
 . Go to *Plugins » Plugin overview*.
 . Select the plugin set you want to work in or create a new one via the *Create new set* button.
-. Filter for uninstalled plugins, then install the newly added Ceres and IO plugins one after the other. +
+. Filter for uninstalled plugins, then install the newly added plentyShop LTS and IO plugins one after the other. +
 *NOTE* that you cannot install these plugins if you have already installed the Marketplace versions in the same set.
-. Change the *Position* of the plugins, so that IO has the highest value and Ceres the second highest.
+. Change the *Position* of the plugins, so that IO has the highest value and plentyShop LTS the second highest.
 . Click on *Save & publish plugin set*.
 
-== Ceres release cycle
+== plentyShop LTS release cycle
 
-Three branches of the Ceres and IO repositories are important to describe the release cycle of the design: *Development*, *Beta* and *Stable*.
+Two branches of the plentyShop LTS and IO repositories are important to describe the release cycle of the design: *Development*, *Beta* and *Stable*.
 
 [cols="1,3"]
 |===
 |Branch |Description
-
-|*Development*
-|The *Development* branch is the main branch for plentymarkets developers. Our developers regularly commit their changes into this branch. At the end of a sprint, these changes will be merged into the *Beta* branch. It is possible that certain menus or features of plentymarkets do not work if you check out and use this branch. The *Development* branches will be merged into *Beta* approx. every 2 weeks and the new *Beta* branches will be released.
 
 |*Beta*
 |The *Beta* branch is the main branch for plentymarkets 7 systems in beta status. It is recommended to use the *Beta* branches of our repositories for a beta system. The *Stable* branches will also work with beta systems, but certain features or fixes released when *Development* branches are merged into the *Beta* branches are not available in *Stable* branches yet. The *Beta* branches will be merged into *Stable* approx. every 2 weeks and the new *Stable* branches will be released.

@@ -1,10 +1,10 @@
 = Introducing content caching
 
-This page serves to give you an overview about the new content caching functionality of https://github.com/plentymarkets/plugin-ceres[Ceres] and https://github.com/plentymarkets/plugin-io[IO]. The caching of content data of the online store prevents a recalculating of pages upon each new page view and therefore improves the performance of the online store. Data which has already been loaded or genertated once remains in the cache and can be invoked much faster when it is accessed again.
+This page serves to give you an overview about the new content caching functionality of https://github.com/plentymarkets/plugin-ceres[plentyShop LTS] and https://github.com/plentymarkets/plugin-io[IO]. The caching of content data of the online store prevents a recalculating of pages upon each new page view and therefore improves the performance of the online store. Data which has already been loaded or genertated once remains in the cache and can be invoked much faster when it is accessed again.
 
 == Preliminary information about content caching
 
-Content caching is only available from Ceres and IO versions 2.12 onwards. Download the current versions of the plugins on the plentymarkets https://marketplace.plentymarkets.com/plugins/templates[marketplace] or update the plugins in the *Plugins » Plugin overview*.
+Content caching is only available from plentyShop LTS and IO versions 2.12 onwards. Download the current versions of the plugins on the plentymarkets https://marketplace.plentymarkets.com/plugins/templates[marketplace] or update the plugins in the *Plugins » Plugin overview*.
 
 == Information about caching and invalidation
 
@@ -70,7 +70,7 @@ In this case, the page is automatically invalidated whenever changes are being m
 
 == Caching pages that include query parameters
 
-Beginning with Ceres v5.0.29, ShopBooster is able to cache pages that include query parameters.
+Beginning with plentyShop LTS v5.0.29, ShopBooster is able to cache pages that include query parameters.
 Paginated pages, sorted item pages, pages accessed via referrer: These pages are now also written into the cache, which significantly reduces access times for these pages. +
 Per default, ShopBooster caches pages that include the following query parameters: +
 

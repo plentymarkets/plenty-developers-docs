@@ -1,8 +1,8 @@
-= Registering cookies/consents in Ceres
+= Registering cookies/consents in plentyShop LTS
 
-In preparation to the release of Ceres 4.4, we provided a consent interface via which external plugins can register essential and non-essential cookies. This is necessary, since current legislation mandates that users of a website need to consent to the use of non-essential cookies. We added the PHP class *ConsentRepositoryContract.php*, which provides a number of functions which you can use in your own plugins.
+We provided a consent interface via which external plugins can register essential and non-essential cookies. This is necessary, since current legislation mandates that users of a website need to consent to the use of non-essential cookies. We added the PHP class *ConsentRepositoryContract.php*, which provides a number of functions which you can use in your own plugins.
 
-The interface handles cookie information such as lifespan, provider and cookie group. In this context, Ceres version 4.4 adds a ShopBuilder widget, which communicates with the consent repository contract, gathers all necessary cookie information and displays it to the customer in the online store, where they can give or deny consent to individual cookies, groups of cookies or all cookies.
+The interface handles cookie information such as lifespan, provider and cookie group. In this context, plentyShop LTS adds a ShopBuilder widget, which communicates with the consent repository contract, gathers all necessary cookie information and displays it to the customer in the online store, where they can give or deny consent to individual cookies, groups of cookies or all cookies.
 
 The PHP class is located under *Plenty\Modules\Webshop\Consent\Contracts\ConsentRepositoryContract.php*. The class provides 6 functions, which are described in detail below.
 
@@ -78,15 +78,15 @@ The consent repository contract provides multiple functions via which you can as
 |This functions assesses whether the user has accepted a particular consent or group of consents, returning a boolean. The `$key` parameter takes on the identifying key of the consent group and the consent you want to set, e.g. "group.consent". Use "ungrouped.consent" for consents that are not part of a consent group. You can check all consents of a group at once by using `*` as the key, e.g. `group.*`.
 |===
 
-== Cookies registered in Ceres
+== Cookies registered in plentyShop LTS
 
-In Ceres, we have already established 4 groups of consents, the unique key of which are *necessary*, *tracking*, *marketing* and *media*. The necessary group contains three registered consents: The consent cookie, which stores which cookies the user consented to, the session cookie, which contains information regarding the user's behaviour on the website, and the CSRF cookie, which protects the website from cross-site request forgery attacks. Users cannot decline these consents, since they are declared as necessary, i.e. they are essential in ensuring smooth operation of the online store.
+In plentyShop LTS, we have already established 4 groups of consents, the unique key of which are *necessary*, *tracking*, *marketing* and *media*. The necessary group contains three registered consents: The consent cookie, which stores which cookies the user consented to, the session cookie, which contains information regarding the user's behaviour on the website, and the CSRF cookie, which protects the website from cross-site request forgery attacks. Users cannot decline these consents, since they are declared as necessary, i.e. they are essential in ensuring smooth operation of the online store.
 
 The consent group *tracking* contains cookies that pertain to statistics and website use. GoogleAnalytics, for instance, would be registered in this group of consents.
 
-The consent group *marketing* contains cookies that help taylor the user's online experience to their tastes, for instance by providing the user with customised advertisements. Ceres does not register any marketing cookies out of the box.
+The consent group *marketing* contains cookies that help taylor the user's online experience to their tastes, for instance by providing the user with customised advertisements. plentyShop LTS does not register any marketing cookies out of the box.
 
-The *media* consent group serves to display contents by external media, such as Vimeo links. Ceres registers the GoogleMaps cookie in this consent group.
+The *media* consent group serves to display contents by external media, such as Vimeo links. plentyShop LTS registers the GoogleMaps cookie in this consent group.
 
 == Loading scripts after cookie consent
 
@@ -100,7 +100,7 @@ If you are a plugin developer that wants to register cookies with the consent in
 == Registering the GoogleAnalytics cookie in your theme
 
 (This section was updated on 6 May 2021 to account for the added callback function. However, the former way of registering cookies is still functional.)
-If you are using Ceres in combination with a theme plugin and have integrated the functionality for the GoogleAnalytics cookie plugin within your own theme, you will have to make a few adjustments, so that you can continue using your theme in combination with the consent interface provided by Ceres. The easiest way is to register a GoogleAnalytics cookie in the service provider of your plugin, which you can see in the example below. Note that the all of the values are required.
+If you are using plentyShop LTS in combination with a theme plugin and have integrated the functionality for the GoogleAnalytics cookie plugin within your own theme, you will have to make a few adjustments, so that you can continue using your theme in combination with the consent interface provided by plentyShop LTS. The easiest way is to register a GoogleAnalytics cookie in the service provider of your plugin, which you can see in the example below. Note that the all of the values are required.
 
 [source,php]
 ----
