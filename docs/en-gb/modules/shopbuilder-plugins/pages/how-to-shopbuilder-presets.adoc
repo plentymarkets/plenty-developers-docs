@@ -10,13 +10,13 @@ The preset information is stored in the `shopBuilder.json` file. There, the `pre
 
 The key-value pair for each preset entry consists of the *label* and the *presetClass*.
 
-The preset's `label` references an entry in the Widgets.properties file located in the resources/lang folder, which provides the name of the preset that is displayed in the frontend. Please note that the name of the plugin providing the preset is appended in brackets after the label in the frontend, e.g. "Default header (Ceres)".
+The preset's `label` references an entry in the Widgets.properties file located in the resources/lang folder, which provides the name of the preset that is displayed in the frontend. Please note that the name of the plugin providing the preset is appended in brackets after the label in the frontend, e.g. "Default header (plentyShop LTS)".
 
 The `presetClass` value indicates a path to the pertinent PHP class located in the Ceres/Widgets/Presets folder, which specifies the widgets and contains the settings of your preset. Please note that the path needs to include double backslashes, e.g. `Ceres\\Widgets\\Presets\\DefaultHeaderPreset`.
 
-Below, you can see what the PHP class for the Ceres default header looks like.
+Below, you can see what the PHP class for the plentyShop LTS default header looks like.
 
-== Code example for the Ceres default header
+== Code example for the plentyShop LTS default header
 
 .src/Widgets/Presets/DefaultHeaderPreset.php
 [source,php]
@@ -89,7 +89,7 @@ class DefaultHeaderPreset implements ContentPreset
 [NOTE]
 .Explanation
 ====
-The code example above is taken from the PHP class for the Ceres default header. The three instances of `$preset->createWidget` specify which widgets are preconfigured for the header preset. In this case these are the top bar, the category navigation and the breadcrumb navigation. Underneath each instance of `$preset->createWidget`, the `->withSetting` directive specifies the default values of the individual widget settings as configured for the preset.
+The code example above is taken from the PHP class for the plentyShop LTS default header. The three instances of `$preset->createWidget` specify which widgets are preconfigured for the header preset. In this case these are the top bar, the category navigation and the breadcrumb navigation. Underneath each instance of `$preset->createWidget`, the `->withSetting` directive specifies the default values of the individual widget settings as configured for the preset.
 ====
 
-The line `$preset = pluginApp(PresetHelper::class);` accesses the Ceres helper class for presets, which is located in the Widgets/Helper folder.
+The line `$preset = pluginApp(PresetHelper::class);` accesses the plentyShop LTS helper class for presets, which is located in the Widgets/Helper folder.

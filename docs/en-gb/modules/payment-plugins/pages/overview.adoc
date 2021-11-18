@@ -845,7 +845,7 @@ class PaymentMethod extends PaymentMethodBaseService
 
 In the example, the method `isSwitchableTo` is set to `true` for the order with the respective `$orderId`. This means that this payment method will appear in the list of payment methods the customer will be able to switch to. The second method `isSwitchableFrom` returns `true` and enables the customer to switch from this payment method to another payment method even after purchasing the product in the webshop. This method also has to check whether the payment status allows a change to another payment method. For example, if the payment status is *pending*, switching the payment method is not possible. Note that the workflow and processes have to be determined by the payment method and are not the same for every payment method.
 
-A button will be displayed in the *My account* area of Ceres next to the respective order in the order history. When clicking the button *Change payment method*, a list of available payment methods is shown. When the customer clicks the button, a REST call is sent and triggers a method in the `Ceres/resources/views/MyAccount/Components/OrderHistory.twig` template.
+A button will be displayed in the *My account* area of plentyShop next to the respective order in the order history. When clicking the button *Change payment method*, a list of available payment methods is shown. When the customer clicks the button, a REST call is sent and triggers a method in the `Ceres/resources/views/MyAccount/Components/OrderHistory.twig` template.
 
 === Reinitialising the payment
 

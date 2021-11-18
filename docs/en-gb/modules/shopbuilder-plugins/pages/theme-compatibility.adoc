@@ -1,6 +1,6 @@
 = Making a theme ShopBuilder compatible
 
-You can make your theme compatible with the Shopbuilder with only a few adjustments. You should make sure that the scripts and styles of the ShopBuilder are loaded in the theme and that you provide several Ceres LayoutContainers in there as well. For information on how to create widgets for the ShopBuilder, see https://developers.plentymarkets.com/tutorials/my-first-shop-builder-widget[this tutorial].
+You can make your theme compatible with the Shopbuilder with only a few adjustments. You should make sure that the scripts and styles of the ShopBuilder are loaded in the theme and that you provide several plentyShop LTS LayoutContainers in there as well. For information on how to create widgets for the ShopBuilder, see https://developers.plentymarkets.com/tutorials/my-first-shop-builder-widget[this tutorial].
 
 == Preparations
 
@@ -12,7 +12,7 @@ You can make your theme compatible with the Shopbuilder with only a few adjustme
 [NOTE]
 .Explanation
 ====
-This line of code needs to be executed in order to load the necessary styles for the ShopBuilder into the editor's iframe. This includes for example buttons for editing and deleting widgets. A <link> element is generated and therefore this code should be integrated at the same position where the theme loads CSS files. In Ceres this is the head.
+This line of code needs to be executed in order to load the necessary styles for the ShopBuilder into the editor's iframe. This includes for example buttons for editing and deleting widgets. A <link> element is generated and therefore this code should be integrated at the same position where the theme loads CSS files. In plentyShop LTS this is the head.
 ====
 
 [source,php]
@@ -23,7 +23,7 @@ This line of code needs to be executed in order to load the necessary styles for
 [NOTE]
 .Explanation
 ====
-This line of code inserts all scripts into the template that are necessary for the ShopBuilder. It is advised to enter this line below the scripts that are required by the theme. In Ceres, this is done in PageDesign.twig below all the scripts.
+This line of code inserts all scripts into the template that are necessary for the ShopBuilder. It is advised to enter this line below the scripts that are required by the theme. In plentyShop LTS, this is done in PageDesign.twig below all the scripts.
 ====
 
 == General info
@@ -48,7 +48,7 @@ See below for further information about each area.
 [NOTE]
 .Explanation
 ====
-The first request checks the ShopBuilder homepage setting in the Ceres configuration, i.e. whether the ShopBuilder homepage or the Ceres default homepages is displayed. In the second request it is checked whether the store is currently opened in the ShopBuilder.
+The first request checks the ShopBuilder homepage setting in the plentyShop LTS configuration, i.e. whether the ShopBuilder homepage or the plentyShop LTS default homepages is displayed. In the second request it is checked whether the store is currently opened in the ShopBuilder.
 ====
 
 [source,php]
@@ -89,7 +89,7 @@ Combined, this can look like the following:
 
 Here, the LayoutContainer “Ceres::Header” needs to be output and the ShopBuilder takes care of the rest.
 
-=== How to inject header content (Ceres 5)
+=== How to inject header content (plentyShop LTS)
 
 Wherever possible, you should always inject your own contents you want to add to the header in the node with the ID *page-header-parent*. That way, these injected contents are considered in the calculation of the height and positioning of other widgets in the header. Take a look at the example below, in which additional content is injected via `+insertAdjacentHTML+`:
 
@@ -104,7 +104,7 @@ Elements that are injected in this way are initially always displayed as fixed e
 
 [source,php]
 ----
-{% set footerContainer = LayoutContainer.show("Ceres::Footer") | trim %}
+{% set footerContainer = LayoutContainer.show("::Footer") | trim %}
 {{ footerContainer | raw }}
 ----
 

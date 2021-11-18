@@ -25,7 +25,7 @@ Default layout containers are defined in the plugin.json file of your plugin.
 .Explanation
 ====
 The `dataProviders` key stores an array consisting of the values `key`, `name`, `description` and
-`defaultLayoutContainer`. `key` specifies the container. `name` and `description` are texts for the plentymarkets back end. `defaultLayoutContainer` is an optional property where you can specify which container to link the provider to if the user links providers to containers in the plugin detail view. In this example, Ceres provides the containers. If the containers are provided by a different plugin, replace the name accordingly.
+`defaultLayoutContainer`. `key` specifies the container. `name` and `description` are texts for the plentymarkets back end. `defaultLayoutContainer` is an optional property where you can specify which container to link the provider to if the user links providers to containers in the plugin detail view. In this example, plentyShop LTS provides the containers. If the containers are provided by a different plugin, replace the name accordingly.
 ====
 
 You can add default layout containers to as many of your data providers as you want, but no more than one default layout container to the same data provider. If you choose to add default layout containers to your plugin, you should indicate this in your documentation.

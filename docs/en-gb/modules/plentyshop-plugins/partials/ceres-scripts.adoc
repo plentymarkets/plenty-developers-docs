@@ -1,6 +1,6 @@
-= Adding scripts in Ceres
+= Adding scripts in plentyShop LTS
 
-Scripts of your plugin defined using the HTML `<script>` tag can be added to the scripts of the template plugin Ceres without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your script resource into Ceres.
+Scripts of your plugin defined using the HTML `<script>` tag can be added to the scripts of the template plugin plentyShop LTS without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your script resource into plentyShop LTS.
 
 .Theme/src/Providers/ThemeServiceProvider.php
 [source,php]
@@ -33,7 +33,7 @@ class ThemeServiceProvider extends ServiceProvider
     {
         $eventDispatcher->listen('IO.Resources.Import', function (ResourceContainer $container)
         {
-            // The script is imported in the Footer.twig of Ceres
+            // The script is imported in the Footer.twig of plentyShop LTS
             $container->addScriptTemplate('Theme::content.SingleItemScript');
         }, self::PRIORITY);
     }
@@ -42,4 +42,4 @@ class ThemeServiceProvider extends ServiceProvider
 
 Add the dependencies for the `ResourceContainer`, the `Dispatcher` and `Twig` classes.
 
-Add the `boot()` function and use the dispatcher for listening to the resource import event `IO.Resources.Import`. Use the `addScriptTemplate()` method and specify the location of your script resource, e.g. a twig template. In this template, use `<script>` tags to define the scripts to be added to the scripts of Ceres.
+Add the `boot()` function and use the dispatcher for listening to the resource import event `IO.Resources.Import`. Use the `addScriptTemplate()` method and specify the location of your script resource, e.g. a twig template. In this template, use `<script>` tags to define the scripts to be added to the scripts of plentyShop LTS.

@@ -1,6 +1,6 @@
 = Validating addresses in template plugins
 
-Template plugins that want to validate address fields using the validators in *IO* must have a configuration file following certain rules. IO can get the configuration values set in the template plugin and validate addresses based on these settings. The easiest way to do this is to copy part of the `config.json` file of *Ceres* and edit the code. Then, the namespace of the template plugin must be specified in *IO*.
+Template plugins that want to validate address fields using the validators in *IO* must have a configuration file following certain rules. IO can get the configuration values set in the template plugin and validate addresses based on these settings. The easiest way to do this is to copy part of the `config.json` file of *plentyShop LTS* and edit the code. Then, the namespace of the template plugin must be specified in *IO*.
 
 . Go to *Plugins » Plugin overview*.
 . Click on *IO*. +

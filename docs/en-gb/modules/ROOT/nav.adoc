@@ -52,9 +52,9 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:plentyshop-plugins:content-caching.adoc[Content caching]
 * xref:plentyshop-plugins:cookbook.adoc[plentyShop cookbook]
 * xref:plentyshop-plugins:reference-results-fields.adoc[ElasticSearch results fields]
-* Ceres 5
-** xref:plentyshop-plugins:ceres-5-update.adoc[Ceres 5 overview]
-** xref:plentyshop-plugins:ceres-SSR.adoc[Server-Side Rendering in Ceres]
+* plentyShop LTS
+** xref:plentyshop-plugins:ceres-5-update.adoc[plentyShop LTS overview]
+** xref:plentyshop-plugins:ceres-SSR.adoc[Server-Side Rendering in plentyShop LTS]
 ** xref:plentyshop-plugins:reference-ceres-5-style-changes.adoc[CSS changes]
 
 .ShopBuilder plugins

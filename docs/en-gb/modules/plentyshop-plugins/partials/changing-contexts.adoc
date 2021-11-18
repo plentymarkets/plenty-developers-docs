@@ -1,6 +1,6 @@
-= Changing contexts in Ceres
+= Changing contexts in plentyShop LTS
 
-Contexts provided by your own theme plugin can overwrite and extend the PHP context classes of the template plugin Ceres without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your context resource into Ceres.
+Contexts provided by your own theme plugin can overwrite and extend the PHP context classes of the template plugin plentyShop LTS without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your context resource into plentyShop LTS.
 
 .Theme/Providers/ThemeServiceProvider.php
 [source,php]
@@ -40,7 +40,7 @@ public function boot(Twig $twig, Dispatcher $eventDispatcher)
 
 Add the dependencies for the `TemplateContainer`, the `Dispatcher` and `Twig` classes.
 
-Add the `boot()` function and use the dispatcher for listening to the context event `IO.ctx.TEMPLATENAME`. Specify the template for which you want to modify the context, e.g. `IO.ctx.basket`. Use the `setContext()` method and specify which context should be used, e.g. MyContext. In your context, define the elements to be added to the PHP context classes of Ceres. You can find an example for how the context class MyContext extends the GlobalContext below.
+Add the `boot()` function and use the dispatcher for listening to the context event `IO.ctx.TEMPLATENAME`. Specify the template for which you want to modify the context, e.g. `IO.ctx.basket`. Use the `setContext()` method and specify which context should be used, e.g. MyContext. In your context, define the elements to be added to the PHP context classes of plentyShop LTS. You can find an example for how the context class MyContext extends the GlobalContext below.
 
 .Theme/src/Contexts/MyContext.php
 [source,php]
@@ -64,4 +64,4 @@ class MyContext extends GlobalContext implements ContextInterface
 }
 ----
 
-The context class MyContext now extends the GlobalContext of Ceres, thereby inheriting the data that GlobalContext provides. Additionally, you are now able to transfer new data to the template via MyContext. In order to completely overwrite the context provided by Ceres, simply delete any `extends` elements in your own context.
+The context class MyContext now extends the GlobalContext of plentyShop LTS, thereby inheriting the data that GlobalContext provides. Additionally, you are now able to transfer new data to the template via MyContext. In order to completely overwrite the context provided by plentyShop LTS, simply delete any `extends` elements in your own context.

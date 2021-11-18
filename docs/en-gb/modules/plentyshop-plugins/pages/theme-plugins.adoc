@@ -981,7 +981,7 @@ This page explains which namespace and components have been altered and which ad
 
 === Removal of the "ItemLoader" namespace
 
-We have removed all classes of the namespace "IO\Services\ItemLoader" from Ceres. As an alternative, the classes of the namesspace "IO\Services\ItemSearch" should be used from now on.
+We have removed all classes of the namespace "IO\Services\ItemLoader" in the transition to Ceres 4.0. As an alternative, the classes of the namesspace "IO\Services\ItemSearch" should be used from now on.
 
 === Overview of changed components
 
@@ -1033,7 +1033,7 @@ In the ShopCountrySettings component, the property *shipping-countries* has been
 
 ==== CategoryItem (optional)
 
-The CategoryItem component is a special case, since not all instances of the component have been adjusted to use the json_data filter. In Ceres, we only changed the component in the */resources/views/Category/Item/CategoryItem.twig* file. Each call of this component has to be modified in the theme.
+The CategoryItem component is a special case, since not all instances of the component have been adjusted to use the json_data filter. In Ceres 4, we only changed the component in the */resources/views/Category/Item/CategoryItem.twig* file. Each call of this component has to be modified in the theme.
 
 [source,twig]
 ----
@@ -1044,7 +1044,7 @@ The CategoryItem component is a special case, since not all instances of the com
 
 === Using the json_data filter in own Vue components
 
-If your theme includes components that you designed yourself and are not native to Ceres, you can use the json_data filter in these components as well. As described above, large JSON objects are now relocated into an own <script> tag:
+If your theme includes components that you designed yourself and are not native to Ceres 4, you can use the json_data filter in these components as well. As described above, large JSON objects are now relocated into an own <script> tag:
 
 [source,twig]
 ----

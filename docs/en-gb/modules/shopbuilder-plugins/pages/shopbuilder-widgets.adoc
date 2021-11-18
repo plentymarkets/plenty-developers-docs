@@ -49,11 +49,11 @@ There are four types of widgets: *static*, *structure*, *header* and *footer*. T
 
 === position
 
-Contains the position of the widget in the widget list of the ShopBuilder user interface. The positions of widgets provided by Ceres are numbered in steps of 100. Setting the position of a widget to 150, for instance, places it in the second position of the widget list between two Ceres widgets.
+Contains the position of the widget in the widget list of the ShopBuilder user interface. The positions of widgets provided by plentyShop LTS are numbered in steps of 100. Setting the position of a widget to 150, for instance, places it in the second position of the widget list between two plentyShop LTS widgets.
 
 === category
 
-Contains the categories of the widget via which it is grouped in the ShopBuilder editor. One widget can belong to multiple categories. Available categories are listed in an array beneath containers and presets in the shopBuilder.json file in Ceres. You can add your own categories in a theme. Each category consists of the key-value pairs *key*, *label*, and *position*. The default categories native to Ceres are Header, Structure, Text, Image, Item and Footer. If categories is left empty or is not included in the JSON, the widget will be listed under "more widgets" in the ShopBuilder editor.
+Contains the categories of the widget via which it is grouped in the ShopBuilder editor. One widget can belong to multiple categories. Available categories are listed in an array beneath containers and presets in the shopBuilder.json file in plentyShop LTS. You can add your own categories in a theme. Each category consists of the key-value pairs *key*, *label*, and *position*. The default categories native to plentyShop LTS are Header, Structure, Text, Image, Item and Footer. If categories is left empty or is not included in the JSON, the widget will be listed under "more widgets" in the ShopBuilder editor.
 
 === widgetClass
 

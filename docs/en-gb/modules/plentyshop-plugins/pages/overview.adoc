@@ -1,6 +1,6 @@
 = plentyShop plugins 
 
-Welcome to the developers documentation for the plentyShop plugins https://github.com/plentymarkets/plugin-ceres[plentyShop LTS^] and https://github.com/plentymarkets/plugin-io[IO^].
+Welcome to the developers documentation for the plentyShop plugins https://github.com/plentymarkets/plugin-[plentyShop LTS^] and https://github.com/plentymarkets/plugin-io[IO^].
 
 On here, you will find ressources that help you customise your online shop template.
 If you find anything we can improve, make sure to leave a feedback comment at the bottom of the respective page or by clicking the speech bubble in the upper right corner.
