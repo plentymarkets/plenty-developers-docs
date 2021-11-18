@@ -1,7 +1,7 @@
-= Vue Server-Side Rendering in Ceres
+= Vue Server-Side Rendering in plentyShop
 
-With the version 5.0.30 of the Ceres plugin, we introduced Vue Server-Side Rendering (SSR) to Ceres. 
-This update serves to prepare Ceres online shops for the changes brought by the Google core update and to generally improve online shop performance.
+With the version 5.0.30 of the plentyShop LTS plugin, we introduced Vue Server-Side Rendering (SSR) to plentyShop. 
+This update serves to prepare plentyShop LTS online shops for the changes brought by the Google core update and to generally improve online shop performance.
 
 With SSR, Vue.js components, whose markup was previously generated in the browser, are now already processed on the web server.
 Therefore, the HTML, that has already been generated, is sent to the browser and can directly be displayed there.
@@ -12,12 +12,12 @@ For this, it is important that the markup provided by the server and the markup 
 
 == Basics
 
-The basis of the implementation of SSR in Ceres is the link:https://ssr.vuejs.org/[official SSR guide of Vue.js].
+The basis of the implementation of SSR in plentyShop is the link:https://ssr.vuejs.org/[official SSR guide of Vue.js].
 
 The section link:https://ssr.vuejs.org/guide/universal.html#data-reactivity-on-the-server[Writing Universal Code] defines some basic requirements that must be fulfilled by Vue components so they can be processed on the server side.
-The implementation in Ceres also has the following requirements:
+The implementation in plentyShop LTS also has the following requirements:
 
-* Currently, only so-called Single-File-Components (SFCs) are rendered on the server side. In Ceres, this covers all components on static pages, category and item views. At this time, MyAccount, Checkout and associated pages, such as order confirmation, return form etc., can not be rendered on the server side.
+* Currently, only so-called Single-File-Components (SFCs) are rendered on the server side. In plentyShop LTS, this covers all components on static pages, category and item views. At this time, MyAccount, Checkout and associated pages, such as order confirmation, return form etc., can not be rendered on the server side.
 * Individual templates that are referenced via the `override-template` property on a Vue component cannot be taken into account on the server side and therefore lead to hydration errors (see above). However, it is possible to explicitly exclude individual components from server-side rendering (see below).
 
 The global overwriting of component templates through the `data-component` attribute on the corresponding script tag is still possible (see link:https://developers.plentymarkets.com/en-gb/developers/main/plentyshop-plugins/theme-plugins.html#_changing_the_template_of_a_vue_component[Changing the template of a Vue component]).
@@ -36,7 +36,7 @@ The following directives are available:
 
 === SSR:app() directive
 
-This directive marks the element that should be used as the template for the main component. In Ceres, for example, this element is marked with the ID “vue-app”.
+This directive marks the element that should be used as the template for the main component. In plentyShop LTS, for example, this element is marked with the ID “vue-app”.
 
 [source,twig]
 ----
@@ -137,9 +137,9 @@ function afterRender(vueApp) {
 export { globals, beforeCreate, beforeRender, afterRender };
 ----
 
-## Switching Ceres to server-side rendering
+## Switching plentyShop LTS to server-side rendering
 
-The necessary changes to Ceres are currently available on GitHub on the branch "**feature/ssr**".
+The necessary changes to plentyShop LTS are currently available on GitHub on the branch "**feature/ssr**".
 No adjustments are necessary for IO, meaning that the IO stable branch or the version from the Marketplace can be used.
 To be able to use the SSR feature, test systems must currently be activated by us or moved to an appropriate test environment. 
 Alternatively, you can order your own test systems with activated server-side rendering for the duration of the hackathon (until 30 April).
@@ -232,7 +232,7 @@ These errors may occur while rendering your Vue.js application on the server. In
 
 ==== No app factory provided
 
-There is no Javascript that exports a `createApp()` function. By default, this is done by the ceres-server.js from the Ceres plugin.
+There is no Javascript that exports a `createApp()` function. By default, this is done by the ceres-server.js from the plentyShop LTS plugin.
 
 You should check if:
 

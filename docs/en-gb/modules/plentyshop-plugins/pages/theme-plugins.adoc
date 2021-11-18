@@ -2,7 +2,7 @@
 
 On this page, you will find an overview of relevant information about theme plugins. Theme plugins let you change the colour and style of your template in an easy and convenient way. In contrast to other plugins, you only have to deploy a theme once to then activate and deactivate it without further configuration.
 
-Theme plugins make use of a xref:plentyshop:how-to-template-containers.adoc[template container] in the Ceres template and extend the CSS of Ceres. In doing so, the CSS of the theme will override all concerned classes in the Ceres stylesheet. Classes that are not styled in the CSS of the theme but in the Ceres stylesheet are not affected.
+Theme plugins make use of a xref:plentyshop:how-to-template-containers.adoc[template container] in the plentyShop LTS template and extend the CSS of plentyShop LTS. In doing so, the CSS of the theme will override all concerned classes in the plentyShop LTS stylesheet. Classes that are not styled in the CSS of the theme but in the plentyShop LTS stylesheet are not affected.
 
 == Further reading
 
@@ -13,14 +13,14 @@ Theme plugins make use of a xref:plentyshop:how-to-template-containers.adoc[temp
 * xref:plentymarketplace:plugin-upload-requirements.adoc[Plugin requirements for plentyMarketplace]
 * link:http://twig.sensiolabs.org/doc/templates.html#template-inheritance[Template inheritance^]
 * link:http://twig.sensiolabs.org/doc/templates.html#including-other-templates[Including other templates^]
-* xref:plentyshop-plugins:cookbook#_adding_style[Adding style and scripts in Ceres]
+* xref:plentyshop-plugins:cookbook#_adding_style[Adding style and scripts in plentyShop LTS]
 
 [NOTE]
 .Plugin priorities
 ====
-In order to ensure that the theme plugin is working properly, you are advised to assign a priority number to the plugin, that is higher than that of the plugin *Ceres* and lower than that of the plugin *IO*.
+In order to ensure that the theme plugin is working properly, you are advised to assign a priority number to the plugin, that is higher than that of the plugin *plentyShop LTS* and lower than that of the plugin *IO*.
 
-For instance, if IO is assigned the position number 999 and Ceres is asigned the priority number 997, the theme plugin should receive the priority number 998.
+For instance, if IO is assigned the position number 999 and plentyShop LTS is asigned the priority number 997, the theme plugin should receive the priority number 998.
 ====
 
 == Creating a theme
@@ -40,7 +40,7 @@ Theme/
     │   │
     │   └── views/
     │       └── content/
-    │           └── Theme.twig // content to be injected into the Ceres template container
+    │           └── Theme.twig // content to be injected into the plentyShop LTS template container
     ├── src/
     │   ├── Containers/
     │   │   └── ThemeContainer.php
@@ -61,7 +61,7 @@ Theme/
     "description"           :"Basic theme plugin",
     "namespace"             :"Theme",
     "author"                :"Your name",
-    "keywords"              : ["theme", "Ceres", "template"],
+    "keywords"              : ["theme", "plentyShop LTS", "template"],
     "type"                  :"theme",
     "require"               : [],
     "serviceProvider"       :"Theme\\Providers\\ThemeServiceProvider",
@@ -70,7 +70,7 @@ Theme/
         {
             "key"           :"Theme\\Containers\\ThemeContainer",
             "name"          :"Dark background",
-            "description"   :"Change the background colour of the Ceres template"
+            "description"   :"Change the background colour of the plentyShop LTS template"
         }
     ]
 }
@@ -170,7 +170,7 @@ This facilitates adding your own markup and style to an existing template plugin
 
 === Page structure
 
-You can either change parts of the page design or edit the entire page design to meet your needs. The page design of Ceres consists of two main sections, the *head* and the *body*. The head contains the meta data of the page as well as the linked stylesheets. The body is divided into multiple sub-sections called wrappers. Wrappers include different components, partials or pages.
+You can either change parts of the page design or edit the entire page design to meet your needs. The page design of plentyShop LTS consists of two main sections, the *head* and the *body*. The head contains the meta data of the page as well as the linked stylesheets. The body is divided into multiple sub-sections called wrappers. Wrappers include different components, partials or pages.
 
 The most important wrapper is the main wrapper containing the following partials:
 
@@ -212,7 +212,7 @@ The GlobalContext provides variables that are utilised by all other contexts. Th
 |Variable |Description
 
 |$ceresConfig
-|Contains the data of the current Ceres configuration.
+|Contains the data of the current plentyShop LTS configuration.
 
 |$lang
 |Contains the selected language.
@@ -459,7 +459,7 @@ The following table depicts which context is applicable to which template.
 
 === Changing the page design
 
-The TWIG http://twig.sensiolabs.org/doc/2.x/tags/include.html[include statement^] is used for this purpose. In the example below the `ThemeFooter.twig` file is included in the `PageDesign.twig` file of Ceres. You can simply create your own footer template and replace the Ceres footer.
+The TWIG http://twig.sensiolabs.org/doc/2.x/tags/include.html[include statement^] is used for this purpose. In the example below the `ThemeFooter.twig` file is included in the `PageDesign.twig` file of plentyShop LTS. You can simply create your own footer template and replace the plentyShop LTS footer.
 
 ==== Code for the ServiceProvider
 
@@ -506,7 +506,7 @@ Add the dependencies for the `Partial` function as well as the `Dispatcher` and 
 
 Add the `boot()` function and specify one or multiple partials, e.g. `IO.init.templates`, as well as the TWIG template(s) for the partial(s), e.g. `Theme::content.ThemeFooter`. We will add the TWIG template in the next step. 
 
-The priority of the template is set in line 29. Original Ceres templates have a priority of 100. Any number less than 100 will indicate a higher priority.
+The priority of the template is set in line 29. Original plentyShop LTS templates have a priority of 100. Any number less than 100 will indicate a higher priority.
 
 Available partials are: `head`, `header`, `footer` and `page-design`. You can also add your own partials by using the `set('your-partial', 'Plugin::PartialTemplate')` method to extend the original page design. Replace `your-partial` with your own partial and `Plugin::PartialTemplate` with the template path.
 
@@ -530,7 +530,7 @@ By using the `{% include getPartial('footer') %}` statement in the `PageDesign.t
 
 === Changing the template of a page
 
-The link:http://twig.sensiolabs.org/doc/2.x/tags/extends.html[extends tag^] is used to extend a template from another template. In the example below, the `ThemeBasket.twig` file extends the `PageDesign.twig` file of Ceres. TWIG link:http://twig.sensiolabs.org/doc/2.x/tags/block.html[blocks^] are used to define the content that will be inserted in the main wrapper of the page design. We only have to edit the ServiceProvider of our theme and create the page template, e.g. the basket.
+The link:http://twig.sensiolabs.org/doc/2.x/tags/extends.html[extends tag^] is used to extend a template from another template. In the example below, the `ThemeBasket.twig` file extends the `PageDesign.twig` file of plentyShop LTS. TWIG link:http://twig.sensiolabs.org/doc/2.x/tags/block.html[blocks^] are used to define the content that will be inserted in the main wrapper of the page design. We only have to edit the ServiceProvider of our theme and create the page template, e.g. the basket.
 
 image::Ceres_Basket.png[width=640, height=360]
 
@@ -579,9 +579,9 @@ Add the `boot()` function and specify one or multiple pages, e.g. `IO.tpl.basket
 
 We use the `return false` statement to interrupt the chain of events.
 
-The priority of the template is set in line 29. Original Ceres templates have a priority of 100. Any number less than 100 will indicate a higher priority.
+The priority of the template is set in line 29. Original plentyShop LTS templates have a priority of 100. Any number less than 100 will indicate a higher priority.
 
-A list of available pages can be found in the xref:plentyshop-plugins:theme-plugins.adoc#_theme_ceres_pages[template overview] for Ceres.
+A list of available pages can be found in the xref:plentyshop-plugins:theme-plugins.adoc#_theme_ceres_pages[template overview] for plentyShop LTS.
 
 [[code-template-basket]]
 ==== Code for the Basket template
@@ -710,7 +710,7 @@ class ThemeServiceProvider extends ServiceProvider
 
 Add the dependencies for the `ComponentContainer`, the `Dispatcher` and `Twig` classes.
 
-Add the `boot()` function and use the dispatcher for listening to the component import event `IO.Component.Import`. We get the component that we want to change by using the `getOriginComponentTemplate()` method, e.g. the SingleItem template in Ceres. We then set our own component template by using `setNewComponentTemplate` and specifying the path to the component, here `Theme::content.SingleItem`.
+Add the `boot()` function and use the dispatcher for listening to the component import event `IO.Component.Import`. We get the component that we want to change by using the `getOriginComponentTemplate()` method, e.g. the SingleItem template in plentyShop LTS. We then set our own component template by using `setNewComponentTemplate` and specifying the path to the component, here `Theme::content.SingleItem`.
 
 ==== Code for the Vue component template
 
@@ -724,7 +724,7 @@ Simply add a template for your Vue component and insert your markup into the tem
 
 == Overwriting Twig templates and macros
 
-If you are plugin developer who wants to replace specific portions of Ceres with your own theme, we have good news for you. We've made it a lot easier to overwrite specific Twig templates, thereby facilitating the development of themes for the online store. By implementing the method detailed below you can overwrite templates as well as entire macros.
+If you are plugin developer who wants to replace specific portions of plentyShop LTS with your own theme, we have good news for you. We've made it a lot easier to overwrite specific Twig templates, thereby facilitating the development of themes for the online store. By implementing the method detailed below you can overwrite templates as well as entire macros.
 
 Now, all you need to do to overwrite Twig templates is modify the ServiceProvider of your theme plugin to inherit from the class *Plenty\Modules\Webshop\Template\Providers\TemplateServiceProvider*. You will have to implement this class via the *use* and *extends* directives.
 
@@ -742,15 +742,15 @@ Here, `$original` is a placeholder for the template or macro you want to replace
 $this->overrideTemplate("Ceres::Widgets.Common.ImageBoxWidget", "MyTheme::Widgets.CustomImageBoxWidget");
 ----
 
-This replaces the Ceres image box widget for the ShopBuilder with a custom image box widget that the theme plugin "MyTheme" provides.
+This replaces the plentyShop LTS image box widget for the ShopBuilder with a custom image box widget that the theme plugin "MyTheme" provides.
 
 == Overview of pages and page components
 
-Find the template folder structure of Ceres as well as an overview of pages and page components used in the Ceres template plugin below.
+Find the template folder structure of plentyShop LTS as well as an overview of pages and page components used in the plentyShop LTS template plugin below.
 
-=== Ceres template folder
+=== plentyShop LTS template folder
 
-The template folder is structured into 10 sub-folders that include the main pages of Ceres and the respective components.
+The template folder is structured into 10 sub-folders that include the main pages of plentyShop LTS and the respective components.
 
 [source]
 ----
@@ -865,16 +865,16 @@ Ceres/
                 └── TermsAndConditions.twig
 ----
 
-=== Ceres page templates
+=== plentyShop LTS page templates
 
-Ceres uses individual templates containing the markup of the main pages. Some templates include partials or components. Find a table of all page templates and their respective location in the *resources/views* folder below:
+plentyShop LTS uses individual templates containing the markup of the main pages. Some templates include partials or components. Find a table of all page templates and their respective location in the *resources/views* folder below:
 
 [cols="1,3"]
 |===
 |Template |Description
 
 |Basket
-a| The template for the shopping cart of your online store. It can be found in the *Basket* sub-folder of Ceres. This template includes the following components:
+a| The template for the shopping cart of your online store. It can be found in the *Basket* sub-folder of plentyShop LTS. This template includes the following components:
 
 * BasketList
 * Coupon
@@ -1074,12 +1074,9 @@ In order to establish the reference to the <script> tag, you need to modify your
 }
 ----
 
-== Updating themes to Ceres 5.0
+== Updating themes to plentyShop LTS
 
-For the latest major version Ceres 5.0, we reworked the file structure of many components. In the past, components usually consisted of 2 files: a TWIG file and a Javascript file. In order to improve maintainability and performance, these files have mostly been combined into single Vue.js components, which we call single file components, or SFC for short. These changes necessitate adjustments on part of theme developers. In this chapter you will learn which changes have been made to the components and what you need to watch out for when developing themes.
-
-Note that the update guide for Ceres 5.0 is still in progress and will
-continually be updated before the release of Ceres 5.0.
+For the latest major version plentyShop LTS, we reworked the file structure of many components. In the past, components usually consisted of 2 files: a TWIG file and a Javascript file. In order to improve maintainability and performance, these files have mostly been combined into single Vue.js components, which we call single file components, or SFC for short. These changes necessitate adjustments on part of theme developers. In this chapter you will learn which changes have been made to the components and what you need to watch out for when developing themes.
 
 === Structure of single file components
 
@@ -1109,7 +1106,7 @@ We added two helper components that facilitate performance improvements: the int
 
 Using the lazy loading helper component, the embedded component is only loaded when the lazy loaded component enters the visible area in the online store. With the help of the intersect component, the embedded component is always loaded, but is only mounted and rendered when the intersect component enters the visible area in the online store.
 
-Both helper components (*Intersect.vue* and *LazyLoad.vue*) are located in the Ceres plugin under `ressources/js/app/components/common`.
+Both helper components (*Intersect.vue* and *LazyLoad.vue*) are located in the plentyShop LTS plugin under `ressources/js/app/components/common`.
 
 Below you will find two code snippets, the first of which illustrates the use of the lazy-load component and the second of which illustrates how to use the intersect component.
 
@@ -1143,7 +1140,7 @@ Here, the div in the template section includes a placeholder that is visible whi
 
 ==== Overwriting single file components
 
-If you want to overwrite Ceres single file components, there are two ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every instance of the component will be replaced by your content.
+If you want to overwrite plentyShop LTS single file components, there are two ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every instance of the component will be replaced by your content.
 
 Take a look at how individual components can be overridden:
 

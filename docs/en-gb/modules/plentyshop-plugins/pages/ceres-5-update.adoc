@@ -1,6 +1,6 @@
-= Updating plugins to Ceres 5 compatibility
+= Updating plugins to plentyShop LTS compatibility
 
-On this page, you will find an overview of relevant information regarding the changes made to Ceres for the release of Ceres 5. For a complete list of all Ceres 5 changes, please use the link:https://github.com/plentymarkets/plugin-ceres/compare/4.6.0...5.0.0[GitHub compare function^]. This pages inludes information on the following
+On this page, you will find an overview of relevant information regarding the changes made to the plugin for the release of plentyShop LTS. For a complete list of all plentyShop LTS changes, please use the link:https://github.com/plentymarkets/plugin-ceres/compare/4.6.0...5.0.0[GitHub compare function^]. This pages inludes information on the following
 aspects:
 
 * <<_single_file_components, Single file components>>
@@ -12,7 +12,7 @@ aspects:
 
 == Single file components
 
-For the latest major version Ceres 5.0, we reworked the file structure of many components. In the past, components usually consisted of 2 files: a TWIG file and a Javascript file. In order to improve maintainability and performance, these files have mostly been combined into single Vue.js components, which we call single file components, or SFC for short. These changes necessitate adjustments on part of theme developers. In this chapter you will learn which changes have been made to the components and what you need to watch out for when developing themes.
+For the latest major version plentyShop LTS, we reworked the file structure of many components. In the past, components usually consisted of 2 files: a TWIG file and a Javascript file. In order to improve maintainability and performance, these files have mostly been combined into single Vue.js components, which we call single file components, or SFC for short. These changes necessitate adjustments on part of theme developers. In this chapter you will learn which changes have been made to the components and what you need to watch out for when developing themes.
 
 === Structure of single file components
 
@@ -39,7 +39,7 @@ We added 2 helper components that facilitate performance improvements: the inter
 
 Using the lazy loading helper component, the embedded component is only loaded when the lazy loaded component enters the visible area in the online store. With the help of the intersect component, the embedded component is always loaded, but is only mounted and rendered when the intersect component enters the visible area in the online store.
 
-Both helper components (*Intersect.vue* and *LazyLoad.vue*) are located in the Ceres plugin in the `ressources/js/app/components/common` folder.
+Both helper components (*Intersect.vue* and *LazyLoad.vue*) are located in the plentyShop LTS plugin in the `ressources/js/app/components/common` folder.
 
 Below you will find 2 code snippets, the first of which illustrates the use of the lazy-load component and the second of which illustrates how to use the intersect component.
 
@@ -73,7 +73,7 @@ Here, the div in the template section includes a placeholder that is visible whi
 
 === Overwriting single file components
 
-If you want to overwrite Ceres single file components, there are 2 ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every single instance of the component will be replaced by your content.
+If you want to overwrite plentyShop LTS single file components, there are 2 ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every single instance of the component will be replaced by your content.
 
 Take a look at how individual components can be overridden:
 
@@ -95,15 +95,15 @@ For overwriting components globally for the entire online store, you need to set
 </script>
 ----
 
-== Code splitting in Ceres 5
+== Code splitting in plentyShop LTS
 
 In the past, if you wanted to include additional Javascript or CSS styles in your plugin, one possibility was to add it via the existing `Script.AfterScriptsLoaded` and `Template.Style` xref:plentyshop-plugins:template-containers.adoc[template containers]. As a result, the added JS and CSS were loaded in the entire online store, negatively impacting its performance.
 
 As a consequence, we added 4 new template containers, which serve to only load scripts and styles where they are actually needed. You should make use of these whenever you want to add JS or CSS via your plugin, that is only needed in a particular area of the online store.
 
-The Ceres homepage still uses the aforementioned `Script.AfterScriptsLoaded` and `Template.Style` template containers. The two containers `SingleItem.AfterScriptsLoaded` and `SingleItem.Styles` have been exclusively added to incorporate scripts and styles in the single item view. The two containers `Checkout.AfterScriptsLoaded` and `Checkout.Styles` have been added to incorporate scripts and styles in the checkout as well as on other pages that are not SEO-relevant, such as content pages, the my account area, and the basket.
+The plentyShop LTS homepage still uses the aforementioned `Script.AfterScriptsLoaded` and `Template.Style` template containers. The two containers `SingleItem.AfterScriptsLoaded` and `SingleItem.Styles` have been exclusively added to incorporate scripts and styles in the single item view. The two containers `Checkout.AfterScriptsLoaded` and `Checkout.Styles` have been added to incorporate scripts and styles in the checkout as well as on other pages that are not SEO-relevant, such as content pages, the my account area, and the basket.
 
-For each script or style you want to add to Ceres, you should first evaluate in which areas of the online store it is needed and incorporate it accordingly.
+For each script or style you want to add to plentyShop LTS, you should first evaluate in which areas of the online store it is needed and incorporate it accordingly.
 
 === Adding a script to the SingleItem.AfterScriptsLoaded container
 
@@ -155,7 +155,7 @@ Lastly, the Twig file `MyCarouselCode.twig`, to which the PHP class is referring
 
 == IO facet extension container
 
-As per usual, a new IO version accompanies the release of Ceres 5. If you are an external developer and want to integrate an additional facet into the online store, the latest version of IO facilitates the process for you.
+As per usual, a new IO version accompanies the release of plentyShop LTS. If you are an external developer and want to integrate an additional facet into the online store, the latest version of IO facilitates the process for you.
 
 We moved to `facetExtension` from IO to the plentymarkets core functionality, thereby eliminating the need to listen to a specific event, in order to load the added facet at the right moment. Take a look how the facet extension worked in the past:
 
@@ -257,17 +257,17 @@ variables have been replaced. The table below lists all replacements:
 
 == CSS changes
 
-For Ceres 5, a lot has changed in terms of CSS styles. We removed
+For plentyShop LTS, a lot has changed in terms of CSS styles. We removed
 obsolete classes that hadn't been used for some time, we removed
 duplicate content, and integrated the existing Bootstrap classes to a
 larger degree. The changes are too extensive to list on this page.
-Below, you can find a link to the complete CSS changes for Ceres 5.
+Below, you can find a link to the complete CSS changes for plentyShop LTS.
 
 xref:plentyshop-plugins:ceres-5-style-changes.adoc[See all changed CSS classes]
 
 == Template changes
 
-For Ceres 5, many templates received on overhaul to improve the
+For plentyShop LTS, many templates received on overhaul to improve the
 performance of the online store. Since these changes are too extensive
 to be listed on this page, you can find a link to the template changes
 below.
