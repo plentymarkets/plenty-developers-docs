@@ -78,7 +78,7 @@ There must be an option to deactivate crons for data exports and imports at leas
 
 *Theme:*
 
-Theme plugins must display dependencies to Ceres/IO versions to reduce support enquiries.
+Theme plugins must display dependencies to plentyShop LTS/IO versions to reduce support enquiries.
 
 == API keys and Login data
 

@@ -114,11 +114,11 @@ There are four types of widgets: *static*, *structure*, *header* and *footer*. T
 
 === categories
 
-Contains the categories of the widget as an array. The categories specified here define where the widget is grouped in the widget overview in the ShopBuilder editor. Ceres provides 6 default categories (header, footer, structure, image, text, item), but you can specify further categories in the shopBuilder.json. Here, the category is left empty; as a result, the widget will be listed under "more widgets".
+Contains the categories of the widget as an array. The categories specified here define where the widget is grouped in the widget overview in the ShopBuilder editor. plentyShop LTS provides 6 default categories (header, footer, structure, image, text, item), but you can specify further categories in the shopBuilder.json. Here, the category is left empty; as a result, the widget will be listed under "more widgets".
 
 === position
 
-Contains the position of the widget in the widget list of the ShopBuilder user interface. The positions of widgets provided by Ceres are numbered in steps of 100. Setting the position of a widget to 150, for instance, places it in the second position of the widget list between two Ceres widgets.
+Contains the position of the widget in the widget list of the ShopBuilder user interface. The positions of widgets provided by plentyShop LTS are numbered in steps of 100. Setting the position of a widget to 150, for instance, places it in the second position of the widget list between two plentyShop LTS widgets.
 
 === widgetClass
 
@@ -341,7 +341,7 @@ The following table specifies which default values can be set for each input typ
 
 == Widget PHP class
 
-Ceres already supplies a widget base class that provides the necessary logic for ShopBuilder widgets. This base widget is located in the Ceres file structure under src\Widgets\Helper\BaseWidget.php. You can use and extend the base widget so that you do not have to write the entire logic of the ShopBuilder widget yourself. Every widget PHP class needs to include the functions `getPreview` and `render`. The *getPreview* function serves to render the TWIG for the ShopBuilder user interface; the *render* function serves to make the contents saved by the user available in the frontend. Take a look at how the Google Maps widget implements the Ceres base widget:
+plentyShop LTS already supplies a widget base class that provides the necessary logic for ShopBuilder widgets. This base widget is located in the plentyShop LTS file structure under src\Widgets\Helper\BaseWidget.php. You can use and extend the base widget so that you do not have to write the entire logic of the ShopBuilder widget yourself. Every widget PHP class needs to include the functions `getPreview` and `render`. The *getPreview* function serves to render the TWIG for the ShopBuilder user interface; the *render* function serves to make the contents saved by the user available in the frontend. Take a look at how the Google Maps widget implements the plentyShop LTS base widget:
 
 .src/Widgets/MapsWidget.php
 [source,php]
@@ -363,7 +363,7 @@ Ceres already supplies a widget base class that provides the necessary logic for
 [NOTE]
 .Explanation
 ====
-Here, the `use Ceres/Widgets/Helper/BaseWidget` directive refers to the Ceres base widget. The class MapsWidget then extends the base widget by overwriting the template of the base widget with  GoogleMapsWidget::Widgets.MapsWidget`. This refers to the location of the TWIG template, which is located at resources/views/Widgets/MapsWidget.twig. The required `getPreview` and `render` functions are part of the base widget used here. Your widget needs to return an array of key-value pairs for the `getTemplateData` function, so that the key becomes available in the TWIG template.
+Here, the `use Ceres/Widgets/Helper/BaseWidget` directive refers to the plentyShop LTS base widget. The class MapsWidget then extends the base widget by overwriting the template of the base widget with  GoogleMapsWidget::Widgets.MapsWidget`. This refers to the location of the TWIG template, which is located at resources/views/Widgets/MapsWidget.twig. The required `getPreview` and `render` functions are part of the base widget used here. Your widget needs to return an array of key-value pairs for the `getTemplateData` function, so that the key becomes available in the TWIG template.
 ====
 
 Take a look at the array returned in the Maps widget:
@@ -396,14 +396,14 @@ Here, we return either an array in which `geocoding_data` holds the relevant lat
 
 == The Widget interface
 
-You do not need to use the Ceres base widget if you want to develop a widget. If you build the widget's logic yourself, you can instead implement the Widget contract, i.e. the Widget interface. The integration of the Widget interface is imperative. The Widget interface is located under Plenty\Modules\ContentBuilder\Contracts\Widget. You integrate the Widget interface by *using* the Widget interface (Plenty\Modules\ContentBuilder\Contracts\Widget) and including `class MyWidgetClass implements Widget` in your widget PHP class. Take a look at how the base widget refers to the Widget interface:
+You do not need to use the plentyShop LTS base widget if you want to develop a widget. If you build the widget's logic yourself, you can instead implement the Widget contract, i.e. the Widget interface. The integration of the Widget interface is imperative. The Widget interface is located under Plenty\Modules\ContentBuilder\Contracts\Widget. You integrate the Widget interface by *using* the Widget interface (Plenty\Modules\ContentBuilder\Contracts\Widget) and including `class MyWidgetClass implements Widget` in your widget PHP class. Take a look at how the base widget refers to the Widget interface:
 
 .src/Widgets/Helper/BaseWidget.php
 [source,php]
 ----
 <?php
 
-    namespace Ceres\Widgets\Helper;
+    namespace \Widgets\Helper;
 
     use Plenty\Modules\ShopBuilder\Contracts\Widget;
     use Plenty\Plugin\Templates\Twig;
@@ -441,7 +441,7 @@ This is the widget's TWIG template, i.e. the HTML representation of the widget f
 
 == Inline editing for Widgets
 
-With one of the following releases of Ceres, you will be able to make inline editing available for widgets that use text. Thereby, you can make the widget text editable via a toolbar that includes a number of formatting options specified below. You can also add specific CSS classes so that the formatting is superimposed onto the editable
+With one of the following releases of plentyShop LTS, you will be able to make inline editing available for widgets that use text. Thereby, you can make the widget text editable via a toolbar that includes a number of formatting options specified below. You can also add specific CSS classes so that the formatting is superimposed onto the editable
 content.
 
 You make the adjustments in the widget.twig file of your widget; changes to the widget.json file are not necessary. To make use of the inline editing, your widget needs to incorporate the macro *makeEditable* in the *resources/views/Widgets/Helper/WidgetHelper.twig* file. There are three different attributes that you can use to include and work with the class. These will be described below:
@@ -529,7 +529,7 @@ Additionally, it is necessary that you include the attribute *data-builder-code-
 
 The *clickable* attribute can be used to make elements in the ShopBuilder editor view clickable. The ShopBuilder *tabs* widget, for instance, utilises the clickable attribute to make it possible to click on different tabs in the structure widget to switch between them.
 
-In Ceres, the *data-builder-clickable* attribute is integrated into the WidgetHelper.twig. Therefore, the tab widget accesses the attribute via the WidgetHelper macro: `{{ WidgetHelper.makeClickable(isPreview) }}`
+In plentyShop LTS, the *data-builder-clickable* attribute is integrated into the WidgetHelper.twig. Therefore, the tab widget accesses the attribute via the WidgetHelper macro: `{{ WidgetHelper.makeClickable(isPreview) }}`
 
 == How to create presets for the ShopBuilder
 
@@ -543,20 +543,20 @@ The preset information is stored in the `shopBuilder.json` file. There, the `pre
 
 The key-value pair for each preset entry consists of the *label* and the *presetClass*.
 
-The preset's `label` references an entry in the Widgets.properties file located in the resources/lang folder, which provides the name of the preset that is displayed in the frontend. Please note that the name of the plugin providing the preset is appended in brackets after the label in the frontend, e.g. "Default header (Ceres)".
+The preset's `label` references an entry in the Widgets.properties file located in the resources/lang folder, which provides the name of the preset that is displayed in the frontend. Please note that the name of the plugin providing the preset is appended in brackets after the label in the frontend, e.g. "Default header (plentyShop LTS)".
 
 The `presetClass` value indicates a path to the pertinent PHP class located in the Ceres/Widgets/Presets folder, which specifies the widgets and contains the settings of your preset. Please note that the path needs to include double backslashes, e.g. `Ceres\\Widgets\\Presets\\DefaultHeaderPreset`.
 
-Below, you can see what the PHP class for the Ceres default header looks like.
+Below, you can see what the PHP class for the plentyShop LTS default header looks like.
 
-=== Code example for the Ceres default header
+=== Code example for the plentyShop LTS default header
 
 .src/Widgets/Presets/DefaultHeaderPreset.php
 [source,php]
 ----
 <?php
 
-namespace Ceres\Widgets\Presets;
+namespace \Widgets\Presets;
 
 use Ceres\Config\CeresConfig;
 use Ceres\Widgets\Helper\PresetHelper;
@@ -622,9 +622,9 @@ class DefaultHeaderPreset implements ContentPreset
 [NOTE]
 .Explanation
 ====
-The code example above is taken from the PHP class for the Ceres default header. The three instances of `$preset->createWidget` specify which widgets are preconfigured for the header preset. In this case these are the top bar, the category navigation and the breadcrumb navigation. Underneath each instance of `$preset->createWidget`, the `->withSetting` directive specifies the default values of the individual widget settings as configured for the preset.
+The code example above is taken from the PHP class for the plentyShop LTS default header. The three instances of `$preset->createWidget` specify which widgets are preconfigured for the header preset. In this case these are the top bar, the category navigation and the breadcrumb navigation. Underneath each instance of `$preset->createWidget`, the `->withSetting` directive specifies the default values of the individual widget settings as configured for the preset.
 
-The line `$preset = pluginApp(PresetHelper::class);` accesses the Ceres helper class for presets, which is located in the Widgets/Helper folder.
+The line `$preset = pluginApp(PresetHelper::class);` accesses the plentyShop LTS helper class for presets, which is located in the Widgets/Helper folder.
 ====
 
 == The data field picker
@@ -632,7 +632,7 @@ The line `$preset = pluginApp(PresetHelper::class);` accesses the Ceres helper c
 Beginning with the release of Ceres v4.3, you will be able to implement so-called data field pickers into your widgets. Data fields are individual variables that can be placed inside widgets to access particular item data. The *text widget* of the ShopBuilder, for instance, makes it possible for users to add fields such as the manufacturing country or the item's barcode to the item view. Any widget that supports inline editing can potentially access the data field picker. The fields are made available to users through a navigation tree on the left of the editor interface in the ShopBuilder. In this section, you will learn how the data field picker is implemented in the
 widgets.
 
-We added an object to the shopBuilder.json in the Ceres plugin, namely the "dataFieldProviders". So far, we have only included a data field provider for item data fields for the single item view , which is specified below as the *singleitem* key-value pair and its corresponding path in the plugin. The key "singleitem" here corresponds to the "allowedTypes" object in the shopbuilder.json; the item data field picker is only available for widgets that support inline editing that are placed on ShopBuilder contents of the type "singleitem".
+We added an object to the shopBuilder.json in the plentyShop LTS plugin, namely the "dataFieldProviders". So far, we have only included a data field provider for item data fields for the single item view , which is specified below as the *singleitem* key-value pair and its corresponding path in the plugin. The key "singleitem" here corresponds to the "allowedTypes" object in the shopbuilder.json; the item data field picker is only available for widgets that support inline editing that are placed on ShopBuilder contents of the type "singleitem".
 
 .shopBuilder.json
 [source,json]

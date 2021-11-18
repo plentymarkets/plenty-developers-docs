@@ -1,6 +1,6 @@
-= Adding style in Ceres
+= Adding style in plentyShop LTS
 
-Inline style of your plugin defined using the HTML `<style>` tag can be added to the style of the template plugin Ceres without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your style resource into Ceres.
+Inline style of your plugin defined using the HTML `<style>` tag can be added to the style of the template plugin plentyShop LTS without creating a data provider and linking the content with a template container. Simply extend the ServiceProvider of your plugin and import your style resource into plentyShop LTS.
 
 .Theme/src/Providers/ThemeServiceProvider.php
 [source,php]
@@ -33,7 +33,7 @@ class ThemeServiceProvider extends ServiceProvider
     {
         $eventDispatcher->listen('IO.Resources.Import', function (ResourceContainer $container)
         {
-            // The style is imported in the <head> on the PageDesign.twig of Ceres
+            // The style is imported in the <head> on the PageDesign.twig of plentyShop LTS
             $container->addStyleTemplate('Theme::content.SingleItemStyle');
         }, self::PRIORITY);
     }

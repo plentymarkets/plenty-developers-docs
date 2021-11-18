@@ -76,7 +76,7 @@ image::shopbuilder-dropzones.png[]
 In plentyShop, the single item page is one single Vue component. 
 In order to make item data accessible from within item widgets, ShopBuilder contents need to be injected into this component using link:https://vuejs.org/v2/guide/components-slots.html[slots^] instead of inserting them in the component template directly.
 
-In the link:https://github.com/plentymarkets/plugin-ceres/blob/stable/resources/views/Item/SingleItemWrapper.twig#L105-L118[default Ceres template for single item views^], the ShopBuilder content is injected as one default slot:
+In the link:https://github.com/plentymarkets/plugin-ceres/blob/stable/resources/views/Item/SingleItemWrapper.twig#L105-L118[default plentyShop LTS template for single item views^], the ShopBuilder content is injected as one default slot:
 
 [source,twig]
 ----

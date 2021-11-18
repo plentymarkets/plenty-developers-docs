@@ -1,9 +1,9 @@
-= Adding content categories in the Ceres navigation
+= Adding content categories in the plentyShop LTS navigation
 
-By default, content categories are not displayed in the navigation bar of Ceres. If you want to display a category of the *Content* type in the navigation bar of the online store, you have to change a parameter in one of the Twig templates. You can do this in your own theme or fork of Ceres, or in the plentymarkets back end when using Ceres  from plentyMarketplace.
+By default, content categories are not displayed in the navigation bar of plentyShop LTS. If you want to display a category of the *Content* type in the navigation bar of the online store, you have to change a parameter in one of the Twig templates. You can do this in your own theme or fork of plentyShop LTS, or in the plentymarkets back end when using plentyShop LTS from plentyMarketplace.
 
 . Go to *Plugins » Plugin overview*.
-. Click on *Ceres*. +
+. Click on *plentyShop LTS*. +
 → The plugin will open.
 . Go to *resources/views/PageDesign/PageDesign.twig*.
 . Search for the line of code
@@ -19,7 +19,7 @@ By default, content categories are not displayed in the navigation bar of Ceres.
 Note that these changes will be overwritten when updating the plugin to a higher version. Repeat the steps above in order to make all category types available again.
 ====
 
-After enabling the other category types in the Ceres online store, link:https://knowledge.plentymarkets.com/en/item/managing-categories#_creating_a_category[create a category^] of the *Content* type. The following steps must be taken into account:
+After enabling the other category types in the plentyShop LTS online store, link:https://knowledge.plentymarkets.com/en/item/managing-categories#_creating_a_category[create a category^] of the *Content* type. The following steps must be taken into account:
 
 * Activate this category for your client.
 * Select *Display* in the *In link list* drop-down to display the category in the navigation.

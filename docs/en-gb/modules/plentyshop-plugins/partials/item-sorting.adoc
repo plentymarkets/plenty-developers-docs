@@ -1,6 +1,6 @@
 = Adding a custom value to the item sorting
 
-If you want to add one or multiple custom sorting values to the item sorting drop-down menu of the template plugin *Ceres*, add the following code in the service provider of your plugin:
+If you want to add one or multiple custom sorting values to the item sorting drop-down menu of the template plugin *plentyShop LTS*, add the following code in the service provider of your plugin:
 
 [source,php]
 ----

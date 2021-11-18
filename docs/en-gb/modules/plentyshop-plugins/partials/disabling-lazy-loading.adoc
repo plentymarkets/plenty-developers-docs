@@ -1,6 +1,6 @@
-= Disabling lazy loading in Ceres item lists
+= Disabling lazy loading in plentyShop LTS item lists
 
-If you want to disable the lazy load function in *Ceres* item lists, simply add a line of code to the `<category-image-carousel>` block:
+If you want to disable the lazy load function in *plentyShop LTS* item lists, simply add a line of code to the `<category-image-carousel>` block:
 
 [source,twig]
 ----

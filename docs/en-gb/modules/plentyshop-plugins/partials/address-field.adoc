@@ -1,6 +1,6 @@
 = Adding a custom address field
 
-If you want to add one or multiple custom address fields to the address form of the template plugin *Ceres*, you can use the xref:plentyshop-plugins:template-containers.adoc#_containers_on_the_homepage[template container] *Additional address fields*. Create a plugin that provides the data to be displayed in the container, e.g. with the help of this xref:plentyshop-plugins:how-to-template-containers.adoc[tutorial]. Then add the following code to the `.twig` template:
+If you want to add one or multiple custom address fields to the address form of the template plugin *plentyShop LTS*, you can use the xref:plentyshop-plugins:template-containers.adoc#_containers_on_the_homepage[template container] *Additional address fields*. Create a plugin that provides the data to be displayed in the container, e.g. with the help of this xref:plentyshop-plugins:how-to-template-containers.adoc[tutorial]. Then add the following code to the `.twig` template:
 
 [source,twig]
 ----
@@ -14,4 +14,4 @@ If you want to add one or multiple custom address fields to the address form of 
 
 In the example, we add another input field for the packstation number. Refer to the xref:interface:Account.adoc[Address] model to find an overview of available fields. We also want to make this field a required field and validate the input. To do so, we add `data-validate="text"` for the property of the `String` type.
 
-You can also check out the `AddressInputGroupDE.twig` file in the link:https://github.com/plentymarkets/plugin-ceres/blob/stable/resources/views/Customer/Components/AddressInputGroup/AddressInputGroup.twig[Ceres^] template for further reference.
+You can also check out the `AddressInputGroupDE.twig` file in the link:https://github.com/plentymarkets/plugin-ceres/blob/stable/resources/views/Customer/Components/AddressInputGroup/AddressInputGroup.twig[plentyShop^] template for further reference.

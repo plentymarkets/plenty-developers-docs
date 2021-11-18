@@ -1,6 +1,6 @@
-= Containers in the Ceres template
+= Containers in the plentyShop LTS template
 
-Approx. 70 containers are available on the different pages and views of the Ceres template plugin allowing you to replace existing content or display additional content. The content provided by other plugins can be integrated in the following areas of the online store:
+Approx. 70 containers are available on the different pages and views of the plentyShop LTS template plugin allowing you to replace existing content or display additional content. The content provided by other plugins can be integrated in the following areas of the online store:
 
 * Header and footer of the page
 * Homepage
@@ -19,7 +19,7 @@ Find a detailed list of all containers in the table below:
 
 == Containers on the homepage
 
-The *Ceres* homepage provides multiple containers which can be used to replace the content of the default homepage or add more content to the homepage. Find an overview of the homepage containers below:
+The *plentyShop LTS* homepage provides multiple containers which can be used to replace the content of the default homepage or add more content to the homepage. Find an overview of the homepage containers below:
 
 image::ceres-homepage-containers.png[]
 
@@ -77,7 +77,7 @@ The content to be displayed in a container is processed by the `show()` function
 
 === Container in the template
 
-Our *Certified by* container is integrated into the template of *Ceres* using the following code.
+Our *Certified by* container is integrated into the template of *plentyShop LTS* using the following code.
 
 .Ceres/resources/views/PageDesign/Partials/Footer.twig
 [source,twig]
@@ -145,7 +145,7 @@ Here, we specify the `order` object as the second parameter of our layout contai
 
 === Additional tabs in the single item view
 
-In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs` is used for displaying one or multiple additional tabs in the view of an item in the Ceres online store. The second container `SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual xref:plentyshop-plugins:how-to-template-containers.adoc#_code_for_the_placeholder_container[data provider] is required.
+In order to add your own information in an additional tab in the single item view, you can use two containers. The first container `SingleItem.AddDetailTabs` is used for displaying one or multiple additional tabs in the view of an item in the plentyShop LTS online store. The second container `SingleItem.AddDetailTabsContent` displays your content within the first container. For each container, an individual xref:plentyshop-plugins:how-to-template-containers.adoc#_code_for_the_placeholder_container[data provider] is required.
 
 .MyPlugin/resources/views/CustomTab.twig
 [source,twig]
