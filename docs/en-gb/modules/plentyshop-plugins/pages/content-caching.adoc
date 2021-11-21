@@ -17,7 +17,6 @@ Content caching is only available from plentyShop LTS and IO versions 2.12 onwar
 ** Order confirmation
 ** Wish list
 ** Search
-* At this point in time, pages that feature query components in the URL cannot be cached, e.g. a URL such as "/category?page=3" is not written into the cache.
 * The cache can only be invalidated every 5 minutes.
 * The entire cache is invalidated through the following actions:
 ** Saving and publishing a plugin set

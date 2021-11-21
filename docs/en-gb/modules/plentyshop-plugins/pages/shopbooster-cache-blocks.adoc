@@ -1,0 +1,108 @@
+= Block caching with ShopBooster 3.0
+
+With ShopBooster 3.0 you can wrap individual parts of a page in smaller blocks that will be cached independently from each other. This makes it possible to reuse these blocks on other pages. If a block is invalidated on one page, it also invalidates the same block on other pages.
+
+== Mark cache blocks
+
+The ShopBooster provides a new Twig tag called `cacheblock` to wrap these cache blocks in your templates:
+
+[source,twig]
+----
+<div>
+    {% cacheblock %}
+        <header>...</header>
+    {% endcacheblock %}
+    
+    <hr>
+
+    {% cacheblock %}
+        <footer>...</footer>
+    {% endcacheblock %}
+</div>
+----
+
+Each cache block will internally be identified by its contained Twig markup. So using the exact same markup in different places will produce the same block.
+
+//== Add tags to cache blocks 
+// INTERNAL was geht hier?
+
+//Additionally, each block can be marked with tags. These tags can be used to invalidate cache blocks that are spread out over different pages at the same time.
+
+//[source,twig]
+//----
+//{% cacheblock %}
+// <div>...</div> 
+// {% cachetags('tag1', 'tag2') %}
+// <div>...</div>
+//{% endcacheblock %}
+//----
+
+// The Twig function `cachetags()` can be called anywhere inside a Twig block, even in included templates, and will assign all passed tags to the current cache block.
+
+== Automatically assign tags depending on used variables
+
+plentymarkets will add tags automatically when accessing related data. When loading the category tree, for example, plentymarkets will internally add corresponding tags. Because some of these data are loaded globally in the context classes of your template, you do not want these tags to be added in the moment the data are loaded, but when the data are used inside of a Twig template. To do so, you can create a taggable variable in your context class:
+
+[source,php]
+----
+class MyContext implements ContextInterface
+{
+  public function init($params)
+  {
+    /** @var CacheTagRepositoryContract $cacheTagRepository */
+    $cacheTagRepository = pluginApp(CacheTagRepositoryContract::class);
+
+    /** @var CategoryService $categoryService */
+    $categoryService = pluginApp(CategoryService::class);
+
+    // ...
+
+    $this->categories = $cacheTagRepository->makeTaggable('categories', function() use ($categoryService) {
+      // tags added inside "getNavigationTree()" will not be added right now but when accessing "categories" in any twig template
+      return $categoryService->getNavigationTree(); 
+    }, "DATATYPE");
+  }
+}
+----
+
+For "Datatype", you should include the parameter "item" as a string if you want to make a variable taggable that includes any item data. Currently, "item" is the only datatype the ShopBooster uses as a parameter. If the variable you want to make taggable does not include item data, you can omit the datatype parameter.
+
+[source,twig]
+----
+<div>
+  {% cacheblock %}
+    {# accessing "categories" will add all related tags to the surrounding cache block #}
+    {% for category in categories %}
+      {{ category.id }}
+    {% endfor %}
+  {% endcacheblock %}
+</div>
+----
+
+// _TODO: list API methods that are adding tags internally_
+
+== Pass tags from the parent context to cache blocks
+
+Internally, cache tags are assigned if related data are accessed, e.g. the plugin config. In most cases, this happens in a very early stage, e.g. when resolving the controller or the context data. In these cases, the cache tags are assigned to the page document. But the related data can also affect the content of a cache block; this means you want to refresh the block content if the related data has changed.
+To do so, you can pass cache tags from the outer context, e.g. the page document, to a cache block:
+
+[source,twig]
+----
+{% cacheblock use "pluginConfig" %}
+  // template of the block accesses some plugin configurations
+{% endcacheblock %}
+----
+
+All tags starting with "pluginConfig" will be passed from the page document to the cache block document. Therefore, invalidating cache entries by the tag "pluginConfig" will affect the page document and the cache block.
+
+=== Pass multiple tags to cache blocks
+
+You can pass multiple tags separated by a `,`. You can pass static strings, variables, or methods returning a tag. It is also possible to pass variables or methods returning an array of tags to be passed to the cache block:
+
+[source,twig]
+----
+{% variationTag = "variation.123" %}
+{% cacheblock use "pluginConfig", variationTag, services.category.getCurrentCategory().id == 42 ? 'variation.456' : '' %}
+  // ...
+{% endcacheblock %}
+----
