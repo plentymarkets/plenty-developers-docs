@@ -1,5 +1,10 @@
 = How to migrate to the Material Table
 
+[WARNING]
+====
+The Terra-Components have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using link:https://material.angular.io/[Material components^] instead.
+====
+
 The Angular Material Table offers many useful functionalities, such as pagination or sorting. Moreover, you can easily add inputs into the columns and it means less maintenance effort for us. In order to migrate to the mat-table, you need the terra-components version 5.4.0 or higher.
 
 == Switching to the mat-table
@@ -73,7 +78,7 @@ Afterwards, add all required cells to the template. Note that these have to be t
             <th mat-header-cell *matHeaderCellDef>First name</th>
             <td mat-cell *matCellDef="let contact"> \{\{contact.firstName}}</td>
         </ng-container>
-        
+
         <ng-container matColumnDef="lastName">
             <th> mat-header-cell *matHeaderCellDef>Last name</th>
             <td mat-cell *matCellDef="let contact"> \{\{contact.lastName}}</td>
