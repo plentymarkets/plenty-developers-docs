@@ -1,5 +1,10 @@
 = How to migrate to the DataTable
 
+[WARNING]
+====
+The Terra-Components have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using link:https://material.angular.io/[Material components^] instead.
+====
+
 In order to migrate to the DataTable structure, the following steps are necessary.
 
 1. First of all, create a service. As an example, *MyService* extends *TerraDataTableBaseService*, which expects two interfaces specifying the type of data that is retrieved and the parameters that can be applied to the search. Type 1 is the interface of an element, e.g. when having a table of the contacts, it is the *ContactInterface*. Type 2 is the interface that specifies the possible search parameters, e.g. *ContactsParameterInterface*. For the search parameter interface you may remove `extends TerraPagerParameterInterface`. Make sure to provide the table service in the main component - not in the module.

@@ -1,5 +1,10 @@
 = Angular back end UI
 
+[WARNING]
+====
+The Terra-Components and the Plugin Terra-Basic have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using link:https://material.angular.io/[Material components^] instead.
+====
+
 This page gives an introduction to back end UIs and its components.
 
 First of all, some basics about Angular and its usage in plentymarkets: +

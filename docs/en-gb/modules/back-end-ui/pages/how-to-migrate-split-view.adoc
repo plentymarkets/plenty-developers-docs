@@ -1,5 +1,10 @@
 = How to migrate from the splitView
 
+[WARNING]
+====
+The Terra-Components have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using link:https://material.angular.io/[Material components^] instead.
+====
+
 Since the inception of the new angular backend, the splitView has been the go-to solution when we needed a way to facilitate navigation between a number of related views. Over time, this way of navigation handling has become bloated and increasingly difficult to implement and maintain. With the new angular based routing we created a lightweight and easy to implement solution to replace it. This guide will provide you with step-by-step instructions on replacing old splitView routing with our new angular routing solution. To do so, you need the Terra-Components version 3.0.0 or higher.
 
 == Further reading

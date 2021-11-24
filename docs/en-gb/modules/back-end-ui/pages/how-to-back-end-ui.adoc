@@ -1,5 +1,10 @@
 = How to create a back end UI
 
+[WARNING]
+====
+The Terra-Components and the Plugin Terra-Basic have been deprecated and will no longer be maintained. Although you can still work with them, we recommend using link:https://material.angular.io/[Material components^] instead.
+====
+
 In this how-to guide, you will learn how to create a back end UI by using Angular.
 In the first part, you will be shown how to start an Angular UI project for your plugin.
 
