@@ -33,6 +33,10 @@ content:
     branches:
       - 4.*
       - 5.*
+  - url: https://github.com/plentymarkets/plentyDevTool
+    branches:
+      - main
+    start_path: docs
 asciidoc:
   attributes:
     tabs: tabs
