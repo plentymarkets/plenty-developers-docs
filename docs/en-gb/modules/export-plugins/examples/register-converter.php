@@ -1,4 +1,7 @@
 ```
+use Plenty\Modules\Catalog\Services\Converter\Containers\ResultConverterContainer;
+use Plenty\Modules\Catalog\Services\Converter\ResultConverters\Defaults\CSVResultConverter;
+
 class MarketplaceTemplateDataProvider extends AbstractGroupedTemplateProvider
 {
     ...
