@@ -316,3 +316,13 @@ The contact ID can be filtered like this:
 ----
 
 Here the values "contact" and "receiver" are variable. When e.g. using "warehouse" and "sender", the warehouse will be filtered.
+
+== Sorting
+
+Sorting is done by setting the query string parameters `sortBy` and `sortOrder`. Per default the results are sorted by order ID in descending order. This example shows how to sort by order ID in ascending order:
+
+```
+GET /rest/orders/search?sortBy=orderId&sortOrder=asc
+```
+
+The possible values for `sortBy` are defined in the REST documentation. For `sortOrder` the values `asc` (ascending) and `desc` (descending) are valid.
