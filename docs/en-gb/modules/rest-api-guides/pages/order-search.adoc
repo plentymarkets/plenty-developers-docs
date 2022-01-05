@@ -33,7 +33,7 @@ GET /rest/orders/search?orderTypeId=eq:1&statusId=eq:3
 
 === Search for multiple values
 
-This is an example how to filter all orders in the status 3 and 4:
+This is an example how to filter all orders in the status 3 or 4:
 
 ```
 GET /rest/orders/search?statusId=in:3,4
@@ -87,3 +87,141 @@ Filter all orders that have the status 3 or a status greater than 6:
 ```
 GET /rest/orders/search?statusId=eq:3+OR+gt:6
 ```
+
+== Complex filters
+
+Complex filters are given in the request body in the JSON format. This is an example how to filter all orders with the status 3:
+
+.GET /rest/orders/search
+[source,json]
+----
+{
+    "conditionType": "and",
+    "fields": [
+        {
+            "field": "statusId",
+            "operator": "eq",
+            "value": 3
+        }
+    ],
+    "groups": []
+}
+----
+
+The complex filters are defined a "group" whereby each group can contain other groups. A group consist of these fields:
+
+- `conditionType`: The logical operator that defines how the values in `fields` and `groups` should be combined. Possible values are `and` and `or`.
+- `fields`: An array of the filters.
+- `groups`: An array of nested groups.
+
+Each value of the `fields` array consists of these fields:
+
+- `field`: The name of the order filter as defined in the REST documentation.
+- `operator`: Defines how to filter.
+- `value`: The value to filter for. Can be a single value, an array or null (depending on the operator).
+
+These are the possible operators:
+
+- `eq`: The value must be equal to the given value
+- `not`: The value must not be equal the given value
+- `in`: The value must be present in the given array
+- `nin`: The value must not be present in the given array
+- `null`: The value must not be existing
+- `nn`: The value must exist
+- `lt`: The value must be less than the given value
+- `lte`: The value must be less than equal the given value
+- `gt`: The value must be greater than the given value
+- `gte`: The value must be greater than equal the given value
+- `between`: The value must be between the two given values
+
+=== Combine filters
+
+This example filters all orders that are sales orders and that have a status between 3 and 5. Both filters must apply because `conditionType = and`.
+
+.GET /rest/orders/search
+[source,json]
+----
+{
+    "conditionType": "and",
+    "fields": [
+        {
+            "field": "orderTypeId",
+            "operator": "eq",
+            "value": 1
+        },
+        {
+            "field": "statusId",
+            "operator": "between",
+            "value": [3, 5]
+        }
+    ],
+    "groups": []
+}
+----
+
+The following example filters all orders where there is an order item present with either variation ID = 1001 or item ID = 107. Only one of the filters must apply because `conditionType = or`.
+
+.GET /rest/orders/search
+[source,json]
+----
+{
+    "conditionType": "or",
+    "fields": [
+        {
+            "field": "itemVariationId",
+            "operator": "eq",
+            "value": 1001
+        },
+        {
+            "field": "itemId",
+            "operator": "eq",
+            "value": 107
+        }
+    ],
+    "groups": []
+}
+----
+
+=== Nested filters
+
+For more complex conditions, the field `groups` can be used. The given groups are combined as defined in the `conditionType` of the parent group. Inside the given groups another `conditionType` can be used.
+
+This example filters all orders that are sales orders, have the referrer ID 9 and have either a status less than equal 5 or equal 8.
+
+.GET /rest/orders/search
+[source,json]
+----
+{
+    "conditionType": "and",
+    "fields": [
+        {
+            "field": "orderTypeId",
+            "operator": "eq",
+            "value": 1
+        },
+        {
+            "field": "referrerId",
+            "operator": "eq",
+            "value": 9
+        }
+    ],
+    "groups": [
+        {
+            "conditionType": "or",
+            "fields": [
+                {
+                    "field": "statusId",
+                    "operator": "lte",
+                    "value": 5
+                },
+                {
+                    "field": "statusId",
+                    "operator": "eq",
+                    "value": 8
+                }
+            ],
+            "groups": []
+        }
+    ]
+}
+----
