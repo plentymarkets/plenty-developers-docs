@@ -11,6 +11,55 @@ The filters can be given either as query string parameters ("simple filters") or
 
 To see which filters are available, refer to the https://developers.plentymarkets.com/en-gb/plentymarkets-rest-api/index.html#/Order/get_rest_orders_search[REST documentation].
 
+== Search results
+
+The result of the search looks for example like this:
+
+[source,json]
+----
+{
+    "page": 1,
+    "totalsCount": 2,
+    "isLastPage": true,
+    "lastPageNumber": 1,
+    "firstOnPage": 1,
+    "lastOnPage": 2,
+    "itemsPerPage": 50,
+    "entries": [
+        {
+            "id": 16578,
+            "referrerId": 0,
+            "roundTotalsOnly": true,
+            "numberOfDecimals": 4,
+            "plentyId": 123,
+            "typeId": 3,
+            "lockStatus": "unlocked",
+            "locationId": "1",
+            "createdAt": "2021-12-22T14:43:55+01:00",
+            "updatedAt": "2021-12-22T14:45:03+01:00",
+            "statusId": 9,
+            "ownerId": "3"
+        },
+        {
+            "id": 16577,
+            "referrerId": 0,
+            "roundTotalsOnly": true,
+            "numberOfDecimals": 4,
+            "plentyId": 123,
+            "typeId": 1,
+            "lockStatus": "unlocked",
+            "locationId": "1",
+            "createdAt": "2021-12-22T14:40:19+01:00",
+            "updatedAt": "2021-12-22T14:42:02+01:00",
+            "statusId": 7,
+            "ownerId": "3"
+        }
+    ]
+}
+----
+
+The orders are lazy loaded per default. This means that no relations are loaded. To have the default relations loaded, the parameter `lazyLoaded` can be set to `true`. By using the paramter `with`, the required relations can also be defined manually.
+
 == Simple filters
 
 When searching by using the simple filters, the filters are given as query string parameters. The shown operators are available only for filters for which they make sense. For example, it is not possible to filter for a range for a string filter.
@@ -108,7 +157,7 @@ Complex filters are given in the request body in the JSON format. This is an exa
 }
 ----
 
-The complex filters are defined a "group" whereby each group can contain other groups. A group consist of these fields:
+The complex filters are defined as a "group" whereby each group can contain other groups. A group consist of these fields:
 
 - `conditionType`: The logical operator that defines how the values in `fields` and `groups` should be combined. Possible values are `and` and `or`.
 - `fields`: An array of the filters.
@@ -225,3 +274,45 @@ This example filters all orders that are sales orders, have the referrer ID 9 an
     ]
 }
 ----
+
+== Special filter names
+
+Some filters like the ones for the properties and dates use a name that is variable to specify the property or date to filter for.
+
+This example filters for orders where the order property with the type ID 2 (shipping profile) equals the value 7:
+
+.GET /rest/orders/search
+[source,json]
+----
+{
+    "conditionType": "and",
+    "fields": [
+        {
+            "field": "orderProperty_2",
+            "operator": "eq",
+            "value": 7
+        }
+    ],
+    "groups": []
+}
+----
+
+The contact ID can be filtered like this:
+
+.GET /rest/orders/search
+[source,json]
+----
+{
+    "conditionType": "and",
+    "fields": [
+        {
+            "field": "relationReference_contact_receiver",
+            "operator": "eq",
+            "value": 105
+        }
+    ],
+    "groups": []
+}
+----
+
+Here the values "contact" and "receiver" are variable. When e.g. using "warehouse" and "sender", the warehouse will be filtered.
