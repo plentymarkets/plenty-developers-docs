@@ -1,0 +1,89 @@
+= Order search
+
+This tutorial will show you how to search for orders using the route `GET /rest/orders/search`.
+
+[NOTE]
+====
+The route `/rest/orders/search` can be called with the filters given in the request body, as will be shown in this tutorial. Since for some clients it is not possible to send request data in the body when using `GET`, the route can also be called with `POST`.
+====
+
+The filters can be given either as query string parameters ("simple filters") or in the request body ("complex filters"). Sending the filters in the request body is more complex but gives you more possibilities to filter and to combine filters.
+
+To see which filters are available, refer to the https://developers.plentymarkets.com/en-gb/plentymarkets-rest-api/index.html#/Order/get_rest_orders_search[REST documentation].
+
+== Simple filters
+
+When searching by using the simple filters, the filters are given as query string parameters. The shown operators are available only for filters for which they make sense. For example, it is not possible to filter for a range for a string filter.
+
+=== Search for single value
+
+To search for a single values, the filters can just be defined like this:
+
+```
+GET /rest/orders/search?orderTypeId=1&statusId=3
+```
+
+This filters all sales orders (`orderTypeId = 1`) in the status 3.
+
+This notation is equivalent to the example above:
+
+```
+GET /rest/orders/search?orderTypeId=eq:1&statusId=eq:3
+```
+
+=== Search for multiple values
+
+This is an example how to filter all orders in the status 3 and 4:
+
+```
+GET /rest/orders/search?statusId=in:3,4
+```
+
+=== Search for ranges
+
+To filter for a range of values, these operators are availabe:
+
+- `lt`: less than
+- `lte`: less than equal
+- `gt`: greater than
+- `gte`: greater than equal
+- `between`: values between the given values, bounds are inclusive
+
+This is an example how to filter all orders with a status less than 7:
+
+```
+GET /rest/orders/search?statusId=lt:7
+```
+
+And this example filters all orders that were created between the dates `2021-12-22T00:00:00+01:00` and `2021-12-22T23:59:59+01:00`:
+
+```
+GET /rest/orders/search?createdAt=between:2021-12-22T00%3A00%3A00%2B01%3A00,2021-12-22T23%3A59%3A59%2B01%3A00
+```
+
+[NOTE]
+====
+Data given as query string parameters must be URL encoded. So in this example the string `2021-12-22T00:00:00+01:00` must be encoded as `2021-12-22T00%3A00%3A00%2B01%3A00`. This is not necessary when sending the filters in the request body.
+====
+
+=== Search with logical operators
+
+To filter for example all orders that are not in the status 3, use the `not` operator:
+
+```
+GET /rest/orders/search?statusId=not:3
+```
+
+It is possible to combine filters for the same field with logical AND or OR operators.
+
+Filter all orders that have a status greater 3 and less than 5:
+
+```
+GET /rest/orders/search?statusId=gt:3+AND+lt:5
+```
+
+Filter all orders that have the status 3 or a status greater than 6:
+
+```
+GET /rest/orders/search?statusId=eq:3+OR+gt:6
+```
