@@ -66,7 +66,7 @@ When searching by using the simple filters, the filters are given as query strin
 
 === Search for single value
 
-To search for a single values, the filters can just be defined like this:
+To search for single values, the filters can just be defined like this:
 
 ```
 GET /rest/orders/search?orderTypeId=1&statusId=3
