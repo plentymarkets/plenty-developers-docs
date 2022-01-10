@@ -1,19 +1,19 @@
 = Order search
 
-This tutorial will show you how to search for orders using the route `GET /rest/orders/search`.
+This tutorial explains to you how to search for orders using the route `GET /rest/orders/search`.
 
 [NOTE]
 ====
 The route `/rest/orders/search` can be called with the filters given in the request body, as will be shown in this tutorial. Since for some clients it is not possible to send request data in the body when using `GET`, the route can also be called with `POST`.
 ====
 
-The filters can be given either as query string parameters ("simple filters") or in the request body ("complex filters"). Sending the filters in the request body is more complex but gives you more possibilities to filter and to combine filters.
+The filters can be given either as query string parameters ("simple filters") or in the request body ("complex filters"). Sending the filters in the request body is more complex but offers you more possibilities to narrow down search results and to combine filters.
 
 To see which filters are available, refer to the https://developers.plentymarkets.com/en-gb/plentymarkets-rest-api/index.html#/Order/get_rest_orders_search[REST documentation].
 
 == Search results
 
-The result of the search looks for example like this:
+For example, the result of a search can look like this:
 
 [source,json]
 ----
@@ -62,17 +62,17 @@ The orders are lazy loaded per default. This means that no relations are loaded.
 
 == Simple filters
 
-When searching by using the simple filters, the filters are given as query string parameters. The shown operators are available only for filters for which they make sense. For example, it is not possible to filter for a range for a string filter.
+When searching by using the simple filters, the filters are given as query string parameters. The shown operators are available only for filters for which they are applicable. For example, it is not possible to filter for a range of a string filter.
 
-=== Search for single value
+=== Searching for single values
 
-To search for single values, the filters can just be defined like this:
+To search for single values, the filters can simply be defined like this:
 
 ```
 GET /rest/orders/search?orderTypeId=1&statusId=3
 ```
 
-This filters all sales orders (`orderTypeId = 1`) in the status 3.
+This filters all sales orders (`orderTypeId = 1`) that are in status 3.
 
 This notation is equivalent to the example above:
 
@@ -80,15 +80,15 @@ This notation is equivalent to the example above:
 GET /rest/orders/search?orderTypeId=eq:1&statusId=eq:3
 ```
 
-=== Search for multiple values
+=== Searching for multiple values
 
-This is an example how to filter all orders in the status 3 or 4:
+This is an example how to filter all orders that  are in status 3 or 4:
 
 ```
 GET /rest/orders/search?statusId=in:3,4
 ```
 
-=== Search for ranges
+=== Searching for ranges
 
 To filter for a range of values, these operators are availabe:
 
@@ -98,7 +98,7 @@ To filter for a range of values, these operators are availabe:
 - `gte`: greater than equal
 - `between`: values between the given values, bounds are inclusive
 
-This is an example how to filter all orders with a status less than 7:
+This is an example how to filter all orders in a status less than 7:
 
 ```
 GET /rest/orders/search?statusId=lt:7
@@ -112,7 +112,7 @@ GET /rest/orders/search?createdAt=between:2021-12-22T00%3A00%3A00%2B01%3A00,2021
 
 [NOTE]
 ====
-Data given as query string parameters must be URL encoded. So in this example the string `2021-12-22T00:00:00+01:00` must be encoded as `2021-12-22T00%3A00%3A00%2B01%3A00`. This is not necessary when sending the filters in the request body.
+Data given as query string parameters have to be URL encoded. So in this example the string `2021-12-22T00:00:00+01:00` must be encoded as `2021-12-22T00%3A00%3A00%2B01%3A00`. This is not necessary when sending the filters in the request body.
 ====
 
 === Search with logical operators
@@ -125,13 +125,13 @@ GET /rest/orders/search?statusId=not:3
 
 It is possible to combine filters for the same field with logical AND or OR operators.
 
-Filter all orders that have a status greater 3 and less than 5:
+Filter all orders that are in a status greater 3 and less than 5:
 
 ```
 GET /rest/orders/search?statusId=gt:3+AND+lt:5
 ```
 
-Filter all orders that have the status 3 or a status greater than 6:
+Filter all orders that are in status 3 or a status greater than 6:
 
 ```
 GET /rest/orders/search?statusId=eq:3+OR+gt:6
@@ -139,7 +139,7 @@ GET /rest/orders/search?statusId=eq:3+OR+gt:6
 
 == Complex filters
 
-Complex filters are given in the request body in the JSON format. This is an example how to filter all orders with the status 3:
+Complex filters are given in the request body in the JSON format. This is an example of how to filter all orders that are in status 3:
 
 .GET /rest/orders/search
 [source,json]
@@ -171,21 +171,21 @@ Each value of the `fields` array consists of these fields:
 
 These are the possible operators:
 
-- `eq`: The value must be equal to the given value
-- `not`: The value must not be equal the given value
-- `in`: The value must be present in the given array
-- `nin`: The value must not be present in the given array
-- `null`: The value must not be existing
-- `nn`: The value must exist
-- `lt`: The value must be less than the given value
-- `lte`: The value must be less than equal the given value
-- `gt`: The value must be greater than the given value
-- `gte`: The value must be greater than equal the given value
-- `between`: The value must be between the two given values
+- `eq`: The value must be equal to the given value.
+- `not`: The value must not be equal the given value.
+- `in`: The value must be present in the given array.
+- `nin`: The value must not be present in the given array.
+- `null`: The value must not exist.
+- `nn`: The value must exist.
+- `lt`: The value must be less than the given value.
+- `lte`: The value must be less than equal the given value.
+- `gt`: The value must be greater than the given value.
+- `gte`: The value must be greater than equal the given value.
+- `between`: The value must be between the two given values.
 
-=== Combine filters
+=== Combining filters
 
-This example filters all orders that are sales orders and that have a status between 3 and 5. Both filters must apply because `conditionType = and`.
+This example filters all orders that are sales orders and that are in a status between 3 and 5. Both filters must apply because `conditionType = and`.
 
 .GET /rest/orders/search
 [source,json]
@@ -208,7 +208,7 @@ This example filters all orders that are sales orders and that have a status bet
 }
 ----
 
-The following example filters all orders where there is an order item present with either variation ID = 1001 or item ID = 107. Only one of the filters must apply because `conditionType = or`.
+The following example filters all orders where there is an order item present with either variation ID = 1001 or item ID = 107. Only one of the filters has to apply because `conditionType = or`.
 
 .GET /rest/orders/search
 [source,json]
@@ -235,7 +235,7 @@ The following example filters all orders where there is an order item present wi
 
 For more complex conditions, the field `groups` can be used. The given groups are combined as defined in the `conditionType` of the parent group. Inside the given groups another `conditionType` can be used.
 
-This example filters all orders that are sales orders, have the referrer ID 9 and have either a status less than equal 5 or equal 8.
+This example filters all orders that are sales orders, have the referrer ID 9 and are in either a status less than equal 5 or equal 8.
 
 .GET /rest/orders/search
 [source,json]
@@ -277,9 +277,9 @@ This example filters all orders that are sales orders, have the referrer ID 9 an
 
 == Special filter names
 
-Some filters like the ones for the properties and dates use a name that is variable to specify the property or date to filter for.
+Some filters like the ones for properties and dates use a name that is exchangeable. This way, the property or date to be filter for can be specified.
 
-This example filters for orders where the order property with the type ID 2 (shipping profile) equals the value 7:
+This example filters for orders where the order property with type ID 2 (shipping profile) equals the value 7:
 
 .GET /rest/orders/search
 [source,json]
@@ -315,11 +315,11 @@ The contact ID can be filtered like this:
 }
 ----
 
-Here the values "contact" and "receiver" are variable. When e.g. using "warehouse" and "sender", the warehouse will be filtered.
+Here the values "contact" and "receiver" are exchangeable. When for example using "warehouse" and "sender", the warehouse is filtered.
 
 == Sorting
 
-Sorting is done by setting the query string parameters `sortBy` and `sortOrder`. Per default the results are sorted by order ID in descending order. This example shows how to sort by order ID in ascending order:
+Sorting is done by setting the query string parameters `sortBy` and `sortOrder`. Per default, the results are sorted by order ID in descending order. This example shows how to sort by order ID in ascending order:
 
 ```
 GET /rest/orders/search?sortBy=orderId&sortOrder=asc
