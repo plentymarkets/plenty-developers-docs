@@ -36,6 +36,7 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:rest-api-guides:contact-data.adoc[How to query contact data]
 * xref:rest-api-guides:item-data.adoc[How to query item data]
 * xref:rest-api-guides:order-data.adoc[How to query order data]
+* xref:rest-api-guides:order-search.adoc[How to search for orders]
 * xref:rest-api-guides:purchase-orders.adoc[How to query purchase order data]
 * xref:rest-api-guides:bulk-routes.adoc[How to use bulk routes]
 
