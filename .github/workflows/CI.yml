@@ -100,3 +100,17 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
+
+  notification: 
+    name: Google chat notification
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: Google Chat Notification Failure
+        if: ${{ needs.build.result == 'failure' }}
+        uses: Co-qn/google-chat-notification@releases/v1
+        with:
+          name: Developers Deploy
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK_FAILURE }}
+          status: ${{ needs.build.result }}
