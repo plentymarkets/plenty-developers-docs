@@ -25,6 +25,10 @@ jobs:
           repository: plentymarkets/plenty-docs-ui
           path: plenty-docs-ui-repo
       
+      # Move i18n files to expected path
+      - run: |
+          mv ${GITHUB_WORKSPACE}/plenty-docs-ui-repo/src/lang/en-gb.json ./lang/en-gb.json
+      
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.2
         with:
@@ -58,7 +62,6 @@ jobs:
         run: |
           # Move index to build directory
           mv index.html ./build/index.html
-          mv ${GITHUB_WORKSPACE}/plenty-docs-ui-repo/src/lang/en-gb.json ./lang/en-gb.json
           # Create REST directory
           mkdir ./build/rest-api/
           # Move REST docs to build directory
