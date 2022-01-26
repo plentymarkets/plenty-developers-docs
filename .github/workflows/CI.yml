@@ -27,6 +27,7 @@ jobs:
       
       # Move i18n files to expected path
       - run: |
+          mkdir ./lang/
           mv ${GITHUB_WORKSPACE}/plenty-docs-ui-repo/src/lang/en-gb.json ./lang/en-gb.json
       
       - name: Setup Node.js environment
