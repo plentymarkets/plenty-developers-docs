@@ -7,7 +7,7 @@
         "RequiredPlugin": "~1.0.0"
     },
     "platform": {
-        "php": ">= 7.3"
+        "php": ">=7.3,<8.1"
     },
     "isClosedSource": false,
     "description": "The description for your plugin",
