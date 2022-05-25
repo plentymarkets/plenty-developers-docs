@@ -155,6 +155,28 @@ In this example, the required version has a non-zero digit in the "fix" position
 This means that the upper boundary is determined by the next highest minor version.
 If the requirement is `~1.2.0`, the upper boundary is determined by the next highest major version.
 
+== platform
+
+_Possible values:_ array or object
+
+Specifies on which PHP version the plugin runs properly.
+This value isn't required, but provides useful information to the user.
+
+The following operators are available:
+
+* `>`
+* `>=`
+* `<`
+* `<=`
+* `!=`
+* `~`
+
+The tilde operator (`~`) describes a range in-between two versions.
+It's essentially a short-hand form for combining the operators `>=` and `<`.
+For example, requiring the version `~7.3` is the same as requiring any version between 7.3 and 8.0.
+In this example, the required version has a non-zero digit in the "minor" position.
+This means that the upper boundary is determined by the next highest major version.
+
 == isClosedSource
 
 _Default:_ `false`

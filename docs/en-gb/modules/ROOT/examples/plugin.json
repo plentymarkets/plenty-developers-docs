@@ -1,37 +1,40 @@
 {
-    "name"              : "PluginDirectory",
-    "namespace"         : "PluginDirectory",
-    "type"              : "template",
-    "version"           : "1.0.0",
-    "require"           : {
+    "name": "PluginDirectory",
+    "namespace": "PluginDirectory",
+    "type": "template",
+    "version": "1.0.0",
+    "require": {
         "RequiredPlugin": "~1.0.0"
     },
-    "isClosedSource"    : false,
-    "description"       : "The description for your plugin",
-    "author"            : "John Doe",
-    "email"             : "doe@account.com",
-    "phone"             : "123-456-7890",
-    "authorIcon"        : "icon_author_xs.png",
-    "pluginIcon"        : "icon_plugin_xs.png",
-    "serviceProvider"   : "PluginDirectory\\Providers\\TemplateServiceProvider",
-    "containers"        : [
+    "platform": {
+        "php": ">= 7.3"
+    },
+    "isClosedSource": false,
+    "description": "The description for your plugin",
+    "author": "John Doe",
+    "email": "doe@account.com",
+    "phone": "123-456-7890",
+    "authorIcon": "icon_author_xs.png",
+    "pluginIcon": "icon_plugin_xs.png",
+    "serviceProvider": "PluginDirectory\\Providers\\TemplateServiceProvider",
+    "containers": [
         {
-            "key"           : "Template.Style",
-            "name"          : "Template: Style",
-            "description"   : "Add style with a theme plugin."
+            "key": "Template.Style",
+            "name": "Template: Style",
+            "description": "Add style with a theme plugin."
         }
     ],
-    "dataProviders"     : [
+    "dataProviders": [
         {
             "key": "PluginDirectory\\Containers\\ItemListContainer",
             "name": "Item list",
             "description": "Display a configurable list of items in your online store"
         }
     ],
-    "dependencies"      : [
+    "dependencies": {
         "guzzlehttp/guzzle": "6.3.*"
-    ],
-    "runOnBuild"        : [
+    },
+    "runOnBuild": [
         "PluginDirectory\\Migrations\\CreateTable",
         "PluginDirectory\\Migrations\\UpdateTable",
         "PluginDirectory\\Migrations\\DeleteTable"
