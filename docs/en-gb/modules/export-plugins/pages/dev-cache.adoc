@@ -32,6 +32,14 @@ You can easily turn this setting on or off by calling the appropriate methods in
 * `enableDevcache(string $catalogUUID)`
 * `disableDevcache(string $catalogUUID)`
 
+Enabling or disabling devcache only needs to be called one time for each catalogue. It will set the settings.devcache setting in the model and store it forever.
+
+You can verify if a catalogue has its devcache enabled or disabled by calling the getSettings() method on the catalog instance:
+
+`$catalog->getSettings('devcache')`
+
+This will return true if devcache is enabled and false if devcache is disabled.
+
 Example
 
 .automatic-generation.php
