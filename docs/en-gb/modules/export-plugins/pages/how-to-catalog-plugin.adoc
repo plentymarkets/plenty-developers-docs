@@ -1,6 +1,7 @@
 = Catalogue
 
 [WARNING]
+.Deprecated
 ====
 This tutorial is only for existing implementations that are used with the old catalogue logic.
 The structure will be removed in the future and some of the new features will not be supported anymore.
