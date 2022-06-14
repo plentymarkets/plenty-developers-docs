@@ -74,21 +74,21 @@ include::back-end-ui:partial$nav.adoc[]
 
 .Export format plugins
 * xref:export-plugins:how-to-elastic-export-plugin.adoc[Elastic export plugin]
-* xref:export-plugins:how-to-catalog-plugin.adoc[Catalogue plugin]
 * xref:export-plugins:basic-usage.adoc[Basic catalogue usage]
-* xref:export-plugins:dynamic-config-classes.adoc[DynamicConfig classes]
+** xref:export-plugins:dynamic-config-classes.adoc[DynamicConfig classes]
+** xref:export-plugins:result-converters.adoc[Result converters]
 * xref:export-plugins:assignments.adoc[Assignments]
-* xref:export-plugins:result-converters.adoc[Result converters]
 * xref:export-plugins:how-to-extend-mappings.adoc[Extending mappings]
 * xref:export-plugins:dev-cache.adoc[Dev cache]
+* xref:export-plugins:how-to-catalog-plugin.adoc[Deprecated: Catalogue plugin]
 
 .plentyBase plugins
 * xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
 * xref:plentybase:plentybase-tutorial.adoc[plentyBase plugin tutorial]
 
 .Tools
-* xref:plentydevtool:plentydevtool-introduction.adoc[plentyDevTool introduction]
-* xref:plentydevtool:plentydevtool-guide.adoc[plentyDevTool guide]
+* xref:plentydevtool:plentydevtool-introduction.adoc[plentyDevTool 2.0 introduction]
+* xref:plentydevtool:plentydevtool-guide.adoc[plentyDevTool (guide)]
 * xref:plentydevtool:plentydevtool-version-control.adoc[How to use plentyDevTool with version control]
 * xref:github-webhooks.adoc[How to set up GitHub webhooks]
 * xref:browsersync.adoc[How to deploy local JS/CSS resources]
