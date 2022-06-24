@@ -31,7 +31,7 @@ They offer a number of simple form elements, for example text fields or checkbox
 There's no room for more elaborate explanation.
 
 You should use a configuration to provide the user with straight-forward options that are specific to each plugin set.
-Because configurations are always link:https://knowledge.plentymarkets.com/en/plugins/configuring-installed-plugins#local-vs-global-configuration[plugin set specific^], an assistant or custom UI is more appropriate if your plugin contains any settings that apply to the system as a whole.
+Because configurations are always link:https://knowledge.plentymarkets.com/en-gb/manual/main/plugins/configuring-installed-plugins.html#local-vs-global-configuration[plugin set specific^], an assistant or custom UI is more appropriate if your plugin contains any settings that apply to the system as a whole.
 This may, for example, include account details for communicating with external systems.
 
 == Custom UI
