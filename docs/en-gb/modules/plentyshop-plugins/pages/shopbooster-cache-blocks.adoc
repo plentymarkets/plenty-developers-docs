@@ -106,3 +106,79 @@ You can pass multiple tags separated by a `,`. You can pass static strings, vari
   // ...
 {% endcacheblock %}
 ----
+
+== Using the plentyShop LTS cache blocks in your own theme
+
+In this section you will learn how to integrate the cache blocks of default plentyShops in your custom themes.
+The plentyShop LTS cache blocks are only of interest to you if your theme overwrites the *PageDesign.twig*.
+If you are using the default PageDesign, you don't need to make any additional adjustments to use the LTS cache blocks.
+
+The plentyShop LTS page design designates 2 seperate cache blocks: the *Header* and the *Footer* blocks. Once these two parts of the page design are defined as cache blocks, a third block consisting of the body emerges automatically. However, the body is not distinctly marked as a cache block.
+
+=== Footer
+
+The integration of the plentyShop LTS footer is quite simple. 
+In the link:https://github.com/plentymarkets/plugin-ceres/blob/97ab33929b54eb79210e82b3e083f3b81a91fffe/resources/views/PageDesign/PageDesign.twig#L71[PageDesign.Twig^] of plentyShop LTS, you can find cache block directive for the footer in line 71:
+
+[source,twig]
+----
+{% cacheblock %}
+        {% include getPartial('footer') %}
+        {% block PartialFooter %}{% endblock %}
+{% endcacheblock %}
+----
+
+Of course, you might need to change the name of the partial to which your refer here, depending on how your theme is structured.
+The `cacheblock` directive suffices to desigante the footer as an individual cache block.
+
+=== Header
+
+The integration of the header cache block is similar to the footer block outlined above.
+However, there is an additional tag that you need to add to the cache block directive.
+Have a look at how the header cache block is included in the link:https://github.com/plentymarkets/plugin-ceres/blob/97ab33929b54eb79210e82b3e083f3b81a91fffe/resources/views/PageDesign/Partials/Header/Header.twig#L9[page design of plentyshop LTS^].
+
+[source,twig]
+----
+{% cacheblock use "category.tree" %}
+    {% set headerContainer = LayoutContainer.show("Ceres::Header") | trim %}
+    {% if headerContainer is empty %}
+        {% include "Ceres::PageDesign.Partials.Header.DefaultHeader" %}
+    {% else %}
+    <header id="page-header">
+        <div class="container-max">
+            <div class="row flex-row-reverse position-relative">
+                <div id="page-header-parent" class="col-12 header-container" data-header-offset>
+                    {{ headerContainer | raw }}
+                </div>
+            </div>
+        </div>
+    </header>
+    {% endif %}
+{% endcacheblock %}
+----
+
+Again, your header partial is referenced between the `{% cacheblock %}` and `{% endcacheblock %}` tags. 
+Notice how the opening tag also includes the directive `use "category.tree"`.
+This states that the header cache block is to be tagged with the type category tree. 
+
+This is necessary because the plentymarkets blog plugin might interfere otherwise. 
+The blog could potentially provide a second header that includes only blog categories in its navigation.
+This means that, depending on what was accessed and thereby written into the cache first, the plentyShop navigation in the header could only display blog categories and vice versa.
+
+To preclude this behaviour, be sure to add the `use "category.tree"` to the cache block directive.
+
+=== Context classes
+
+Of course, overwriting the page design template in plentyShop LTS is not the only adjustment to a theme that could be relevant for cache blocks.
+
+plentyShop LTS includes 3 context classes that use the cache tag repository and are necessary for the proper functioning of cache blocks in your plentyShop:
+
+- link:https://github.com/plentymarkets/plugin-ceres/blob/97ab33929b54eb79210e82b3e083f3b81a91fffe/src/Contexts/GlobalContext.php#L223[GlobalContext^]
+- link:https://github.com/plentymarkets/plugin-ceres/blob/97ab33929b54eb79210e82b3e083f3b81a91fffe/src/Contexts/ItemListContext.php#L181[ItemListContext^]
+- link:https://github.com/plentymarkets/plugin-blog/blob/1d6878df6a1c80334b4a00dae642ecbf24721614/src/Contexts/BlogContext.php#L25[BlogContext^]
+
+If you overwrite any of these context classes, be sure to wrap the call of the category tree into the `makeTaggable` directive. The links above redirect directly to the relevant line within the context classes.
+
+
+
+
