@@ -1,0 +1,91 @@
+= Sections in plugins
+
+This page will introduce you to the usage of *sections* in your catalogue.
+
+== What are sections?
+
+By using sections you can add additional entire sections of options to the *Settings* tab of a catalogue. Sections are displayed right under the *Basic settings* section, inside the *Settings* tab.
+
+== Structure
+
+The basic structure of sections uses the options and builds upon it.
+
+It is built from the following classes:
+
+* Sections - container for individual section
+* Section - container for individual option
+* Option - can take many forms, documented here 
+
+The classes will be described in more detail below.
+
+=== Sections
+
+The *Sections* class is a container of individual *Section* classes.
+
+Available methods:
+
+* `add(Section $section)`: Adds a section to the container.
+
+=== Section
+
+The *Section* class is a container of individual *Option* classes. It extends the *UIOptions* class and adds the following properties:
+
+* `label` - The label displayed in the UI.
+* `key` - The key used to store the option values selected by the customer (stored in the catalogue's data.sections).
+
+Available methods:
+
+* `add(Option $option)`: Adds an option to the section.
+* `registerOptions()`: Used to register options in a *Section* class.
+* `setLabel(string)`: Setter for the label.
+* `setKey(string)`: Setter for the key.
+* `getLabel():string`: Getter for the label.
+* `getKey():string`: Getter for the key.
+
+Sections can be standalone classes or can be instantiated inline and populated using the setters.
+
+=== Option
+
+*Option* classes can take multiple forms and types, for example they can be checkboxes, toggles, dropdown selects and more. Read more about *Option* classes here.
+
+// Link hinzufügen
+
+== Examples
+
+You can set up an entire *Sections* + *Section* + *Option* list inline or in its own class.
+
+=== Setting up by instancing the classes inline
+
+We will be setting up the classes inline in this example. However, keep in mind that you can use a combination of inline + standalone classes, depending on your particular case.
+
+You can add multiple *Option* classes to the *Section* and multiple *Section* classes to the *Sections* class. They will be displayed in the UI in the same order you add them in their respective containers.
+
+.Example
+[source,php]
+----
+include::example$setup-classes-inline.php[]
+----
+
+=== Setting up by using classes
+
+You can pre-build the *Section* class and use it and reuse it as many times as you need.
+
+.Example
+[source,php]
+----
+include::example$setup-classes.php[]
+----
+
+To learn how to create and use *Options*, check out the documentation.
+
+// Link einfügen
+
+You can then add this section to your *Sections* container like in this example:
+
+.Example
+[source,php]
+----
+include::example$add-section-to-container.php[]
+----
+
+You can now navigate to the UI and the sections will be visible under the *Basic settings* in the *Settings* tab.
