@@ -1,0 +1,68 @@
+= UI options in plugins
+
+This page will introduce you to the usage of *UI options* in your catalogue.
+
+== What are UI options?
+
+By using UI options, you can add your own options to the default settings of a catalogue.
+
+== Structure
+
+Every option needs to implement `UIOptionContract`.
+
+* namespace: `\Plenty\Modules\Catalog\Contracts\UI`
+
+This enforces the following methods:
+
+* `getKey():string`: Returns the identifier.
+* `getLabel():string`: Returns the label. Should be translated, as this is visible in the UI.
+* `getType():string`: Returns the type. You can find the list of types below.
+* `isVisible():bool`: Returns the visibility. Boolean.
+* `isRequired():bool`: Returns a boolean to make the option mandatory or not.
+* `getDefaultValue()`: Returns the default value.
+* `getValues():Values`: Returns a value's container which can contain instances of value.
+
+== How does it work?
+
+The types that are currently supported are available via constants if you extend the base option class:
+
+[source,php]
+----
+include::example$constants.php[]
+----
+
+Classes for this are located in `Plenty\Modules\Catalog\Services\UI\Options\Elements`.
+
+== Examples
+
+_Example 1:_ Creating a select UI option
+
+.Creating a select UI option
+[source,php]
+----
+include::example$create-select-ui-option.php[]
+----
+
+_Example 2:_ Creating a text UI option
+
+.Creating a text UI option
+[source,php]
+----
+include::example$create-text-ui-option.php[]
+----
+
+== How to make it visible in the UI
+
+Follow these steps to get the options visible in the UI:
+
+. Go to your *DataProvider* class and locate/create a public method called `getSettings()`.
+. Create a new *UIOptions* container.
+. Add your new options to the container.
+. Make sure you return an array.
+
+[source,php]
+----
+include::example$visible-in-ui.php[]
+----
+
+Congratulations, you're done!
