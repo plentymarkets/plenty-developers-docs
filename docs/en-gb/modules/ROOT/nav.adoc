@@ -84,8 +84,6 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:export-plugins:dev-cache.adoc[Dev cache]
 * xref:export-plugins:how-to-catalog-plugin.adoc[Deprecated: Catalogue plugin]
 
-
-
 .plentyBase plugins
 * xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
 * xref:plentybase:plentybase-tutorial.adoc[plentyBase plugin tutorial]
