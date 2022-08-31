@@ -1,4 +1,4 @@
-= UI options in plugins
+= UI options
 
 This page will introduce you to the usage of *UI options* in your catalogue.
 
