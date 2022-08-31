@@ -77,12 +77,14 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:export-plugins:basic-usage.adoc[Basic catalogue usage]
 ** xref:export-plugins:dynamic-config-classes.adoc[DynamicConfig classes]
 ** xref:export-plugins:result-converters.adoc[Result converters]
+* xref:export-plugins:plugin-sections.adoc[Sections in plugins]
+* xref:export-plugins:ui-options-in-plugins.adoc[UI options in plugins]
 * xref:export-plugins:assignments.adoc[Assignments]
 * xref:export-plugins:how-to-extend-mappings.adoc[Extending mappings]
 * xref:export-plugins:dev-cache.adoc[Dev cache]
 * xref:export-plugins:how-to-catalog-plugin.adoc[Deprecated: Catalogue plugin]
-** xref:export-plugins:ui-options-in-plugins.adoc[UI options in plugins]
-** xref:export-plugins:plugin-sections.adoc[Sections in plugins]
+
+
 
 .plentyBase plugins
 * xref:master@plentybase-rest-api:ROOT:index.adoc[plentyBase REST API reference]
