@@ -1,4 +1,4 @@
-= Sections in plugins
+= Sections
 
 This page will introduce you to the usage of *sections* in your catalogue.
 
@@ -14,7 +14,7 @@ It is built from the following classes:
 
 * Sections - container for individual section
 * Section - container for individual option
-* Option - can take many forms; described in more detail xref:ui-options-in-plugins.adoc[on this page].
+* Option - can take many forms; described in more detail xref:ui-options.adoc[on this page].
 
 The classes will be described in more detail below.
 
@@ -46,7 +46,7 @@ Sections can be standalone classes or can be instantiated inline and populated u
 
 === Option
 
-*Option* classes can take multiple forms and types, for example they can be checkboxes, toggles, dropdown selects and more. Read more about *Option* classes xref:ui-options-in-plugins.adoc[on this page].
+*Option* classes can take multiple forms and types, for example they can be checkboxes, toggles, dropdown selects and more. Read more about *Option* classes xref:ui-options.adoc[on this page].
 
 == Examples
 
@@ -72,7 +72,7 @@ You can pre-build the *Section* class and use it and reuse it as many times as y
 include::example$setup-classes.php[]
 ----
 
-To learn how to create and use *Options*, check out the xref:ui-options-in-plugins.adoc[documentation].
+To learn how to create and use *Options*, check out the xref:ui-options.adoc[documentation].
 
 You can then add this section to your *Sections* container like in this example:
 
