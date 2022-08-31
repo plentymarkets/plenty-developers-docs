@@ -14,7 +14,7 @@ It is built from the following classes:
 
 * Sections - container for individual section
 * Section - container for individual option
-* Option - can take many forms, documented here 
+* Option - can take many forms; described in more detail xref:ui-options-in-plugins.adoc[on this page].
 
 The classes will be described in more detail below.
 
@@ -46,9 +46,7 @@ Sections can be standalone classes or can be instantiated inline and populated u
 
 === Option
 
-*Option* classes can take multiple forms and types, for example they can be checkboxes, toggles, dropdown selects and more. Read more about *Option* classes here.
-
-// Link hinzufügen
+*Option* classes can take multiple forms and types, for example they can be checkboxes, toggles, dropdown selects and more. Read more about *Option* classes xref:ui-options-in-plugins.adoc[on this page].
 
 == Examples
 
@@ -60,7 +58,6 @@ We will be setting up the classes inline in this example. However, keep in mind 
 
 You can add multiple *Option* classes to the *Section* and multiple *Section* classes to the *Sections* class. They will be displayed in the UI in the same order you add them in their respective containers.
 
-.Example
 [source,php]
 ----
 include::example$setup-classes-inline.php[]
@@ -70,19 +67,15 @@ include::example$setup-classes-inline.php[]
 
 You can pre-build the *Section* class and use it and reuse it as many times as you need.
 
-.Example
 [source,php]
 ----
 include::example$setup-classes.php[]
 ----
 
-To learn how to create and use *Options*, check out the documentation.
-
-// Link einfügen
+To learn how to create and use *Options*, check out the xref:ui-options-in-plugins.adoc[documentation].
 
 You can then add this section to your *Sections* container like in this example:
 
-.Example
 [source,php]
 ----
 include::example$add-section-to-container.php[]
