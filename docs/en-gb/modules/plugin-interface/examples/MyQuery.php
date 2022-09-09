@@ -1,5 +1,5 @@
 <?php
-use Plenty\Modules\Module\ServiceProvider\Contracts;
+use Plenty\Repositories\Models\PaginatedResult;
 
 $paginatedResponse = $repositoryContract -> query($columns, $page, $itemsPerPage); // <1>
 

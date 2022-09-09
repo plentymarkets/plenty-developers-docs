@@ -1,5 +1,5 @@
 <?php
-use Plenty\Modules\Module\Repository\Contracts
+use Plenty\Repositories\Models\PaginatedResult;
 
 public function index(): Response {
     $columns = ['*'];
