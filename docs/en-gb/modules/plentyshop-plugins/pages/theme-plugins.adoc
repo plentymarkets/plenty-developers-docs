@@ -1138,7 +1138,7 @@ Below you will find two code snippets, the first of which illustrates the use of
 
 Here, the div in the template section includes a placeholder that is visible while the component is not yet visible.
 
-==== Overwriting single file components
+=== Overwriting single file components
 
 If you want to overwrite plentyShop LTS single file components, there are two ways you could go about. One is to individually overwrite the component whenever it is called upon. This gives you more flexibility when it comes to which instance of a component you want to override. The other method is to overwrite a component globally, so that every instance of the component will be replaced by your content.
 
