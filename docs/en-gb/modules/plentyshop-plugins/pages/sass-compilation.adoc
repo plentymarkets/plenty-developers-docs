@@ -1,0 +1,135 @@
+= SASS compilation
+:keywords: css, sass, scss, stylesheet, plugin build
+:description: SASS keeps your stylesheets organised. When you use SASS in a plugin, you can either compile it yourself or with the plugin build. This page discusses the advantages of each approach.
+:page-genre: concept
+
+[quote,sass-lang.com]
+Sass is a stylesheet language that's compiled to CSS. It allows you to use variables, nested rules, mixins, functions, and more, all with a fully CSS-compatible syntax. Sass helps keep large stylesheets well-organized and makes it easy to share design within and across projects.
+
+plentymarkets supports SASS in plugins.
+You can use either SASS or SCSS.
+The syntax is different, but they're link:https://sass-lang.com/documentation/syntax#scss[compatible with each other^].
+If you use SASS in your plugin, you have two ways of compiling it into CSS:
+
+* Before the plugin build, for example via link:https://webpack.js.org/[Webpack^] (<<_precompilation>>, uses link:https://www.npmjs.com/package/node-sass[Node Sass])
+* During the plugin build (<<_build_compilation>>, uses link:https://sass-lang.com/dart-sass[Dart Sass])
+
+The recommended way differs depending on your use case.
+This page discusses both options based on the implementation in the link:https://github.com/plentymarkets/plugin-ceres[plentyShop LTS plugin repository^].
+
+== General setup
+
+Much of the setup stays the same, no matter which option you use.
+The following tree shows the parts of a plugin's file structure that's relevant to SASS compilation.
+
+.Plugin file structure
+[source]
+----
+PluginDirectory/
+    │
+    ├── resources/
+    │   │
+    │   ├── css/
+    │   │
+    │   └── scss/
+    │
+    ├── src/
+    │
+    ├── tools/
+    │
+    ├── package.json
+    |
+    └── plugin.json
+----
+
+Regardless of when you compile your SASS, one important concept is that the plugin build only cares about the `css` directory.
+This means that you can use the `scss` directory to write your SASS, but to apply the styling to your shop, you have to include either compiled CSS or processed SASS in the `css` folder.
+To process SASS, you can use a script.
+For details, refer to the <<_build_compilation>> section.
+
+=== Available scripts
+
+To compile SASS and prepare files for compilation by the plugin build, plentyShop LTS supplies the following scripts:
+
+[source,json]
+.package.json
+----
+include::example$package.json[lines=11..13;24]
+----
+
+Once you've installed the packages with `npm install`, you can run the scripts with `npm run build`.
+The build script in turn triggers the other scripts.
+Note that this script runs both compilation options.
+You can either modify the scripts according to your needs or ignore part of the output.
+
+== Precompilation
+
+The first case applies if you're confident that everyone who modifies the styling has basic programming knowledge and access to the code of the plugin.
+In other words, everyone who needs to change any SASS, changes and compiles the plugin directly.
+The benefit of this approach is that you can compile SASS on demand when there are changes and not every time you build your plugin set.
+This speeds up the deployment process.
+
+One way of precompiling SASS is to use Webpack.
+The plentyShop LTS plugin includes a link:https://github.com/plentymarkets/plugin-ceres/blob/stable/tools/webpack/styles.config.js[Webpack configuration for compiling SASS^].
+To adapt this configuration for your own plugin, you have to update the `entry` points:
+
+[source, js]
+.styles.config.js
+----
+include::example$styles.config.js[lines=11..16]
+----
+
+Each SASS file you want to compile is its own entry.
+You can also configure the output file name to use a different prefix.
+By the default, the file prefix is `ceres-`.
+
+[source, js]
+----
+include::example$styles.config.js[lines=50..55]
+----
+
+[IMPORTANT]
+.Ignore unnecessary files
+====
+The build script plentyShop uses prepares the plugin for both precompilation and build compilation.
+If you want to use the script as-is, add the following paths to your `.gitignore` (Git) or `plenty.ignore` (plentyDevTool):
+
+* `\**/resources/css/*.css`
+* `\**/resources/css/*.css.map`
+
+If you use plentyDevTool, you may want to modify the paths to match specific plugins.
+====
+
+== Build compilation
+
+The second case applies if want to make your plugin available to others and enable them to configure parts of the styling, such as the colour scheme.
+To enable configuration of SASS variables from the plentymarkets back end, xref:plugin-configuration:how-to-plugin-configuration.adoc[use the plugin configuration] and set the `scss` property.
+This approach makes it possible to define SASS variables without modifying any files.
+But it also means that you cannot compile all the SASS with your own development tools.
+Instead, the plugin build covers the compilation.
+The deployment process takes longer for every SASS file it has to compile.
+
+You have to process SASS files from the `scss` directory, so that the plugin build can compile them.
+Processing resolves `@import` statements and moves the files to the `css` directory.
+The build script of the plentyShop LTS plugin uses the script link:https://github.com/plentymarkets/plugin-ceres/blob/stable/tools/bundleSass.js[bundleSass.js^] to process SASS files.
+You can use this script without modification in your own plugin.
+
+[WARNING]
+.Bug in old script version
+====
+If you use a fork of plentyShop LTS version 5.0.55 or older, the `bundleSass` script doesn't remove outdated output from the `css` directory.
+Outdated output can lead to compilation errors during plugin build.
+
+You can resolve this problem by link:https://github.com/plentymarkets/plugin-ceres/pull/3341/files#diff-381bd00efba6d8ee887e60272fceb0358e5a24b2b00fa48f25bf353ea54482d9[updating the script^].
+====
+
+[IMPORTANT]
+.Ignore unnecessary files
+====
+The build script plentyShop uses prepares the plugin for both precompilation and build compilation.
+If you want to use the script as-is, add the following paths to your `.gitignore` (Git) or `plenty.ignore` (plentyDevTool):
+
+* `\**/resources/css/*.scss`
+
+If you use plentyDevTool, you may want to modify the paths to match specific plugins.
+====
