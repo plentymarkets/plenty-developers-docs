@@ -80,6 +80,7 @@ include::example$styles.config.js[lines=11..16]
 ----
 
 Each SASS file you want to compile is its own entry.
+
 You can also configure the output file name to use a different prefix.
 By the default, the file prefix is `ceres-`.
 
@@ -92,7 +93,7 @@ include::example$styles.config.js[lines=50..55]
 .Ignore unnecessary files
 ====
 The build script plentyShop uses prepares the plugin for both precompilation and build compilation.
-If you want to use the script as-is, add the following paths to your `.gitignore` (Git) or `plenty.ignore` (plentyDevTool):
+If you want to use the script as is, add the following paths to your `.gitignore` (Git) or `plenty.ignore` (plentyDevTool):
 
 * `\**/resources/css/*.css`
 * `\**/resources/css/*.css.map`
