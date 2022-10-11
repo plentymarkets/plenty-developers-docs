@@ -103,7 +103,7 @@ If you use plentyDevTool, you may want to modify the paths to match specific plu
 
 == Build compilation
 
-The second case applies if want to make your plugin available to others and enable them to configure parts of the styling, such as the colour scheme.
+Use build compilation if you want to make your plugin available to others and enable them to configure parts of the styling, such as the colour scheme.
 To enable configuration of SASS variables from the plentymarkets back end, xref:plugin-configuration:how-to-plugin-configuration.adoc[use the plugin configuration] and set the `scss` property.
 This approach makes it possible to define SASS variables without modifying any files.
 But it also means that you cannot compile all the SASS with your own development tools.
