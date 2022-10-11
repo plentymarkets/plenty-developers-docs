@@ -20,7 +20,7 @@ This page discusses both options based on the implementation in the link:https:/
 == General setup
 
 Much of the setup stays the same, no matter which option you use.
-The following tree shows the parts of a plugin's file structure that's relevant to SASS compilation.
+The following tree shows the parts of a plugin's file structure that are relevant to SASS compilation.
 
 .Plugin file structure
 [source]
