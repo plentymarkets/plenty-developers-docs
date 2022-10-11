@@ -64,7 +64,7 @@ You can either modify the scripts according to your needs or ignore part of the 
 
 == Precompilation
 
-The first case applies if you're confident that everyone who modifies the styling has basic programming knowledge and access to the code of the plugin.
+Use precompilation if you're confident that everyone who modifies the styling has basic programming knowledge and access to the code of the plugin.
 In other words, everyone who needs to change any SASS, changes and compiles the plugin directly.
 The benefit of this approach is that you can compile SASS on demand when there are changes and not every time you build your plugin set.
 This speeds up the deployment process.
