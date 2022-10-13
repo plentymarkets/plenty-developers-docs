@@ -6,16 +6,18 @@ on:
     paths: 'docs/**'
 
 jobs:
-  prose:
+  vale:
     runs-on: ubuntu-latest
-
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - uses: errata-ai/vale-action@bba898aad70788bace1547a258c8fb968218e787
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+      - name: Checkout github-actions repo
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
         with:
-          files: __onlyModified
-          onlyAnnotateModifiedLines: true
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          repository: plentymarkets/github-actions
+          ref: main
+          token: ${{ secrets.ORGA_PAT_CICD2_FULL_REPO_AND_PACKAGES }}
+          path: .tmp/github-actions
+      - name: Lint text w/ Vale
+        uses: ./.tmp/github-actions/vale_text_lint/
+        with:
+          token: ${{ secrets.ORGA_PAT_CICD3_FULL_REPO_AND_PACKAGES }}
