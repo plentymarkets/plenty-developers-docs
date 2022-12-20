@@ -1,14 +1,9 @@
 = Introducing content caching
 
-This page serves to give you an overview about the new content caching functionality of https://github.com/plentymarkets/plugin-ceres[plentyShop LTS] and https://github.com/plentymarkets/plugin-io[IO]. The caching of content data of the online store prevents a recalculating of pages upon each new page view and therefore improves the performance of the online store. Data which has already been loaded or genertated once remains in the cache and can be invoked much faster when it is accessed again.
-
-== Preliminary information about content caching
-
-Content caching is only available from plentyShop LTS and IO versions 2.12 onwards. Download the current versions of the plugins on the plentymarkets https://marketplace.plentymarkets.com/plugins/templates[marketplace] or update the plugins in the *Plugins » Plugin overview*.
+This page serves to give you an overview about the new content caching functionality of https://github.com/plentymarkets/plugin-ceres[plentyShop LTS] and https://github.com/plentymarkets/plugin-io[IO]. The caching of content data of the online store prevents a recalculating of pages upon each new page view and therefore improves the performance of the online store. Data which has already been loaded or generated once remains in the cache and can be invoked much faster when it is accessed again.
 
 == Information about caching and invalidation
 
-* The cached data is retained for 7 days unless invalidated.
 * All online store pages are cached in IO *with the exception of user-dependent data*, which is loaded via REST. The following pages are not written into the cache:
 ** Shopping cart
 ** Checkout
@@ -22,10 +17,10 @@ Content caching is only available from plentyShop LTS and IO versions 2.12 onwar
 ** Saving and publishing a plugin set
 ** Changing the settings of a plugin and saving the new settings
 ** Linking layout containers in the settings of a plugin
-* The cache for individual variation pages is invalidated when changes are made to the item settings of the variation. The invalidation of variation pages is dependent on the refreshing of the Elasticsearch index, meaning that the aforementioned invalidation cycle of 5 minutes does not apply; the Elasticsearch index is refreshed every  10 to 15 minutes.
+* The cache for individual variation pages is invalidated when changes are made to the item settings of the variation. The invalidation of variation pages is dependent on the refreshing of the Elasticsearch index, meaning that the aforementioned invalidation cycle of 5 minutes does not apply; the Elasticsearch index is refreshed every 10 to 15 minutes.
 
-The link:https://knowledge.plentymarkets.com/en/basics/first-steps/plugins#60[Preview mode] in the *Plugins » Plugin overview* menu completely circumvents the content caching. Changes to the online store will therefore be displayed
-immediately in the preview mode.
+The link:https://knowledge.plentymarkets.com/en/basics/first-steps/plugins#60[Preview mode] in the *Plugins » Plugin overview* menu completely circumvents the content caching. Changes to the online store will therefore be displayed immediately in the preview mode. +
+You can also add a query parameter like `?=nocache` to the URL to not load the page from the cache.
 
 == How to cache additional pages
 
@@ -43,7 +38,7 @@ $cacheRepository = pluginApp(ContentCacheRepositoryContract::class);
 $cacheRepository->enableCacheForResponse();
 
 ...
-  
+
 ----
 
 By integrating this code, you ensure that the additional routes are written into the cache. You can see how the code is implemented in the LayoutController of *IO*, located in the IO/src/Controllers/LayoutController.php file.
@@ -62,7 +57,7 @@ $contentCacheRepo = pluginApp(ContentCacheRepositoryContract::class);
 $contentCacheRepo->linkVariationsToResponse($variationIds); // $variationIds = [1,2,3];
 
 ...
-  
+
 ----
 
 In this case, the page is automatically invalidated whenever changes are being made to the variations with the IDs 1, 2 or 3.
@@ -101,14 +96,14 @@ You can then implement the `registerIncluded()` method at any point in the **boo
 The example below shows how the method is implemented with an array of two additional query parameters, "springEvent" and "returnCustomer":
 
 [source,php]
----- 
+----
 /** @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository */
 $contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
 $contentCacheQueryParamsRepository->registerIncluded([
     'springEvent',
     'returnCustomer'
 ]);
-    
+
 ----
 
 If a page that includes either one of these query parameters is accessed, a new cache entry is created on S3. This new entry differs from the basic entry, which is the cache entry for pages without additional query parameters. Therefore, both the page with and without the registered query parameters can be loaded from the ShopBooster cache.
@@ -124,13 +119,10 @@ The implementation of the function works analogously to the `registerIncluded` m
 You can then implement the `registerExcluded()` method at any point in the **boot function** of your service provider. The `registerExcluded()` takes an array of the names of the query parameters you want to exclude as its parameter. Here, only the query parameter "source" is excluded from caching: +
 
 [source,php]
----- 
+----
 /** @var ContentCacheQueryParamsRepositoryContract $contentCacheQueryParamsRepository */
 $contentCacheQueryParamsRepository = pluginApp(ContentCacheQueryParamsRepositoryContract::class);
 $contentCacheQueryParamsRepository->registerExcluded([
     'source'
 ]);
 ----
-
-
-
