@@ -41,7 +41,7 @@ PluginDirectory/
 <2> Contains supplementary, non-executable files.
 <<#_resources_files, For further information, see below.>>
 <3> Contains the source code of the plugin.
-plentymarkets plugins use PHP 7.0.
+plentymarkets plugins use PHP 8.0.
 <4> Contains the test suite of the plugin.
 // For more information, see the How to write automated tests page.
 <5> Contains back end views.
