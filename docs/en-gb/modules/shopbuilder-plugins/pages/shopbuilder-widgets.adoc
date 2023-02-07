@@ -1,8 +1,74 @@
 = Creating widgets
 
-== Widget information - contentWidgets.json
+== Creating widget PHP classes
 
-All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[the widget turorial].
+We have reworked the way in which ShopBuilder widgets are constructed. The former way of structuring the widget in the form of a contentWidget.json (as explained further below) is still valid and will continue to work with ShopBuilder; however, we advise you to use the process described in this guide in the future.
+
+Instead of relying on the contentWidget.json, we have outsourced the widget information in a number of separate PHP classes, in order to facilitate their organisation and to make overwriting, expanding and adjusting individual widgets a lot easier. Hitherto, the contentWidget.json file included the path to a PHP class called *widgetClass*; now it is the other way around: The PHP file is the principal file and has been expanded by the relevant widget information, such as name and category, as well as the *widget settings* and corresponding options.
+
+We added the two PHP helper classes *WidgetDataFactory* and *WidgetSettingsFactory* that provide important basic functions. The WidgetDatafactory is located under src/Widgets/Helper/Factories/WidgetDataFactory.php and provides functions pertaining to general widget data, including the widget identifier, label, preview image, type and category. The WidgetSettingFactory is located at the same location and provides functions that pertain to individual widget settings, such as appearance, button size, icons, etc. The WidgetSettingsFactory implements the auxiliary PHP classes located in the Factories/Settings folder and bundles them. Your widget can either use both of the described widget factories, or can cherrypick individual settings classes instead.
+
+After you have created the widget PHP class, you need to register the widget class in the service provider of your plugin. The ContentWidgetRepositoryContract provides the function `registerWidget ($widgetClass)`, in which you replace the variable with the widgetClass of your widget.
+
+=== widgetClass for Print button widget
+
+Take a look at the rudimentary print button widget from the ShopBuilder and how it is structured as a PHP class:
+
+.contentWidgets.json
+[source,prettyprint,lang-php,grey-back,linenums,code-example]
+----
+<?php
+
+namespace Ceres\Widgets\Common;
+
+use Ceres\Widgets\Helper\BaseWidget;
+use Ceres\Widgets\Helper\Factories\WidgetSettingsFactory;
+use Ceres\Widgets\Helper\Factories\WidgetDataFactory;
+use Ceres\Widgets\Helper\WidgetTypes;
+
+class PrintButtonWidget extends BaseWidget
+{
+    protected $template = "Ceres::Widgets.Common.PrintButtonWidget";
+
+    public function getData()
+    {
+        return WidgetDataFactory::make("Ceres::PrintButtonWidget")
+            ->withLabel("Widget.printButtonLabel")
+            ->withPreviewImageUrl("/images/widgets/print-button.svg")
+            ->withType(WidgetTypes::STATIC)
+            ->withPosition(300)
+            ->toArray();
+    }
+
+    public function getSettings()
+    {
+        /** @var WidgetSettingsFactory $settings */
+        $settings = pluginApp(WidgetSettingsFactory::class);
+
+        $settings->createCustomClass();
+        $settings->createAppearance();
+        $settings->createButtonSize();
+        $settings->createSpacing();
+
+        return $settings->toArray();
+    }
+}
+----
+
+[NOTE]
+.Explanation
+====
+Here, the print button widgetClass implements both helper classes detailed above, the *WidgetDataFactory* and the *WidgetSettingsFactory*. The getData() method serves to set widget information, such as label and preview image. The getSettings() method defines widget settings such as the CSS class input and button size via the helper class. Previously, this information would have been stored in the contentWidget.json.
+====
+
+=== Overwriting individual widgets
+
+By constructing widgets via PHP classes, it becomes a lot easier for plugins to overwrite individual widgets. All you have to do, is add the call `$widgetRepository->overrideWidget($original, $newWidgetClass);` in your `boot()` method. In this context, *$original* is the identifier of the widget you want to overwrite, which in the future will be set within the PHP widgetClass via the `getData()` method. *$newWidgetClass* is the identifier of the widgetClass you want to replace the other widget with.
+
+
+== Widget information - contentWidgets.json (obsolete)
+
+Note that this guide refers to an obsolete way of creating ShopBuilder widgets. All information about your widget is defined in a `contentWidgets.json` file. Please note that your widget is provided via a plugin and that your plugin also needs to include the necessary plugin information in the plugin.json. For a detailed description of the contentWidgets.json, please refer to xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[the widget turorial].
 
 .contentWidgets.json
 [source,json]
@@ -71,68 +137,3 @@ The settings provide the configuration options of the widget in the ShopBuilder.
 ** *tooltip*: The key which is used to display a tooltip when hovering above the setting. The text is stored in the widgets.properties file.
 * *isVisible*: Determines whether the setting is visible. If nothing else is specified, the default value is "true". You can define a JavaScript expression, like an if-condition, that dynamically changes the value of *isVisible*. An example of how this setting is implemented is described xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[in the turorial].
 * *isList*: Determines whether the setting can be duplicated. This setting can be used, for instance, to add further slides to the image carousel or add additional entries to the list widget. Please find a detailed explanation of how to implement this setting xref:shopbuilder-plugins:how-to-shopbuilder-widget.adoc[in the turorial].
-
-== Creating widget PHP classes
-
-We have reworked the way in which ShopBuilder widgets are constructed. The former way of structuring the widget in the form of a contentWidget.json is still valid and will continue to work with ShopBuilder; however, we advise you to use the process described in this guide in the future.
-
-Instead of relying on the contentWidget.json, we have outsourced the widget information in a number of separate PHP classes, in order to facilitate their organisation and to make overwriting, expanding and adjusting individual widgets a lot easier. Hitherto, the contentWidget.json file included the path to a PHP class called *widgetClass*; now it is the other way around: The PHP file is the principal file and has been expanded by the relevant widget information, such as name and category, as well as the *widget settings* and corresponding options.
-
-We added the two PHP helper classes *WidgetDataFactory* and *WidgetSettingsFactory* that provide important basic functions. The WidgetDatafactory is located under src/Widgets/Helper/Factories/WidgetDataFactory.php and provides functions pertaining to general widget data, including the widget identifier, label, preview image, type and category. The WidgetSettingFactory is located at the same location and provides functions that pertain to individual widget settings, such as appearance, button size, icons, etc. The WidgetSettingsFactory implements the auxiliary PHP classes located in the Factories/Settings folder and bundles them. Your widget can either use both of the described widget factories, or can cherrypick individual settings classes instead.
-
-After you have created the widget PHP class, you need to register the widget class in the service provider of your plugin. The ContentWidgetRepositoryContract provides the function `registerWidget ($widgetClass)`, in which you replace the variable with the widgetClass of your widget.
-
-=== widgetClass for Print button widget
-
-Take a look at the rudimentary print button widget from the ShopBuilder and how it is structured as a PHP class:
-
-.contentWidgets.json
-[source,prettyprint,lang-php,grey-back,linenums,code-example]
-----
-<?php
-
-namespace Ceres\Widgets\Common;
-
-use Ceres\Widgets\Helper\BaseWidget;
-use Ceres\Widgets\Helper\Factories\WidgetSettingsFactory;
-use Ceres\Widgets\Helper\Factories\WidgetDataFactory;
-use Ceres\Widgets\Helper\WidgetTypes;
-
-class PrintButtonWidget extends BaseWidget
-{
-    protected $template = "Ceres::Widgets.Common.PrintButtonWidget";
-
-    public function getData()
-    {
-        return WidgetDataFactory::make("Ceres::PrintButtonWidget")
-            ->withLabel("Widget.printButtonLabel")
-            ->withPreviewImageUrl("/images/widgets/print-button.svg")
-            ->withType(WidgetTypes::STATIC)
-            ->withPosition(300)
-            ->toArray();
-    }
-
-    public function getSettings()
-    {
-        /** @var WidgetSettingsFactory $settings */
-        $settings = pluginApp(WidgetSettingsFactory::class);
-
-        $settings->createCustomClass();
-        $settings->createAppearance();
-        $settings->createButtonSize();
-        $settings->createSpacing();
-
-        return $settings->toArray();
-    }
-}
-----
-
-[NOTE]
-.Explanation
-====
-Here, the print button widgetClass implements both helper classes detailed above, the *WidgetDataFactory* and the *WidgetSettingsFactory*. The getData() method serves to set widget information, such as label and preview image. The getSettings() method defines widget settings such as the CSS class input and button size via the helper class. Previously, this information would have been stored in the contentWidget.json.
-====
-
-=== Overwriting individual widgets
-
-By constructing widgets via PHP classes, it becomes a lot easier for plugins to overwrite individual widgets. All you have to do, is add the call `$widgetRepository->overrideWidget($original, $newWidgetClass);` in your `boot()` method. In this context, *$original* is the identifier of the widget you want to overwrite, which in the future will be set within the PHP widgetClass via the `getData()` method. *$newWidgetClass* is the identifier of the widgetClass you want to replace the other widget with.
