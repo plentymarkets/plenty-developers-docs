@@ -209,9 +209,7 @@ function getTitle(ConfigRepository $config):string
 
 [source,twig]
 ----
-{% verbatim %}
 {% if config('MyPlugin.show_title') == "1" %}
     <h1>{{ config('MyPlugin.title_text') }}</h1>
 {% endif %}
-{% endverbatim %}
 ----
