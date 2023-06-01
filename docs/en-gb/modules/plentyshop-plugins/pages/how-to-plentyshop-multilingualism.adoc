@@ -77,7 +77,7 @@ The *translation.json* file brings together the elements from the Template.prope
         "prefix": "notifications"
         },
         {
-        "name": "Config.termsAndConditions"
+        "name": "Config.termsAndConditions",
         "prefix": "termsAndConditions"
         }
     ]
