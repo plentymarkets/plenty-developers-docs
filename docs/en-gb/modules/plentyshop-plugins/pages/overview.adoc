@@ -17,10 +17,10 @@ We've also expanded the reference documentation on properties and methods used i
 
 If you want to customise widgets or work on your own, you should begin with the xref:shopbuilder-plugins:shopbuilder-widgets.adoc[ShopBuilder tutorial^].
 
-== Developer Talk
-Every monday at 3 p.m. (CEST), we're offering office hours with one or two of our plentyShop developers.
-If you can make time, come join us in https://meet.google.com/mdn-zrma-vwn[this Google Meets call^]. Our developers will do their best to help you out with any issues or questions you might have regarding the development for plentyShop.
-If you want to give the team more time to prepare, you can post any concrete questions in https://forum.plentymarkets.com/t/regelmaessige-entwicklersprechstunden-regular-developers-talks/637295[the corresponding forum thread^].
+// == Developer Talk
+// Every monday at 3 p.m. (CEST), we're offering office hours with one or two of our plentyShop developers.
+// If you can make time, come join us in https://meet.google.com/mdn-zrma-vwn[this Google Meets call^]. Our developers will do their best to help you out with any issues or questions you might have regarding the development for plentyShop.
+// If you want to give the team more time to prepare, you can post any concrete questions in https://forum.plentymarkets.com/t/regelmaessige-entwicklersprechstunden-regular-developers-talks/637295[the corresponding forum thread^].
 
 == Visit our forum
 
