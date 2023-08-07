@@ -19,7 +19,7 @@ We recommend using https://www.jetbrains.com/phpstorm/[PhpStorm] for developing 
 For JavaScript packages, such as http://gulpjs.com/[Gulp], we recommend installing https://nodejs.org/en/about/[Node.js] with its package manager https://www.npmjs.com/[npm].
 
 . Download and install https://nodejs.org/en/download/[Node.js]. +
-icon:arrow-right[] We recommend using Node.js v6.9.1 LTS.
+icon:arrow-right[] We recommend using Node.js v14.21.3.
 . To use Node.js properly, a command line tool is required. PhpStorm comes with a built-in terminal, but you can use any other command line tool.
 
 === Installing PhpStorm
