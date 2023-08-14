@@ -504,7 +504,7 @@ class ThemeServiceProvider extends ServiceProvider
 
 Add the dependencies for the `Partial` function as well as the `Dispatcher` and `Twig` classes.
 
-Add the `boot()` function and specify one or multiple partials, e.g. `IO.init.templates`, as well as the TWIG template(s) for the partial(s), e.g. `Theme::content.ThemeFooter`. We will add the TWIG template in the next step. 
+Add the `boot()` function and specify one or multiple partials, e.g. `IO.init.templates`, as well as the TWIG template(s) for the partial(s), e.g. `Theme::content.ThemeFooter`. We will add the TWIG template in the next step.
 
 The priority of the template is set in line 29. Original plentyShop LTS templates have a priority of 100. Any number less than 100 will indicate a higher priority.
 
@@ -641,9 +641,13 @@ image::Ceres_BasketList.png[width=640, height=360]
 {% endblock %}
 ----
 
-In line 6 of the basket template, we specify the template path of the new template component: `{{ component( "Theme::content.Components.ThemeBasketList" ) }}`.
+In the example above we specify the template path of the new component like this:
+`{{ component( "Theme::content.Components.ThemeBasketList" ) }}`
 
-In line 22, a new ID for the component must be indicated. Note that this ID must be the same as in the BasketList template. We will create this template in the next step.
+When including the BasketList template we use the internal id of the template as attribute value:
+`<basket-list template="#theme-basket-list"></basket-list>`
+
+We will create the BasketList template in the next step.
 
 ==== Code for the BasketList template
 
@@ -1012,7 +1016,7 @@ Below you will find two code snippets, the first of which illustrates the use of
 <lazy-load component="component-to-load">
     <component-to-load>
     </component-to-load>
-</lazy-load>  
+</lazy-load>
 ----
 
 [source,twig]
@@ -1056,5 +1060,5 @@ For overwriting components globally for the entire online store, you need to set
     <div>
         ${  }
     </div>
-</script>    
+</script>
 ----
