@@ -641,13 +641,18 @@ image::Ceres_BasketList.png[width=640, height=360]
 {% endblock %}
 ----
 
-In the example above we specify the template path of the new component like this:
+One essential concept to understand when working with this architecture is the integration between Vue.js and Twig. The Twig template is responsible for defining the structure and layout of the page, while Vue.js is responsible for the dynamic data-binding and interactions.
+
+In our previous example, when specifying the template path of the new component:
 `{{ component( "Theme::content.Components.ThemeBasketList" ) }}`
 
-When including the BasketList template we use the internal id of the template as attribute value:
-`<basket-list template="#theme-basket-list"></basket-list>`
+It looks as though we're just including a Twig template. But what's happening underneath is that this Twig file acts as a container for our Vue components.
 
-We will create the BasketList template in the next step.
+The following code provides a bridge between Twig and Vue:
+`<basket-list template="#theme-basket-list"></basket-list>`
+Here, <basket-list> is the Vue component and template="#theme-basket-list" points to the id of the x-template defined in our Twig. The x-template is where the Vue component's template markup is written, and Vue uses it for rendering the component.
+
+Also, it's not enough to just define the Vue component in the Twig file. To make your component fully functional, you'll need to build the associated Vue files.
 
 ==== Code for the BasketList template
 
