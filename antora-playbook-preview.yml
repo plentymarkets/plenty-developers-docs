@@ -38,7 +38,5 @@ output:
   dir: ./build/en-gb
 ui:
   bundle:
-    url: https://github.com/plentymarkets/plenty-docs-ui/raw/main/build/ui-bundle.zip
-    branches:
-      - preview
+    url: https://github.com/plentymarkets/plenty-docs-ui/raw/preview/build/ui-bundle.zip
     snapshot: true
