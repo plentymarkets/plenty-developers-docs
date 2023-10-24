@@ -5,3 +5,4 @@
 antora-playbook-local.yml
 sources
 *.iml
+node_modules
