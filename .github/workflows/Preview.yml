@@ -1,0 +1,105 @@
+name: Preview
+
+on:
+  push:
+    branches: [ preview ]
+  repository_dispatch:
+    types: [ ContentSourceUpdate, UIBundleUpdate ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          workflow_id: 3113546
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: plentymarkets/plenty-docs-ui
+          path: plenty-docs-ui-repo
+      
+      # Move i18n files to expected path
+      - run: |
+          mkdir ./lang/
+          mv ${GITHUB_WORKSPACE}/plenty-docs-ui-repo/src/lang/en-gb.json ./lang/en-gb.json
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
+          node-version: 16
+          # Set this option if you want the action to check for the latest available version that satisfies the version spec
+          check-latest: true
+
+      - name: Build site
+        run: |
+          npm i -g @antora/cli@2.3 @antora/site-generator-default@2.3
+          antora antora-playbook-preview.yml --fetch --stacktrace
+
+      - name: Get REST API repository
+        run: |
+          # Setup git details
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          # Clone API repository
+          git clone --branch preview https://github.com/plentymarkets/api-doc.git ./api-doc
+
+      - name: Get archive
+        run: |
+          # Setup git details
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          # Clone API repository
+          git clone https://github.com/plentymarkets/plenty-developers-redirects.git ./redirect-archive
+
+      - name: Assemble site
+        run: |
+          # Move index to build directory
+          mv index.html ./build/index.html
+          # Create REST directory
+          mkdir ./build/rest-api/
+          # Move REST docs to build directory
+          mv ./api-doc/plentymarkets/openApiV2/openApiV2WithExamples.min.json ./build/rest-api/
+          mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
+
+      - name: Upload site to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PREVIEW_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREVIEW_AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
+          SOURCE_DIR: './build'
+          AWS_REGION: 'eu-central-1'
+
+      - run: |
+          rm ./redirect-archive/README.md
+          find . -wholename '*.git/*' -delete
+      - name: Upload redirect archive S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --content-type text/html
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PREVIEW_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREVIEW_AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
+          SOURCE_DIR: './redirect-archive'
+          AWS_REGION: 'eu-central-1'
+
+          #      - name: Invalidate CloudFront cache
+          #        uses: awact/cloudfront-action@master
+          #        env:
+          #          SOURCE_PATH: '/*'
+          #          AWS_REGION: 'eu-central-1'
+          #          AWS_ACCESS_KEY_ID: ${{ secrets.PREVIEW_AWS_ACCESS_KEY_ID }}
+          #          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREVIEW_AWS_SECRET_ACCESS_KEY }}
+          #          DISTRIBUTION_ID: ${{ secrets.PREVIEW_DISTRIBUTION_ID }}
+

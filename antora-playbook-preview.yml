@@ -9,7 +9,7 @@ content:
       start_path: docs/en-gb
     - url: https://github.com/plentymarkets/api-doc
       branches:
-        - master
+        - preview
       start_path: plentymarkets/docs
     - url: https://github.com/plentymarkets/docs-raw
       branches:
@@ -39,4 +39,6 @@ output:
 ui:
   bundle:
     url: https://github.com/plentymarkets/plenty-docs-ui/raw/main/build/ui-bundle.zip
+    branches:
+      - preview
     snapshot: true
