@@ -15,11 +15,11 @@ Approximately 70 containers are available on the different pages and views of th
 
 Find a list of all containers in the table below:
 
+=== Template & Scripts
+
 [cols="1,1,1"]
 |===
 |Container key |Container name |Description
-
-| **Template & Scripts**
 
 | Template.Style 
 | Style 
@@ -37,7 +37,13 @@ Find a list of all containers in the table below:
 | After scripts loaded 
 | Load scripts, events and other JS related items, e.g. Vue components, after frameworks and scripts have been initialised
 
-| **Static pages**
+|===
+
+=== Static pages
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | StaticPages.CancellationRights 
 | Cancellation rights 
@@ -63,7 +69,13 @@ Find a list of all containers in the table below:
 | Page not found 
 | Add additional content on the 404 page
 
-| **Homepage**
+|===
+
+=== Homepage
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | Homepage 
 | Override homepage 
@@ -121,7 +133,14 @@ Find a list of all containers in the table below:
 | Certified container 
 | Add a **Certified by** logo to the container on the homepage
 
-| **Header of the page**
+|===
+
+
+=== Header of the page
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | Header.LeftSide 
 | Left header container 
@@ -131,7 +150,13 @@ Find a list of all containers in the table below:
 | Search: Override the search bar 
 | Override the search bar in the header
 
-| **Footer of the page**
+|===
+
+=== Footer of the page
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | Footer.RowOne 
 | Row 1 container 
@@ -145,7 +170,13 @@ Find a list of all containers in the table below:
 | Row 3 container 
 | Add content to the third row of the footer
 
-| **Single item view**
+|===
+
+=== Single item view
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | SingleItem.BeforePrice 
 | Before price 
@@ -197,7 +228,13 @@ after frameworks and scripts have been initialised on the single item view.
 | Container for customer feedback 
 | Add item lists in the single item view
 
-| **Shopping cart**
+|===
+
+=== Shopping cart
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | BasketTotals.BeforeItemSum 
 | Before **Value of items** 
@@ -251,14 +288,26 @@ after frameworks and scripts have been initialised on the single item view.
 | After **Checkout** button 
 | Add content after the **Checkout** button in the shopping cart
 
-| **Shopping cart overlay**
+|===
+
+=== Shopping cart overlay
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | Basket.ExtendOverlayButtons 
 | Extend buttons 
 | Add additional buttons to the shopping cart overlay. Note that the class `btn btn-primary` is used for 
 rendering the container in the style of the other buttons.
 
-| **Shopping cart preview**
+|===
+
+=== Shopping cart preview
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | BasketPreview.BeforeCheckoutButton 
 | Before **Checkout** button 
@@ -268,7 +317,13 @@ rendering the container in the style of the other buttons.
 | After **Checkout** button 
 | Add content after the **Checkout** button in the shopping cart preview
 
-| **Checkout**
+|===
+
+=== Checkout
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | Checkout 
 | Override checkout 
@@ -363,7 +418,13 @@ frameworks and scripts have been initialised in the checkout.
 | Checkout: Styles 
 | Load CSS in the head after all other styles have been loaded.
 
-| **Order confirmation page**
+|===
+
+=== Order confirmation page
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | OrderConfirmation.Override 
 | Override order confirmation 
@@ -395,14 +456,26 @@ order confirmation page
 | Add content before the 'Back to Homepage' link on the 
 order confirmation page
 
-| **My account page**
+|===
+
+=== My account page
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | MyAccount.OrderHistoryPaymentInformation 
 | Additional payment information 
 | Add additional payment information after the order information on the My 
 account page
 
-| **Category item list**
+|===
+
+=== Category item list
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | CategoryItem.BeforePrices 
 | Before prices container 
@@ -416,21 +489,31 @@ account page
 | Container below side navigation 
 | Add content below the side navigation bar in the category item view
 
-| **Login**
+|===
+
+=== Login 
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | Login.AdditionalContentAfterButtons 
 | Container below the buttons 
 | Add content below the buttons in the login view. Note that the class `btn 
 btn-primary` is used for rendering the container in the style of the other buttons.
 
-| **Login overlay**
-
 | LoginOverlay.ExtendOverlayButtons 
 | Container in a row with the buttons 
 | Add content in the login overlay. Note that the class `btn btn-primary` is 
 used for rendering the container in the style of the other buttons.
 
-| **Registration overlay**
+|===
+
+=== Registration overlay
+
+[cols="1,1,1"]
+|===
+|Container key |Container name |Description
 
 | RegistrationOverlay.ExtendOverlayButtons 
 | Container in a row with the buttons 
