@@ -77,26 +77,32 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
-          role-session-name: ga-session
           aws-region: 'eu-central-1'
+          output-credentials: true
+          
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
           AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ steps.creds.outputs.aws-access-key-id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.creds.outputs.aws-secret-access-key }}
           SOURCE_DIR: './build'
           AWS_REGION: 'eu-central-1'
 
       - run: |
           rm ./redirect-archive/README.md
           find . -wholename '*.git/*' -delete
+
       - name: Upload redirect archive S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --content-type text/html
         env:
           AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ steps.creds.outputs.aws-access-key-id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.creds.outputs.aws-secret-access-key }}
           SOURCE_DIR: './redirect-archive'
           AWS_REGION: 'eu-central-1'
 
