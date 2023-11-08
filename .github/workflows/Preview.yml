@@ -78,7 +78,7 @@ jobs:
         with:
           role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
           role-session-name: ga-session
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: 'eu-central-1'
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master
         with:
