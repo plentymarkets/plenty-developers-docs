@@ -74,12 +74,13 @@ jobs:
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
 
       - name: Log in to AWS using OIDC
+        id: creds
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
           aws-region: 'eu-central-1'
           output-credentials: true
-          
+
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master
         with:
