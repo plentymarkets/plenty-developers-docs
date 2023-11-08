@@ -7,6 +7,10 @@ on:
     types: [ ContentSourceUpdate, UIBundleUpdate ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -69,13 +73,17 @@ jobs:
           mv ./api-doc/plentymarkets/openApiV2/openApiV2WithExamples.min.json ./build/rest-api/
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
 
+      - name: Log in to AWS using OIDC
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
+          role-session-name: ga-session
+          aws-region: ${{ env.AWS_REGION }}
       - name: Upload site to S3
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.PREVIEW_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREVIEW_AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
           SOURCE_DIR: './build'
           AWS_REGION: 'eu-central-1'
@@ -88,8 +96,6 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --content-type text/html
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.PREVIEW_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.PREVIEW_AWS_SECRET_ACCESS_KEY }}
           AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
           SOURCE_DIR: './redirect-archive'
           AWS_REGION: 'eu-central-1'
