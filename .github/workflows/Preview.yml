@@ -81,7 +81,7 @@ jobs:
 
       - name: Copy files to the test website with the AWS CLI
         run: |
-        aws s3 sync ./build s3://plentymarkets-developer-doc-preview --acl public-read --follow-symlinks --delete
+          aws s3 sync ./build s3://plentymarkets-developer-doc-preview --acl public-read --follow-symlinks --delete
 
       - run: |
           rm ./redirect-archive/README.md
