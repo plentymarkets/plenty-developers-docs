@@ -24,6 +24,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           repository: plentymarkets/plenty-docs-ui
           path: plenty-docs-ui-repo
