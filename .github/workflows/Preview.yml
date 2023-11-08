@@ -75,7 +75,7 @@ jobs:
 
       - name: Log in to AWS using OIDC
         id: creds
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
           aws-region: 'eu-central-1'
