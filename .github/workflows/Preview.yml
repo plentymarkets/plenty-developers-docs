@@ -88,6 +88,7 @@ jobs:
 
       - name: Copy files to the test website with the AWS CLI
         run: |
+          aws sts get-caller-identity
           aws s3 sync ./build s3://plentymarkets-developer-doc-preview
 
       - run: |
