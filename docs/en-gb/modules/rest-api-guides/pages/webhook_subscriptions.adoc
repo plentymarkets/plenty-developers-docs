@@ -8,7 +8,7 @@ You can access Webhook Subscription Settings under *Setup* » *Settings* » *Web
 
 The *Setup* » *Settings* » *Webhooks* menu is structures as follows:
 
-image::images/webhook_overview.png[widht=640]
+image::webhook_overview.png[widht=640]
 
 * *Navigation*: Here you can create new subscriptions or open up subscriptions that are selected in the main window. Click on the menu icon to expand or collapse the navigation bar.
 * *Toolbar*: Here you can search for webhook subscriptions, apply specific filters, configure the results per page and also test the active subscriptions.
@@ -33,7 +33,7 @@ After saving a popup appears with the sign key of the subscription. Make sure to
 A sign key is generated automatically when you create the subscription.
 
 
-image::images/webhook_conf.png[widht=640]
+image::webhook_conf.png[widht=640]
 
 
 [NOTE]
