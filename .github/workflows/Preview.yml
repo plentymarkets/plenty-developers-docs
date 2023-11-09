@@ -28,6 +28,19 @@ jobs:
         with:
           repository: plentymarkets/plenty-docs-ui
           path: plenty-docs-ui-repo
+
+      #sign in to aws
+      - name: Log in to AWS using OIDC
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
+          aws-region: 'eu-central-1'
+
+      - name: Check AWS credentials
+        run: |
+          aws sts get-caller-identity
+          aws s3 ls
       
       # Move i18n files to expected path
       - run: |
@@ -72,13 +85,6 @@ jobs:
           # Move REST docs to build directory
           mv ./api-doc/plentymarkets/openApiV2/openApiV2WithExamples.min.json ./build/rest-api/
           mv ./api-doc/plentyBase/openApiV2/openApiV2.json ./build/rest-api/
-
-      - name: Log in to AWS using OIDC
-        id: creds
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: "arn:aws:iam::275284916312:role/GA_Deploy_DevDocs_Preview"
-          aws-region: 'eu-central-1'
 
       - name: Copy files to the test website with the AWS CLI
         run: |
