@@ -1,0 +1,69 @@
+= Webhook Subscriptions
+
+Using the webhook subscription feature, you can effortlessly define and set up webhook endpoints to listen for specific predefined events across your application. The range of events is dynamic and can include anything based on demand. Currently, the list includes the most critical events.
+
+You can access Webhook Subscription Settings under *Setup* » *Settings* » *Webhooks*.
+
+== Subscription Overview
+
+The *Setup* » *Settings* » *Webhooks* menu is structures as follows:
+
+image::webhook_overview.png[widht=640]
+
+* *Navigation*: Here you can create new subscriptions or open up subscriptions that are selected in the main window. Click on the menu icon to expand or collapse the navigation bar.
+* *Toolbar*: Here you can search for webhook subscriptions, apply specific filters, configure the results per page and also test the active subscriptions.
+* *Main window*: In the main window you find all webhook subscriptions and their endpoint, description and if they are active or not. Via More (more_vert) in the main window you can delete them.
+
+== Creating a subscription
+
+Open the menu *Setup* » *Settings* » *Webhooks*.
+Click on New Subscription.
+The new subscription detail view is opened.
+Enter a name under Endpoint.
+Enter a description of the new subscription under *Subscription*.
+Select a client for the subscription under *WebStores*.
+Choose any amount of event you want to subscribe to under *Subscribed events*.
+*Save* your new subscription.
+
+[WARNING]
+====
+After saving a popup appears with the sign key of the subscription. Make sure to copy the sign key, because you won’t have access to it afterwards. In case you lose your subscription sign key you have to reset it.
+====
+
+A sign key is generated automatically when you create the subscription.
+
+
+image::webhook_conf.png[widht=640]
+
+
+[NOTE]
+====
+You can use the sign key programmatically to secure events that are incoming in your webhook receiver. The Sign key is included in each payload.
+====
+
+
+[cols="2"]
+|===
+|Setting |Explanation
+
+|Endpoint
+|The URL on your side, to send the event payload to when an event is triggered.
+
+|Description
+|A text field helping identify a subscription configuration.
+
+|Web stores
+|One or more web stores can be linked to a subscription. The events that are linked with a web store would only be sent for the selected webstores. (for example: orders in a specific web store)
+
+|Subscribed events
+|Select the event or multiple events that would be sent to the endpoint configured above.
+|===
+
+== Testing your endpoint
+To make sure your created and/or edited subscriptions work you have the possibility to test all active subscriptions within the webhook overview. Only requirement is that you already created a subscription that is also active. Proceed as follows:
+
+ . Open the menu *Setup* » *Settings* » *Webhooks*.
+ . Click on *Test active webhooks*.
+
+A notification pops up, informing you that a webhook test was sent.
+Check your endpoint that it received the webhook call.
