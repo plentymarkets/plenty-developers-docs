@@ -40,7 +40,7 @@ jobs:
       - name: Check AWS credentials
         run: |
           aws sts get-caller-identity
-          aws s3 ls
+          aws s3 ls plentymarkets-developer-doc-preview
       
       # Move i18n files to expected path
       - run: |
