@@ -89,22 +89,15 @@ jobs:
       - name: Copy files to the test website with the AWS CLI
         run: |
           aws sts get-caller-identity
-          aws s3 sync ./build s3://plentymarkets-developer-doc-preview
+          aws s3 sync ./build s3://plentymarkets-developer-doc-preview --acl public-read --follow-symlinks
 
       - run: |
           rm ./redirect-archive/README.md
           find . -wholename '*.git/*' -delete
 
       - name: Upload redirect archive S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --content-type text/html
-        env:
-          AWS_S3_BUCKET: ${{ secrets.PREVIEW_AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ steps.creds.outputs.aws-access-key-id }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.creds.outputs.aws-secret-access-key }}
-          SOURCE_DIR: './redirect-archive'
-          AWS_REGION: 'eu-central-1'
+        run: |
+          aws s3 sync ./redirect-archive s3://plentymarkets-developer-doc-preview --acl public-read --follow-symlinks --content-type text/html
 
           #      - name: Invalidate CloudFront cache
           #        uses: awact/cloudfront-action@master
