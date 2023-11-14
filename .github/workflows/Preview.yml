@@ -4,7 +4,7 @@ on:
   push:
     branches: [ preview ]
   repository_dispatch:
-    types: [ ContentSourceUpdate, UIBundleUpdate ]
+    types: [ ContentSourceUpdate4Preview, UIBundleUpdate4Preview ]
   workflow_dispatch:
 
 permissions:
