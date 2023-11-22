@@ -504,7 +504,7 @@ class ThemeServiceProvider extends ServiceProvider
 
 Add the dependencies for the `Partial` function as well as the `Dispatcher` and `Twig` classes.
 
-Add the `boot()` function and specify one or multiple partials, e.g. `IO.init.templates`, as well as the TWIG template(s) for the partial(s), e.g. `Theme::content.ThemeFooter`. We will add the TWIG template in the next step. 
+Add the `boot()` function and specify one or multiple partials, e.g. `IO.init.templates`, as well as the TWIG template(s) for the partial(s), e.g. `Theme::content.ThemeFooter`. We will add the TWIG template in the next step.
 
 The priority of the template is set in line 29. Original plentyShop LTS templates have a priority of 100. Any number less than 100 will indicate a higher priority.
 
@@ -641,9 +641,18 @@ image::Ceres_BasketList.png[width=640, height=360]
 {% endblock %}
 ----
 
-In line 6 of the basket template, we specify the template path of the new template component: `{{ component( "Theme::content.Components.ThemeBasketList" ) }}`.
+One essential concept to understand when working with this architecture is the integration between Vue.js and Twig. The Twig template is responsible for defining the structure and layout of the page, while Vue.js is responsible for the dynamic data-binding and interactions.
 
-In line 22, a new ID for the component must be indicated. Note that this ID must be the same as in the BasketList template. We will create this template in the next step.
+In our previous example, when specifying the template path of the new component:
+`{{ component( "Theme::content.Components.ThemeBasketList" ) }}`
+
+It looks as though we're just including a Twig template. But what's happening underneath is that this Twig file acts as a container for our Vue components.
+
+The following code provides a bridge between Twig and Vue:
+`<basket-list template="#theme-basket-list"></basket-list>`
+Here, <basket-list> is the Vue component and template="#theme-basket-list" points to the id of the x-template defined in our Twig. The x-template is where the Vue component's template markup is written, and Vue uses it for rendering the component.
+
+Also, it's not enough to just define the Vue component in the Twig file. To make your component fully functional, you'll need to build the associated Vue files.
 
 ==== Code for the BasketList template
 
@@ -1012,7 +1021,7 @@ Below you will find two code snippets, the first of which illustrates the use of
 <lazy-load component="component-to-load">
     <component-to-load>
     </component-to-load>
-</lazy-load>  
+</lazy-load>
 ----
 
 [source,twig]
@@ -1056,5 +1065,5 @@ For overwriting components globally for the entire online store, you need to set
     <div>
         ${  }
     </div>
-</script>    
+</script>
 ----
