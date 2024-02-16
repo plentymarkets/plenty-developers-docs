@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@antora/cli": "^3.1.4",
+    "@antora/site-generator-default": "^3.1.4"
+  },
+  "scripts": {
+    "build:local": "antora antora-playbook-local.yml --fetch --stacktrace",
+    "postbuild:local": "node local_symlink.js"
+  }
+}

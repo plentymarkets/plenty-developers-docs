@@ -8,37 +8,34 @@ site:
   url: https://developers.plentymarkets.com/en-gb
 content:
   sources:
-  - url: /Users/USER/workspace/plenty-developers-docs
-    branches: HEAD
-    start_path: docs/en-gb
-  - url: /Users/USER/workspace/module-version-doc
-    branches:
-      - HEAD
-  - url: /Users/USER/workspace/docs-raw
-    branches:
-      - HEAD
-  - url: /Users/USER/workspace/api-doc
-    branches:
-      - HEAD
-    start_path: plentymarkets/docs
-  - url: /Users/USER/workspace/api-doc
-    branches:
-      - HEAD
-    start_path: plentyBase/docs
-  - url: /Users/USER/workspace/Ceres_docs-raw
-    branches:
-      - HEAD
-  - url: /Users/USER/workspace/IO_docs-raw
-    branches:
-      - HEAD
+    - url: ./
+      branches: HEAD
+      start_path: docs/en-gb
+    - url: ./sources/api-doc
+      branches:
+        - HEAD
+      start_path: plentymarkets/docs
+    - url: ./sources/docs-raw
+      branches:
+        - HEAD
+    - url: ./sources/Ceres_docs-raw
+      branches:
+        - HEAD
+    - url: ./sources/IO_docs-raw
+      branches:
+        - HEAD
+    - url: https://github.com/plentymarkets/plentyDevTool
+      branches:
+        - HEAD
+      start_path: docs
 asciidoc:
   attributes:
     tabs: tabs
   extensions:
-  - ./lib/tabs-block.js
+    - ./lib/tabs-block.js
 output:
-    dir: ./build/en-gb
+  dir: ./build/en-gb
 ui:
   bundle:
-    url: /Users/USER/workspace/plenty-docs-ui/build/ui-bundle.zip
+    url: ./sources/plenty-developers-docs-ui/build/ui-bundle.zip
     snapshot: true
