@@ -251,7 +251,7 @@ With additional styling we can improve the user experience of our plugin. So let
 interface. You can access this result in the same git repository in the hello-world-sdk-fancy branch.
 
 .How we want it to look like
-image::hello-world-fancy.gif[Fancy User Interface,500]
+image::cy.gif[Fancy User Interface,500]
 
 For this result we will have to add a CSS and a JavaScript file. Therefor we add a css folder with `fancy.css in it and
 a `buttonlistener.js in a js folder inside resources.

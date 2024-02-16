@@ -39,6 +39,7 @@ include::back-end-ui:partial$nav.adoc[]
 * xref:rest-api-guides:order-search.adoc[How to search for orders]
 * xref:rest-api-guides:purchase-orders.adoc[How to query purchase order data]
 * xref:rest-api-guides:bulk-routes.adoc[How to use bulk routes]
+* xref:rest-api-guides:webhook_subscriptions.adoc[Using webhooks]
 
 .plentyShop plugins
 * xref:plentyshop-plugins:overview.adoc[Overview]
