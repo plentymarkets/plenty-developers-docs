@@ -38,7 +38,11 @@ image::webhook_conf.png[widht=640]
 
 [NOTE]
 ====
-You can use the sign key programmatically to secure events that are incoming in your webhook receiver. The Sign key is included in each payload.
+You can use the sign key programmatically to secure events that are incoming in your webhook receiver.
+
+The *Sign key* is used to create a signature that
+is included in the header of each request.
+The signature is the *ID* found in the webhook payload hashed using _sha256_ algorithm.
 ====
 
 
