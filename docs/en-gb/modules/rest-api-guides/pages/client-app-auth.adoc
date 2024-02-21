@@ -3,7 +3,7 @@
 This is an alternative authentication method for plentymarkets REST API.
 It is using *OAuth 2.0* to generate a JWT token that can be used to authenticate in the REST API.
 
-[NOTE]
+[IMPORTANT]
 ====
 This authentication method is in *BETA* phase.
 ====
@@ -29,7 +29,7 @@ The `Create` page has the following options:
 |*Role template*
 
 `_Use an existing role as template_`
-|Select from an existing Role found in *Setup* » *Account management* » *Roles*.
+|Select from an existing Role found in *Setup* » *Account management* » *Roles*. +
 
 This will autocomplete the `Rights` and `Access rights` options
 
@@ -46,18 +46,18 @@ image::client-app-auth/app-client-secret.png[width=489]
 
 [WARNING]
 ====
-After saving a popup appears with the secret of the app client.
-Make sure to copy the *secret*, because you won’t have access to it afterwards.
-In case you lose your app client *secret* you have to reset it.
+After you saved, a popup appears with the *App Client secret*. +
+Copy the *secret*, because you won’t have access to it afterwards. +
+In case you lose your *App Client secret* you have to regenerate it.
 ====
 
-After creating the App Client, you will be redirected to the `App Client Details Page`
+After creating the App Client, you will be redirected to the *App Client detail view*.
 
 === App Client Details Page
 
-Once an App Client is created, you can view the `Client ID` and `Token URL` used for generating the JWT token.
+Once you created an App Client, you can view the *Client ID* and *Token URL* used for generating the JWT token.
 
-The `Details Page` has the following options:
+The *App Client detail view* has the following options:
 
 |===
 |Option |Explanation
@@ -81,25 +81,23 @@ The `Details Page` has the following options:
 
 |*Access rights*
 |What REST API areas can the client app access
-
 |===
 
-=== Regenerate secret
+=== Regenerate App Client secrets
 
-If you forgot the app client secret or just want to regenerate it you can do this by pressing the `Regenerate secret`
-button:
+If you forgot the App Client secret or just want to regenerate it you can do this by clicking on *Regenerate secret*:
 
 image::client-app-auth/regenerate-secret.png[width=280]
 
 [WARNING]
 ====
-After pressing the button a popup appears with the secret of the app client.
-Make sure to copy the *secret*, because you won’t have access to it afterwards.
+After clicking the button a popup appears with the *App Client secret*.
+Copy the *App Client secret*, because you won’t have access to it afterwards.
 ====
 
 == How to authenticate with your Client App
 
-Authentication in the REST API with an Client App requirest 2 steps:
+Authentication in the REST API with an Client App requires two steps:
 
 1. Generate the JWT token from the `Token URL` in the Client App settings
 2. Use the JWT token to authenticate the REST API calls
@@ -131,7 +129,6 @@ Payload:
 
 |CLIENT_SECRET
 |The latest Client App `secret` that was generated
-
 |===
 
 Success response:
@@ -153,16 +150,15 @@ Success response:
 |The amount of seconds that it will take until the JWT will expire from the time the JWT it is generated
 
 The default value is `3600` seconds, but it may vary.
-
 |===
 
 [WARNING]
 ====
-Once an JWT token is expired, it can not be used
+Once a JWT token is expired, it can not be used.
 ====
 
 
-=== Authenticate in the REST API
+=== Authenticating in the REST API
 
 For authenticating the REST API with the Client App JWT token you have to sign every request sent to the REST API
 endpoints using the `Bearer Token` Authorization Type by setting the `Authorization` header:
@@ -174,7 +170,7 @@ Authorization: Bearer [JWT_TOKEN]
 == FAQ
 
 === Is there a token refresh for the JWT token?
-No, at this time there is no way to refresh the JWT token without requesting a new one from the `TOKEN URL`
+No, at this time there is no way to refresh the JWT token without requesting a new one from the `TOKEN URL`.
 
 === Can you invalidate a JWT token?
 No, at this moment we do not provide a way to invalidate a JWT token. A token is valid for `3600` seconds (`1` hour),
@@ -185,5 +181,4 @@ In case of emergency, you can disable the Client App until the JWT token expires
 === How can I find what Client App is authenticated in the REST API?
 You can use the `rest/users/me` endpoint to get information about the user for wich the JWT token.
 
-_**Note:** in the json data that you will receive from the `rest/users/me` endpoint, the `CLIENT ID` is found in the
-`username` parameter._
+_**Note:** in the json data that you will receive from the `rest/users/me` endpoint, the `CLIENT ID` is found in the `username` parameter._
