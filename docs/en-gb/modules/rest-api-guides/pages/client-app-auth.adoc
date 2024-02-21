@@ -24,20 +24,20 @@ The `Create` page has the following options:
 |Option |Explanation
 
 |*Name*
-|The name of the App Client used for future reference and identification
+|The name of the App Client used for future reference and identification.
 
 |*Role template*
 
 `_Use an existing role as template_`
 |Select from an existing Role found in *Setup* » *Account management* » *Roles*. +
 
-This will autocomplete the `Rights` and `Access rights` options
+This will autocomplete the `Rights` and `Access rights` options.
 
 |*Rights*
-|What REST API endpoints and actions can the client app access
+|What REST API endpoints and actions can the client app access.
 
 |*Access rights*
-|What REST API areas can the client app access
+|What REST API areas can the client app access.
 |===
 
 An app client secret is automatically generated when creating the App client.
@@ -63,24 +63,24 @@ The *App Client detail view* has the following options:
 |Option |Explanation
 
 |*Name*
-|The name of the App Client used for future reference and identification
+|The name of the App Client used for future reference and identification.
 
 |*Client ID*
-|Client ID used in the Token URL payload
+|Client ID used in the Token URL payload.
 
 |*Token URL*
-|URL used to generate the JWT token used for REST API authentication
+|URL used to generate the JWT token used for REST API authentication.
 
 |*Enable app client*
 
 `on/off`
-|Enable or disable the client app overall access
+|Enable or disable the client app overall access.
 
 |*Rights*
-|What REST API endpoints and actions can the client app access
+|What REST API endpoints and actions can the client app access.
 
 |*Access rights*
-|What REST API areas can the client app access
+|What REST API areas can the client app access.
 |===
 
 === Regenerate App Client secrets
@@ -122,13 +122,13 @@ Payload:
 |Variable |Explanation
 
 |TOKEN_URL
-|The `TOKEN URL` from the Client App Details Page
+|The `TOKEN URL` from the Client App Details Page.
 
 |CLIENT_ID
-|The `CLIENT ID` from the Client App Details Page
+|The `CLIENT ID` from the Client App Details Page.
 
 |CLIENT_SECRET
-|The latest Client App `secret` that was generated
+|The latest Client App `secret` that was generated.
 |===
 
 Success response:
@@ -144,11 +144,10 @@ Success response:
 |Variable |Explanation
 
 |JWT_TOKEN
-|The JWT token that can be used to authenticate the REST API calls
+|The JWT token that can be used to authenticate the REST API calls.
 
 |JWT_TOKEN_EXPIRATION
-|The amount of seconds that it will take until the JWT will expire from the time the JWT it is generated
-
+|The amount of seconds that it will take until the JWT will expire from the time the JWT it is generated. +
 The default value is `3600` seconds, but it may vary.
 |===
 
@@ -174,8 +173,7 @@ No, at this time there is no way to refresh the JWT token without requesting a n
 
 === Can you invalidate a JWT token?
 No, at this moment we do not provide a way to invalidate a JWT token. A token is valid for `3600` seconds (`1` hour),
-after which it will no longer be usable.
-
+after which it will no longer be usable. +
 In case of emergency, you can disable the Client App until the JWT token expires.
 
 === How can I find what Client App is authenticated in the REST API?
