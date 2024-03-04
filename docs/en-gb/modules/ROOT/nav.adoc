@@ -32,6 +32,7 @@ include::back-end-ui:partial$nav.adoc[]
 
 .REST API guides
 * xref:rest-api-guides:getting-started.adoc[REST API overview]
+* xref:rest-api-guides:client-app-auth.adoc[Client App Authentication (Beta)]
 * xref:master@plentymarkets-rest-api:ROOT:index.adoc[plentymarkets REST API reference]
 * xref:rest-api-guides:contact-data.adoc[How to query contact data]
 * xref:rest-api-guides:item-data.adoc[How to query item data]
